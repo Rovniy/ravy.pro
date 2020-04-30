@@ -1,0 +1,37 @@
+{
+  "name": "ravy.pro",
+  "version": "1.0.0",
+  "description": "Andrew (Ravy) Rovniy",
+  "author": "Ravy",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "@nuxtjs/axios": "^5.0.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/dotenv": "^1.3.0",
+    "@nuxtjs/style-resources": "^0.1.2",
+    "nodemon": "^1.11.0",
+    "babel-eslint": "^8.2.1",
+    "eslint": "^5.11.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "path": "^0.12.7",
+    "sass-loader": "^7.1.0",
+    "nuxt-babel": "^0.1.2",
+    "nuxt": "^2.0.0",
+    "node-sass": "^4.11.0",
+    "lodash": "^4.17.11",
+    "nuxt-sass-resources-loader": "^2.0.5"
+  }
+}
