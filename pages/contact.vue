@@ -1,18 +1,18 @@
 <template>
     <div>
-        <top-section />
+        <contact-component />
     </div>
 </template>
 
 <script>
-import TopSection from '@/components/pages/index/top-section'
+import ContactComponent from '@/components/pages/contact'
 
 export default {
     head: {
         title: 'Andrew Rovniy'
     },
     components: {
-	    TopSection
+        ContactComponent
     }
 }
 </script>

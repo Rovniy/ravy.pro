@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import TopSection from '@/components/pages/index/top-section'
+import TopSection from '@/components/pages/dev/index'
 
 export default {
     head: {
         title: 'Andrew Rovniy'
     },
     components: {
-	    TopSection
+        TopSection
     }
 }
 </script>

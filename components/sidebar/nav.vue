@@ -2,25 +2,34 @@
     <nav class="nav">
         <ul>
             <li v-for="item in menuList" :key="item.name">
-                <a id="top-link" href="#top" class="active">
-                    <span :class="['icon solid', item.icon]">
+                <nuxt-link :to="item.link">
+                    <span :class="['icon solid', item.icon]" @click="toggleSidebar">
                         {{ item.name }}
                     </span>
-                </a>
+                </nuxt-link>
             </li>
         </ul>
     </nav>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 const MENU = [
     {
         name: 'Intro',
-        icon: 'fa-home'
+        icon: 'fa-home',
+        link: '/'
     },
     {
-        name: 'Portfolio',
-        icon: 'fa-th'
+        name: 'Projects',
+        icon: 'fa-th',
+        link: '/projects'
+    },
+    {
+        name: 'Contact me',
+        icon: 'fa-envelope',
+        link: '/contact'
     }
 ]
 export default {
@@ -28,8 +37,12 @@ export default {
         menuList() {
             return MENU
         }
+    },
+    methods: {
+    	...mapActions({
+		    toggleSidebar: 'sidebar/toggleSidebar'
+	    })
     }
-
 }
 </script>
 
@@ -73,7 +86,6 @@ export default {
 						font-size: 20px
 						line-height: 40px
 						padding-right: 0
-
 					&:before
 						font: $font-awesome
 						position: absolute
@@ -89,7 +101,7 @@ export default {
 							left: 0
 							line-height: 40px
 
-				&.active
+				&.nuxt-link-exact-active
 					background: rgba(0, 0, 0, 0.15)
 					box-shadow: inset 0 0 0.25em 0 rgba(0, 0, 0, 0.125)
 					color: #fff

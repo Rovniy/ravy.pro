@@ -33,7 +33,7 @@ export default {
 	display: flex
 	flex-direction: column
 	justify-content: space-between
-	background: #222629 url('/images/misc/overlay.png')
+	background: $color-sidebar url('/images/misc/overlay.png')
 	box-shadow: inset -0.25em 0 0.25em 0 rgba(0, 0, 0, 0.1)
 	color: #fff
 	left: 0

@@ -2,13 +2,13 @@
     <div class="main-container">
         <sidebar-component />
         <burger-component />
-        <nuxt :class="['content', {'open': isAsideOpen}]" />
+        <nuxt :class="['content-area', {'open': isAsideOpen}]" />
     </div>
 </template>
 
 <script>
 import SidebarComponent from '@/components/sidebar'
-import BurgerComponent from '@/components/sidebar/burger'
+import BurgerComponent from '@/components/burger'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -32,9 +32,11 @@ export default {
 	align-items: flex-start
 	min-height: 100%
 
-	.content
+	.content-area
 		transition: transform .5s ease
 		margin-left: 0
+		width: 100%
+		min-height: 100%
 		@include tablet-xl
 			margin-left: $sidebar-min-width
 		@include desktop
@@ -46,5 +48,4 @@ export default {
 			transform: translateX($sidebar-medium-width)
 			@include tablet-xl
 				transform: translateX(0)
-
 </style>

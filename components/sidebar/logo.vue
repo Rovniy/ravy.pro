@@ -24,6 +24,8 @@ export default {
 	margin: 20px
 	min-height: 48px
 	cursor: default
+	@include desktop-xl
+		margin: 40px 40px 20px
 
 	.open &
 		@include desktop-xl

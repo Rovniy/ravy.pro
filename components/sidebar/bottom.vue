@@ -2,7 +2,7 @@
     <div class="bottom">
         <ul class="icons">
             <li v-for="link in socialsList" :key="link.target">
-                <a :href="link.href" :class="['icon brands', link.icon]">
+                <a :href="link.href" :class="link.icon" target="_blank" :alt="link.target">
                     <span class="label">
                         {{ link.target }}
                     </span>
@@ -15,19 +15,29 @@
 <script>
 const socials = [
     {
-        target: 'Twitter',
-        icon: 'fa-twitter',
-        href: '#'
+        target: 'Email',
+        icon: 'fa-at',
+        href: 'mailto:smart.fz@mail.ru'
+    },
+    {
+        target: 'Vkontakte',
+        icon: 'fa-vk',
+        href: 'https://vk.com/xploitravy'
     },
     {
         target: 'Facebook',
         icon: 'fa-facebook-f',
-        href: '#'
+        href: 'https://www.facebook.com/xploitravy'
     },
     {
-        target: 'Github',
-        icon: 'fa-github',
-        href: '#'
+        target: 'LinkedIn',
+        icon: 'fa-linkedin',
+        href: 'https://www.linkedin.com/in/rovniy/'
+    },
+    {
+        target: 'Telegram',
+        icon: 'fa-telegram',
+        href: 'https://t.me/xploitravy'
     }
 ]
 
@@ -79,7 +89,7 @@ export default {
 			text-align: center
 			border: 0
 			&:before
-				font: $font-awesome-brands
+				font: $font-awesome
 				font-size: 20px
 				display: inline-block
 				font-style: normal

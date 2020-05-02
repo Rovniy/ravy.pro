@@ -5,6 +5,7 @@ html, body, #__nuxt, #__layout
 	padding: 0
 	margin: 0
 	width: 100%
+	height: 100%
 
 html
   margin: 0
@@ -21,11 +22,30 @@ body
   min-height: 100%
   height: 100%
   font: 400 19px $main-font-family
-  background: #fff
+  background: $color-sidebar
   position: relative
   margin: 0
   padding: 0
   overflow-x: hidden
 
-div
+*
   box-sizing: border-box
+
+a
+	color: #e27689
+	text-decoration: none
+	&:visited
+		color: #e27689
+	&:hover
+		text-decoration: underline
+
+.container
+	width: 100%
+	margin: 0 auto
+	padding: 0 20px
+	@include tablet-xl
+		padding: 0 50px
+	@include desktop
+		max-width: 1000px
+	@include desktop-xl
+		max-width: 1400px
