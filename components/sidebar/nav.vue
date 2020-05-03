@@ -2,7 +2,7 @@
     <nav class="nav">
         <ul>
             <li v-for="item in menuList" :key="item.name">
-                <nuxt-link :to="item.link">
+                <nuxt-link :key="item.name" :to="item.link" no-prefetch append>
                     <span :class="['icon solid', item.icon]" @click="toggleSidebar">
                         {{ item.name }}
                     </span>
@@ -16,11 +16,6 @@
 import { mapActions } from 'vuex'
 
 const MENU = [
-    {
-        name: 'Intro',
-        icon: 'fa-home',
-        link: '/'
-    },
     {
         name: 'Projects',
         icon: 'fa-th',
@@ -101,11 +96,18 @@ export default {
 							left: 0
 							line-height: 40px
 
-				&.nuxt-link-exact-active
+				&:hover
 					background: rgba(0, 0, 0, 0.15)
 					box-shadow: inset 0 0 0.25em 0 rgba(0, 0, 0, 0.125)
 					color: #fff
 
 					span:before
-						color: #e27689
+						color: $color-base
+				&.nuxt-link-active
+					background: rgba(0, 0, 0, 0.15)
+					box-shadow: inset 0 0 0.25em 0 rgba(0, 0, 0, 0.125)
+					color: #fff
+
+					span:before
+						color: $color-base
 </style>

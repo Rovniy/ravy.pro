@@ -15,11 +15,6 @@
 <script>
 const socials = [
     {
-        target: 'Email',
-        icon: 'fa-at',
-        href: 'mailto:smart.fz@mail.ru'
-    },
-    {
         target: 'Vkontakte',
         icon: 'fa-vk',
         href: 'https://vk.com/xploitravy'

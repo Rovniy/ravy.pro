@@ -9,13 +9,10 @@ import ContactComponent from '@/components/pages/contact'
 
 export default {
     head: {
-        title: 'Andrew Rovniy'
+        title: 'Contacts'
     },
     components: {
         ContactComponent
     }
 }
 </script>
-
-<style>
-</style>

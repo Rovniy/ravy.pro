@@ -14,10 +14,7 @@ html
   border: none
   min-height: 100%
   height: 100%
-  //-webkit-user-select: none
-  //-moz-user-select: none
-  //-ms-user-select: none
-  //user-select: none
+
 body
   min-height: 100%
   height: 100%
@@ -31,21 +28,54 @@ body
 *
   box-sizing: border-box
 
+h1
+	font-size: 32px
+	@include tablet-xl
+		font-size: 48px
+
+h2
+	font-size: 28px
+	@include tablet-xl
+		font-size: 42px
+
+h3
+	font-size: 24px
+	@include tablet-xl
+		font-size: 36px
+
+h4
+	font-size: 18px
+	@include tablet-xl
+		font-size: 30px
+
+h5
+	font-size: 16px
+	@include tablet-xl
+		font-size: 24px
+
 a
-	color: #e27689
+	color: $color-base
 	text-decoration: none
 	&:visited
-		color: #e27689
+		color: $color-base
 	&:hover
 		text-decoration: underline
 
 .container
 	width: 100%
 	margin: 0 auto
-	padding: 0 20px
+	padding: 20px
 	@include tablet-xl
-		padding: 0 50px
+		padding: 50px
 	@include desktop
 		max-width: 1000px
 	@include desktop-xl
 		max-width: 1400px
+
+.sub_menu
+	ul
+		padding: 0
+		li
+			display: inline-block
+			list-style: none
+			margin: 0 20px 0 0

@@ -49,13 +49,12 @@ export default {
 	align-items: center
 	justify-content: center
 	@include tablet-xl
-		background: #e8edec url('/images/misc/contacts_arrow.png') no-repeat
-		background-position: 0 100%
-		background-size: 20%
+		background: url('/images/misc/contacts_arrow.png') no-repeat 0 100%, url('/images/backgrounds/index_intro.jpeg') no-repeat 0 100%
+		background-size: 20%, cover
 	@include desktop
-		background-size: 15%
+		background-size: 15%, cover
 	@include desktop-xl
-		background-size: 10%
+		background-size: 10%, cover
 
 	.container
 		@include tablet-xl

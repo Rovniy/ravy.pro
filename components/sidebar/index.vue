@@ -15,15 +15,15 @@ import BottomComponent from './bottom'
 import { mapGetters } from 'vuex'
 
 export default {
-    computed: {
-        ...mapGetters({
-            isAsideOpen: 'sidebar/isAsideOpen'
-        })
-    },
     components: {
         LogoComponent,
         NavComponent,
         BottomComponent
+    },
+    computed: {
+        ...mapGetters({
+            isAsideOpen: 'sidebar/isAsideOpen'
+        })
     }
 }
 </script>
@@ -73,5 +73,4 @@ export default {
 
 	.top
 		flex-grow: 1
-
 </style>

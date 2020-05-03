@@ -2,7 +2,7 @@
     <section class="top-section">
         <div class="container">
             <h1 class="title">
-                Hi! My name is Andrew Rovniy<br>and it's my personal portal!
+                Hello and welcome to the personal<br>website of Andrew (Ravy) Rovniy
             </h1>
         </div>
     </section>

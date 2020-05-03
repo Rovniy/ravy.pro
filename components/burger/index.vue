@@ -63,5 +63,5 @@ export default {
 			height: $height
 			line-height: $height
 		&:hover
-			color: #E27689
+			color: $color-base
 </style>

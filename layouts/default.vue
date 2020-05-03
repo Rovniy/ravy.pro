@@ -12,14 +12,14 @@ import BurgerComponent from '@/components/burger'
 import { mapGetters } from 'vuex'
 
 export default {
+    components: {
+        SidebarComponent,
+        BurgerComponent
+    },
     computed: {
         ...mapGetters({
             isAsideOpen: 'sidebar/isAsideOpen'
         })
-    },
-    components: {
-        SidebarComponent,
-        BurgerComponent
     }
 }
 </script>
@@ -36,7 +36,8 @@ export default {
 		transition: transform .5s ease
 		margin-left: 0
 		width: 100%
-		min-height: 100%
+		height: 100%
+		min-height: 100vh
 		@include tablet-xl
 			margin-left: $sidebar-min-width
 		@include desktop
