@@ -2,7 +2,7 @@
     <div class="main-container">
         <sidebar-component />
         <burger-component />
-        <nuxt :class="['content-area', {'open': isAsideOpen}]" />
+        <nuxt :class="['content-area', {'open': isAsideOpen}]"/>
     </div>
 </template>
 

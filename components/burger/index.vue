@@ -1,11 +1,13 @@
 <template>
     <div :class="['header-toggle', {'opened': isAsideOpen}]">
-        <span class="toggle" @click="toggleSidebar" />
+	    <span class="toggle" @click="toggleSidebar"/>
+	    <span class="title">Andrew (Ravy) Rovniy</span>
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
     computed: {
         ...mapGetters({
@@ -15,29 +17,35 @@ export default {
     methods: {
         ...mapActions({
             toggleSidebar: 'sidebar/toggleSidebar'
-        })
+        }),
+	    hideSidebar() {
+
+	    }
     }
 }
 </script>
 
 <style lang="sass" scoped>
 .header-toggle
-	backface-visibility: hidden
-	transition: transform 0.5s ease
-	display: block
-	width: 70px
-	height: 48px
-	left: 0
-	top: 0
 	position: fixed
+	top: 0
+	left: 0
+	width: 100%
+	height: 48px
+	background: rgba(0,0,0,.5)
+	line-height: 48px
+	text-align: center
 	z-index: 10001
+	transition: transform .5s ease
 	@include tablet-xl
 		display: none
 		visibility: hidden
 
 	&.opened
-		transition: transform .5s ease
 		transform: translateX($sidebar-medium-width)
+
+		.title
+			opacity: 0
 
 	.toggle
 		position: absolute
@@ -46,22 +54,26 @@ export default {
 		width: 100%
 		height: 100%
 		&:before
-			$width: 55px
-			$height: 40px
+			$width: 20px
 			font: $font-awesome
 			color: #fff
 			content: '\f0c9'
 			font-size: 18px
-			background: rgba(128, 136, 144, 0.5)
 			border-radius: 6px
 			text-align: center
 			position: absolute
-			left: 10px
-			top: 10px
+			left: 16px
+			top: 13px
 			display: block
 			width: $width
-			height: $height
-			line-height: $height
+			height: $width
+			line-height: $width
 		&:hover
 			color: $color-base
+
+	.title
+		color: #fff
+		font-weight: 600
+		transition: opacity .2s ease
+		opacity: 1
 </style>

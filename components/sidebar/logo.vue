@@ -1,14 +1,16 @@
 <template>
     <div class="logo">
-        <span class="avatar">
+	    <nuxt-link :to="'/'">
+		    <span class="avatar">
             <img src="/images/misc/avatar.jpg" alt="Avatar">
         </span>
-        <span class="author">
+		    <span class="author">
             Andrew Rovniy
         </span>
-        <p class="role">
-            Founder. Inventor. Creator
-        </p>
+		    <p class="role">
+			    Founder. Inventor. Creator
+		    </p>
+	    </nuxt-link>
     </div>
 </template>
 
@@ -30,6 +32,10 @@ export default {
 	.open &
 		@include desktop-xl
 			margin: 40px 40px 20px
+
+	a
+		&:hover
+			text-decoration: none
 
 	.avatar
 		display: block

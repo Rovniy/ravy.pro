@@ -12,11 +12,6 @@
 <script>
 const CONTACTS = [
     {
-        title: 'Call',
-        link: 'callto:+79850846060',
-        text: '+7 (985) 084-60-60'
-    },
-    {
         title: 'Partnership',
         link: 'mailto:contact@ravy.pro',
         text: 'contact@ravy.pro'
