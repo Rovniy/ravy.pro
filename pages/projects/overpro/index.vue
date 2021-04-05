@@ -1,7 +1,8 @@
 <template>
 	<section class="projects-section">
 		<div class="container">
-			<h1>Egocetrism <small>(v 0.1)</small></h1>
+			<h1>OverPRO. Next generation eSports platform for players of any level</h1>
+
 			<nav class="sub_menu">
 				<ul>
 					<li v-for="(nav, key) in NavList" :key="key">
@@ -11,7 +12,9 @@
 					</li>
 				</ul>
 			</nav>
-			<p>Help cute Boo find a way out of the tangled maze! Use your imagination to find the only way to the portal that leads to Boo's home. The whole world revolves around him, or so he thinks.</p>
+
+			<p>OverPRO is a new generation eSports platform for players of any level. The application allows you to organize automated tournaments for CS: GO, CS 1.6, Dota 2 and many esports disciplines. The platform developed by SASS allows the b2b sector to conduct competitions on its own behalf, closing the marketing within itself.</p>
+
 			<div class="screenshots">
 				<gallery :source="ImagesList" />
 			</div>
@@ -22,26 +25,27 @@
 <script>
 const NAVIGATION = [
 	{
-		link: '/projects/egocentrism/privacy_policy',
-		text: 'Privacy policy'
+		link: '/misc/overpro_invest.pdf',
+		text: 'Investment presentation (April 2021)',
+		blank: true
 	},
 	{
-		link: 'https://play.google.com/',
-		text: 'Google Play',
+		link: 'https://overpro.ru/',
+		text: 'Web site (overpro.ru)',
 	    blank: true
 	}
 ]
 const IMAGES = [
-	'/images/projects/screen_1.jpg',
-	'/images/projects/screen_2.jpg',
-	'/images/projects/screen_3.jpg',
+	'/images/projects/overpro/screen_1.jpg',
+	'/images/projects/overpro/screen_2.jpg',
+	'/images/projects/overpro/screen_3.jpg',
 ]
 export default {
 	components: {
 	    Gallery: () => import('@/components/gallery')
 	},
 	head: {
-		title: 'Egocentrism'
+		title: 'OverPRO'
 	},
 	computed: {
 		NavList() {

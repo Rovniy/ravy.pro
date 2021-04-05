@@ -1,30 +1,27 @@
 <template>
-    <div id="sidebar" :class="{'open': isAsideOpen}">
-        <div class="top">
-            <logo-component />
-            <nav-component />
-        </div>
-        <bottom-component />
-    </div>
+	<div id="sidebar" :class="{'open': isAsideOpen}">
+		<div class="top">
+			<logo-component />
+			<nav-component />
+		</div>
+		<bottom-component />
+	</div>
 </template>
 
 <script>
-import LogoComponent from './logo'
-import NavComponent from './nav'
-import BottomComponent from './bottom'
 import { mapGetters } from 'vuex'
 
 export default {
-    components: {
-        LogoComponent,
-        NavComponent,
-        BottomComponent
-    },
-    computed: {
-        ...mapGetters({
-            isAsideOpen: 'sidebar/isAsideOpen'
-        })
-    }
+	components: {
+		LogoComponent: () => import('./logo'),
+		NavComponent: () => import('./nav'),
+		BottomComponent: () => import('./bottom')
+	},
+	computed: {
+		...mapGetters({
+			isAsideOpen: 'sidebar/isAsideOpen'
+		})
+	}
 }
 </script>
 

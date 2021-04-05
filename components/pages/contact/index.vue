@@ -1,38 +1,35 @@
 <template>
-    <section class="top-section">
-        <div class="container">
-            <address v-for="address in ContactsList" :key="address.title">
-                <b>{{ address.title }}</b>:
-                <a :href="address.link" target="_blank">{{ address.text }}</a>
-            </address>
-        </div>
-    </section>
+	<section class="top-section">
+		<div class="container">
+			<address v-for="address in ContactsList" :key="address.title">
+				<b>{{ address.title }}</b>:
+				<a :href="address.link" target="_blank">
+					{{ address.text }}
+				</a>
+			</address>
+		</div>
+	</section>
 </template>
 
 <script>
 const CONTACTS = [
-    {
-        title: 'Partnership',
-        link: 'mailto:contact@ravy.pro',
-        text: 'contact@ravy.pro'
-    },
-    {
-        title: 'Games',
-        link: 'mailto:games@ravy.pro',
-        text: 'games@ravy.pro'
-    },
-    {
-        title: 'Spamming',
-        link: 'mailto:trash@ravy.pro',
-        text: 'trash@ravy.pro'
-    }
+	{
+		title: 'Partnership',
+		link: 'mailto:contact@ravy.pro',
+		text: 'contact@ravy.pro'
+	},
+	{
+		title: 'Games',
+		link: 'mailto:games@ravy.pro',
+		text: 'games@ravy.pro'
+	}
 ]
 export default {
-    computed: {
-        ContactsList() {
-            return CONTACTS
-        }
-    }
+	computed: {
+		ContactsList() {
+			return CONTACTS
+		}
+	}
 }
 </script>
 
@@ -43,13 +40,9 @@ export default {
 	display: flex
 	align-items: center
 	justify-content: center
+	background-size: cover
 	@include tablet-xl
-		background: url('/images/misc/contacts_arrow.png') no-repeat 0 100%, url('/images/backgrounds/index_intro.jpeg') no-repeat 0 100%
-		background-size: 20%, cover
-	@include desktop
-		background-size: 15%, cover
-	@include desktop-xl
-		background-size: 10%, cover
+		background: url('/images/backgrounds/index_intro.jpeg') no-repeat 0 100%
 
 	.container
 		@include tablet-xl

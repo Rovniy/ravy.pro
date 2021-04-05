@@ -1,22 +1,22 @@
 <template>
-    <div class="logo">
-	    <nuxt-link :to="'/'">
-		    <span class="avatar">
-            <img src="/images/misc/avatar.jpg" alt="Avatar">
-        </span>
-		    <span class="author">
-            Andrew Rovniy
-        </span>
-		    <p class="role">
-			    Founder. Inventor. Creator
-		    </p>
-	    </nuxt-link>
-    </div>
+	<div class="logo">
+		<nuxt-link :to="'/'">
+			<span class="avatar">
+				<img src="/images/misc/avatar.jpg" alt="Avatar">
+			</span>
+			<span class="author">
+				Andrew Rovniy
+			</span>
+			<p class="role">
+				Founder. Inventor. Creator
+			</p>
+		</nuxt-link>
+	</div>
 </template>
 
 <script>
 export default {
-    name: 'Logo'
+	name: 'Logo'
 }
 </script>
 

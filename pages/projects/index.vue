@@ -1,32 +1,32 @@
 <template>
-    <section class="projects-section">
-        <div class="container">
-            <article v-for="(article, key) in ArticlesList" :key="key" class="article">
-                <a :href="article.link" class="link">
-                    <img :src="article.image" :alt="article.title">
-                </a>
-                <header>
-                    <h5 class="title">
-                        {{ article.title }}
-                    </h5>
-                </header>
-            </article>
-        </div>
-    </section>
+	<section class="projects-section">
+		<div class="container">
+			<article v-for="(article, key) in ArticlesList" :key="key" class="article">
+				<nuxt-link :to="article.link" class="link">
+					<img :src="article.image" :alt="article.title">
+				</nuxt-link>
+				<header>
+					<h5 class="title">
+						{{ article.title }}
+					</h5>
+				</header>
+			</article>
+		</div>
+	</section>
 </template>
 
 <script>
 import { ARTICLES } from '@/components/pages/projects/articles'
 
 export default {
-    head: {
-        title: 'Projects'
-    },
-    computed: {
-        ArticlesList() {
-            return ARTICLES
-        }
-    }
+	head: {
+		title: 'Projects'
+	},
+	computed: {
+		ArticlesList() {
+			return ARTICLES
+		}
+	}
 }
 </script>
 

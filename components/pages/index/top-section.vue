@@ -1,11 +1,14 @@
 <template>
-    <section class="top-section">
-        <div class="container">
-            <h1 class="title">
-                Hello and welcome to the personal<br>website of Andrew (Ravy) Rovniy
-            </h1>
-        </div>
-    </section>
+	<section class="top-section">
+		<div class="container">
+			<h1 class="title">
+				Andrew (Ravy) Rovniy
+			</h1>
+			<h4 class="sub_title">
+				Founder. Inventor. Creator.
+			</h4>
+		</div>
+	</section>
 </template>
 
 <script>
@@ -27,4 +30,9 @@ export default {
 		text-align: center
 		color: #fff
 		font-size: 46px
+
+	.sub_title
+		text-align: center
+		color: #fff
+		font-size: 22px
 </style>

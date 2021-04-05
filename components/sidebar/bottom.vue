@@ -1,47 +1,47 @@
 <template>
-    <div class="bottom">
-        <ul class="icons">
-            <li v-for="link in socialsList" :key="link.target">
-                <a :href="link.href" :class="link.icon" target="_blank" :alt="link.target">
-                    <span class="label">
-                        {{ link.target }}
-                    </span>
-                </a>
-            </li>
-        </ul>
-    </div>
+	<div class="bottom">
+		<ul class="icons">
+			<li v-for="link in socialsList" :key="link.target">
+				<a :href="link.href" :class="link.icon" target="_blank" :alt="link.target">
+					<span class="label">
+						{{ link.target }}
+					</span>
+				</a>
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
 const socials = [
-    {
-        target: 'Vkontakte',
-        icon: 'fa-vk',
-        href: 'https://vk.com/xploitravy'
-    },
-    {
-        target: 'Facebook',
-        icon: 'fa-facebook-f',
-        href: 'https://www.facebook.com/xploitravy'
-    },
-    {
-        target: 'LinkedIn',
-        icon: 'fa-linkedin',
-        href: 'https://www.linkedin.com/in/rovniy/'
-    },
-    {
-        target: 'Telegram',
-        icon: 'fa-telegram',
-        href: 'https://t.me/xploitravy'
-    }
+	{
+		target: 'Vkontakte',
+		icon: 'fa-vk',
+		href: 'https://vk.com/xploitravy'
+	},
+	{
+		target: 'Facebook',
+		icon: 'fa-facebook-f',
+		href: 'https://www.facebook.com/xploitravy'
+	},
+	{
+		target: 'LinkedIn',
+		icon: 'fa-linkedin',
+		href: 'https://www.linkedin.com/in/rovniy/'
+	},
+	{
+		target: 'Telegram',
+		icon: 'fa-telegram',
+		href: 'https://t.me/xploitravy'
+	}
 ]
 
 export default {
-    computed: {
-        socialsList() {
-            return socials
-        }
-    }
+	computed: {
+		socialsList() {
+			return socials
+		}
+	}
 }
 </script>
 

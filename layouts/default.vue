@@ -1,9 +1,9 @@
 <template>
-    <div class="main-container">
-        <sidebar-component />
-        <burger-component />
-        <nuxt :class="['content-area', {'open': isAsideOpen}]"/>
-    </div>
+	<div class="main-container">
+		<sidebar-component />
+		<burger-component />
+		<nuxt :class="['content-area', {'open': isAsideOpen}]" />
+	</div>
 </template>
 
 <script>
@@ -12,15 +12,15 @@ import BurgerComponent from '@/components/burger'
 import { mapGetters } from 'vuex'
 
 export default {
-    components: {
-        SidebarComponent,
-        BurgerComponent
-    },
-    computed: {
-        ...mapGetters({
-            isAsideOpen: 'sidebar/isAsideOpen'
-        })
-    }
+	components: {
+		SidebarComponent,
+		BurgerComponent
+	},
+	computed: {
+		...mapGetters({
+			isAsideOpen: 'sidebar/isAsideOpen'
+		})
+	}
 }
 </script>
 

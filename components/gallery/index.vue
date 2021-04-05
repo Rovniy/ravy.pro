@@ -1,48 +1,48 @@
 <template>
-    <div class="gallery">
-        <client-only>
-            <div class="images">
-                <div v-for="img in sourceList" :key="img" class="image">
-                    <img :src="img" :alt="img" @click="showSingle(img)">
-                </div>
-            </div>
-            <vue-easy-lightbox :visible="visible" :imgs="preview" @hide="handleHide" />
-        </client-only>
-    </div>
+	<div class="gallery">
+		<client-only>
+			<div class="images">
+				<div v-for="img in sourceList" :key="img" class="image">
+					<img :src="img" :alt="img" @click="showSingle(img)">
+				</div>
+			</div>
+			<vue-easy-lightbox :visible="visible" :imgs="preview" @hide="handleHide" />
+		</client-only>
+	</div>
 </template>
 
 <script>
 export default {
-    props: {
-	    /* eslint-disable */
-        source: {
+	props: {
+		source: {
+        	type: [ Array, String ],
         	default: () => []
-        }
-    },
-    data() {
-        return {
-            visible: false,
-            preview: null
-        }
-    },
-    computed: {
-        sourceList() {
-            if (typeof this.source === 'object') {
-                return this.source
-            } else {
-                return [this.source]
-            }
-        }
-    },
-    methods: {
-        showSingle(preview) {
-            this.preview = preview
-            this.visible = true
-        },
-        handleHide() {
-            this.visible = false
-        }
-    }
+		}
+	},
+	data() {
+		return {
+			visible: false,
+			preview: null
+		}
+	},
+	computed: {
+		sourceList() {
+			if (typeof this.source === 'object') {
+				return this.source
+			} else {
+				return [ this.source ]
+			}
+		}
+	},
+	methods: {
+		showSingle(preview) {
+			this.preview = preview
+			this.visible = true
+		},
+		handleHide() {
+			this.visible = false
+		}
+	}
 }
 </script>
 
@@ -67,7 +67,7 @@ export default {
 		@include desktop
 			grid-template-columns: 1fr 1fr 1fr 1fr
 		@include desktop-xl
-			grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr
 		.image
 			width: 100%
 			overflow: hidden

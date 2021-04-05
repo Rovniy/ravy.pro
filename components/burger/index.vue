@@ -1,27 +1,29 @@
 <template>
-    <div :class="['header-toggle', {'opened': isAsideOpen}]">
-	    <span class="toggle" @click="toggleSidebar"/>
-	    <span class="title">Andrew (Ravy) Rovniy</span>
-    </div>
+	<div :class="['header-toggle', {'opened': isAsideOpen}]">
+		<span class="toggle" @click="toggleSidebar" />
+		<span class="title">
+			Andrew (Ravy) Rovniy
+		</span>
+	</div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-    computed: {
-        ...mapGetters({
-            isAsideOpen: 'sidebar/isAsideOpen'
-        })
-    },
-    methods: {
-        ...mapActions({
-            toggleSidebar: 'sidebar/toggleSidebar'
-        }),
+	computed: {
+		...mapGetters({
+			isAsideOpen: 'sidebar/isAsideOpen'
+		})
+	},
+	methods: {
+		...mapActions({
+			toggleSidebar: 'sidebar/toggleSidebar'
+		}),
 	    hideSidebar() {
 
 	    }
-    }
+	}
 }
 </script>
 

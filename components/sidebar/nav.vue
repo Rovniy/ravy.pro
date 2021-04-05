@@ -1,43 +1,43 @@
 <template>
-    <nav class="nav">
-        <ul>
-            <li v-for="item in menuList" :key="item.name">
-                <nuxt-link :key="item.name" :to="item.link" no-prefetch append>
-                    <span :class="['icon solid', item.icon]" @click="toggleSidebar">
-                        {{ item.name }}
-                    </span>
-                </nuxt-link>
-            </li>
-        </ul>
-    </nav>
+	<nav class="nav">
+		<ul>
+			<li v-for="item in menuList" :key="item.name">
+				<nuxt-link :key="item.name" :to="item.link" no-prefetch append>
+					<span :class="['icon solid', item.icon]" @click="toggleSidebar">
+						{{ item.name }}
+					</span>
+				</nuxt-link>
+			</li>
+		</ul>
+	</nav>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
 const MENU = [
-    {
-        name: 'Projects',
-        icon: 'fa-th',
-        link: '/projects'
-    },
-    {
-        name: 'Contact me',
-        icon: 'fa-envelope',
-        link: '/contact'
-    }
+	{
+		name: 'Projects',
+		icon: 'fa-th',
+		link: '/projects'
+	},
+	{
+		name: 'Contact me',
+		icon: 'fa-envelope',
+		link: '/contact'
+	}
 ]
 export default {
-    computed: {
-        menuList() {
-            return MENU
-        }
-    },
-    methods: {
+	computed: {
+		menuList() {
+			return MENU
+		}
+	},
+	methods: {
     	...mapActions({
 		    toggleSidebar: 'sidebar/toggleSidebar'
 	    })
-    }
+	}
 }
 </script>
 
