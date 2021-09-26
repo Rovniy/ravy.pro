@@ -5,14 +5,14 @@
 		</h1>
 		<template slot="about">
 			<p>
-				The game was created as part of participation in the <a href="https://thegdwc.com/" target="_blank">
+				The game was created as part of participation in the <a href="https://thegdwc.com/" target="_blank" rel="noopener">
 					GDWC 2020
 				</a> competition and was recognized as one of the best concepts in the Indie genre.
 			</p>
 			<p>Being a non-standard platformer, it was recognized by both the younger audience for its pretentious appearance, and the older generation for its creative approach to the organization of gameplay.</p>
 			<p>In 2021, he will also participate in competitions in the genre of amateur games.</p>
 
-			<a href="https://thegdwc.com/" target="_blank">
+			<a href="https://thegdwc.com/" target="_blank" rel="noopener">
 				<img src="/images/projects/egocentrism/gdwc_badge.png" width="200" height="200" alt="gdwc">
 			</a>
 		</template>
@@ -43,6 +43,9 @@ export default {
 			'/images/projects/egocentrism/screen_1.jpg',
 			'/images/projects/egocentrism/screen_2.jpg',
 			'/images/projects/egocentrism/screen_3.jpg',
+			'/images/projects/egocentrism/screen_4.jpg',
+			'/images/projects/egocentrism/screen_5.jpg',
+			'/images/projects/egocentrism/screen_6.jpg',
 		],
 		YOUTUBE: 'https://www.youtube.com/embed/h5XDP7IiAxU'
 	}),

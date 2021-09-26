@@ -48,7 +48,7 @@
 			<p>We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies used are beacons, tags, and scripts to collect and track information and to improve and analyze Our Service.</p>
 			<p>You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service.</p>
 			<p>
-				Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close your web browser. Learn more about cookies here: <a href="https://www.freeprivacypolicy.com/blog/cookies/">
+				Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close your web browser. Learn more about cookies here: <a href="https://www.freeprivacypolicy.com/blog/cookies/" target="_blank" rel="noopener">
 					Cookies: What Do They Do?
 				</a>
 			</p>
@@ -132,12 +132,12 @@
 					<p><strong>Unity Ads</strong></p>
 					<p>Unity Ads is provided by Unity Technologies.</p>
 					<p>
-						You can opt-out from Unity Ads service by following the instructions as described by Unity Technologies on their Privacy Policy page: <a href="https://unity3d.com/legal/privacy-policy">
+						You can opt-out from Unity Ads service by following the instructions as described by Unity Technologies on their Privacy Policy page: <a href="https://unity3d.com/legal/privacy-policy" target="_blank" rel="noopener">
 							https://unity3d.com/legal/privacy-policy
 						</a>
 					</p>
 					<p>
-						For more information about Unity Technologies, please visit Unity Technologies Privacy Policy: <a href="https://unity3d.com/legal/privacy-policy">
+						For more information about Unity Technologies, please visit Unity Technologies Privacy Policy: <a href="https://unity3d.com/legal/privacy-policy" target="_blank" rel="noopener">
 							https://unity3d.com/legal/privacy-policy
 						</a>
 					</p>

@@ -12,6 +12,9 @@
 					<h6 class="sub_title">
 						{{ article.sub_title }}
 					</h6>
+					<h6 class="died">
+						R.I.P. {{ article.died }}
+					</h6>
 				</header>
 			</article>
 		</div>
