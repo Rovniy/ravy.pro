@@ -21,10 +21,17 @@ export const ARTICLES = [
 
 export const CEMETERY = [
 	{
+		image: '/images/projects/xploit_esports/cover.jpg',
+		title: 'xPloit team',
+		sub_title: 'eSports CS:GO team',
+		link: '/cemetery/xploit_esports',
+		died: 'September 2020'
+	},
+	{
 		image: '/images/projects/altcover/cover.jpg',
 		title: 'Altcover',
-		sub_title: 'Online image generator',
+		sub_title: 'Live images',
 		link: '/cemetery/altcover',
-		died: 'October 2019'
+		died: 'July 2019'
 	},
 ]

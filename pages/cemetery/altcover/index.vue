@@ -1,5 +1,5 @@
 <template>
-	<project-wrapper :nav-list="NAVIGATION" :images-list="IMAGES" :youtube-video="YOUTUBE">
+	<project-wrapper :nav-list="NAVIGATION" :images-list="IMAGES">
 		<h1 slot="title">
 			Altcover. Designer of live images
 		</h1>

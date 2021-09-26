@@ -1,5 +1,5 @@
 <template>
-	<project-wrapper :nav-list="NAVIGATION" :images-list="IMAGES">
+	<project-wrapper :nav-list="NAVIGATION">
 		<h1 slot="title">
 			Ponistraponi.ru Online store.
 		</h1>

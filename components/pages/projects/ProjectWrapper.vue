@@ -5,7 +5,7 @@
 
 			<hr>
 
-			<nav class="sub_menu">
+			<nav v-if="navList" class="sub_menu">
 				<ul>
 					<li v-for="(nav, key) in navList" :key="key">
 						<a :href="nav.link" rel="noopener" :target="nav.blank ? '_blank' : '_self'">
@@ -20,7 +20,7 @@
 				<slot name="about" />
 			</div>
 
-			<div class="screenshots">
+			<div v-if="!!imagesList.length" class="screenshots">
 				<h2>Gallery:</h2>
 				<gallery :source="imagesList" />
 			</div>
@@ -68,9 +68,6 @@ export default {
 	display: flex
 	align-items: flex-start
 	justify-content: center
-
-	h1
-		margin-top: 0
 
 	.video_wrapper
 		.video

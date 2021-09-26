@@ -1,6 +1,6 @@
 <template>
 	<div class="logo">
-		<nuxt-link :to="'/'">
+		<nuxt-link to="/" append @click.native="toggleSidebar">
 			<span class="avatar">
 				<img src="/images/misc/avatar.jpg" alt="Avatar">
 			</span>
@@ -15,8 +15,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-	name: 'Logo'
+	name: 'Logo',
+	methods: {
+		...mapActions({
+			toggleSidebar: 'sidebar/toggleSidebar'
+		})
+	}
 }
 </script>
 
