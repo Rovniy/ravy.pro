@@ -24,7 +24,7 @@ export default {
 .logo
 	position: relative
 	margin: 20px
-	min-height: 48px
+	min-height: $header_height
 	cursor: default
 	@include desktop-xl
 		margin: 40px 40px 20px

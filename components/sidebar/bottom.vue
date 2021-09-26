@@ -21,17 +21,17 @@ const socials = [
 	},
 	{
 		target: 'Facebook',
-		icon: 'fa-facebook-f',
+		icon: 'fab fa-facebook',
 		href: 'https://www.facebook.com/xploitravy'
 	},
 	{
 		target: 'LinkedIn',
-		icon: 'fa-linkedin',
+		icon: 'fab fa-linkedin',
 		href: 'https://www.linkedin.com/in/rovniy/'
 	},
 	{
 		target: 'Telegram',
-		icon: 'fa-telegram',
+		icon: 'fab fa-telegram-plane',
 		href: 'https://t.me/xploitravy'
 	}
 ]
@@ -56,7 +56,7 @@ export default {
 	.open &
 		border-top: solid 1px rgba(255, 255, 255, 0.05)
 		box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.15)
-		margin-top: 20px
+		margin-top: auto
 		@include tablet-xl
 			border: none
 			box-shadow: none
@@ -84,7 +84,7 @@ export default {
 			text-align: center
 			border: 0
 			&:before
-				font: $font-awesome
+				font-family: $font-awesome
 				font-size: 20px
 				display: inline-block
 				font-style: normal

@@ -3,7 +3,8 @@
 		<ul>
 			<li v-for="item in menuList" :key="item.name">
 				<nuxt-link :key="item.name" :to="item.link" no-prefetch append>
-					<span :class="['icon solid', item.icon]" @click="toggleSidebar">
+					<span class="item" @click="toggleSidebar">
+						<i :class="['icon', item.icon ]" />
 						{{ item.name }}
 					</span>
 				</nuxt-link>
@@ -17,13 +18,18 @@ import { mapActions } from 'vuex'
 
 const MENU = [
 	{
-		name: 'Projects',
-		icon: 'fa-th',
+		name: 'Active projects',
+		icon: 'far fa-lightbulb-on',
 		link: '/projects'
 	},
 	{
+		name: 'Project cemetery',
+		icon: 'far fa-skull-crossbones',
+		link: '/cemetery'
+	},
+	{
 		name: 'Contact me',
-		icon: 'fa-envelope',
+		icon: 'far fa-user-edit',
 		link: '/contact'
 	}
 ]
@@ -67,7 +73,7 @@ export default {
 					@include tablet-xl
 						padding: 12px 40px
 
-				span
+				.item
 					position: relative
 					display: block
 					font-size: 20px
@@ -81,14 +87,17 @@ export default {
 						font-size: 20px
 						line-height: 40px
 						padding-right: 0
-					&:before
-						font: $font-awesome
+
+					.icon
+						font-family: $font-awesome
 						position: absolute
+						font-style: normal
 						color: #41484c
 						text-align: center
 						width: 20px
 						left: 0
 						line-height: 40px
+						font-size: 24px
 						@include tablet-xl
 							left: 100%
 							line-height: 28px
@@ -96,18 +105,14 @@ export default {
 							left: 0
 							line-height: 40px
 
-				&:hover
-					background: rgba(0, 0, 0, 0.15)
-					box-shadow: inset 0 0 0.25em 0 rgba(0, 0, 0, 0.125)
-					color: #fff
-
-					span:before
-						color: $color-base
+				&:hover,
 				&.nuxt-link-active
 					background: rgba(0, 0, 0, 0.15)
 					box-shadow: inset 0 0 0.25em 0 rgba(0, 0, 0, 0.125)
 					color: #fff
 
-					span:before
-						color: $color-base
+					.item
+						.icon
+							color: $color-base
+
 </style>

@@ -64,10 +64,6 @@ export default {
 		grid-template-columns: 1fr 1fr
 		@include tablet
 			grid-template-columns: 1fr 1fr 1fr
-		@include desktop
-			grid-template-columns: 1fr 1fr 1fr 1fr
-		@include desktop-xl
-			grid-template-columns: 1fr 1fr 1fr 1fr 1fr
 		.image
 			width: 100%
 			overflow: hidden

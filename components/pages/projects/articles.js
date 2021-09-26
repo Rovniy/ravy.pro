@@ -12,3 +12,12 @@ export const ARTICLES = [
 		link: '/projects/egocentrism'
 	}
 ]
+
+export const CEMETERY = [
+	{
+		image: '/images/projects/elopub/elopub.jpg',
+		title: 'Elo.pub',
+		sub_title: 'eSports platform',
+		link: '/projects/elopub'
+	},
+]

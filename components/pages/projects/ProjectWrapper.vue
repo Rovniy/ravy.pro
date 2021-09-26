@@ -1,7 +1,7 @@
 <template>
 	<section class="projects-section">
 		<div class="container">
-			<slot name="title" />
+			<slot name="title" class="title" />
 
 			<hr>
 
@@ -25,12 +25,11 @@
 				<gallery :source="imagesList" />
 			</div>
 
-			<div v-if="youtubeVideo" class="video">
+			<div v-if="youtubeVideo" class="video_wrapper">
 				<h2>Video:</h2>
 
 				<iframe
-					width="560"
-					height="315"
+					class="video"
 					:src="youtubeVideo"
 					title="YouTube video player"
 					frameborder="0"
@@ -69,4 +68,19 @@ export default {
 	display: flex
 	align-items: flex-start
 	justify-content: center
+
+	h1
+		margin-top: 0
+
+	.video_wrapper
+		.video
+			width: 100%
+			height: auto
+			max-width: 100%
+			min-height: 400px
+			+tablet
+				width: 560px
+				height: 315px
+				min-height: auto
+
 </style>
