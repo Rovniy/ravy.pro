@@ -52,6 +52,7 @@ export default {
 		text-align: left
 		color: #000
 		font-size: 24px
+		font-style: normal
 		@include tablet
 			font-size: 38px
 		@include tablet-xl

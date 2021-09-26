@@ -1,63 +1,50 @@
 <template>
-	<section class="projects-section">
-		<div class="container">
-			<h1>Egocetrism <small>(v 0.1)</small></h1>
-			<nav class="sub_menu">
-				<ul>
-					<li v-for="(nav, key) in NavList" :key="key">
-						<a :href="nav.link" rel="noopener" :target="nav.blank ? '_blank' : '_self'">
-							{{ nav.text }}
-						</a>
-					</li>
-				</ul>
-			</nav>
-			<p>Help cute Boo find a way out of the tangled maze! Use your imagination to find the only way to the portal that leads to Boo's home. The whole world revolves around him, or so he thinks.</p>
-			<div class="screenshots">
-				<gallery :source="ImagesList" />
-			</div>
-		</div>
-	</section>
+	<project-wrapper :nav-list="NAVIGATION" :images-list="IMAGES" :youtube-video="YOUTUBE">
+		<h1 slot="title">
+			Egocetrism. Mobile game
+		</h1>
+		<template slot="about">
+			<p>
+				The game was created as part of participation in the <a href="https://thegdwc.com/" target="_blank">
+					GDWC 2020
+				</a> competition and was recognized as one of the best concepts in the Indie genre.
+			</p>
+			<p>Being a non-standard platformer, it was recognized by both the younger audience for its pretentious appearance, and the older generation for its creative approach to the organization of gameplay.</p>
+			<p>In 2021, he will also participate in competitions in the genre of amateur games.</p>
+
+			<a href="https://thegdwc.com/" target="_blank">
+				<img src="/images/projects/egocentrism/gdwc_badge.png" width="200" height="200" alt="gdwc">
+			</a>
+		</template>
+	</project-wrapper>
 </template>
 
 <script>
-const NAVIGATION = [
-	{
-		link: '/projects/egocentrism/privacy_policy',
-		text: 'Privacy policy'
-	},
-	{
-		link: 'https://play.google.com/',
-		text: 'Google Play',
-	    blank: true
-	}
-]
-const IMAGES = [
-	'/images/projects/screen_1.jpg',
-	'/images/projects/screen_2.jpg',
-	'/images/projects/screen_3.jpg',
-]
 export default {
 	components: {
-	    Gallery: () => import('@/components/gallery')
+		ProjectWrapper: () => import('@/components/pages/projects/ProjectWrapper'),
 	},
 	head: {
 		title: 'Egocentrism'
 	},
-	computed: {
-		NavList() {
-			return NAVIGATION
-		},
-		ImagesList() {
-			return IMAGES
-		}
-	}
+	data: () => ({
+		NAVIGATION: [
+			{
+				link: '/projects/egocentrism/privacy_policy',
+				text: 'Privacy policy'
+			},
+			{
+				link: 'https://play.google.com/',
+				text: 'Google Play',
+				blank: true
+			}
+		],
+		IMAGES: [
+			'/images/projects/egocentrism/screen_1.jpg',
+			'/images/projects/egocentrism/screen_2.jpg',
+			'/images/projects/egocentrism/screen_3.jpg',
+		],
+		YOUTUBE: 'https://www.youtube.com/embed/h5XDP7IiAxU'
+	}),
 }
 </script>
-
-<style lang="sass" scoped>
-.projects-section
-	background: #e8edec
-	display: flex
-	align-items: flex-start
-	justify-content: center
-</style>

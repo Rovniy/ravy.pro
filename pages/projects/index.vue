@@ -9,6 +9,9 @@
 					<h5 class="title">
 						{{ article.title }}
 					</h5>
+					<h6 class="sub_title">
+						{{ article.sub_title }}
+					</h6>
 				</header>
 			</article>
 		</div>
@@ -75,9 +78,16 @@ export default {
 	header
 		background: #fff
 		margin: 0
-		padding: 15px 0
+		padding: 15px 10px
 
 		.title
-			text-align: center
+			text-align: left
 			margin: 0
+
+		.sub_title
+			text-align: left
+			margin: 0
+			font-size: 14px
+			color: #43454B
+			opacity: .5
 </style>
