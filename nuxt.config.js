@@ -42,14 +42,25 @@ module.exports = {
 		'@nuxtjs/axios',
 		'@nuxtjs/dotenv',
 		'@nuxtjs/style-resources',
+		'@nuxtjs/robots',
+		'@nuxtjs/sitemap',
 		[
 			'@nuxtjs/yandex-metrika',
 			{
-				id: '62509765',
+				id: process.env.YANDEX_METRIKA_ID,
 				webvisor: true,
 			}
 		],
 	],
+	sitemap: {
+		hostname: 'https://ravy.pro',
+		gzip: true,
+	},
+	robots: {
+		UserAgent: '*',
+		Allow: '/',
+		Sitemap: `https://ravy.pro/sitemap.xml`,
+	},
 	plugins: [
 		{ src: '~/plugins/lightbox', mode: 'client' }
 	],
