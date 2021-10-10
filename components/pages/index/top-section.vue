@@ -4,9 +4,9 @@
 			<h1 class="title">
 				Andrew (Ravy) Rovniy
 			</h1>
-			<h4 class="sub_title">
+			<h2 class="sub_title">
 				Founder. Inventor. Creator.
-			</h4>
+			</h2>
 		</div>
 	</section>
 </template>
@@ -19,12 +19,17 @@ export default {
 <style lang="sass" scoped>
 .top-section
 	height: 100vh
-	background: #0d151f url("/images/backgrounds/index_intro_2.jpeg")
+	background-color: #0d151f
+	background-image: url("/images/backgrounds/index_intro_2_mobile.jpg")
 	background-size: cover
-	background-position: 0 100%
+	background-position: center
+	background-repeat: no-repeat
 	display: flex
 	align-items: center
 	justify-content: center
+	backdrop-filter: blur(10px)
+	+tablet-xl
+		background-image: url("/images/backgrounds/index_intro_2.jpg")
 
 	.title
 		text-align: center

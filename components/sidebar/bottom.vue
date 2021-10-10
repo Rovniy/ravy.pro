@@ -2,7 +2,7 @@
 	<div class="bottom">
 		<ul class="icons">
 			<li v-for="link in socialsList" :key="link.target">
-				<a :href="link.href" :class="link.icon" target="_blank" :alt="link.target">
+				<a :href="link.href" :class="link.icon" rel="noopener" target="_blank" :aria-label="link.target">
 					<span class="label">
 						{{ link.target }}
 					</span>

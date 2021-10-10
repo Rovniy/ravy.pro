@@ -1,6 +1,11 @@
 <template>
 	<section class="projects-section">
 		<div class="container">
+			<nuxt-link :to="backLink" class="back_link">
+				<i class="fas fa-angle-left" />
+				Back
+			</nuxt-link>
+
 			<slot name="title" class="title" />
 
 			<hr>
@@ -59,6 +64,13 @@ export default {
 			default: ''
 		}
 	},
+	computed: {
+		backLink() {
+			const backCategory = this.$route.name.split('-')[0]
+
+			return `/${backCategory}`
+		}
+	}
 }
 </script>
 
@@ -68,6 +80,14 @@ export default {
 	display: flex
 	align-items: flex-start
 	justify-content: center
+
+	.container
+		.back_link
+			display: block
+			padding: 10px 0
+			margin: 0 auto 20px 0
+			color: #646464
+			font: 400 16px/16px $main-font-family
 
 	.video_wrapper
 		.video

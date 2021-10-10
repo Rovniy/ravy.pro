@@ -1,8 +1,8 @@
 <template>
 	<nav class="nav">
 		<ul>
-			<li v-for="item in menuList" :key="item.name">
-				<nuxt-link :key="item.name" :to="item.link" no-prefetch append>
+			<li v-for="(item, key) in menuList" :key="item.name">
+				<nuxt-link :key="item.name" :to="item.link" :tabindex="key" no-prefetch append>
 					<span class="item" @click="toggleSidebar">
 						<i :class="['icon', item.icon ]" />
 						{{ item.name }}

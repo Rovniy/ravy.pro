@@ -2,8 +2,7 @@
 	<section class="top-section">
 		<div class="container">
 			<address v-for="address in ContactsList" :key="address.title">
-				<b>{{ address.title }}</b>:
-				<a :href="address.link" target="_blank">
+				<a :href="address.link" class="link" target="_blank" rel="noreferrer">
 					{{ address.text }}
 				</a>
 			</address>
@@ -14,14 +13,9 @@
 <script>
 const CONTACTS = [
 	{
-		title: 'Partnership',
+		//title: 'Partnership',
 		link: 'mailto:contact@ravy.pro',
 		text: 'contact@ravy.pro'
-	},
-	{
-		title: 'Games',
-		link: 'mailto:games@ravy.pro',
-		text: 'games@ravy.pro'
 	}
 ]
 export default {
@@ -34,23 +28,31 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@keyframes gradient
+	0%
+		background-position: 0 50%
+	50%
+		background-position: 100% 50%
+	100%
+		background-position: 0 50%
+
 .top-section
 	height: 100vh
-	background: #e8edec
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)
+	background-size: 400% 400%
+	animation: gradient 15s ease infinite
 	display: flex
 	align-items: center
 	justify-content: center
-	background-size: cover
-	@include tablet-xl
-		background: url('/images/backgrounds/index_intro.jpeg') no-repeat 0 100%
 
 	.container
-		@include tablet-xl
-			padding-left: 20%
+		text-align: center
+		justify-content: center
+		display: flex
 
 	address
 		text-align: left
-		color: #000
+		color: #fff
 		font-size: 24px
 		font-style: normal
 		@include tablet
@@ -61,4 +63,7 @@ export default {
 			font-size: 42px
 		@include desktop-xl
 			font-size: 46px
+
+		.link
+			color: #ffffff
 </style>

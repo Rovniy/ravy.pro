@@ -1,8 +1,7 @@
 <template>
-	<div :class="['header-toggle', {'opened': isAsideOpen}]">
-		<span class="toggle" @click="toggleSidebar" />
+	<div :class="['header-toggle', {'opened': isAsideOpen}]" @click="toggleSidebar">
 		<span class="title">
-			Andrew (Ravy) Rovniy
+			Menu
 		</span>
 	</div>
 </template>
@@ -32,13 +31,15 @@ export default {
 	position: fixed
 	top: 0
 	left: 0
-	width: 100%
+	width: 100vw
 	height: $header_height
 	background: #222629
-	line-height: $header_height
-	text-align: center
+	display: flex
+	align-items: center
+	justify-content: center
 	z-index: 10001
-	transition: transform .5s ease
+	transition: all .5s ease
+	will-change: transform
 	@include tablet-xl
 		display: none
 		visibility: hidden
@@ -47,14 +48,9 @@ export default {
 		transform: translateX($sidebar-medium-width)
 
 		.title
-			opacity: 0
+			//opacity: 0
 
 	.toggle
-		position: absolute
-		left: 0
-		top: 0
-		width: 100%
-		height: 100%
 		&:before
 			$width: 20px
 			font-family: $font-awesome
@@ -76,7 +72,7 @@ export default {
 	.title
 		color: #fff
 		font-weight: 600
-		transition: opacity .2s ease
-		opacity: 1
+		transition: all 0s ease
+		//opacity: 1
 		font-size: 18px
 </style>

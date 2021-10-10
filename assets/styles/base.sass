@@ -64,13 +64,15 @@ a
 .container
 	width: 100%
 	margin: 0 auto
-	padding: 40px 20px
-	@include tablet-xl
+	padding: 70px 20px 40px
+	+tablet-xl
 		padding: 50px
-	@include desktop
+	+desktop
 		max-width: 1000px
-	@include desktop-xl
+	+desktop-xl
 		max-width: 1400px
+	+desktop-xl-wide
+		padding: 40px 0
 
 .sub_menu
 	ul
