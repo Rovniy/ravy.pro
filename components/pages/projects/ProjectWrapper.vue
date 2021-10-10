@@ -88,6 +88,7 @@ export default {
 			margin: 0 auto 20px 0
 			color: $color_main
 			font: 400 16px/16px $main-font-family
+			text-transform: uppercase
 
 	.video_wrapper
 		.video

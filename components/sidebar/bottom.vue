@@ -74,7 +74,7 @@ export default {
 			padding-left: 0
 
 		a
-			$size: 30px
+			$size: 50px
 			color: #41484c
 			transition: color 0.35s ease-in-out
 			width: $size
@@ -85,7 +85,7 @@ export default {
 			border: 0
 			&:before
 				font-family: $font-awesome
-				font-size: 20px
+				font-size: 30px
 				display: inline-block
 				font-style: normal
 				font-variant: normal

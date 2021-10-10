@@ -5,7 +5,7 @@
 				Andrew (Ravy) Rovniy
 			</h1>
 			<h2 class="sub_title">
-				Founder. Inventor. Creator.
+				Open to suggestions. Always.
 			</h2>
 		</div>
 	</section>
