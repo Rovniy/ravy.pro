@@ -44,4 +44,11 @@ export const CEMETERY = [
 		link: '/cemetery/streampub',
 		date: 'April 2017'
 	},
+	{
+		image: '/images/projects/uspy/cover.jpg',
+		title: 'USPY',
+		sub_title: 'Event marketplace',
+		link: '/cemetery/uspy',
+		date: 'January 2017'
+	},
 ]

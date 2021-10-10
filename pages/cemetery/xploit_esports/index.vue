@@ -33,9 +33,6 @@ export default {
 	components: {
 		ProjectWrapper: () => import('@/components/pages/projects/ProjectWrapper'),
 	},
-	head: {
-		title: 'xPloit team'
-	},
 	data: () => ({
 		IMAGES: [
 			'/images/projects/xploit_esports/screen_1.jpg',
@@ -46,7 +43,11 @@ export default {
 			'/images/projects/xploit_esports/screen_6.jpg',
 			'/images/projects/xploit_esports/screen_7.jpg',
 			'/images/projects/xploit_esports/screen_8.jpg',
+			'/images/projects/xploit_esports/screen_9.jpg',
 		]
 	}),
+	head: {
+		title: 'xPloit team'
+	},
 }
 </script>
