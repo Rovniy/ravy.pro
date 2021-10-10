@@ -29,9 +29,6 @@ export default {
 	components: {
 		ProjectWrapper: () => import('@/components/pages/projects/ProjectWrapper'),
 	},
-	head: {
-		title: 'Ponistraponi.ru'
-	},
 	data: () => ({
 		NAVIGATION: [
 			{
@@ -40,6 +37,9 @@ export default {
 				blank: true
 			},
 		]
-	})
+	}),
+	head: {
+		title: 'Ponistraponi.ru'
+	}
 }
 </script>

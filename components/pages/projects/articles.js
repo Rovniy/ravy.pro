@@ -19,6 +19,13 @@ export const ARTICLES = [
 		sub_title: 'Mobile game',
 		link: '/projects/egocentrism',
 		date: '2019'
+	},
+	{
+		image: '/images/projects/online-show/cover.jpg',
+		title: 'Online show',
+		sub_title: 'It\'s technical name',
+		link: '/projects/online-show',
+		date: '2021'
 	}
 ]
 

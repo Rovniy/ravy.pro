@@ -23,7 +23,7 @@ export default {
 		]
 	}),
 	head: {
-		title: 'StreamPub'
+		title: 'Uspy'
 	},
 }
 </script>
