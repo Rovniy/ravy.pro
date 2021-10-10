@@ -1,19 +1,17 @@
 <template>
 	<section class="projects-section">
 		<div class="container">
-			<article v-for="article in ArticlesList" :key="article.link" class="article">
-				<nuxt-link :to="article.link" class="link">
-					<img :src="article.image" :alt="article.title">
-				</nuxt-link>
-				<header>
-					<h5 class="title">
-						{{ article.title }}
-					</h5>
-					<h6 class="sub_title">
-						{{ article.sub_title }}
-					</h6>
-				</header>
-			</article>
+			<card-component v-for="article in ArticlesList" :key="article.link" :data-image="article.image" :link="article.link">
+				<h2 slot="header">
+					{{ article.title }}
+				</h2>
+				<p slot="content">
+					{{ article.sub_title }}
+				</p>
+				<p slot="date">
+					Since: {{ article.date }}
+				</p>
+			</card-component>
 		</div>
 	</section>
 </template>
@@ -22,6 +20,9 @@
 import { ARTICLES } from '@/components/pages/projects/articles'
 
 export default {
+	components: {
+		CardComponent: () => import('@/components/card')
+	},
 	head: {
 		title: 'Projects'
 	},

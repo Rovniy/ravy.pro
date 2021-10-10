@@ -3,19 +3,22 @@ export const ARTICLES = [
 		image: '/images/projects/ponistraponi/cover.jpg',
 		title: 'Poni-straponi',
 		sub_title: 'Online store',
-		link: '/projects/ponistraponi'
+		link: '/projects/ponistraponi',
+		date: '2021'
 	},
 	{
 		image: '/images/projects/elopub/cover.jpg',
 		title: 'Elo.pub',
 		sub_title: 'eSports platform',
-		link: '/projects/elopub'
+		link: '/projects/elopub',
+		date: '2019'
 	},
 	{
 		image: '/images/projects/egocentrism/cover.jpg',
 		title: 'Egocentrism',
 		sub_title: 'Mobile game',
-		link: '/projects/egocentrism'
+		link: '/projects/egocentrism',
+		date: '2019'
 	}
 ]
 
@@ -25,13 +28,13 @@ export const CEMETERY = [
 		title: 'xPloit team',
 		sub_title: 'eSports CS:GO team',
 		link: '/cemetery/xploit_esports',
-		died: 'September 2020'
+		date: 'September 2020'
 	},
 	{
 		image: '/images/projects/altcover/cover.jpg',
 		title: 'Altcover',
 		sub_title: 'Live images',
 		link: '/cemetery/altcover',
-		died: 'July 2019'
+		date: 'July 2019'
 	},
 ]

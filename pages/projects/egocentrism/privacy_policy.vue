@@ -172,7 +172,7 @@ export default {
 
 <style lang="sass" scoped>
 .policy-section
-	background: #e8edec
+	background: $background_color
 	display: flex
 	align-items: flex-start
 	justify-content: flex-start

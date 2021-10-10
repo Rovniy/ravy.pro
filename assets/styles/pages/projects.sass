@@ -1,7 +1,7 @@
 .projects-section
 	height: 100%
 	min-height: 100vh!important
-	background: #e8edec
+	background: $background_color
 	background-size: cover
 	display: flex
 	flex-direction: column
@@ -29,48 +29,13 @@
 		grid-auto-flow: row
 		grid-column-gap: 10px
 		grid-row-gap: 10px
-		grid-template-columns: 1fr 1fr
+		grid-template-columns: 1fr
 		padding: 0
-		@include tablet-xl
+		+tablet
+			grid-template-columns: 1fr 1fr
+		+tablet-xl
+			grid-template-columns: 1fr 1fr
+		+desktop
 			grid-template-columns: 1fr 1fr 1fr
-		@include desktop-xl
+		+desktop-xl
 			grid-template-columns: 1fr 1fr 1fr 1fr
-
-.article
-	width: 100%
-	overflow: hidden
-	box-shadow: 0 0.05em 0.15em 0 rgba(0, 0, 0, 0.05)
-
-	.link
-		width: 100%
-		display: block
-		overflow: hidden
-		&:hover
-			img
-				transform: scale(1.1)
-		img
-			transition: transform .2s ease
-			width: 100%
-			display: block
-
-	header
-		background: #fff
-		margin: 0
-		padding: 15px 10px
-
-		.title
-			text-align: left
-			margin: 0
-
-		.sub_title
-			text-align: left
-			margin: 5px 0 0 0
-			font-size: 14px
-			color: #43454B
-			opacity: .5
-
-		.died
-			margin: 5px 0 0 0
-			opacity: .5
-			font-size: 13px
-

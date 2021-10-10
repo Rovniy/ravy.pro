@@ -34,10 +34,10 @@ export default {
 	.title
 		text-align: center
 		color: #fff
-		font-size: 46px
+		font: 400 46px/46px $main-font-family
 
 	.sub_title
 		text-align: center
 		color: #fff
-		font-size: 22px
+		font: 200 22px/22px $main-font-family
 </style>

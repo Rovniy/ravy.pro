@@ -76,7 +76,7 @@ export default {
 
 <style lang="sass" scoped>
 .projects-section
-	background: #e8edec
+	background: $background_color
 	display: flex
 	align-items: flex-start
 	justify-content: center
@@ -86,7 +86,7 @@ export default {
 			display: block
 			padding: 10px 0
 			margin: 0 auto 20px 0
-			color: #646464
+			color: $color_main
 			font: 400 16px/16px $main-font-family
 
 	.video_wrapper

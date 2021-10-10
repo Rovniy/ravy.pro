@@ -8,7 +8,7 @@
 				Andrew Rovniy
 			</span>
 			<p class="role">
-				Founder. Inventor. Creator
+				Founder. Inventor. Creator.
 			</p>
 		</nuxt-link>
 	</div>
@@ -65,13 +65,12 @@ export default {
 	.author
 		position: relative
 		color: #fff
-		font-size: 20px
-		font-weight: 600
+		font: 400 20px/20px $main-font-family
 
 	.role
 		position: relative
 		display: block
-		font-size: 14px
+		font: 200 14px/14px $main-font-family
 		color: rgba(255, 255, 255, 0.5)
 		margin: 10px 0 0 0
 </style>

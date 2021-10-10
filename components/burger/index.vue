@@ -33,7 +33,7 @@ export default {
 	left: 0
 	width: 100vw
 	height: $header_height
-	background: #222629
+	background: $color_sidebar
 	display: flex
 	align-items: center
 	justify-content: center
@@ -48,31 +48,12 @@ export default {
 		transform: translateX($sidebar-medium-width)
 
 		.title
-			//opacity: 0
-
-	.toggle
-		&:before
-			$width: 20px
-			font-family: $font-awesome
-			color: #fff
-			content: '\f0c9'
-			font-size: 18px
-			border-radius: 6px
-			text-align: center
-			position: absolute
-			left: 16px
-			top: 13px
-			display: block
-			width: $width
-			height: $width
-			line-height: $width
-		&:hover
-			color: $color-base
+			opacity: 0
 
 	.title
 		color: #fff
 		font-weight: 600
-		transition: all 0s ease
-		//opacity: 1
+		transition: all 1s ease
+		opacity: 1
 		font-size: 18px
 </style>

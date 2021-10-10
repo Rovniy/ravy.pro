@@ -113,6 +113,6 @@ export default {
 
 					.item
 						.icon
-							color: $color-base
+							color: $color_base
 
 </style>
