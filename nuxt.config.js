@@ -1,5 +1,4 @@
-const Webpack = require('webpack')
-const { resolve, join} = require('path')
+const { resolve, join } = require('path')
 
 const SITE_NAME = 'Ravy.pro'
 const DESCRIPTION = `${SITE_NAME} - personal site by Andrew (Ravy) Rovniy`
@@ -7,8 +6,8 @@ const TITLE = 'Andrew (Ravy) Rovniy'
 const FULL_SITE_URL = `https://${SITE_NAME.toLowerCase()}`
 const DEFAULT_HTML_LANGUAGE = 'en'
 const COLORS = {
-	primary: '#1b9f58',
-	secondary: '#222629'
+	primary: '#dea711',
+	secondary: '#242F40'
 }
 
 module.exports = {
@@ -57,11 +56,14 @@ module.exports = {
 		'@nuxtjs/style-resources',
 		'@nuxtjs/robots',
 		'@nuxtjs/sitemap',
+		'@nuxtjs/pwa',
 		[
 			'@nuxtjs/yandex-metrika',
 			{
 				id: process.env.YANDEX_METRIKA_ID,
-				webvisor: true,
+				defer: true,
+				useCDN: true,
+				webvisor: false,
 			}
 		],
 	],
