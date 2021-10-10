@@ -22,9 +22,6 @@ export default {
 	components: {
 		ProjectWrapper: () => import('@/components/pages/projects/ProjectWrapper'),
 	},
-	head: {
-		title: 'Altcover'
-	},
 	data: () => ({
 		NAVIGATION: [
 			{
@@ -39,5 +36,8 @@ export default {
 			'/images/projects/altcover/screen_3.jpg',
 		]
 	}),
+	head: {
+		title: 'Altcover'
+	},
 }
 </script>

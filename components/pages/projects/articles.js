@@ -37,4 +37,11 @@ export const CEMETERY = [
 		link: '/cemetery/altcover',
 		date: 'July 2019'
 	},
+	{
+		image: '/images/projects/streampub/cover.jpg',
+		title: 'StreamPub',
+		sub_title: 'Advertisement agency',
+		link: '/cemetery/streampub',
+		date: 'April 2017'
+	},
 ]

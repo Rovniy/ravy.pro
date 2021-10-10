@@ -24,9 +24,6 @@ export default {
 	components: {
 		ProjectWrapper: () => import('@/components/pages/projects/ProjectWrapper'),
 	},
-	head: {
-		title: 'Egocentrism'
-	},
 	data: () => ({
 		NAVIGATION: [
 			{
@@ -49,5 +46,8 @@ export default {
 		],
 		YOUTUBE: 'https://www.youtube.com/embed/h5XDP7IiAxU'
 	}),
+	head: {
+		title: 'Egocentrism'
+	},
 }
 </script>
