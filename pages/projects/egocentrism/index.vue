@@ -1,7 +1,7 @@
 <template>
 	<project-wrapper :nav-list="NAVIGATION" :images-list="IMAGES" :youtube-video="YOUTUBE">
 		<h1 slot="title">
-			Egocetrism. Mobile game
+			Egocentrism. Mobile game
 		</h1>
 		<template slot="about">
 			<p>

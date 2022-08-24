@@ -63,9 +63,9 @@ module.exports = {
 				id: process.env.YANDEX_METRIKA_ID,
 				defer: true,
 				useCDN: true,
-				webvisor: false,
+				webvisor: false
 			}
-		],
+		]
 	],
 	sitemap: {
 		hostname: FULL_SITE_URL,

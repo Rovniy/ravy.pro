@@ -19,4 +19,11 @@ $ npm start
 $ yarn run generate
 ```
 
+
+## Production deploy
+```bash
+npm run generate
+
+Deployment -> Upload to beget.ru 
+```
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
