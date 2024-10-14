@@ -3,7 +3,7 @@ name: Deploy Ravy.pro
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:

@@ -1,6 +1,5 @@
 ## Build Setup
 
-
 **Requires Node.js 21**
 
 ```bash
