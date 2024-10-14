@@ -23,8 +23,16 @@ jobs:
             cd /home/ravy_pro
             git pull https://Rovniy:${{ secrets.GIT_USER_TOKEN }}@github.com/Rovniy/ravy.pro.git
 
-      - name: Build Docker image
-        run: docker build . -t xploitravy/ravy_pro:latest
+      - name: Create Docker build
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_SERVER_HOST }}
+          username: ${{ secrets.VPS_SERVER_USERNAME }}
+          key: ${{ secrets.VPS_SERVER_SSH_KEY }}
+          script: |
+            cd /home/ravy_pro
+            docker rmi -f $(docker images -q "xploitravy/ravy_pro")
+            docker build . -t xploitravy/ravy_pro:latest
 
       - name: Restart Docker containers
         uses: appleboy/ssh-action@master
