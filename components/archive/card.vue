@@ -16,9 +16,9 @@ withDefaults(defineProps<Props>(), {
   title: 'no-title',
   date: 'no-date',
   description: 'no-description',
-  image: '/not-found.webp',
+  image: '/not-found.png',
   alt: 'no-alt',
-  ogImage: '/not-found.webp',
+  ogImage: '/not-found.png',
   tags: () => [],
   published: false,
 })

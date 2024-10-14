@@ -36,7 +36,7 @@ export const homePage = {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
     description: 'Join me on a journey to build craft seamless digital experiences together!',
-    link: '/andrei_rovnyi.webp',
+    link: '/andrei_rovnyi.png',
   },
 }
 
@@ -113,7 +113,7 @@ export const aboutPage = {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
     description: 'Join me on a journey to build craft seamless digital experiences together!',
-    link: '/andrei_rovnyi.webp',
+    link: '/andrei_rovnyi.png',
   },
 }
 
