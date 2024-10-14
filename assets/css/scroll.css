@@ -1,0 +1,46 @@
+body {
+	overflow-y: scroll;
+}
+
+html.light {
+	::-webkit-scrollbar-track {
+		background-color: #f1f2f4;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #b5b5b5; /* Цвет ползунка */
+	}
+}
+
+html.dark {
+	::-webkit-scrollbar-track {
+		background-color: #020617;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #252d37; /* Цвет ползунка */
+	}
+}
+
+/* Стили для всего скроллбара */
+::-webkit-scrollbar {
+	width: 12px; /* Ширина вертикального скроллбара */
+	height: 12px; /* Высота горизонтального скроллбара */
+}
+
+/* Стили для ползунка */
+::-webkit-scrollbar-thumb {
+	background-color: #888; /* Цвет ползунка */
+	border-radius: 10px; /* Закругление углов */
+	border: 3px solid transparent; /* Пространство вокруг ползунка */
+	background-clip: padding-box; /* Прорезает внутреннюю область */
+}
+
+/* Стили для фона скроллбара */
+::-webkit-scrollbar-track {
+	background-color: transparent; /* Цвет фона скроллбара */
+	border-radius: 10px;
+}
+
+/* Стили при наведении */
+::-webkit-scrollbar-thumb:hover {
+	background-color: #555; /* Цвет ползунка при наведении */
+}

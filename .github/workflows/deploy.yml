@@ -34,8 +34,7 @@ jobs:
           key: ${{ secrets.VPS_SERVER_SSH_KEY }}
           script: |
             cd /home/ravy_pro
-            docker-compose stop ravy_pro
-            docker-compose pull ravy_pro
+            docker-compose down
             docker-compose up -d
 
       - name: Send Telegram notification
