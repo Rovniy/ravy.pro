@@ -25,6 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
     </h1>
 
     <NuxtImg
+      format="webp"
       :src="image || ''"
       :alt="alt || ''"
       width="600"

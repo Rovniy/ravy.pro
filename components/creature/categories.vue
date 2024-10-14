@@ -1,3 +1,3 @@
 <template>
-  <NuxtImg src="/misc/categories.png" alt="Magic creation categories" height="256" />
+  <NuxtImg src="/misc/categories.webp" alt="Magic creation categories" height="256" format="webp" />
 </template>

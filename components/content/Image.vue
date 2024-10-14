@@ -5,6 +5,7 @@ defineProps(['imgSrc'])
 <template>
   <NuxtImg
     :src="imgSrc"
+    format="webp"
     quality="80"
     width="720"
     loading="lazy"

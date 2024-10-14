@@ -13,6 +13,11 @@ export default defineNuxtConfig({
     layoutTransition: { name: 'layout', mode: 'out-in' },
   },
 
+  image: {
+    quality: 80,
+    format: ['avif', 'webp'],
+  },
+
   sitemap: {
     strictNuxtContentPaths: true,
   },

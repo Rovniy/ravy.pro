@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ravy_pro:
-    image: xploitravy/ravy_pro
+    image: xploitravy/ravy_pro:latest
     build:
       context: .
     container_name: ravy_pro

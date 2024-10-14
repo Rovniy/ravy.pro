@@ -1,3 +1,3 @@
 <template>
-  <NuxtImg src="/not-found.png" format="png" />
+  <NuxtImg src="/not-found.webp" format="webp" />
 </template>

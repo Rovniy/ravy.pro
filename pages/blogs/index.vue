@@ -13,9 +13,9 @@ const formattedData = computed(() => {
       path: articles._path,
       title: articles.title || 'no-title available',
       description: articles.description || 'no-description available',
-      image: articles.image || '/not-found.jpg',
+      image: articles.image || '/not-found.webp',
       alt: articles.alt || 'no alter data available',
-      ogImage: articles.ogImage || '/not-found.jpg',
+      ogImage: articles.ogImage || '/not-found.webp',
       date: articles.date || 'not-date-available',
       tags: articles.tags || [],
       published: articles.published || false,
@@ -107,7 +107,7 @@ defineOgImage({
         <ArchiveCard
           v-if="paginatedData.length <= 0"
           title="No Post Found"
-          image="/not-found.jpg"
+          image="/not-found.webp"
         />
       </div>
 

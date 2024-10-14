@@ -43,7 +43,8 @@ defineOgImageComponent('About', {
 
           <div class="sm:hidden block col-span-3 pb-5 dark:text-[#F1F2F4]">
             <NuxtImg
-              src="/andrei_rovnyi.jpg"
+              format="webp"
+              src="/andrei_rovnyi.webp"
               width="125"
               height="115"
               quality="50"
@@ -59,7 +60,8 @@ defineOgImageComponent('About', {
 
       <div class="hidden sm:block col-span-3">
         <NuxtImg
-          src="/andrei_rovnyi.jpg"
+          format="webp"
+          src="/andrei_rovnyi.webp"
           width="450"
           height="500"
           quality="50"

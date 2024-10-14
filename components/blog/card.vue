@@ -16,9 +16,9 @@ withDefaults(defineProps<Props>(), {
   title: 'no-title',
   date: 'no-date',
   description: 'no-description',
-  image: '/blogs-img/blog.jpg',
+  image: '/not-found.webp',
   alt: 'no-alt',
-  ogImage: '/blogs-img/blog.jpg',
+  ogImage: '/not-found.webp',
   tags: () => [],
   published: false,
 })
@@ -28,6 +28,7 @@ withDefaults(defineProps<Props>(), {
   <article class="group border dark:border-gray-800  m-2 overflow-hidden rounded-2xl shadow-sm text-zinc-700 dark:text-zinc-300  ">
     <NuxtLink :to="path">
       <NuxtImg
+        format="webp"
         class="lg:h-48 md:h-36 w-full object-cover object-center rounded-t-2xl shadow-lg group-hover:scale-[1.02] transition-all duration-500"
         width="300"
         :src="image"
