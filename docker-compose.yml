@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  ravy_pro:
+    image: xploitravy/ravy_pro
+    build:
+      context: .
+    container_name: ravy_pro
+    restart: always
+    ports:
+      - "3030:3000"
+    environment:
+      NODE_ENV: production

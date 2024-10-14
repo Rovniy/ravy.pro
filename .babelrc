@@ -1,4 +1,0 @@
-{
-  "presets": [["@nuxt/babel-preset-app", { "loose": true }]],
-  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
-}

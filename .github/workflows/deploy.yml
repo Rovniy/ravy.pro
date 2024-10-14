@@ -1,0 +1,47 @@
+name: Deploy Ravy.pro
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Clone repo
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_SERVER_HOST }}
+          username: ${{ secrets.VPS_SERVER_USERNAME }}
+          key: ${{ secrets.VPS_SERVER_SSH_KEY }}
+          script: |
+            cd /home/ravy_pro
+            git pull https://Rovniy:${{ secrets.GIT_USER_TOKEN }}@github.com/Rovniy/ravy.pro.git
+
+      - name: Build Docker image
+        run: docker build . -t xploitravy/ravy_pro:latest
+
+      - name: Restart Docker containers
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_SERVER_HOST }}
+          username: ${{ secrets.VPS_SERVER_USERNAME }}
+          key: ${{ secrets.VPS_SERVER_SSH_KEY }}
+          script: |
+            cd /home/ravy_pro
+            docker-compose stop ravy_pro
+            docker-compose pull ravy_pro
+            docker-compose up -d
+
+      - name: Send Telegram notification
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ env.TELEGRAM_CHAT_ID }} -d text="https://ravy.pro successfully updated!"
+

@@ -1,41 +1,38 @@
 {
-	"name": "ravy.pro",
-	"version": "1.0.0",
-	"description": "Andrew (Ravy) Rovniy",
-	"author": "Ravy",
-	"private": true,
-	"scripts": {
-		"dev": "nuxt",
-		"build": "nuxt build",
-		"start": "nuxt start",
-		"generate": "nuxt generate",
-		"lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
-		"precommit": "npm run lint"
-	},
-	"dependencies": {
-		"@babel/plugin-proposal-object-rest-spread": "7.13.8",
-		"@nuxt/babel-preset-app": "2.15.4",
-		"@nuxtjs/axios": "5.13.1",
-		"@nuxtjs/pwa": "^3.3.5",
-		"@nuxtjs/robots": "^2.5.0",
-		"@nuxtjs/sitemap": "^2.4.0",
-		"@nuxtjs/yandex-metrika": "1.0.3",
-		"cross-env": "5.2.0",
-		"eslint-plugin-vue": "^7.19.1",
-		"vue-easy-lightbox": "0.11.0"
-	},
-	"devDependencies": {
-		"@nuxtjs/dotenv": "1.3.0",
-		"@nuxtjs/style-resources": "1.0.0",
-		"babel-eslint": "8.2.1",
-		"eslint": "7.24.0",
-		"eslint-loader": "4.0.2",
-		"node-sass": "5.0.0",
-		"nodemon": "2.0.7",
-		"nuxt": "2.15.4",
-		"nuxt-babel": "1.0.1",
-		"nuxt-sass-resources-loader": "2.0.5",
-		"path": "0.12.7",
-		"sass-loader": "10.1.1"
-	}
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev -o",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "start": "nuxt start",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^0.42.0",
+    "@formkit/auto-animate": "^0.8.2",
+    "@nuxt/content": "^2.13.2",
+    "@nuxt/image": "^1.8.1",
+    "@nuxtjs/color-mode": "^3.3.2",
+    "@nuxtjs/fontaine": "^0.4.3",
+    "@nuxtjs/robots": "^4.1.7",
+    "@nuxtjs/sitemap": "^6.1.1",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@stefanobartoletti/nuxt-social-share": "^0.7.1",
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/typography": "^0.5.15",
+    "@vueuse/core": "^10.11.1",
+    "@vueuse/nuxt": "^10.11.1",
+    "eslint": "^8.39.0",
+    "feed": "^4.2.2",
+    "ipx": "^3.0.1",
+    "nuxt": "^3.13.2",
+    "nuxt-icon": "^0.6.8",
+    "nuxt-og-image": "^3.0.4",
+    "typescript": "^5.6.3",
+    "vue-content-loader": "^2.0.1"
+  }
 }

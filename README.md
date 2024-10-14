@@ -1,29 +1,17 @@
-# ravy.pro
-
-> Andrew (Ravy) Rovniy
-
 ## Build Setup
 
-``` bash
-# install dependencies
-$ npm install
+**Requires Node.js 21**
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm start
-
-# generate static project
-$ yarn run generate
-```
-
-
-## Production deploy
 ```bash
-npm run generate
+# install dependencies
+npm install
 
-Deployment -> Upload to beget.ru 
+# serve in dev mode, with hot reload at localhost:5173
+npm run dev
+
+# build for production
+npm run build
+
+# serve in production mode
+npm run  preview
 ```
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
