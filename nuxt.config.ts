@@ -52,6 +52,14 @@ export default defineNuxtConfig({
     fallback: 'light',
   },
 
+  // https://github.com/nuxt-community/yandex-metrika-module
+  yandexMetrika: {
+    id: '62509765',
+    webvisor: true,
+    clickmap: true,
+    trackLinks: true,
+  },
+
   modules: [
     'nuxt-icon',
     '@nuxt/image',
@@ -63,6 +71,7 @@ export default defineNuxtConfig({
     '@nuxtjs/fontaine',
     '@nuxtjs/color-mode',
     '@nuxtjs/tailwindcss',
+    'yandex-metrika-module-nuxt3',
     '@stefanobartoletti/nuxt-social-share',
   ],
 
