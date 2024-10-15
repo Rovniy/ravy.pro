@@ -11,7 +11,7 @@ const path = computed(() => route.fullPath.replace('/', ''))
     <div class="px-6 container max-w-5xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-3">
         <FooterSite v-if="path === 'about'" />
-        <FooterDeveloper v-else />
+        <FooterSocial v-else />
         <FooterLink />
         <FooterConnect />
       </div>
@@ -21,7 +21,7 @@ const path = computed(() => route.fullPath.replace('/', ''))
 
         <a href="/rss.xml">
           <span class="px-3">
-            <Icon name="bi:rss-fill" />
+            <Icon name="bi:rss-fill" class="hover:text-white" />
           </span>
         </a>
       </div>

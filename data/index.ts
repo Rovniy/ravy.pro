@@ -72,11 +72,6 @@ export const socialNetworks = [
     name: 'Telegram',
   },
   {
-    href: 'https://github.com/Rovniy',
-    icon: 'fa:github',
-    name: 'Github',
-  },
-  {
     href: 'https://x.com/xploitravy',
     icon: 'fa:twitter',
     name: 'Twitter',
@@ -85,6 +80,16 @@ export const socialNetworks = [
     href: 'https://www.instagram.com/ravygo',
     icon: 'fa:instagram',
     name: 'Instagram',
+  },
+  {
+    href: 'https://github.com/Rovniy',
+    icon: 'fa:github',
+    name: 'Github',
+  },
+  {
+    href: 'mailto:contact@ravy.pro',
+    icon: 'mdi:mail-outline',
+    name: 'Email',
   },
 ]
 
