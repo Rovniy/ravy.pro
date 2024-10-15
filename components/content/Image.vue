@@ -1,5 +1,8 @@
 <script setup lang="ts">
-defineProps(['imgSrc'])
+defineProps([
+  'imgSrc',
+  'width',
+])
 </script>
 
 <template>
@@ -7,7 +10,8 @@ defineProps(['imgSrc'])
     :src="imgSrc"
     format="webp"
     quality="80"
-    width="720"
+    :width="width ? width : 720"
+    class="mx-auto"
     loading="lazy"
     :modifiers="{ roundCorner: '0:100' }"
   />
