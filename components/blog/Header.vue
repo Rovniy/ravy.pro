@@ -48,7 +48,9 @@ const props = withDefaults(defineProps<Props>(), {
           <LogoTag />
 
           <template v-for="tag in tags" :key="tag">
-            <span class="bg-gray-200 dark:bg-slate-900 rounded-md px-2 py-1 font-semibold">{{ tag }}</span>
+            <NuxtLink :to="`/categories/${tag}`">
+              <span class="bg-gray-200 hover:bg-gray-300 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-md px-2 py-1 font-semibold">{{ tag }}</span>
+            </NuxtLink>
           </template>
         </div>
       </div>
