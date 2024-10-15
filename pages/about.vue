@@ -27,13 +27,13 @@ defineOgImageComponent('About', {
           <div>
             <h1 class="text-xl sm:text-4xl  pb-2 font-bold" v-html="aboutPage.content.title" />
 
-            <div class="my-3 space-x-2 md:space-x-3 pb-10">
+            <div class="my-3 pb-10 flex flex-wrap gap-2 md:gap-3">
               <NuxtLink
                 v-for="item in socialNetworks"
                 :key="item.name"
                 :to="item.href"
                 target="_blank"
-                class="px-2 py-1 lg:px-3 lg:py-2 bg-gray-300 text-gray-800 rounded-md dark:bg-slate-700 dark:text-[#F1F2F4]"
+                class="px-2 py-1 lg:px-3 lg:py-2 bg-gray-300 hover:bg-gray-200 text-gray-800 rounded-md dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-[#F1F2F4]"
                 :aria-label="item.name"
               >
                 <Icon :name="item.icon" size="1em" />
