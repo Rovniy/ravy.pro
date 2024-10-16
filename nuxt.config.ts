@@ -28,6 +28,7 @@ export default defineNuxtConfig({
       type: 'Person',
     },
     twitter: seoData.twitterHandle,
+    autoLastmod: true,
   },
 
   socialShare: {

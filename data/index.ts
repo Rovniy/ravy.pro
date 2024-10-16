@@ -123,66 +123,36 @@ export const aboutPage = {
 }
 
 export const seoData = {
+  theme: 'Gamedev',
+  author: 'Andrei (Ravy) Rovnyi',
   description: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
   ogTitle: 'Andrei Rovnyi personal blog',
   twitterDescription: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
-  image: 'https://res.cloudinary.com/dmecmyphj/image/upload/v1673548905/nuxt-blog/cover_ntgs6u.webp',
+  image: 'https://ravy.pro/blog-cover/10012.account-deletion-for-tiny-boo.webp',
   mySite: 'https://ravy.pro',
   twitterHandle: '@xploitravy',
   mailAddress: 'contact@ravy.pro',
+  locale: 'en_US',
+  ogImageWidth: 1200,
+  ogImageHeight: 750,
 }
 
 export const siteMetaData = [
-  {
-    name: 'description',
-    content: seoData.description,
-  },
-  {
-    property: 'og:site_name',
-    content: seoData.mySite,
-  },
-  {
-    property: 'og:type',
-    content: 'website',
-  },
-  {
-    property: 'og:url',
-    content: seoData.mySite,
-  },
-  {
-    property: 'og:title',
-    content: seoData.ogTitle,
-  },
-  {
-    property: 'og:description',
-    content: seoData.description,
-  },
-  {
-    property: 'og:image',
-    content: seoData.image,
-  },
-  {
-    name: 'twitter:site',
-    content: seoData.twitterHandle,
-  },
-  {
-    name: 'twitter:card',
-    content: 'summary_large_image',
-  },
-  {
-    name: 'twitter:url',
-    content: seoData.mySite,
-  },
-  {
-    name: 'twitter:title',
-    content: seoData.ogTitle,
-  },
-  {
-    name: 'twitter:description',
-    content: seoData.twitterDescription,
-  },
-  {
-    name: 'twitter:image',
-    content: seoData.image,
-  },
+  { name: 'description', content: seoData.description },
+  { property: 'og:site_name', content: seoData.mySite },
+  { property: 'og:type', content: 'website' },
+  { property: 'og:url', content: seoData.mySite },
+  { property: 'og:title', content: seoData.ogTitle },
+  { property: 'og:description', content: seoData.description },
+  { property: 'og:image', content: seoData.image },
+  { property: 'og:image:alt', content: seoData.description },
+  { property: 'og:image:width', content: seoData.ogImageWidth },
+  { property: 'og:image:height', content: seoData.ogImageHeight },
+  { property: 'og:locale', content: seoData.locale },
+  { name: 'twitter:card', content: 'summary_large_image' },
+  { name: 'twitter:site', content: seoData.twitterHandle },
+  { name: 'twitter:url', content: seoData.mySite },
+  { name: 'twitter:title', content: seoData.ogTitle },
+  { name: 'twitter:description', content: seoData.twitterDescription },
+  { name: 'twitter:image', content: seoData.image },
 ]

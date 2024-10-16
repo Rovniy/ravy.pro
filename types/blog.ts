@@ -7,4 +7,8 @@ export interface BlogPost {
   ogImage: string
   tags: string[]
   published: boolean
+  theme?: string
+  publishTime: string
+  modifyTime: string
+  locale: string
 }

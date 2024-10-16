@@ -20,6 +20,10 @@ const data = computed<BlogPost>(() => {
     date: articles.value?.date || 'not-date-available',
     tags: articles.value?.tags || [],
     published: articles.value?.published || false,
+    theme: articles.value?.theme || seoData.theme,
+    publishTime: articles.value?.publishTime || '2024-07-04T10:00:00Z',
+    modifyTime: articles.value?.modifyTime || '2024-07-05T10:00:00Z',
+    locale: articles.value?.locale || seoData.locale,
   }
 })
 
@@ -27,48 +31,27 @@ useHead({
   title: data.value.title || '',
   meta: [
     { name: 'description', content: data.value.description },
-    {
-      name: 'description',
-      content: data.value.description,
-    },
-    // Test on: https://developers.facebook.com/tools/debug/ or https://socialsharepreview.com/
+    { property: 'article:author', content: seoData.author },
+    { property: 'article:published_time', content: new Date(data.value.publishTime).toISOString() },
+    { property: 'article:modified_time', content: new Date(data.value.modifyTime).toISOString() },
+    { property: 'article:section', content: data.value.tags?.at(0) },
+    { property: 'article:tag', content: data.value.theme },
     { property: 'og:site_name', content: navbarData.homeTitle },
-    { hid: 'og:type', property: 'og:type', content: 'website' },
-    {
-      property: 'og:url',
-      content: `${seoData.mySite}/${path}`,
-    },
-    {
-      property: 'og:title',
-      content: data.value.title,
-    },
-    {
-      property: 'og:description',
-      content: data.value.description,
-    },
-    {
-      property: 'og:image',
-      content: data.value.ogImage || data.value.image,
-    },
-    // Test on: https://cards-dev.twitter.com/validator or https://socialsharepreview.com/
-    { name: 'twitter:site', content: seoData.twitterHandle },
+    { property: 'og:type', content: 'article' },
+    { property: 'og:url', content: `${seoData.mySite}${path}` },
+    { property: 'og:title', content: data.value.title },
+    { property: 'og:description', content: data.value.description },
+    { property: 'og:image', content: `${seoData.mySite}${data.value.ogImage || data.value.image}` },
+    { property: 'og:image:alt', content: data.value.description },
+    { property: 'og:image:width', content: seoData.ogImageWidth },
+    { property: 'og:image:height', content: seoData.ogImageHeight },
+    { property: 'og:locale', content: data.value.locale },
     { name: 'twitter:card', content: 'summary_large_image' },
-    {
-      name: 'twitter:url',
-      content: `${seoData.mySite}/${path}`,
-    },
-    {
-      name: 'twitter:title',
-      content: data.value.title,
-    },
-    {
-      name: 'twitter:description',
-      content: data.value.description,
-    },
-    {
-      name: 'twitter:image',
-      content: data.value.ogImage || data.value.image,
-    },
+    { name: 'twitter:site', content: seoData.twitterHandle },
+    { name: 'twitter:url', content: `${seoData.mySite}/${path}` },
+    { name: 'twitter:title', content: data.value.title },
+    { name: 'twitter:description', content: data.value.description },
+    { name: 'twitter:image', content: `${seoData.mySite}${data.value.ogImage || data.value.image}` },
   ],
   link: [
     {
