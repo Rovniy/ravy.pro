@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { makeFirstCharUpper } from '@/utils/helper'
-import { categoriesPage } from '~/data'
+import { blogsPage, categoriesPage } from '~/data'
 
 const { data } = await useAsyncData('all-blog-post-for-category', () => queryContent('/blogs').sort({ _id: -1 }).find())
 
@@ -31,13 +31,11 @@ useHead({
 })
 
 // Generate OG Image
-const siteData = useSiteConfig()
-defineOgImage({
-  props: {
-    title: categoriesPage.og.title,
-    description: categoriesPage.og.description,
-    siteName: siteData.url,
-  },
+defineOgImageComponent('Blog', {
+  headline: blogsPage.og.headline,
+  title: categoriesPage.og.title,
+  description: categoriesPage.og.description,
+  link: categoriesPage.og.image,
 })
 </script>
 

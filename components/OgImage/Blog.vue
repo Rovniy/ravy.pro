@@ -20,11 +20,14 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const formattedTitle = computed(() => props.title.length > 70 ? `${props.title.slice(0, 60)}...` : props.title)
+
 const formattedDescription = computed(() => props.description.length > 100 ? `${props.description}...` : props.description)
+
 const formattedLink = computed(() => {
   if (props.link.endsWith('jpg') || props.link.endsWith('png'))
     return props.link
-  else return '/not-found.png'
+
+  return '/open_graph/og_image_default.png'
 })
 </script>
 
@@ -59,10 +62,10 @@ const formattedLink = computed(() => {
     </svg>
 
     <div class="w-[600px] pl-[100px]">
-      <p v-if="headline" class="uppercase text-[24px] text-[#00DC82] mb-4 font-semibold">
+      <p v-if="headline" class="uppercase text-[32px] text-[#00DC82] mb-4 font-semibold">
         {{ headline }}
       </p>
-      <h1 class="w-[600px] m-0 text-[40px] font-semibold mb-4 text-white flex items-center">
+      <h1 class="w-[600px] m-0 text-[50px] font-semibold mb-4 text-white flex items-center">
         <span>{{ formattedTitle }} </span>
       </h1>
       <p class="text-[25px] text-[#E4E4E7] leading-tight">

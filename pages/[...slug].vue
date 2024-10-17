@@ -11,10 +11,11 @@ useHead({
   ],
 })
 
-defineOgImageComponent('About', {
+defineOgImageComponent('Blog', {
   headline: page404.og.headline,
   title: page404.og.title,
   description: page404.og.description,
+  link: page404.og.link,
 })
 </script>
 

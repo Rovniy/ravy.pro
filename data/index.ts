@@ -20,6 +20,7 @@ export const page404 = {
     headline: 'Wrong Path',
     title: '404',
     description: 'Page Not Found',
+    link: '/not-found.png',
   },
 }
 
@@ -36,7 +37,7 @@ export const homePage = {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
     description: 'Join me on a journey to build craft seamless digital experiences together!',
-    link: '/andrei_rovnyi.png',
+    link: '/open_graph/og_image_default.png',
   },
 }
 
@@ -46,12 +47,14 @@ export const blogsPage = {
     description: 'Here, you\'ll find all the blog posts I\'ve written and shared on this site.',
   },
   meta: {
-    title: 'Archive',
+    title: 'Blogs',
     description: 'Here you will find all the blog posts I have written & published on this site.',
   },
   og: {
-    title: 'Archive',
+    headline: 'Greetings 👋',
+    title: 'Blogs',
     description: 'Here you will find all the blog posts I have written & published on this site.',
+    link: '/open_graph/og_blogs.png',
   },
 }
 
@@ -100,10 +103,13 @@ export const categoriesPage = {
     description: 'Below All the topics are listed on which either I have written a blog or will write a blog in near future.',
   },
   og: {
+    headline: 'Greetings 👋',
     title: 'Categories',
     description: 'Below All the topics are listed on which either I have written a blog or will write a blog in near future.',
+    image: '/open_graph/og_categories.png',
   },
 }
+
 export const aboutPage = {
   content: {
     title: 'Andrei (Ravy) Rovnyi',
@@ -118,7 +124,7 @@ export const aboutPage = {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
     description: 'Join me on a journey to build craft seamless digital experiences together!',
-    link: '/andrei_rovnyi.png',
+    link: '/open_graph/og_image_default.png',
   },
 }
 

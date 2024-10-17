@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { categoriesPage } from '~/data'
+
 const route = useRoute()
 
 const category = computed(() => {
@@ -45,13 +47,11 @@ useHead({
 })
 
 // Generate OG Image
-const siteData = useSiteConfig()
-defineOgImage({
-  props: {
-    title: category.value?.toUpperCase(),
-    description: `You will find all the ${category.value} related post here`,
-    siteName: siteData.url,
-  },
+defineOgImageComponent('Blog', {
+  headline: categoriesPage.og.headline,
+  title: category.value?.toUpperCase(),
+  description: `You will find all the ${category.value} related post here`,
+  link: categoriesPage.og.image,
 })
 </script>
 

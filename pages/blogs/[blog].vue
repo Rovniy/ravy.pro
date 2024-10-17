@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Image from '~/components/content/Image.vue'
 import type { BlogPost } from '@/types/blog'
-import { navbarData, seoData } from '~/data'
+import { blogsPage, navbarData, seoData } from '~/data'
 
 const { path } = useRoute()
 
@@ -73,10 +73,11 @@ const hashTags = computed(() => {
 
 // Generate OG Image
 defineOgImageComponent('Blog', {
-  headline: 'Greetings 👋',
+  headline: blogsPage.og.title,
   title: data.value.title || '',
   description: data.value.description || '',
-  link: data.value.ogImage,
+  link: data.value.ogImage || data.value.image,
+  url: data.value.ogImage || data.value.image,
 })
 </script>
 

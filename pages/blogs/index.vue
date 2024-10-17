@@ -66,12 +66,11 @@ useHead({
   ],
 })
 
-defineOgImage({
-  props: {
-    title: blogsPage.og.title,
-    description: blogsPage.og.description,
-    siteName: useSiteConfig().url,
-  },
+defineOgImageComponent('Blog', {
+  headline: blogsPage.og.headline,
+  title: blogsPage.og.title,
+  description: blogsPage.og.description,
+  link: blogsPage.og.link,
 })
 </script>
 

@@ -11,7 +11,7 @@ useHead({
   ],
 })
 
-defineOgImageComponent('About', {
+defineOgImageComponent('Blog', {
   headline: aboutPage.og.headline,
   title: aboutPage.og.title,
   description: aboutPage.og.description,

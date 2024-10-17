@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 
   image: {
     quality: 80,
+    renderer: 'satori',
     format: ['avif', 'webp'],
   },
 
