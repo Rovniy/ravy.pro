@@ -15,5 +15,8 @@
     <NuxtLink to="/about" class="hover:underline">
       About Me
     </NuxtLink>
+    <NuxtLink to="/links" class="hover:underline">
+      Links
+    </NuxtLink>
   </div>
 </template>

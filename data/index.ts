@@ -1,9 +1,22 @@
+export const baseData = {
+  me: {
+    name: 'Andrei (Ravy) Rovnyi',
+    nick: 'Ravy',
+    email: 'contact@ravy.pro',
+  },
+  site: {
+    url: 'https://ravy.pro',
+    licence: 'MIT',
+  },
+
+}
+
 export const navbarData = {
-  homeTitle: 'Ravy\'s Blog',
+  homeTitle: `${baseData.me.nick}'s Blog`,
 }
 
 export const footerData = {
-  author: 'Andrei (Ravy) Rovnyi',
+  author: baseData.me.name,
   aboutAuthor: 'Hello! I\'m Andrei, a technology enthusiast, problem solver, and software developer. Currently employed at Gaijin.net.',
   authorTitle: 'Get in Touch',
   authorInterest: 'As a Founder, Inventor, and Creator, I have solid experience with Software Development. If you have an exciting idea, whether it\'s open source or a paid project, let\'s connect!',
@@ -58,6 +71,23 @@ export const blogsPage = {
   },
 }
 
+export const linksPage = {
+  content: {
+    title: 'Links',
+    description: 'Discover helpful resources for learning, tools, and personal growth. We\'ve curated links to platforms, articles, and services to support your productivity and success.',
+  },
+  meta: {
+    title: 'Links',
+    description: 'Discover helpful resources for learning, tools, and personal growth. We\'ve curated links to platforms, articles, and services to support your productivity and success.',
+  },
+  og: {
+    headline: 'Greetings 👋',
+    title: 'Links',
+    description: 'Discover helpful resources for learning, tools, and personal growth. We\'ve curated links to platforms, articles, and services to support your productivity and success.',
+    link: '/open_graph/pages/links.png',
+  },
+}
+
 export const categoryPage = {
   title: 'Categories',
   description: 'Below, you\'ll find this category, which is generated from all the tags mentioned across various blog posts.',
@@ -90,7 +120,7 @@ export const socialNetworks = [
     name: 'Github',
   },
   {
-    href: 'mailto:contact@ravy.pro',
+    href: `mailto:${baseData.me.email}`,
     icon: 'mdi:mail-outline',
     name: 'Email',
   },
@@ -112,7 +142,7 @@ export const categoriesPage = {
 
 export const aboutPage = {
   content: {
-    title: 'Andrei (Ravy) Rovnyi',
+    title: baseData.me.name,
     description: 'Founder. Inventor. Creator.',
     aboutMe: 'Hello, fellow human! I\'m Andrei Rovnyi, a software sorcerer with over 12 years of experience, leading teams and building robust systems. Currently, I wield my code powers as a full-stack developer at Gaijin Entertainment, helping launch massive games like War Thunder, Crossout and each other while also development Web-apps. When I\'m not leading the charge in the digital battlefield, I’m crafting game mechanics or experimenting with new tech.<br/><br/>I won\'t cast love spells, but if you\'re looking for someone to magically optimize systems or create game-changing solutions, I\'m your wizard!',
   },
@@ -130,14 +160,14 @@ export const aboutPage = {
 
 export const seoData = {
   theme: 'Gamedev',
-  author: 'Andrei (Ravy) Rovnyi',
+  author: baseData.me.name,
   description: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
-  ogTitle: 'Andrei Rovnyi personal blog',
+  ogTitle: 'Personal blog by Andrei Rovnyi',
   twitterDescription: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
-  image: 'https://ravy.pro/blog-cover/10012.account-deletion-for-tiny-boo.webp',
-  mySite: 'https://ravy.pro',
+  image: `${baseData.site.url}/blog-cover/10012.account-deletion-for-tiny-boo.webp`,
+  mySite: baseData.site.url,
   twitterHandle: '@xploitravy',
-  mailAddress: 'contact@ravy.pro',
+  mailAddress: baseData.me.email,
   locale: 'en_US',
   ogImageWidth: 1200,
   ogImageHeight: 750,

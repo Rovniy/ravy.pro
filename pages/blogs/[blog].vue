@@ -82,7 +82,7 @@ defineOgImageComponent('Blog', {
 </script>
 
 <template>
-  <div class="px-6 container max-w-5xl mx-auto sm:grid grid-cols-12 gap-x-12 ">
+  <div class="px-6 container max-w-5xl mx-auto sm:grid grid-cols-12 gap-x-12">
     <div class="col-span-12 lg:col-span-9">
       <BlogHeader
         :title="data.title"
@@ -104,9 +104,9 @@ defineOgImageComponent('Blog', {
       </div>
     </div>
 
-    <BlogToc />
+    <BlogToc :articles="articles" />
 
-    <div class="flex flex-row  flex-wrap md:flex-nowrap mt-10 gap-2">
+    <div class="flex flex-row flex-wrap md:flex-nowrap mt-10 gap-2">
       <SocialShare
         v-for="network in ['facebook', 'twitter', 'linkedin', 'telegram', 'email']"
         :key="network"

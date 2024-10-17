@@ -1,8 +1,13 @@
 <script setup lang="ts">
-const { path } = useRoute()
-const articles = await queryContent(path).findOne()
+const props = withDefaults(defineProps<IToc>(), {
+  articles: () => {},
+})
 
-const links = articles?.body?.toc?.links || []
+interface IToc {
+  articles: object
+}
+
+const links = props?.articles?.body?.toc?.links || []
 </script>
 
 <template>
