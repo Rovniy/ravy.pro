@@ -10,7 +10,7 @@
       <slot />
     </main>
 
-    <MainFooter />
+    <LazyMainFooter />
   </div>
 </template>
 

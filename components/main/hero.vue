@@ -13,7 +13,7 @@ import { homePage } from '~/data'
           {{ homePage.content.description }}
         </p>
       </div>
-      <div class="px-6 justify-self-center">
+      <div class="px-6 justify-self-center h-[250px]">
         <CreatureHome />
       </div>
     </div>

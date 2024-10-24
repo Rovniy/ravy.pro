@@ -24,6 +24,7 @@ const path = computed(() => route.fullPath.replace('/', ''))
             <span class="px-3">
               <Icon name="bi:rss-fill" class="hover:text-white" />
             </span>
+            <span class="sr-only">Subscribe to RSS Feed</span>
           </a>
         </div>
       </div>

@@ -8,15 +8,30 @@ export default defineNuxtConfig({
       viewport: 'width=device-width,initial-scale=1',
       title: navbarData.homeTitle,
       titleTemplate: `%s - ${navbarData.homeTitle}`,
+      link: [
+        // Preconnect к Google Fonts для более быстрой загрузки шрифтов
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+        // Preload для шрифта Space Grotesk
+        { rel: 'preload', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap', as: 'style' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap' },
+      ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
   },
 
   image: {
-    quality: 80,
+    quality: 70,
     renderer: 'satori',
     format: ['avif', 'webp'],
+    screens: {
+      sm: 320,
+      md: 640,
+      lg: 1024,
+      xl: 1280,
+      xxl: 1536,
+    },
   },
 
   sitemap: {
@@ -33,7 +48,6 @@ export default defineNuxtConfig({
   },
 
   socialShare: {
-    baseUrl: seoData.mySite,
     styled: true,
     label: true,
     icon: true,
@@ -59,14 +73,6 @@ export default defineNuxtConfig({
     fallback: 'light',
   },
 
-  // https://github.com/nuxt-community/yandex-metrika-module
-  yandexMetrika: {
-    id: '62509765',
-    webvisor: true,
-    clickmap: true,
-    trackLinks: true,
-  },
-
   modules: [
     'nuxt-icon',
     '@nuxt/image',
@@ -78,13 +84,22 @@ export default defineNuxtConfig({
     '@nuxtjs/fontaine',
     '@nuxtjs/color-mode',
     '@nuxtjs/tailwindcss',
-    'yandex-metrika-module-nuxt3',
     '@stefanobartoletti/nuxt-social-share',
   ],
 
   content: {
     highlight: {
       theme: 'dracula',
+    },
+  },
+
+  vite: {
+    build: {
+      minify: 'terser',
+      terserOptions: {
+        compress: true,
+        mangle: true,
+      },
     },
   },
 

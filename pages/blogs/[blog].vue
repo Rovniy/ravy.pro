@@ -107,7 +107,7 @@ defineOgImageComponent('Blog', {
     <BlogToc :articles="articles" />
 
     <div class="flex flex-row flex-wrap md:flex-nowrap mt-10 gap-2">
-      <SocialShare
+      <LazySocialShare
         v-for="network in ['facebook', 'twitter', 'linkedin', 'telegram', 'email']"
         :key="network"
         :network="network"
