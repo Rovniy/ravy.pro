@@ -19,6 +19,8 @@ const { data } = await useAsyncData(`category-data-${category.value}`, () => {
     .sort({ _id: -1 })
     .find()
 })
+if (!data?.value?.length)
+  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
 const formattedData = computed(() => {
   return data.value?.map((articles) => {

@@ -20,8 +20,8 @@ defineOgImageComponent('Blog', {
 </script>
 
 <template>
-  <div class="py-5">
-    <div class="container max-w-xl mx-auto">
+  <div class="min-h-screen">
+    <div class="py-5 container max-w-xl mx-auto flex items-center min-h-screen">
       <Logo404 />
     </div>
   </div>
