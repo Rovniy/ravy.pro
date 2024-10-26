@@ -2,6 +2,8 @@
 import { linksPage } from '~/data'
 
 const { data } = await useAsyncData('links', () => queryContent('pages/links').findOne())
+if (!data?.value)
+  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
 useHead({
   title: linksPage.meta.title,

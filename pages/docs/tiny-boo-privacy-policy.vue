@@ -2,6 +2,8 @@
 import { homePage } from '~/data'
 
 const { data } = await useAsyncData('docs', () => queryContent('docs/tiny-boo-privacy-policy').findOne())
+if (!data?.value)
+  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
 useHead({
   title: 'Tiny Boo Privacy Policy',

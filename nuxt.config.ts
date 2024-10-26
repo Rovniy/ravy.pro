@@ -67,6 +67,16 @@ export default defineNuxtConfig({
     },
   },
 
+  robots: {
+    credits: false,
+    groups: [
+      {
+        userAgent: ['Yandex'],
+        cleanParam: ['p', '_ym_debug'],
+      },
+    ],
+  },
+
   colorMode: {
     classSuffix: '',
     preference: 'dark',
