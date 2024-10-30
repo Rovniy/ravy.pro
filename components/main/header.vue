@@ -36,29 +36,29 @@ function onClick(val: string) {
               About
             </NuxtLink>
           </li>
-          <li>
+          <li class="w-[22px]">
             <ClientOnly>
               <button
                 v-if="colorMode.value === 'light'"
                 name="light-mode"
                 title="Light"
-                class="hover:scale-110 transition-all ease-out hover:cursor-pointer"
+                class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-[22px]"
                 @click="onClick('dark')"
               >
-                <Icon name="icon-park:moon" size="20" />
+                <Icon name="icon-park:moon" size="22" />
               </button>
               <button
                 v-if="colorMode.value === 'dark'"
                 name="dark-mode"
                 title="Dark"
-                class="hover:scale-110 transition-all ease-out hover:cursor-pointer"
+                class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-[22px]"
                 @click="onClick('light')"
               >
-                <Icon name="noto:sun" size="20" />
+                <Icon name="noto:sun" size="22" />
               </button>
               <template #fallback>
                 <!-- this will be rendered on server side -->
-                <Icon name="svg-spinners:180-ring" size="20" />
+                <Icon name="svg-spinners:180-ring" size="22" />
               </template>
             </ClientOnly>
           </li>

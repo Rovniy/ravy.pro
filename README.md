@@ -13,5 +13,5 @@ npm run dev
 npm run build
 
 # serve in production mode
-npm run  preview
+npm run preview
 ```
