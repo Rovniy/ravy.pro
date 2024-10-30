@@ -13,8 +13,12 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
         // Preload для шрифта Space Grotesk
-        { rel: 'preload', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap', as: 'style' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap' },
+        {
+          rel: 'preload',
+          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap',
+          as: 'style',
+          onload: 'this.rel=\'stylesheet\'',
+        },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
@@ -67,6 +71,7 @@ export default defineNuxtConfig({
     },
   },
 
+  // https://nuxtseo.com/docs/robots/guides/nuxt-config
   robots: {
     credits: false,
     groups: [
@@ -74,6 +79,13 @@ export default defineNuxtConfig({
         userAgent: ['Yandex'],
         cleanParam: ['p', '_ym_debug'],
       },
+    ],
+    disallow: [
+      '/projects/altcover/',
+      '/author/xploitravy/',
+      '/tag/customization/',
+      '/projects',
+      '/projects/',
     ],
   },
 
