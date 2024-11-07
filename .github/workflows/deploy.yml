@@ -95,11 +95,12 @@ jobs:
             docker-compose down
             docker-compose up -d
 
-      - name: Send Telegram notification
+      - name: Send Discord notification
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DISCORD_WEBHOOK_URL: https://discord.com/api/webhooks/1304151344726147163/D3xqlHDeDYBt2xgKeNrUn6qylgFmUn6QFg62s_gKe20XRJiVYK6oKKVWB4300NShkrg_
         run: |
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ env.TELEGRAM_CHAT_ID }} -d text="https://ravy.pro successfully updated! Commit: $LAST_COMMIT_MESSAGE"
+          curl -s -X POST -H "Content-Type: application/json" \
+            -d "{\"content\": \"https://ravy.pro successfully updated! Commit: $LAST_COMMIT_MESSAGE\"}" \
+            ${{ env.DISCORD_WEBHOOK_URL }}
 
