@@ -106,8 +106,14 @@ export default defineNuxtConfig({
     '@nuxtjs/fontaine',
     '@nuxtjs/color-mode',
     '@nuxtjs/tailwindcss',
+    '@zadigetvoltaire/nuxt-gtm',
     '@stefanobartoletti/nuxt-social-share',
   ],
+
+  gtm: {
+    id: 'GTM-57T2XCRL',
+    nonce: '3464ff42c5',
+  },
 
   content: {
     highlight: {
