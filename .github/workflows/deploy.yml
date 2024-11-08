@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.VPS_SERVER_SSH_KEY }}
           script: |
             cd /home/ravy_pro
-            git config pull.rebase true
+            git reset --hard
             git pull https://Rovniy:${{ secrets.GIT_USER_TOKEN }}@github.com/Rovniy/ravy.pro.git
 
       - name: Backup current Nginx configuration
