@@ -22,7 +22,7 @@ jobs:
           script: |
             cd /home/ravy_pro
             git reset --hard
-            git pull https://Rovniy:${{ secrets.GIT_USER_TOKEN }}@github.com/Rovniy/ravy.pro.git
+            git pull origin master
 
       - name: Backup current Nginx configuration
         uses: appleboy/ssh-action@master
