@@ -18,6 +18,8 @@ Internal and external documents for third-party services
 - [Website landing](https://tinyboohomecoming.com/)
 - [Google Play Market](https://play.google.com/store/apps/details?id=com.Ravy.TinyBooHomecoming)
 - [Privacy Policy](/docs/tiny-boo-privacy-policy)
+- [Account deletion](/blogs/account-deletion-for-tiny-boo)
+- [Marketion Presentation](https://ravy.pro/blog-content/10021-roadmap-for-creating-tiny-boo-homecoming/tiny_boo_presentation.pdf)
 
 
 

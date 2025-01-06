@@ -144,7 +144,7 @@ export const aboutPage = {
   content: {
     title: baseData.me.name,
     description: 'Founder. Inventor. Creator.',
-    aboutMe: 'Hello, fellow human! I\'m Andrei Rovnyi, a software sorcerer with over 12 years of experience, leading teams and building robust systems. Currently, I wield my code powers as a full-stack developer at Gaijin Entertainment, helping launch massive games like War Thunder, Crossout and each other while also development Web-apps. When I\'m not leading the charge in the digital battlefield, I’m crafting game mechanics or experimenting with new tech.<br/><br/>I won\'t cast love spells, but if you\'re looking for someone to magically optimize systems or create game-changing solutions, I\'m your wizard!',
+    aboutMe: 'Hello, fellow human! I\'m Andrei Rovnyi, a software sorcerer with over 13 years of experience, leading teams and building robust systems.<br/><br/>Currently, I wield my code powers as a full-stack developer at Gaijin Entertainment, helping launch massive games like War Thunder, Crossout and each other while also development Web-apps. When I\'m not leading the charge in the digital battlefield, I’m crafting game mechanics or experimenting with new tech.<br/><br/>I won\'t cast love spells, but if you\'re looking for someone to magically optimize systems or create game-changing solutions, I\'m your wizard!',
   },
   meta: {
     title: 'About',
