@@ -1,5 +1,10 @@
 Internal and external documents for third-party services
 
+### Music
+
+- [Zynthar](https://zynthar.rocks)
+- [Diva Rogue](https://divarogue.com)
+
 ### GitHub
 
 - [Ravy.pro](https://github.com/Rovniy/ravy.pro)
@@ -20,6 +25,7 @@ Internal and external documents for third-party services
 - [Privacy Policy](/docs/tiny-boo-privacy-policy)
 - [Account deletion](/blogs/account-deletion-for-tiny-boo)
 - [Marketion Presentation](https://ravy.pro/blog-content/10021-roadmap-for-creating-tiny-boo-homecoming/tiny_boo_presentation.pdf)
+
 
 
 
