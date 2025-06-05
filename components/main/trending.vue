@@ -2,7 +2,7 @@
 import { homePage } from '~/data'
 
 const { data } = await useAsyncData('trending-post', () =>
-  queryContent('/blogs').limit(3).sort({ _id: -1, trending: 1 }).find(),
+  queryContent('/blogs').limit(3).sort({ _id: -1, trending: 1 }).where({ trending: true }).find(),
 )
 
 const formattedData = computed(() => {
