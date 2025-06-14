@@ -8,10 +8,9 @@ export const baseData = {
     url: 'https://ravy.pro',
     licence: 'MIT',
   },
-
 }
 
-export const tags = [
+export const BlogPostTag = [
   'AI',
   'Dev',
   'DivaRogue',

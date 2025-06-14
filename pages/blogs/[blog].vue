@@ -17,12 +17,12 @@ const data = computed<BlogPost>(() => {
     image: articles.value?.image || '/not-found.png',
     alt: articles.value?.alt || articles.value?.description || 'no alter data available',
     ogImage: articles.value?.ogImage || articles.value?.image || '/not-found.png',
-    date: articles.value?.date || 'not-date-available',
+    date: new Date(articles.value?.date).toLocaleDateString(),
     tags: articles.value?.tags || [],
     published: articles.value?.published || false,
     theme: articles.value?.theme || seoData.theme,
-    publishTime: articles.value?.publishTime || '2024-07-04T10:00:00Z',
-    modifyTime: articles.value?.modifyTime || '2024-07-05T10:00:00Z',
+    publishTime: articles.value?.publishTime || new Date().toISOString(),
+    lastUpdated: articles.value?.lastUpdated || new Date().toISOString(),
     locale: articles.value?.locale || seoData.locale,
   }
 })
@@ -32,8 +32,8 @@ useHead({
   meta: [
     { name: 'description', content: data.value.description },
     { property: 'article:author', content: seoData.author },
-    { property: 'article:published_time', content: new Date(data.value.publishTime).toISOString() },
-    { property: 'article:modified_time', content: new Date(data.value.modifyTime).toISOString() },
+    { property: 'article:published_time', content: data.value?.publishTime || new Date().toISOString() },
+    { property: 'article:modified_time', content: data.value?.lastUpdated || data.value?.publishTime || new Date().toISOString() },
     { property: 'article:section', content: data.value.tags?.at(0) },
     { property: 'article:tag', content: data.value.theme },
     { property: 'og:site_name', content: navbarData.homeTitle },

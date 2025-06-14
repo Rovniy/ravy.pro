@@ -9,6 +9,6 @@ export interface BlogPost {
   published: boolean
   theme?: string
   publishTime: string
-  modifyTime: string
+  lastUpdated: string
   locale: string
 }
