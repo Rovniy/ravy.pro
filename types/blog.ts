@@ -1,6 +1,6 @@
 export interface BlogPost {
+  _path?: string
   title: string
-  date: string
   description: string
   image: string
   alt: string
@@ -8,7 +8,7 @@ export interface BlogPost {
   tags: string[]
   published: boolean
   theme?: string
-  publishTime: string
-  lastUpdated: string
+  createdAt: string
+  lastUpdated?: string
   locale: string
 }

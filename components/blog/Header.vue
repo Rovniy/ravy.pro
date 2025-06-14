@@ -4,16 +4,16 @@ interface Props {
   image: string
   alt: string
   description: string
-  date: string
+  createdAt: string
   tags: Array<string>
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   title: 'no-title',
   image: '#',
   alt: 'no-img',
   description: 'no description',
-  date: 'no-date',
+  createdAt: 'no-date',
   tags: () => ([]),
 })
 </script>
@@ -41,17 +41,15 @@ const props = withDefaults(defineProps<Props>(), {
         <div class="flex items-center font-semibold">
           <LogoDate />
 
-          <p>{{ date || '' }}</p>
+          <p>{{ createdAt }}</p>
         </div>
 
         <div class="flex items-center gap-2 flex-wrap my-5">
           <LogoTag />
 
-          <template v-for="tag in tags" :key="tag">
-            <NuxtLink :to="`/categories/${tag}`">
-              <span class="bg-gray-200 hover:bg-gray-300 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-md px-2 py-1 font-semibold">#{{ tag }}</span>
-            </NuxtLink>
-          </template>
+          <NuxtLink v-for="tag in tags" :key="tag" :to="`/categories/${tag}`">
+            <span class="bg-gray-200 hover:bg-gray-300 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-md px-2 py-1 font-semibold">#{{ tag }}</span>
+          </NuxtLink>
         </div>
       </div>
     </div>

@@ -31,7 +31,7 @@ const formattedData = computed(() => {
       image: articles?.image || '/not-found.png',
       alt: articles?.alt || articles?.description || 'no alter data available',
       ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      date: articles?.date || 'not-date-available',
+      createdAt: new Date(articles?.createdAt).toLocaleDateString('en-US') || 'not-date-available',
       tags: articles?.tags || [],
       published: articles?.published || false,
     }
@@ -51,7 +51,7 @@ useHead({
 // Generate OG Image
 defineOgImageComponent('Blog', {
   headline: categoriesPage.og.headline,
-  title: category.value?.toUpperCase(),
+  title: category.value,
   description: `You will find all the ${category.value} related post here`,
   link: categoriesPage.og.image,
 })
@@ -65,9 +65,9 @@ defineOgImageComponent('Blog', {
       <BlogCard
         v-for="post in formattedData"
         :key="post.title"
-        :path="post.path"
+        :path="post?.path || ''"
         :title="post.title"
-        :date="post.date"
+        :created-at="post.createdAt"
         :description="post.description"
         :image="post.image"
         :alt="post.alt"

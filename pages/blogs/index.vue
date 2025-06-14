@@ -16,7 +16,7 @@ const formattedData = computed(() => {
       image: articles?.image || '/not-found.png',
       alt: articles?.alt || articles?.description || 'no alter data available',
       ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      date: articles?.date || 'not-date-available',
+      createdAt: new Date(articles?.createdAt).toLocaleDateString('en-US') || 'not-date-available',
       tags: articles?.tags || [],
       published: articles?.published || false,
     }
@@ -93,7 +93,7 @@ defineOgImageComponent('Blog', {
           <ArchiveCard
             :path="post.path"
             :title="post.title"
-            :date="post.date"
+            :created-at="post.createdAt"
             :description="post.description"
             :image="post.image"
             :alt="post.alt"
@@ -112,7 +112,6 @@ defineOgImageComponent('Blog', {
 
       <template #fallback>
         <!-- this will be rendered on server side -->
-        <BlogLoader />
         <BlogLoader />
       </template>
     </ClientOnly>

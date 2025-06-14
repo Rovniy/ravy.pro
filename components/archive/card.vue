@@ -2,7 +2,7 @@
 interface Props {
   path?: string
   title?: string
-  date?: string
+  createdAt?: string
   description?: string
   image?: string
   alt?: string
@@ -14,7 +14,7 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   path: '/',
   title: 'no-title',
-  date: 'no-date',
+  createdAt: 'no-date',
   description: 'no-description',
   image: '/not-found.png',
   alt: 'no-alt',
@@ -47,12 +47,12 @@ withDefaults(defineProps<Props>(), {
         <div class="text-black dark:text-zinc-300   text-sm mt-2 mb-1 md:flex md:space-x-6">
           <div class="flex items-center">
             <LogoDate />
-            <p> {{ date }}</p>
+            <p> {{ createdAt }}</p>
           </div>
           <div class="flex items-center gap-1 flex-wrap">
             <LogoTag />
             <p v-for="tag in tags" :key="tag">
-              {{ tag }}
+              #{{ tag }}
             </p>
           </div>
         </div>

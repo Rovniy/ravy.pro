@@ -1,3 +1,9 @@
+---
+title: Internal links
+createdAt: 2025-05-05T22:00:00.000Z
+lastUpdated: 2025-06-14T15:13:10.380Z
+---
+
 Internal and external documents for third-party services
 
 ### Music

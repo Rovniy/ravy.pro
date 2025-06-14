@@ -104,18 +104,71 @@ export default defineConfig({
             label: 'Body',
             isBody: true,
           },
+          {
+            type: 'datetime',
+            name: 'createdAt',
+            label: 'Created At',
+            description: 'The created at of the page',
+          },
+          {
+            type: 'datetime',
+            name: 'lastUpdated',
+            label: 'Last Updated At',
+            description: 'The created at of the page',
+          },
         ],
       },
       {
         label: 'Documents',
         name: 'docs',
         path: 'content/docs',
+        ui: {
+          filename: {
+            readonly: true,
+            slugify: (values: Record<string, any>) => `${values?.title?.toLowerCase().replace(/ /g, '-')}`,
+          },
+          beforeSubmit: async ({ form, values }) => {
+            if (form.crudType === 'create') {
+              return {
+                ...values,
+                createdAt: new Date().toISOString(),
+                lastUpdated: new Date().toISOString(),
+              }
+            }
+            else {
+              return {
+                ...values,
+                lastUpdated: new Date().toISOString(),
+              }
+            }
+          },
+        },
         fields: [
+          {
+            type: 'string',
+            name: 'title',
+            label: 'Title',
+            isTitle: true,
+            required: true,
+            description: 'The title of the page',
+          },
           {
             type: 'rich-text',
             name: 'body',
             label: 'Body',
             isBody: true,
+          },
+          {
+            type: 'datetime',
+            name: 'createdAt',
+            label: 'Created At',
+            description: 'The created at of the page',
+          },
+          {
+            type: 'datetime',
+            name: 'lastUpdated',
+            label: 'Last Updated At',
+            description: 'The created at of the page',
           },
         ],
       },
@@ -123,12 +176,53 @@ export default defineConfig({
         label: 'Pages',
         name: 'pages',
         path: 'content/pages',
+        ui: {
+          filename: {
+            readonly: false,
+            slugify: (values: Record<string, any>) => `${values?.title?.toLowerCase().replace(/ /g, '-')}`,
+          },
+          beforeSubmit: async ({ form, values }) => {
+            if (form.crudType === 'create') {
+              return {
+                ...values,
+                createdAt: new Date().toISOString(),
+                lastUpdated: new Date().toISOString(),
+              }
+            }
+            else {
+              return {
+                ...values,
+                lastUpdated: new Date().toISOString(),
+              }
+            }
+          },
+        },
         fields: [
+          {
+            type: 'string',
+            name: 'title',
+            label: 'Title',
+            isTitle: true,
+            required: true,
+            description: 'The title of the page',
+          },
           {
             type: 'rich-text',
             name: 'body',
             label: 'Body',
             isBody: true,
+          },
+          {
+            type: 'datetime',
+            name: 'createdAt',
+            label: 'Created At',
+            description: 'The created at of the page',
+          },
+          {
+            type: 'datetime',
+            name: 'lastUpdated',
+            label: 'Last Updated At',
+            description: 'The created at of the page',
           },
         ],
       },

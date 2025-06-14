@@ -34,31 +34,16 @@ useHead({
 </script>
 
 <template>
-  <div class="pb-10 px-4">
+  <div class="px-4">
     <div class="flex flex-row items-center space-x-3 pt-5 pb-3">
-      <Icon name="mdi:star-outline" size="2em" class="text-black dark:text-zinc-300" />
+      <Icon name="mdi:instagram" size="2em" class="text-black dark:text-zinc-300" />
 
       <h2 class="text-4xl font-semibold text-black dark:text-zinc-300  ">
-        Trending Post
+        Follow my Instagram
       </h2>
     </div>
-    <div class="grid grid-cols-1 ">
-      <template v-for="post in formattedData" :key="post.title">
-        <ArchiveCard
-          :path="post.path"
-          :title="post.title"
-          :created-at="post.createdAt"
-          :description="post.description"
-          :image="post.image"
-          :alt="post.alt"
-          :og-image="post.ogImage"
-          :tags="post.tags"
-          :published="post.published"
-        />
-      </template>
-      <template v-if="data?.length === 0">
-        <BlogEmpty />
-      </template>
+    <div class="p-4 h-max">
+      <iframe src="//lightwidget.com/widgets/deffe5a801815c1eba85e4fd4d39284d.html" scrolling="no" allowtransparency="true" class="aspect-square" style="width:100%;border:0;overflow:hidden;" />
     </div>
   </div>
 </template>

@@ -14,7 +14,7 @@ const formattedData = computed(() => {
       image: articles.image || '/not-found.png',
       alt: articles?.alt || articles?.description || 'no alter data available',
       ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      date: articles.date || 'not-date-available',
+      createdAt: new Date(articles.createdAt).toLocaleDateString('en-US') || 'not-date-available',
       tags: articles.tags || [],
       published: articles.published || false,
     }
@@ -44,9 +44,9 @@ useHead({
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       <template v-for="post in formattedData" :key="post.title">
         <BlogCard
-          :path="post.path"
+          :path="post.path || ''"
           :title="post.title"
-          :date="post.date"
+          :created-at="post.createdAt"
           :description="post.description"
           :image="post.image"
           :alt="post.alt"

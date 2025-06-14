@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { ParsedContent } from '@nuxt/content'
+
 const props = withDefaults(defineProps<IToc>(), {
-  articles: () => {},
+  articles: null,
 })
 
 interface IToc {
-  articles: object
+  articles: ParsedContent | null
 }
 
 const links = props?.articles?.body?.toc?.links || []

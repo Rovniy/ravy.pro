@@ -26,5 +26,5 @@ defineOgImageComponent('Blog', {
 </script>
 
 <template>
-  <DocsContent :article="data" />
+  <DocsContent v-if="data" :article="data" />
 </template>

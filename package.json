@@ -22,7 +22,7 @@
     "@nuxtjs/robots": "^4.1.7",
     "@nuxtjs/sitemap": "^6.1.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
-    "@stefanobartoletti/nuxt-social-share": "^0.7.1",
+    "@stefanobartoletti/nuxt-social-share": "^1.2.3",
     "@tailwindcss/forms": "^0.5.9",
     "@tailwindcss/typography": "^0.5.15",
     "@tinacms/cli": "^1.9.8",

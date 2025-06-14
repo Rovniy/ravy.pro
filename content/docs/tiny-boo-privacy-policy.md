@@ -1,3 +1,9 @@
+---
+title: Tiny Boo:Homecoming / Privacy Policy
+createdAt: 2025-05-05T22:00:00.000Z
+lastUpdated: 2025-06-14T15:13:10.380Z
+---
+
 ### Tiny Boo:Homecoming / Privacy Policy
 
 Last update: 17 October 2024

@@ -1,6 +1,8 @@
+const currentYear = new Date().getFullYear()
+
 export const baseData = {
   me: {
-    name: 'Andrei (Ravy) Rovnyi',
+    name: 'Andrei Rovnyi',
     nick: 'Ravy',
     email: 'contact@ravy.pro',
   },
@@ -11,20 +13,20 @@ export const baseData = {
 }
 
 export const BlogPostTag = [
-  'AI',
-  'Dev',
-  'DivaRogue',
-  'Games',
-  'Idled',
-  'Music',
-  'Policy',
-  'TabsBroadcast',
-  'TinyBoo',
-  'Zynthar',
+  'ai',
+  'dev',
+  'diva-rogue',
+  'games',
+  'idled',
+  'music',
+  'policy',
+  'tabs-broadcast',
+  'tiny-boo',
+  'zynthar',
 ]
 
 export const navbarData = {
-  homeTitle: `${baseData.me.nick}'s Blog`,
+  homeTitle: baseData.me.name,
 }
 
 export const footerData = {
@@ -33,7 +35,7 @@ export const footerData = {
   authorTitle: 'Get in Touch',
   authorInterest: 'As a Founder, Inventor, and Creator, I have solid experience with Software Development. If you have an exciting idea, whether it\'s open source or a paid project, let\'s connect!',
   aboutTheSite: 'This is the personal blog of Andrei Rovnyi. Feel free to contact me with any questions you may have.',
-  copyright: '© 2020-2024 Xploit ltd. All trademarks, names and logos belong to their respective copyright holders.',
+  copyright: `© 2020-${currentYear} XPLOIT LLC. All trademarks, names and logos belong to their respective copyright holders.`,
 }
 
 export const page404 = {

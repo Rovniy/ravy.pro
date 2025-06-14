@@ -5,7 +5,7 @@ import { baseData, homePage, navbarData } from '~/data'
 export default defineEventHandler(async (event) => {
   setHeader(event, 'content-type', 'text/xml')
 
-  const docs = await serverQueryContent(event).sort({ date: -1 }).find()
+  const docs = await serverQueryContent(event).sort({ createdAt: -1 }).find()
 
   const feed = new Feed({
     title: navbarData.homeTitle,
@@ -25,12 +25,12 @@ export default defineEventHandler(async (event) => {
   // Add the feed items
   docs.forEach((doc) => {
     feed.addItem({
-      title: doc.title || '',
+      title: `${baseData.me.name} | ${doc.title}`,
       id: baseData.site.url + doc._path,
       link: baseData.site.url + doc._path,
       description: doc.description,
       content: doc.description,
-      date: new Date(doc.date),
+      date: doc.createdAt ? doc.createdAt : new Date(),
     })
   })
 

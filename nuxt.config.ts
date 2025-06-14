@@ -22,6 +22,9 @@ export default defineNuxtConfig({
           onload: 'this.rel=\'stylesheet\'',
         },
       ],
+      script: [
+        'https://cdn.lightwidget.com/widgets/lightwidget.js',
+      ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },

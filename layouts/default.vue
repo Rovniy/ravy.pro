@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useHead({
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/ico',
+      href: '/favicon.ico',
+    },
+  ],
+})
 </script>
 
 <template>

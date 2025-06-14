@@ -17,11 +17,10 @@ const data = computed<BlogPost>(() => {
     image: articles.value?.image || '/not-found.png',
     alt: articles.value?.alt || articles.value?.description || 'no alter data available',
     ogImage: articles.value?.ogImage || articles.value?.image || '/not-found.png',
-    date: new Date(articles.value?.date).toLocaleDateString(),
     tags: articles.value?.tags || [],
     published: articles.value?.published || false,
     theme: articles.value?.theme || seoData.theme,
-    publishTime: articles.value?.publishTime || new Date().toISOString(),
+    createdAt: new Date(articles.value?.createdAt).toLocaleDateString('en-US'),
     lastUpdated: articles.value?.lastUpdated || new Date().toISOString(),
     locale: articles.value?.locale || seoData.locale,
   }
@@ -32,8 +31,8 @@ useHead({
   meta: [
     { name: 'description', content: data.value.description },
     { property: 'article:author', content: seoData.author },
-    { property: 'article:published_time', content: data.value?.publishTime || new Date().toISOString() },
-    { property: 'article:modified_time', content: data.value?.lastUpdated || data.value?.publishTime || new Date().toISOString() },
+    { property: 'article:published_time', content: data.value?.createdAt || new Date().toISOString() },
+    { property: 'article:modified_time', content: data.value?.lastUpdated || data.value?.createdAt || new Date().toISOString() },
     { property: 'article:section', content: data.value.tags?.at(0) },
     { property: 'article:tag', content: data.value.theme },
     { property: 'og:site_name', content: navbarData.homeTitle },
@@ -88,13 +87,13 @@ defineOgImageComponent('Blog', {
         :title="data.title"
         :image="data.image"
         :alt="data.alt"
-        :date="data.date"
+        :created-at="data.createdAt"
         :description="data.description"
         :tags="data.tags"
       />
       <div
         class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg
-        prose-h1:no-underline max-w-5xl mx-auto prose-zinc dark:prose-invert prose-img:rounded-lg"
+        prose-h1:no-underline max-w-5xl mx-auto prose-zinc dark:prose-invert prose-img:rounded-lg prose-img:mx-auto prose-img:block"
       >
         <ContentRenderer v-if="articles" :value="articles" :components="{ Image }">
           <template #empty>
