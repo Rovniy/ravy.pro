@@ -11,6 +11,19 @@ export const baseData = {
 
 }
 
+export const tags = [
+  'AI',
+  'Dev',
+  'DivaRogue',
+  'Games',
+  'Idled',
+  'Music',
+  'Policy',
+  'TabsBroadcast',
+  'TinyBoo',
+  'Zynthar',
+]
+
 export const navbarData = {
   homeTitle: `${baseData.me.nick}'s Blog`,
 }
