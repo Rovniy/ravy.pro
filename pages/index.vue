@@ -24,6 +24,5 @@ defineOgImageComponent('Blog', {
     <MainHero />
     <MainRecent />
     <LazyMainTrending />
-    <!--    <LazyMainInstagram /> -->
   </main>
 </template>
