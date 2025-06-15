@@ -17,7 +17,9 @@ const path = computed(() => route.fullPath.replace('/', ''))
           <FooterConnect />
         </div>
 
-        <div class="border-t dark:border-gray-800 mt-5 text-center p-2">
+        <FooterSemiLinks />
+
+        <div class="border-t dark:border-gray-800 text-center p-2">
           {{ footerData.copyright }}
 
           <a href="/rss.xml">
