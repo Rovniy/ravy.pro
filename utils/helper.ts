@@ -1,3 +1,10 @@
+/**
+ * Converts the first character of the provided string to an uppercase letter
+ * while leaving the rest of the string unchanged.
+ *
+ * @param {string} val - The input string to modify.
+ * @return {string} A new string with the first character in uppercase. If the input string is empty, returns the input string.
+ */
 export function makeFirstCharUpper(val: string) {
   if (val === '')
     return val
