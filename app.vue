@@ -1,6 +1,5 @@
 <script setup>
 import { siteMetaData } from './data'
-import { YandexMetrikaLoader } from '~/utils/helper'
 
 useHead({
   htmlAttrs: {
@@ -8,8 +7,6 @@ useHead({
   },
   meta: () => siteMetaData,
 })
-
-onMounted(YandexMetrikaLoader)
 </script>
 
 <template>
