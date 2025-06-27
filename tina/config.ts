@@ -21,7 +21,7 @@ export default defineConfig({
         path: 'content/blogs',
         ui: {
           filename: {
-            readonly: true,
+            readonly: false,
             slugify: (values: Record<string, any>) => `${values?.title?.toLowerCase().replace(/ /g, '-')}`,
           },
           beforeSubmit: async ({ form, values }) => {
@@ -80,13 +80,6 @@ export default defineConfig({
             description: 'The tags of the blog post',
           },
           {
-            type: 'datetime',
-            name: 'date',
-            label: 'Date',
-            required: true,
-            description: 'The date of the blog post',
-          },
-          {
             type: 'boolean',
             name: 'published',
             label: 'Is published',
@@ -124,7 +117,7 @@ export default defineConfig({
         path: 'content/docs',
         ui: {
           filename: {
-            readonly: true,
+            readonly: false,
             slugify: (values: Record<string, any>) => `${values?.title?.toLowerCase().replace(/ /g, '-')}`,
           },
           beforeSubmit: async ({ form, values }) => {
