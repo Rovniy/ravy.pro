@@ -43,11 +43,14 @@ server {
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
-    # Brotli (requires ngx_brotli module: apt install libnginx-mod-http-brotli-filter)
-    brotli on;
-    brotli_comp_level 6;
-    brotli_min_length 1024;
-    brotli_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
+    # Brotli — uncomment after installing the module on the server:
+    # apt install libnginx-mod-http-brotli-filter libnginx-mod-http-brotli-static
+    # (requires ppa:ondrej/nginx on Ubuntu if package is not found)
+    #
+    # brotli on;
+    # brotli_comp_level 6;
+    # brotli_min_length 1024;
+    # brotli_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript image/svg+xml;
 
     # Gzip fallback for clients without Brotli support
     gzip on;
