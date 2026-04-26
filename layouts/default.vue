@@ -14,8 +14,7 @@ useHead({
   <div class="gd-container font-spacegrotesk">
     <MainHeader />
 
-    <main>
-      <div class="p-9" />
+    <main class="pt-[var(--header-h)]">
       <slot />
     </main>
 

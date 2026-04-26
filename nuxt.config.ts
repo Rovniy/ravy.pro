@@ -4,32 +4,36 @@ import { navbarData, seoData } from './data'
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  css: [
+		'~/assets/css/tailwind.css',
+		'@fontsource/space-grotesk/400.css',
+		'@fontsource/space-grotesk/700.css'
+	],
+
+  components: {
+    dirs: ['~/components'],
+  },
+
   app: {
     head: {
-      charset: 'utf-16',
+      charset: 'utf-8',
       viewport: 'width=device-width,initial-scale=1',
       title: navbarData.homeTitle,
       titleTemplate: `%s - ${navbarData.homeTitle}`,
-      link: [
-        // Preconnect к Google Fonts для более быстрой загрузки шрифтов
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
-        // Preload для шрифта Space Grotesk
-        {
-          rel: 'preload',
-          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap',
-          as: 'style',
-          onload: 'this.rel=\'stylesheet\'',
-        },
-      ],
+      link: [],
     },
-    pageTransition: { name: 'page', mode: 'out-in' },
-    layoutTransition: { name: 'layout', mode: 'out-in' },
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
+    layoutTransition: {
+      name: 'layout',
+      mode: 'out-in',
+    },
   },
 
   image: {
     quality: 70,
-    renderer: 'satori',
     format: ['avif', 'webp'],
     screens: {
       sm: 320,
@@ -40,8 +44,9 @@ export default defineNuxtConfig({
     },
   },
 
-  sitemap: {
-    strictNuxtContentPaths: true,
+  ogImage: {
+    height: 630,
+    renderer: 'satori',
   },
 
   site: {
@@ -75,11 +80,35 @@ export default defineNuxtConfig({
 
   // https://nuxtseo.com/docs/robots/guides/nuxt-config
   robots: {
-    credits: false,
+    credits: true,
     groups: [
+      {
+        userAgent: '*',
+        allow: '/',
+        contentUsage: {
+          'bots': 'y',
+          'train-ai': 'n',
+        },
+        contentSignal: {
+          'ai-train': 'no',
+          'search': 'yes',
+        },
+      },
       {
         userAgent: ['Yandex'],
         cleanParam: ['p', '_ym_debug'],
+      },
+      {
+        userAgent: ['GPTBot'],
+        allow: ['/'],
+      },
+      {
+        userAgent: ['OAI-SearchBot'],
+        allow: ['/'],
+      },
+      {
+        userAgent: ['ChatGPT-User'],
+        allow: ['/'],
       },
     ],
     disallow: [
@@ -91,14 +120,25 @@ export default defineNuxtConfig({
     ],
   },
 
+  sitemap: {
+    sources: ['/api/__sitemap__/urls'],
+  },
+
   colorMode: {
     classSuffix: '',
     preference: 'dark',
     fallback: 'light',
   },
 
+  icon: {
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 512,
+    },
+  },
+
   modules: [
-    'nuxt-icon',
+    '@nuxt/icon',
     '@nuxt/image',
     '@vueuse/nuxt',
     'nuxt-og-image',
@@ -107,19 +147,27 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@nuxtjs/fontaine',
     '@nuxtjs/color-mode',
-    '@nuxtjs/tailwindcss',
-    '@zadigetvoltaire/nuxt-gtm',
     '@stefanobartoletti/nuxt-social-share',
   ],
 
-  gtm: {
-    id: 'GTM-57T2XCRL',
-    nonce: '3464ff42c5',
-  },
+  // gtm: {
+  //   id: 'GTM-57T2XCRL',
+  //   nonce: '3464ff42c5',
+  // },
 
   content: {
-    highlight: {
-      theme: 'dracula',
+    build: {
+      markdown: {
+        highlight: {
+          theme: 'dracula',
+        },
+      },
+    },
+  },
+
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
     },
   },
 
@@ -133,5 +181,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2024-10-13',
+  compatibilityDate: '2025-04-26',
 })

@@ -22,7 +22,7 @@ useHead({
 <style>
 .page-enter-active,
 .page-leave-active {
-  transition: all 0.4s;
+  transition: all 0.15s;
 }
 .page-enter-from,
 .page-leave-to {
@@ -32,7 +32,7 @@ useHead({
 
 .layout-enter-active,
 .layout-leave-active {
-  transition: all 0.4s;
+  transition: all 0.15s;
 }
 .layout-enter-from,
 .layout-leave-to {

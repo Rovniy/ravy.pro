@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { aboutPage } from '~/data'
 
-const { data } = await useAsyncData('about', () => queryContent('pages/about').findOne())
+const { data } = await useAsyncData('about', () =>
+  queryCollection('content').where('path', '=', '/pages/about').first(),
+)
 if (!data?.value)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
@@ -15,7 +17,7 @@ useHead({
   ],
 })
 
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: aboutPage.og.headline,
   title: aboutPage.og.title,
   description: aboutPage.og.description,
@@ -26,7 +28,5 @@ defineOgImageComponent('Blog', {
 <template>
   <LayoutContainerOneCol>
     <ContentRenderer v-if="data" :value="data" />
-
-    <LazyMainInstagram />
   </LayoutContainerOneCol>
 </template>

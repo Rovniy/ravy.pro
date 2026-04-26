@@ -11,7 +11,7 @@ useHead({
   ],
 })
 
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: homePage.og.headline,
   title: homePage.og.title,
   description: homePage.og.description,
@@ -22,7 +22,7 @@ defineOgImageComponent('Blog', {
 <template>
   <main class="container max-w-5xl mx-auto text-zinc-600">
     <MainHero />
-    <MainRecent />
+    <LazyMainRecent />
     <LazyMainTrending />
   </main>
 </template>

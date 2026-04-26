@@ -35,7 +35,7 @@ export const footerData = {
   authorTitle: 'Get in Touch',
   authorInterest: 'As a Founder, Inventor, and Creator, I have solid experience with Software Development. If you have an exciting idea, whether it\'s open source or a paid project, let\'s connect!',
   aboutTheSite: 'This is the personal blog of Andrei Rovnyi. Feel free to contact me with any questions you may have.',
-  copyright: `© 2020-${currentYear} XPLOIT LLC. All trademarks, names and logos belong to their respective copyright holders.`,
+  copyright: `© 2020-${currentYear} XPLOIT FZE. All trademarks, names and logos belong to their respective copyright holders.`,
 }
 
 export const page404 = {
@@ -58,7 +58,7 @@ export const homePage = {
   },
   meta: {
     title: 'Home',
-    description: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
+    description: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',
   },
   og: {
     headline: 'Greetings 👋',
@@ -158,7 +158,7 @@ export const aboutPage = {
   content: {
     title: baseData.me.name,
     description: 'Founder. Inventor. Creator.',
-    aboutMe: 'Hello, fellow human! I\'m Andrei Rovnyi, a software sorcerer with over 13 years of experience, leading teams and building robust systems.<br/><br/>Currently, I wield my code powers as a full-stack developer at Gaijin Entertainment, helping launch massive games like War Thunder, Crossout and each other while also development Web-apps. When I\'m not leading the charge in the digital battlefield, I’m crafting game mechanics or experimenting with new tech.<br/><br/>I won\'t cast love spells, but if you\'re looking for someone to magically optimize systems or create game-changing solutions, I\'m your wizard!',
+    aboutMe: 'Hello, fellow human! I\'m Andrei Rovnyi, a software sorcerer with over 15+ years of experience, leading teams and building robust systems.<br/><br/>Currently, I wield my code powers as a full-stack developer at Gaijin Entertainment, helping launch massive games like War Thunder, Crossout and each other while also development Web-apps. When I\'m not leading the charge in the digital battlefield, I’m crafting game mechanics or experimenting with new tech.<br/><br/>I won\'t cast love spells, but if you\'re looking for someone to magically optimize systems or create game-changing solutions, I\'m your wizard!',
   },
   meta: {
     title: 'About',
@@ -175,10 +175,10 @@ export const aboutPage = {
 export const seoData = {
   theme: 'Gamedev',
   author: baseData.me.name,
-  description: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
+  description: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',
   ogTitle: 'Personal blog by Andrei Rovnyi',
-  twitterDescription: 'Andrei Rovnyi, Software Engineer with over 12+ years experience in software development.',
-  image: `${baseData.site.url}/blog-cover/10012.account-deletion-for-tiny-boo.webp`,
+  twitterDescription: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',
+  image: `${baseData.site.url}/og-image.webp`,
   mySite: baseData.site.url,
   twitterHandle: '@xploitravy',
   mailAddress: baseData.me.email,

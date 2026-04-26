@@ -6,6 +6,7 @@ interface Props {
   description: string
   createdAt: string
   tags: Array<string>
+  readingTime?: number
 }
 
 withDefaults(defineProps<Props>(), {
@@ -15,6 +16,7 @@ withDefaults(defineProps<Props>(), {
   description: 'no description',
   createdAt: 'no-date',
   tags: () => ([]),
+  readingTime: undefined,
 })
 </script>
 
@@ -26,9 +28,12 @@ withDefaults(defineProps<Props>(), {
 
     <NuxtImg
       format="webp"
+      fetchpriority="high"
+      loading="eager"
       :src="image || ''"
       :alt="alt || ''"
       width="600"
+      height="288"
       class="m-auto rounded-2xl shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
     />
 
@@ -44,11 +49,20 @@ withDefaults(defineProps<Props>(), {
           <p>{{ createdAt }}</p>
         </div>
 
-        <div class="flex items-center gap-2 flex-wrap my-5">
-          <LogoTag />
+        <div v-if="readingTime" class="flex items-center gap-1 font-semibold">
+          <Icon name="mdi:clock-outline" size="18" />
+          <p>{{ readingTime }} min read</p>
+        </div>
 
-          <NuxtLink v-for="tag in tags" :key="tag" :to="`/categories/${tag}`">
-            <span class="bg-gray-200 hover:bg-gray-300 dark:bg-slate-900 dark:hover:bg-slate-800 rounded-md px-2 py-1 font-semibold">#{{ tag }}</span>
+        <div class="flex items-center gap-2 flex-wrap my-5">
+          <NuxtLink
+            v-for="tag in tags"
+            :key="tag"
+            :to="`/categories/${tag}`"
+            :class="tagColorClass(tag)"
+            class="rounded-full px-3 py-1 text-sm font-medium transition-opacity hover:opacity-80"
+          >
+            #{{ tag }}
           </NuxtLink>
         </div>
       </div>

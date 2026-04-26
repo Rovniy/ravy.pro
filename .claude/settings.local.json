@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "PowerShell(cmd /c \"dir C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\@nuxt\\\\content\\\\dist 2>&1\")",
+      "Bash(xargs wc *)",
+      "Bash(xargs grep *)",
+      "Bash(xargs ls *)",
+      "PowerShell(cmd /c \"for %f in \\(C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\public\\\\andrei_rovnyi.png C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\public\\\\not-found.png\\) do @echo %~nxf %~zf\")",
+      "PowerShell(cmd /c \"dir C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\sharp 2>&1 | findstr /i \"Directory File\"\")",
+      "PowerShell(cmd /c \"if exist C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\sharp \\(echo sharp found\\) else \\(echo sharp not found\\)\")",
+      "PowerShell(cmd /c \"if exist C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\@resvg \\(echo resvg found\\) else \\(echo not found\\)\")",
+      "PowerShell(node -e \"const p = require\\('C:/Users/OS/WebstormProjects/ravy.pro/node_modules/@nuxt/icon/package.json'\\); console.log\\(p.version\\)\")",
+      "PowerShell(cmd /c \"dir C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\@nuxt\\\\icon\\\\dist\")"
+    ]
+  }
+}

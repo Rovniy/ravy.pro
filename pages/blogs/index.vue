@@ -1,22 +1,35 @@
 <script lang="ts" setup>
 import { blogsPage } from '~/data'
 
-const { data } = await useAsyncData('home', () => queryContent('/blogs').sort({ _id: -1 }).find())
+const route = useRoute()
+const router = useRouter()
 
-const elementPerPage = ref(5)
-const pageNumber = ref(1)
+const { data } = await useAsyncData('home', () =>
+  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all(),
+)
+
+const elementPerPage = 5
 const searchTest = ref('')
+
+const pageNumber = computed({
+  get: () => Math.max(1, Number(route.query.page) || 1),
+  set: (val: number) => router.push({ query: { ...route.query, page: val > 1 ? val : undefined } }),
+})
+
+watch(searchTest, () => {
+  pageNumber.value = 1
+})
 
 const formattedData = computed(() => {
   return data.value?.map((articles) => {
     return {
-      path: articles._path,
+      path: articles.path,
       title: articles?.title || 'no-title available',
       description: articles?.description || 'no-description available',
       image: articles?.image || '/not-found.png',
       alt: articles?.alt || articles?.description || 'no alter data available',
       ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      createdAt: new Date(articles?.createdAt).toLocaleDateString('en-US') || 'not-date-available',
+      createdAt: new Date(articles?.createdAt).toLocaleDateString('en-US', { timeZone: 'UTC' }) || 'not-date-available',
       tags: articles?.tags || [],
       published: articles?.published || false,
     }
@@ -25,31 +38,21 @@ const formattedData = computed(() => {
 
 const searchData = computed(() => {
   return formattedData.value.filter((data) => {
-    const lowerTitle = data.title.toLocaleLowerCase()
-
-    return lowerTitle.search(searchTest.value) !== -1
-  }) || []
+    return data.title.toLocaleLowerCase().includes(searchTest.value.toLocaleLowerCase())
+  })
 })
 
 const paginatedData = computed(() => {
-  return searchData.value.filter((data, idx) => {
-    const startInd = ((pageNumber.value - 1) * elementPerPage.value)
-    const endInd = (pageNumber.value * elementPerPage.value) - 1
-
-    return idx >= startInd && idx <= endInd
-  }) || []
+  const start = (pageNumber.value - 1) * elementPerPage
+  return searchData.value.slice(start, start + elementPerPage)
 })
+
+const totalPage = computed(() => Math.ceil(searchData.value.length / elementPerPage))
 
 function onPreviousPageClick() {
   if (pageNumber.value > 1)
     pageNumber.value -= 1
 }
-
-const totalPage = computed(() => {
-  const ttlContent = searchData.value.length || 0
-
-  return Math.ceil(ttlContent / elementPerPage.value)
-})
 
 function onNextPageClick() {
   if (pageNumber.value < totalPage.value)
@@ -66,7 +69,7 @@ useHead({
   ],
 })
 
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: blogsPage.og.headline,
   title: blogsPage.og.title,
   description: blogsPage.og.description,
@@ -78,51 +81,57 @@ defineOgImageComponent('Blog', {
   <main class="container max-w-5xl mx-auto text-zinc-600">
     <ArchiveHero />
 
-    <div class="px-6">
-      <input
-        v-model="searchTest"
-        placeholder="Search"
-        type="text"
-        class="block w-full bg-[#F1F2F4] dark:bg-slate-900 dark:placeholder-zinc-500 text-zinc-300  rounded-md border-gray-300 dark:border-gray-800 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
+    <div class="px-6 mt-2 mb-8">
+      <div class="relative">
+        <Icon name="mdi:magnify" size="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+        <input
+          v-model="searchTest"
+          placeholder="Search posts…"
+          type="text"
+          class="block w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 dark:placeholder-zinc-500 text-zinc-700 dark:text-zinc-300 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-400/40 focus:border-sky-400 transition-all"
+        >
+      </div>
     </div>
 
-    <ClientOnly>
-      <div v-auto-animate class="space-y-5 my-5 px-4">
-        <template v-for="post in paginatedData" :key="post.title">
-          <ArchiveCard
-            :path="post.path"
-            :title="post.title"
-            :created-at="post.createdAt"
-            :description="post.description"
-            :image="post.image"
-            :alt="post.alt"
-            :og-image="post.ogImage"
-            :tags="post.tags"
-            :published="post.published"
-          />
-        </template>
-
+    <div v-auto-animate class="flex flex-col gap-4 px-6 mb-8">
+      <template v-for="post in paginatedData" :key="post.title">
         <ArchiveCard
-          v-if="paginatedData.length <= 0"
-          title="No Post Found"
-          image="/not-found.png"
+          :path="post.path"
+          :title="post.title"
+          :created-at="post.createdAt"
+          :description="post.description"
+          :image="post.image"
+          :alt="post.alt"
+          :og-image="post.ogImage"
+          :tags="post.tags"
+          :published="post.published"
         />
-      </div>
-
-      <template #fallback>
-        <!-- this will be rendered on server side -->
-        <BlogLoader />
       </template>
-    </ClientOnly>
 
-    <div class="flex justify-center items-center space-x-6 ">
-      <button :disabled="pageNumber <= 1" @click="onPreviousPageClick">
-        <Icon name="mdi:code-less-than" size="30" :class="{ 'text-sky-700 dark:text-sky-400': pageNumber > 1 }" />
+      <ArchiveCard
+        v-if="paginatedData.length <= 0"
+        title="No Post Found"
+        image="/not-found.png"
+      />
+    </div>
+
+    <div class="flex justify-center items-center gap-4 pb-12">
+      <button
+        :disabled="pageNumber <= 1"
+        class="w-9 h-9 flex items-center justify-center rounded-full border dark:border-zinc-700 disabled:opacity-30 hover:border-sky-400 hover:text-sky-500 transition-all"
+        @click="onPreviousPageClick"
+      >
+        <Icon name="mdi:chevron-left" size="20" />
       </button>
-      <p>{{ pageNumber }} / {{ totalPage }}</p>
-      <button :disabled="pageNumber >= totalPage" @click="onNextPageClick">
-        <Icon name="mdi:code-greater-than" size="30" :class="{ 'text-sky-700 dark:text-sky-400': pageNumber < totalPage }" />
+      <span class="text-sm text-zinc-500 dark:text-zinc-400 tabular-nums">
+        {{ pageNumber }} / {{ totalPage }}
+      </span>
+      <button
+        :disabled="pageNumber >= totalPage"
+        class="w-9 h-9 flex items-center justify-center rounded-full border dark:border-zinc-700 disabled:opacity-30 hover:border-sky-400 hover:text-sky-500 transition-all"
+        @click="onNextPageClick"
+      >
+        <Icon name="mdi:chevron-right" size="20" />
       </button>
     </div>
   </main>

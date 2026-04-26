@@ -3,7 +3,9 @@ import { homePage } from '~/data'
 
 const { path } = useRoute()
 
-const { data: articles, error } = await useAsyncData(`blog-post-${path}`, () => queryContent(path).findOne())
+const { data: articles, error } = await useAsyncData(`blog-post-${path}`, () =>
+  queryCollection('content').where('path', '=', path).first(),
+)
 
 if (error.value || !articles?.value)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
@@ -19,7 +21,7 @@ useHead({
 })
 
 // Generate OG Image
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: 'Documentation',
   title: articles.value.title || 'no-title available',
   description: articles.value.title || 'no-title available',

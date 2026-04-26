@@ -104,4 +104,3 @@ jobs:
           curl -s -X POST -H "Content-Type: application/json" \
             -d "{\"content\": \"https://ravy.pro successfully updated! Commit: $LAST_COMMIT_MESSAGE\"}" \
             ${{ env.DISCORD_WEBHOOK_URL }}
-

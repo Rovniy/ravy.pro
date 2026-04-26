@@ -2,7 +2,9 @@
 import { makeFirstCharUpper } from '@/utils/helper'
 import { blogsPage, categoriesPage } from '~/data'
 
-const { data } = await useAsyncData('all-blog-post-for-category', () => queryContent('/blogs').sort({ _id: -1 }).find())
+const { data } = await useAsyncData('all-blog-post-for-category', () =>
+  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all(),
+)
 
 const allTags = new Map()
 
@@ -31,7 +33,7 @@ useHead({
 })
 
 // Generate OG Image
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: blogsPage.og.headline,
   title: categoriesPage.og.title,
   description: categoriesPage.og.description,

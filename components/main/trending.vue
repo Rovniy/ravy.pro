@@ -3,19 +3,24 @@ import { homePage } from '~/data'
 import type { BlogPost } from '~/types/blog'
 
 const { data } = await useAsyncData('trending-post', () =>
-  queryContent('/blogs').limit(3).sort({ _id: -1, trending: 1 }).where({ trending: true }).find(),
+  queryCollection('content')
+    .where('path', 'LIKE', '/blogs/%')
+    .where('trending', '=', true)
+    .order('createdAt', 'DESC')
+    .limit(3)
+    .all(),
 ) as { data: Ref<BlogPost[]> }
 
 const formattedData = computed(() => {
   return data.value?.map((articles: BlogPost) => {
     return {
-      path: articles._path,
+      path: articles.path,
       title: articles.title || 'no-title available',
       description: articles.description || 'no-description available',
       image: articles.image || '/not-found.png',
       alt: articles?.alt || articles?.description || 'no alter data available',
       ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      createdAt: new Date(articles.createdAt).toLocaleDateString('en-US') || 'not-date-available',
+      createdAt: new Date(articles.createdAt).toLocaleDateString('en-US', { timeZone: 'UTC' }) || 'not-date-available',
       tags: articles.tags || [],
       published: articles.published || false,
     }
@@ -24,25 +29,20 @@ const formattedData = computed(() => {
 
 useHead({
   title: homePage.meta.title,
-  meta: [
-    {
-      name: 'description',
-      content: homePage.meta.description,
-    },
-  ],
+  meta: [{ name: 'description', content: homePage.meta.description }],
 })
 </script>
 
 <template>
-  <div class="pb-10 px-4">
-    <div class="flex flex-row items-center space-x-3 pt-5 pb-3">
-      <Icon name="mdi:star-outline" size="2em" class="text-black dark:text-zinc-300" />
-
-      <h2 class="text-4xl font-semibold text-black dark:text-zinc-300  ">
-        Trending Post
+  <section v-if="formattedData?.length" class="py-14 px-6 border-t dark:border-zinc-800">
+    <div class="flex items-center gap-3 mb-8">
+      <Icon name="mdi:star-outline" size="1.4em" class="text-zinc-400 dark:text-zinc-500" />
+      <h2 class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 tracking-tight">
+        Trending Posts
       </h2>
     </div>
-    <div class="grid grid-cols-1 ">
+
+    <div class="flex flex-col gap-4">
       <template v-for="post in formattedData" :key="post.title">
         <ArchiveCard
           :path="post.path"
@@ -56,9 +56,6 @@ useHead({
           :published="post.published"
         />
       </template>
-      <template v-if="data?.length === 0">
-        <BlogEmpty />
-      </template>
     </div>
-  </div>
+  </section>
 </template>

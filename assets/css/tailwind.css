@@ -1,7 +1,30 @@
-@import "scroll.css";
+@import "tailwindcss";
+@import "./scroll.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
 
+@custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-spacegrotesk: "Space Grotesk", sans-serif;
+}
+
+:root {
+  --header-h: 4.5rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    line-height: 1.75;
+  }
+
+  ::selection {
+    background-color: var(--color-sky-400);
+    color: #fff;
+  }
+}

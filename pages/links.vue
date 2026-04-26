@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { linksPage } from '~/data'
 
-const { data } = await useAsyncData('links', () => queryContent('pages/links').findOne())
+const { data } = await useAsyncData('links', () =>
+  queryCollection('content').where('path', '=', '/pages/links').first(),
+)
 if (!data?.value)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
@@ -16,7 +18,7 @@ useHead({
 })
 
 // Generate OG Image
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: linksPage.og.headline,
   title: linksPage.og.title,
   description: linksPage.og.description,

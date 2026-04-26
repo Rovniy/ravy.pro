@@ -3,16 +3,11 @@ import { footerData } from '~/data'
 </script>
 
 <template>
-  <div class="border-t dark:border-gray-800 text-center py-4 flex justify-center gap-6">
-    {{ footerData.copyright }}
+  <div class="mt-4 flex items-center justify-center gap-3 text-xs text-zinc-400 dark:text-zinc-500">
+    <span>{{ footerData.copyright }}</span>
 
-    <a href="/rss.xml">
-      <Icon name="bi:rss-fill" class="hover:text-white" />
-      <span class="sr-only">Subscribe to RSS Feed</span>
+    <a href="/rss.xml" aria-label="Subscribe to RSS Feed" class="hover:text-sky-500 transition-colors">
+      <Icon name="bi:rss-fill" size="13" />
     </a>
   </div>
 </template>
-
-<style scoped lang="sass">
-
-</style>

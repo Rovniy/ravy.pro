@@ -1,89 +1,261 @@
-## Build Setup
+# ravy.pro
 
-**Requires Node.js 21**
+Personal blog and portfolio of Andrei Rovniy. Built with Nuxt 4, markdown-based content via `@nuxt/content`, and TinaCMS as a visual editor layer.
 
+**Live site:** https://ravy.pro
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Nuxt 4.1 + Vue 3 |
+| Content | @nuxt/content v3 (SQLite + markdown) |
+| CMS | TinaCMS 3.7 (visual editor at `/admin`) |
+| Styling | Tailwind CSS v4 via @tailwindcss/postcss |
+| Icons | @nuxt/icon v2 (bundled at build time) |
+| Images | @nuxt/image v2 (WebP/AVIF conversion) |
+| OG Images | nuxt-og-image v6 with Satori renderer |
+| SEO | @nuxtjs/sitemap, @nuxtjs/robots |
+| Fonts | Space Grotesk via @fontsource (self-hosted) |
+| Runtime | Node.js 22 + Nitro server |
+| Container | Docker (multi-stage) + docker-compose |
+| Reverse proxy | Nginx with Gzip + Brotli |
+| SSL | Let's Encrypt (Certbot) |
+
+---
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 22+
+- npm 10+
+
+### Setup
 
 ```bash
-# install dependencies
-npm install
-
-# serve in dev mode, with hot reload at localhost:5173
-npm run dev
-
-# build for production
-npm run build
-
-# serve in production mode
-npm run preview
+git clone https://github.com/Rovniy/ravy.pro.git
+cd ravy.pro
+npm ci
 ```
 
+### Commands
 
-**Start v IT: ваш надёжный проводник от новичка до профессионала**
+```bash
+# Dev server without CMS (faster)
+npm run dev
 
-Вы когда-нибудь мечтали о карьере в IT, но не знали, с чего начать? Я — Андрей Ровный, с 15-летним опытом разработки и управления командами в крупных компаниях и стартапах — прошёл этот путь сам и решил создать сервис, который берёт за руку каждого новичка и проводит вплоть до долгожданного оффера.
+# Dev server with TinaCMS visual editor (preferred for content work)
+# Admin UI available at http://localhost:3000/admin
+npm run tina
 
----
+# Lint
+npm run lint
 
-## Почему я запустил Start v IT
+# Auto-fix lint issues (run before committing)
+npm run lint:fix
 
-За годы в индустрии я видел сотни талантливых ребят, которые останавливались на пороге собеседования из-за нехватки фокуса и правильно выстроенной стратегии. Широкие курсы часто слишком поверхностны, а частные наставники не всегда доводят дело до результата. Я хотел создать **прозрачную услугу**, где человек платит **только после того, как получит оффер**, и только **20 % от своей новой зарплаты в течение 6 месяцев** — гарантируя честность и искреннюю заинтересованность в успехе каждого.
+# Production build
+npm run build
 
----
+# Start production server locally
+npm run start
+```
 
-## Для кого этот сервис
+Dev server runs at **http://localhost:3000**.
 
-* **Новички**, которые только слышали о JavaScript, Python или DevOps, но не знают, с чего начать.
-* **Джуниоры**, уже сделавшие первые шаги в коде, но не прошедшие серию интервью на Middle.
-* **Мидлы**, желающие перейти на новый уровень: получить оффер в крупной компании или за рубежом.
-* **Люди на перекрёстке карьер**, готовые сменить профессию и вложить силы в IT-путь.
+### Environment
 
-Если вы хотите системного, чёткого сопровождения от первого резюме до подтверждённого оффера — этот сервис для вас.
-
----
-
-## Преимущества Start v IT
-
-1. **Индивидуальный план “под ключ”**
-	 Никаких шаблонных дорожных карт. После вашей заявки мы встречаемся онлайн, анализируем опыт и сразу формируем персональную программу: от базовых навыков до подготовки к самым сложным техническим вопросам.
-
-2. **Гибкая модель оплаты**
-	 – **0 ₽ авансом**
-	 – **20 % от новой зарплаты**, выплачиваемых равными частями в течение полугода
-	 – **Ничего не платите**, если не получите оффер
-
-3. **Мои связи и рекомендации**
-	 После подготовки я лично рекомендую вас своим контактам в IT-компаниях — от стартапов до гигантов рынка — и помогаю договориться о собеседованиях.
-
-4. **Скорость результата**
-	 В среднем мои клиенты получают оффер через **1–2 месяца** после старта: быстро, без распыления на ненужные темы.
-
-5. **Сопровождение до первого рабочего дня**
-	 Мы не бросаем вас после подписания контракта: я помогаю пройти испытательный срок и влиться в коллектив.
+No `.env` file is required for local development. All site-wide configuration (author name, social links, SEO defaults) lives in `data/index.ts`.
 
 ---
 
-## Истории успеха
+## Content Management
 
-> **Анна К.**
-> «Раньше я работала менеджером, но без IT-опыта даже тестовое задание казалось горой. За два месяца с Андреем я освоила React, подтянула алгоритмы и получила оффер в крупной компании. Сейчас моя зарплата выросла в 2,5 раза!»
+Content is stored as markdown files with YAML frontmatter in the `/content` directory:
 
-> **Дмитрий М.**
-> «Не мог пройти интервью на Middle в Тинькофф. Андрей разобрал мои слабые места, отрепетировал технические и HR-вопросы — и я стал Middle Backend Developer за полтора месяца.»
+```
+content/
+  blogs/     # Blog posts
+  docs/      # Documentation pages (Privacy Policy, Terms of Use, etc.)
+  pages/     # Static pages (About)
+```
 
-> **Елена Н.**
-> «В 35 лет я решилась на IT-путь. С нуля до оффера Data Analyst в X5 Retail — и всё это без авансов, только после результата. Моя уверенность выросла в сто раз!»
+### Adding a Blog Post
+
+**Option A — TinaCMS (recommended):**
+1. Run `npm run tina`
+2. Open http://localhost:3000/admin
+3. Navigate to Blog / Posts → New Post
+4. Fill in the fields and publish
+
+**Option B — manually:**
+Create a file in `content/blogs/` with this frontmatter:
+
+```md
+---
+title: 'Post Title'
+description: 'Short description'
+image: /blog-cover/filename.webp
+ogImage: /blog-opengraph/filename.png
+tags:
+  - dev
+createdAt: 2025-01-01T12:00:00.000Z
+lastUpdated: 2025-01-01T12:00:00.000Z
+published: true
+trending: false
+---
+
+Content here...
+```
+
+### Tags
+
+Available tags are defined as an enum in `tina/config.ts` (exported as `BlogPostTag` from `data/index.ts`). Add new tags there before using them in posts.
+
+### Images
+
+Place blog images in:
+- `/public/blog-cover/` — card thumbnails (recommended: 800×500 WebP)
+- `/public/blog-opengraph/` — OG images (recommended: 1200×630 PNG)
 
 ---
 
-## Как начать
+## Server Setup (first time)
 
-1. **Оставляете заявку** на сайте Start v IT.
-2. **Созваниваемся**: обсуждаем вашу ситуацию и цели.
-3. **Получаете персональный план** обучения и подготовки.
-4. **Проходите собеседования** — я веду вас и рекомендую компании.
-5. **Подписываете оффер** и приступаете к новой работе.
+These steps are required once on a fresh VPS before CI/CD can deploy automatically.
 
-Готовы изменить свою жизнь?
+### 1. Install dependencies
 
-> **Заполните форму** на сайте и получите бесплатную консультацию уже сегодня!
+```bash
+# Docker
+curl -fsSL https://get.docker.com | sh
+usermod -aG docker $USER
 
+# Docker Compose
+apt install docker-compose-plugin
+
+# Nginx
+apt install nginx
+
+# Certbot (SSL)
+apt install certbot python3-certbot-nginx
+
+# Brotli module for Nginx
+apt install libnginx-mod-http-brotli-filter
+```
+
+### 2. Clone repository
+
+```bash
+mkdir -p /home/ravy_pro
+cd /home/ravy_pro
+git clone https://github.com/Rovniy/ravy.pro.git .
+```
+
+### 3. Configure Nginx
+
+```bash
+cp ravy.pro.nginx /etc/nginx/sites-available/ravy.pro
+ln -s /etc/nginx/sites-available/ravy.pro /etc/nginx/sites-enabled/ravy.pro
+nginx -t && systemctl reload nginx
+```
+
+The app is proxied from port `3030` (Docker) → `3000` (container internal).
+
+Cache strategy configured in `ravy.pro.nginx`:
+- `/_nuxt/*` — `max-age=31536000, immutable` (hashed filenames, safe to cache forever)
+- Static files (images, fonts) — `max-age=604800` (1 week)
+- HTML / API — `max-age=0, must-revalidate` (always fresh after deploy)
+
+### 4. Obtain SSL certificate
+
+```bash
+certbot --nginx -d ravy.pro -d www.ravy.pro
+```
+
+Certbot auto-patches the nginx config with SSL directives and sets up auto-renewal.
+
+### 5. Initial Docker build
+
+```bash
+cd /home/ravy_pro
+docker build . -t xploitravy/ravy_pro:latest
+docker-compose up -d
+```
+
+---
+
+## CI/CD (GitHub Actions)
+
+Deploys automatically on every push to `master`.
+
+**Pipeline steps:**
+1. SSH into VPS → `git pull origin master`
+2. Update nginx config → test config → reload nginx (rolls back on failure)
+3. Rebuild Docker image
+4. `docker-compose down && docker-compose up -d`
+5. Send Discord notification
+
+### Required GitHub Secrets
+
+Go to **Settings → Secrets and variables → Actions** and add:
+
+| Secret | Value |
+|---|---|
+| `VPS_SERVER_HOST` | VPS IP address or hostname |
+| `VPS_SERVER_USERNAME` | SSH user (e.g. `root`) |
+| `VPS_SERVER_SSH_KEY` | Private SSH key (the VPS must have the matching public key in `~/.ssh/authorized_keys`) |
+
+### SSH Key Setup
+
+Generate a dedicated deploy key:
+
+```bash
+ssh-keygen -t ed25519 -C "github-deploy" -f ~/.ssh/ravy_pro_deploy
+cat ~/.ssh/ravy_pro_deploy.pub >> ~/.ssh/authorized_keys
+```
+
+Copy the private key (`~/.ssh/ravy_pro_deploy`) into the `VPS_SERVER_SSH_KEY` GitHub secret.
+
+---
+
+## Project Structure
+
+```
+ravy.pro/
+├── assets/css/          # Tailwind CSS entry point + custom base styles
+├── components/          # Vue components (auto-imported)
+│   ├── OgImage/         # Satori OG image templates
+│   ├── archive/         # Blog list page components
+│   ├── blog/            # Single post components (header, TOC, card)
+│   ├── footer/          # Footer sub-components
+│   ├── main/            # Layout components (header, hero, recent, trending)
+│   └── content/         # Markdown renderer overrides
+├── content/             # Markdown content (blogs, docs, pages)
+├── data/                # Site-wide config (navbarData, seoData, footerData, etc.)
+├── layouts/             # Nuxt layouts (default)
+├── middleware/          # Route middlewares (legacy URL redirects)
+├── pages/               # File-based routing
+├── public/              # Static assets (images, icons, robots.txt, rss.xml)
+├── server/
+│   ├── routes/          # Nitro server routes (rss.xml)
+│   └── api/             # API endpoints (__sitemap__/urls.ts)
+├── tina/                # TinaCMS config and schema
+├── types/               # TypeScript types
+└── utils/               # Auto-imported utility functions
+```
+
+---
+
+## Useful URLs (local)
+
+| URL | Description |
+|---|---|
+| http://localhost:3000 | Homepage |
+| http://localhost:3000/admin | TinaCMS editor (requires `npm run tina`) |
+| http://localhost:3000/rss.xml | RSS feed |
+| http://localhost:3000/sitemap.xml | Sitemap |
+| http://localhost:3000/__og_image__ | OG image debug (Nuxt DevTools) |

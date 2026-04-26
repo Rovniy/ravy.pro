@@ -14,10 +14,11 @@ const category = computed(() => {
 })
 
 const { data } = await useAsyncData(`category-data-${category.value}`, () => {
-  return queryContent('/blogs')
-    .where({ tags: { $contains: category.value } })
-    .sort({ _id: -1 })
-    .find()
+  return queryCollection('content')
+    .where('path', 'LIKE', '/blogs/%')
+    .where('tags', 'LIKE', `%"${category.value}"%`)
+    .order('createdAt', 'DESC')
+    .all()
 })
 if (!data?.value?.length)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
@@ -25,7 +26,7 @@ if (!data?.value?.length)
 const formattedData = computed(() => {
   return data.value?.map((articles) => {
     return {
-      path: articles._path,
+      path: articles.path,
       title: articles?.title || 'no-title available',
       description: articles?.description || 'no-description available',
       image: articles?.image || '/not-found.png',
@@ -49,7 +50,7 @@ useHead({
 })
 
 // Generate OG Image
-defineOgImageComponent('Blog', {
+defineOgImage('Blog', {
   headline: categoriesPage.og.headline,
   title: category.value,
   description: `You will find all the ${category.value} related post here`,
@@ -61,7 +62,7 @@ defineOgImageComponent('Blog', {
   <main class="container max-w-5xl mx-auto text-zinc-600 px-4">
     <CategoryTopic />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-14">
       <BlogCard
         v-for="post in formattedData"
         :key="post.title"

@@ -4,10 +4,11 @@ import { footerData } from '~/data'
 
 <template>
   <div>
-    <p class="text-black dark:text-zinc-300   text-base py-1 font-semibold">
+    <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-4">
       About This Site
     </p>
-    <p class="py-2 dark:text-zinc-300 ">
+
+    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
       {{ footerData.aboutTheSite }}
     </p>
   </div>

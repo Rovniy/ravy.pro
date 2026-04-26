@@ -10,6 +10,8 @@ interface Props {
   description?: string
   headline?: string
   link?: string
+  timestamp?: number
+  colorMode?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,7 +34,7 @@ const formattedLink = computed(() => {
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col justify-center bg-[#020420]">
+  <div class="w-[1200px] h-[630px] flex flex-col justify-center bg-[#020420]">
     <svg
       class="absolute right-0 top-0"
       width="629"
