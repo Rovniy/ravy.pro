@@ -74,6 +74,20 @@ jobs:
           script: |
             sudo systemctl restart nginx
 
+      - name: Ensure swap exists
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_SERVER_HOST }}
+          username: ${{ secrets.VPS_SERVER_USERNAME }}
+          key: ${{ secrets.VPS_SERVER_SSH_KEY }}
+          script: |
+            if [ "$(sudo swapon --show | wc -l)" -eq 0 ]; then
+              sudo fallocate -l 2G /swapfile
+              sudo chmod 600 /swapfile
+              sudo mkswap /swapfile
+              sudo swapon /swapfile
+            fi
+
       - name: Create Docker build
         uses: appleboy/ssh-action@master
         with:
@@ -83,7 +97,8 @@ jobs:
           command_timeout: 30m
           script: |
             cd /home/ravy_pro
-            docker rmi -f $(docker images -q "xploitravy/ravy_pro")
+            IMAGE_ID=$(docker images -q "xploitravy/ravy_pro")
+            if [ -n "$IMAGE_ID" ]; then docker rmi -f "$IMAGE_ID"; fi
             docker build . -t xploitravy/ravy_pro:latest
 
       - name: Restart Docker containers
