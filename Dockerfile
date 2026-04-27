@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm i
 
 COPY . .
-RUN npm run build
+RUN NODE_OPTIONS="--max-old-space-size=3072" npm run build
 
 # ---- production stage ----
 FROM node:22-alpine
