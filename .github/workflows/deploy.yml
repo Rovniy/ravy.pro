@@ -80,10 +80,11 @@ jobs:
           host: ${{ secrets.VPS_SERVER_HOST }}
           username: ${{ secrets.VPS_SERVER_USERNAME }}
           key: ${{ secrets.VPS_SERVER_SSH_KEY }}
+          command_timeout: 30m
           script: |
             cd /home/ravy_pro
             docker rmi -f $(docker images -q "xploitravy/ravy_pro")
-            docker build . -t xploitravy/ravy_pro:latest
+            DOCKER_BUILDKIT=1 docker build . -t xploitravy/ravy_pro:latest
 
       - name: Restart Docker containers
         uses: appleboy/ssh-action@master
