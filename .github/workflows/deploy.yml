@@ -84,7 +84,7 @@ jobs:
           script: |
             cd /home/ravy_pro
             docker rmi -f $(docker images -q "xploitravy/ravy_pro")
-            DOCKER_BUILDKIT=1 docker build . -t xploitravy/ravy_pro:latest
+            docker build . -t xploitravy/ravy_pro:latest
 
       - name: Restart Docker containers
         uses: appleboy/ssh-action@master
