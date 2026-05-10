@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "start": "node .output/server/index.mjs",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "node -e \"if(!require('fs').existsSync('node_modules/nuxt'))process.exit(0)\" && nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
