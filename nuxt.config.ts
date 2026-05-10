@@ -80,6 +80,18 @@ export default defineNuxtConfig({
     strict: true,
   },
 
+  runtimeConfig: {
+    shortifyAdminEmail: '',
+    public: {
+      firebase: {
+        apiKey: '',
+        authDomain: '',
+        projectId: '',
+        appId: '',
+      },
+    },
+  },
+
   nitro: {
     prerender: {
       crawlLinks: true,
@@ -129,6 +141,8 @@ export default defineNuxtConfig({
       '/tag/customization/',
       '/projects',
       '/projects/',
+      '/shortify',
+      '/s/',
     ],
   },
 

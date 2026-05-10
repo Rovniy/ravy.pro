@@ -9,3 +9,9 @@ node_modules
 .data
 tina/__generated__
 public/admin
+# Env / secrets
+.env
+.env.*
+!.env.example
+serviceAccount*.json
+ravy-pro-google-service-account.json

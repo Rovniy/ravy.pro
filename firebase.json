@@ -5,5 +5,8 @@
       "rootDir": ".",
       "ignore": ["node_modules", ".git", ".github", "*.local"]
     }
-  ]
+  ],
+  "firestore": {
+    "rules": "firestore.rules"
+  }
 }
