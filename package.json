@@ -6,7 +6,7 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "start": "nuxt start",
+    "start": "node .output/server/index.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
+    "firebase-admin": "^13.9.0",
+    "nanoid": "^5.1.11",
     "satori": "^0.26.0",
     "tinacms": "3.7.3"
   },

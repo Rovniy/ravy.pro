@@ -49,7 +49,7 @@ function onClick(val: string) {
               v-if="colorMode.value === 'light'"
               name="light-mode"
               title="Light"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-[22px]"
+              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-5.5 flex"
               @click="onClick('dark')"
             >
               <Icon name="icon-park:moon" size="22" />
@@ -58,7 +58,7 @@ function onClick(val: string) {
               v-if="colorMode.value === 'dark'"
               name="dark-mode"
               title="Dark"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-[22px]"
+              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-5.5"
               @click="onClick('light')"
             >
               <Icon name="noto:sun" size="22" />

@@ -1,0 +1,9 @@
+{
+  "apphosting": [
+    {
+      "backendId": "ravy-pro",
+      "rootDir": ".",
+      "ignore": ["node_modules", ".git", ".github", "*.local"]
+    }
+  ]
+}
