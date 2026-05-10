@@ -12,7 +12,9 @@
       "PowerShell(cmd /c \"if exist C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\@resvg \\(echo resvg found\\) else \\(echo not found\\)\")",
       "PowerShell(node -e \"const p = require\\('C:/Users/OS/WebstormProjects/ravy.pro/node_modules/@nuxt/icon/package.json'\\); console.log\\(p.version\\)\")",
       "PowerShell(cmd /c \"dir C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\@nuxt\\\\icon\\\\dist\")",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(wsl *)",
+      "Bash(docker *)"
     ]
   }
 }
