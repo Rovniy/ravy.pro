@@ -8,7 +8,7 @@
     "generate": "nuxt generate",
     "start": "node .output/server/index.mjs",
     "preview": "nuxt preview",
-    "postinstall": "node -e \"if(!require('fs').existsSync('node_modules/nuxt'))process.exit(0)\" && nuxt prepare",
+    "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -45,5 +45,11 @@
     "tailwindcss": "^4.0.0",
     "tinacms": "3.7.3",
     "typescript": "^6.0.3"
-  }
+  },
+	"optionalDependencies": {
+		"@oxc-parser/binding-linux-x64-gnu": "0.129.0"
+	},
+	"engines": {
+		"node": "22"
+	}
 }
