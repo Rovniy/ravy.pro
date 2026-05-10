@@ -5,12 +5,4 @@ runConfig:
   cpu: 1
   memoryMiB: 1024
 
-env:
-  - variable: NODE_OPTIONS
-    value: --max-old-space-size=3072
-    availability:
-      - BUILD
-  - variable: NODE_ENV
-    value: production
-    availability:
-      - RUNTIME
+runtime: nodejs
