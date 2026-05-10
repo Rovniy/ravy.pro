@@ -48,7 +48,8 @@
   },
 	"optionalDependencies": {
 		"@oxc-parser/binding-linux-x64-gnu": "0.129.0",
-		"@oxc-transform/binding-linux-x64-gnu": "0.129.0"
+		"@oxc-transform/binding-linux-x64-gnu": "0.129.0",
+		"@rollup/rollup-linux-x64-gnu": "4.60.3"
 	},
 	"engines": {
 		"node": "22"
