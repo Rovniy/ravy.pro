@@ -1,7 +1,7 @@
 import type { Auth, User } from 'firebase/auth'
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
-import { useNuxtApp, useState } from 'nuxt/app'
-import { onMounted } from 'vue'
+import { useNuxtApp, useRuntimeConfig, useState } from 'nuxt/app'
+import { computed, onMounted } from 'vue'
 
 interface AuthState {
   user: { uid: string, email: string | null, displayName: string | null, photoURL: string | null } | null
@@ -10,10 +10,19 @@ interface AuthState {
 
 let listenerAttached = false
 
-export function useShortifyAuth() {
-  const state = useState<AuthState>('shortify-auth', () => ({ user: null, ready: false }))
+export function useAuth() {
+  const state = useState<AuthState>('auth', () => ({ user: null, ready: false }))
   const { $firebaseAuth } = useNuxtApp()
   const auth = $firebaseAuth as Auth | undefined
+
+  const config = useRuntimeConfig()
+  const adminEmail = ((config.public.adminEmail as string) ?? '').toLowerCase()
+
+  const isAuthed = computed(() => !!state.value.user)
+  const isAdmin = computed(() => {
+    const email = state.value.user?.email?.toLowerCase() ?? ''
+    return !!adminEmail && email === adminEmail
+  })
 
   onMounted(() => {
     if (!auth || listenerAttached) return
@@ -49,6 +58,8 @@ export function useShortifyAuth() {
 
   return {
     state,
+    isAuthed,
+    isAdmin,
     signIn,
     signOut: signOutUser,
     getIdToken,

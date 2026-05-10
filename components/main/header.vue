@@ -1,13 +1,29 @@
 <script setup lang="ts">
 import { navbarData } from '~/data'
+import { useAuth } from '~/composables/useAuth'
 
 const colorMode = useColorMode()
 const { y } = useWindowScroll()
+const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
 
 const scrolled = computed(() => y.value > 20)
 
 function onClick(val: string) {
   colorMode.preference = val
+}
+
+const userInitial = computed(() => {
+  const email = state.value.user?.email ?? ''
+  return email ? email?.at(0)?.toUpperCase() : '?'
+})
+
+async function onSignIn() {
+  try {
+    await signIn()
+  }
+  catch (e) {
+    console.error('Sign-in failed', e)
+  }
 }
 </script>
 
@@ -43,6 +59,13 @@ function onClick(val: string) {
             About
           </NuxtLink>
         </li>
+        <ClientOnly>
+          <li v-if="isAdmin">
+            <NuxtLink to="/shortify" class="hover:text-sky-700">
+              Shortify
+            </NuxtLink>
+          </li>
+        </ClientOnly>
         <li class="w-[22px]">
           <ClientOnly>
             <button
@@ -58,13 +81,57 @@ function onClick(val: string) {
               v-if="colorMode.value === 'dark'"
               name="dark-mode"
               title="Dark"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-5.5"
+              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-5.5 flex"
               @click="onClick('light')"
             >
               <Icon name="noto:sun" size="22" />
             </button>
             <template #fallback>
               <Icon name="svg-spinners:180-ring" size="22" />
+            </template>
+          </ClientOnly>
+        </li>
+        <li class="flex items-center gap-2">
+          <ClientOnly>
+            <button
+              v-if="state.ready && !isAuthed"
+              type="button"
+              title="Sign in"
+              class="inline-flex items-center gap-1.5 hover:text-sky-700 hover:cursor-pointer text-sm sm:text-base font-medium"
+              @click="onSignIn"
+            >
+              <span class="hidden sm:inline">Sign in</span>
+            </button>
+            <span
+              v-else-if="state.ready && isAuthed"
+              class="inline-flex items-center gap-2"
+            >
+              <span
+                v-if="state.user?.photoURL"
+                :title="state.user.email ?? ''"
+                class="inline-block w-6 h-6 rounded-full overflow-hidden bg-zinc-300 dark:bg-zinc-700"
+              >
+                <img :src="state.user.photoURL" alt="avatar" class="w-full h-full object-cover">
+              </span>
+              <span
+                v-else
+                :title="state.user?.email ?? ''"
+                class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-zinc-300 dark:bg-zinc-700 text-xs font-bold uppercase"
+              >
+                {{ userInitial }}
+              </span>
+              <button
+                type="button"
+                title="Sign out"
+                class="hover:text-sky-700 hover:cursor-pointer text-sm sm:text-base font-medium flex items-center gap-2"
+                @click="signOut"
+              >
+                <span class="hidden sm:inline">Sign out</span>
+                <Icon name="mdi:logout" size="18" class="sm:hidden" />
+              </button>
+            </span>
+            <template #fallback>
+              <Icon name="svg-spinners:180-ring" size="18" />
             </template>
           </ClientOnly>
         </li>

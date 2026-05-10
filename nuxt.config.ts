@@ -83,6 +83,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     shortifyAdminEmail: '',
     public: {
+      adminEmail: '',
       firebase: {
         apiKey: '',
         authDomain: '',

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { ShortLink } from '~/types/shortify'
 import { computed, ref } from 'vue'
-import { useRuntimeConfig } from 'nuxt/app'
-import { useShortifyAuth } from '~/composables/useShortifyAuth'
+import { useAuth } from '~/composables/useAuth'
 import { useShortify } from '~/composables/useShortify'
 import { baseData } from '~/data'
 
@@ -17,11 +16,9 @@ useHead({
   ],
 })
 
-const { state, signIn, signOut } = useShortifyAuth()
+const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
 const { listLinks, createLink } = useShortify()
 
-const config = useRuntimeConfig()
-const adminEmailHint = (config.public.firebase as { authDomain?: string }).authDomain ? '' : ''
 const baseUrl = baseData.site.url
 
 const links = ref<ShortLink[]>([])
@@ -31,9 +28,8 @@ const inputUrl = ref('')
 const errorMsg = ref('')
 const signInError = ref('')
 const justCreated = ref<ShortLink | null>(null)
-
-const isAuthed = computed(() => !!state.value.user)
-const userEmail = computed(() => state.value.user?.email ?? null)
+const copiedKey = ref<string | null>(null)
+let copyTimer: ReturnType<typeof setTimeout> | null = null
 
 async function refresh() {
   if (!isAuthed.value) return
@@ -85,9 +81,14 @@ async function onSignIn() {
   }
 }
 
-async function copy(text: string) {
+async function copy(text: string, key: string) {
   try {
     await navigator.clipboard.writeText(text)
+    copiedKey.value = key
+    if (copyTimer) clearTimeout(copyTimer)
+    copyTimer = setTimeout(() => {
+      copiedKey.value = null
+    }, 1500)
   }
   catch { /* ignore */ }
 }
@@ -113,7 +114,7 @@ watch(isAuthed, (v) => {
 
 if (import.meta.client) {
   watchEffect(() => {
-    if (state.value.ready && isAuthed.value && links.value.length === 0)
+    if (state.value.ready && isAuthed.value && isAdmin.value && links.value.length === 0)
       refresh()
   })
 }
@@ -141,11 +142,11 @@ if (import.meta.client) {
         Sign in required
       </h2>
       <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-        This area is restricted. Sign in with your Google account to continue.
+        This area is restricted. Use the <strong>Sign in</strong> button in the top-right of the header, or click below.
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90"
+        class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
         @click="onSignIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />
@@ -154,22 +155,23 @@ if (import.meta.client) {
       <p v-if="signInError" class="mt-3 text-sm text-red-600 dark:text-red-400">
         {{ signInError }}
       </p>
-      <p v-if="adminEmailHint" class="mt-3 text-xs text-zinc-500">
-        {{ adminEmailHint }}
-      </p>
     </div>
 
-    <!-- Signed in -->
-    <div v-else>
-      <div class="flex items-center justify-between mb-6 text-sm">
-        <span class="text-zinc-600 dark:text-zinc-400">
-          Signed in as <strong>{{ userEmail }}</strong>
-        </span>
-        <button type="button" class="text-zinc-500 hover:text-zinc-900 dark:hover:text-white underline" @click="signOut">
-          Sign out
-        </button>
-      </div>
+    <!-- Authed but not admin -->
+    <div v-else-if="!isAdmin" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
+      <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
+        Access denied
+      </h2>
+      <p class="text-sm text-red-700/80 dark:text-red-300/80 mb-4">
+        Your account <strong>{{ state.user?.email }}</strong> is not authorized to use this service.
+      </p>
+      <button type="button" class="text-sm underline hover:cursor-pointer" @click="signOut">
+        Sign out
+      </button>
+    </div>
 
+    <!-- Admin -->
+    <div v-else>
       <form class="flex flex-col sm:flex-row gap-2 mb-6" @submit.prevent="onSubmit">
         <input
           v-model="inputUrl"
@@ -181,7 +183,7 @@ if (import.meta.client) {
         <button
           type="submit"
           :disabled="submitting"
-          class="rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
+          class="rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
         >
           {{ submitting ? 'Creating…' : 'Shorten' }}
         </button>
@@ -191,10 +193,17 @@ if (import.meta.client) {
         {{ errorMsg }}
       </div>
 
-      <div v-if="justCreated" class="mb-6 rounded-md border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm">
-        Created: <a class="underline font-mono" :href="shortUrl(justCreated.code)" target="_blank">{{ shortUrl(justCreated.code) }}</a>
-        <button type="button" class="ml-2 text-xs underline" @click="copy(shortUrl(justCreated.code))">
-          copy
+      <div v-if="justCreated" class="mb-6 rounded-md border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm flex items-center gap-2">
+        <span>Created:</span>
+        <a class="underline font-mono" :href="shortUrl(justCreated.code)" target="_blank">{{ shortUrl(justCreated.code) }}</a>
+        <button
+          type="button"
+          class="ml-auto inline-flex items-center gap-1 text-xs hover:cursor-pointer"
+          :class="copiedKey === `created-${justCreated.code}` ? 'text-green-700 dark:text-green-400' : 'underline text-zinc-600 dark:text-zinc-300'"
+          @click="copy(shortUrl(justCreated.code), `created-${justCreated.code}`)"
+        >
+          <Icon v-if="copiedKey === `created-${justCreated.code}`" name="mdi:check" size="14" />
+          {{ copiedKey === `created-${justCreated.code}` ? 'copied!' : 'copy' }}
         </button>
       </div>
 
@@ -203,7 +212,7 @@ if (import.meta.client) {
           <h2 class="text-lg font-semibold">
             Links
           </h2>
-          <button type="button" class="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-white underline" :disabled="loadingList" @click="refresh">
+          <button type="button" class="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-white underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
             {{ loadingList ? 'Refreshing…' : 'Refresh' }}
           </button>
         </div>
@@ -240,8 +249,14 @@ if (import.meta.client) {
                   {{ formatDate(link.createdAt) }}
                 </td>
                 <td class="py-2 text-right">
-                  <button type="button" class="text-xs underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white" @click="copy(shortUrl(link.code))">
-                    copy
+                  <button
+                    type="button"
+                    class="inline-flex items-center gap-1 text-xs hover:cursor-pointer"
+                    :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white'"
+                    @click="copy(shortUrl(link.code), link.code)"
+                  >
+                    <Icon v-if="copiedKey === link.code" name="mdi:check" size="14" />
+                    {{ copiedKey === link.code ? 'copied!' : 'copy' }}
                   </button>
                 </td>
               </tr>
