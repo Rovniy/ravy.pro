@@ -29,6 +29,11 @@ export const navbarData = {
   homeTitle: baseData.me.name,
 }
 
+export const adminServices: { name: string, path: string }[] = [
+  { name: 'Shortify', path: '/shortify' },
+  { name: 'QR-code', path: '/qr-code' },
+]
+
 export const footerData = {
   author: baseData.me.name,
   aboutAuthor: 'Hello! I\'m Andrei, a technology enthusiast, problem solver, and software developer. Currently employed at Gaijin.net.',

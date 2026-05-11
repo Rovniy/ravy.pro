@@ -61,9 +61,7 @@ async function onSignIn() {
         </li>
         <ClientOnly>
           <li v-if="isAdmin">
-            <NuxtLink to="/shortify" class="hover:text-sky-700">
-              Shortify
-            </NuxtLink>
+            <MainServicesMenu />
           </li>
         </ClientOnly>
         <li class="w-[22px]">

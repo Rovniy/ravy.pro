@@ -33,6 +33,7 @@
     "nanoid": "^5.1.11",
     "nuxt": "4.1.0",
     "nuxt-og-image": "6.2.5",
+    "qr-code-styling": "^1.9.2",
     "satori": "^0.26.0",
     "vue-content-loader": "^2.0.1"
   },

@@ -144,6 +144,7 @@ export default defineNuxtConfig({
       '/projects/',
       '/shortify',
       '/s/',
+      '/qr-code',
     ],
   },
 

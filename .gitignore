@@ -14,4 +14,4 @@ public/admin
 .env.*
 !.env.example
 serviceAccount*.json
-ravy-pro-google-service-account.json
+google-credentials.json
