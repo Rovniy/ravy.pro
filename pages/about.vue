@@ -22,7 +22,7 @@ useAboutSchema({
   description: aboutPage.meta.description,
 })
 
-defineOgImage('About', {
+defineOgImage('Blog', {
   headline: aboutPage.og.headline,
   title: aboutPage.og.title,
   description: aboutPage.og.description,
