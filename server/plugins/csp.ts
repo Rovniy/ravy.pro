@@ -72,13 +72,14 @@ export default defineNitroPlugin((nitroApp) => {
   // Prerendered routes: rewrite the final HTML string in place — Node preset
   // doesn't persist route.headers, so the policy has to travel inside the
   // document itself.
-  nitroApp.hooks.hook('prerender:generate', (route) => {
+	// @ts-expect-error Incorrect type assertion
+  nitroApp.hooks.hook('prerender:generate', (route : any) => {
     if (!route.contents || !route.fileName?.endsWith('.html')) return
     const hashes = collectInlineScriptHashes(route.contents)
     const meta = cspMetaTag(buildCsp(hashes))
     route.contents = route.contents.replace(
       /<head(\s[^>]*)?>/i,
-      m => `${m}${meta}`,
+			(m : any) => `${m}${meta}`,
     )
   })
 })

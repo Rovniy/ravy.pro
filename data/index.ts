@@ -61,6 +61,15 @@ export const homePage = {
     title: 'Welcome to my personal blog!',
     description: 'Get News, Software Development, Related Articles, Tips, Learning resources and more.',
   },
+  hero: {
+    greeting: 'Welcome! I\'m',
+    name: baseData.me.name,
+    roles: [ 'Software Developer', 'Engineering Leader', 'Founder', 'Creator' ],
+    tagline: 'Turning rough ideas into systems people actually use.',
+    ctaPrimary: { label: 'Read the Blog', href: '/blogs' },
+    ctaSecondary: { label: 'About me', href: '/about' },
+    status: 'Open to new projects',
+  },
   meta: {
     title: 'Home',
     description: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',

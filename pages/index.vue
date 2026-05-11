@@ -25,9 +25,11 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <main class="container max-w-5xl mx-auto text-zinc-600">
+  <main class="text-zinc-600">
     <MainHero />
-    <LazyMainRecent />
-    <LazyMainTrending />
+    <div class="container max-w-5xl mx-auto">
+      <LazyMainRecent />
+      <LazyMainTrending />
+    </div>
   </main>
 </template>

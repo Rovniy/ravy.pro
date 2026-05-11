@@ -52,7 +52,7 @@ async function onSignIn() {
       ? 'bg-[#F1F2F4]/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-transparent shadow-sm py-2'
       : 'bg-[#F1F2F4] dark:bg-slate-950 border-b border-transparent py-5'"
   >
-    <div class="flex px-6 container max-w-5xl justify-between mx-auto items-baseline">
+    <div class="flex px-6 container max-w-5xl justify-between mx-auto items-center">
       <ul class="flex items-baseline space-x-5">
         <li class="text-base sm:text-2xl font-bold">
           <NuxtLink to="/" class="nav-link">
