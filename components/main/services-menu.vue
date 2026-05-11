@@ -29,7 +29,7 @@ function toggle() {
   <div ref="menuRef" class="relative">
     <button
       type="button"
-      class="inline-flex items-center gap-1 hover:text-sky-700 hover:cursor-pointer"
+      class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-sky-700 hover:cursor-pointer"
       :aria-expanded="isOpen"
       aria-haspopup="menu"
       @click="toggle"
@@ -56,7 +56,7 @@ function toggle() {
           :key="item.path"
           :to="item.path"
           role="menuitem"
-          class="block px-4 py-2 text-sm sm:text-base font-medium hover:bg-zinc-200 dark:hover:bg-slate-800 hover:text-sky-700"
+          class="services-item block px-4 py-2 text-sm sm:text-base font-medium hover:bg-zinc-200 dark:hover:bg-slate-800 hover:text-sky-700"
         >
           {{ item.name }}
         </NuxtLink>
@@ -64,3 +64,27 @@ function toggle() {
     </Transition>
   </div>
 </template>
+
+<style>
+@reference "../../assets/css/tailwind.css";
+
+.services-trigger:focus {
+  @apply outline-none;
+}
+
+.services-trigger:focus-visible {
+  @apply outline-2 outline-offset-4 outline-sky-500;
+}
+
+.services-item:focus {
+  @apply outline-none;
+}
+
+.services-item:focus-visible {
+  @apply bg-zinc-200 dark:bg-slate-800 text-sky-700;
+}
+
+.services-item.router-link-active {
+  @apply text-sky-700 dark:text-sky-400 bg-zinc-100 dark:bg-slate-900;
+}
+</style>

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { navbarData } from '~/data'
+import { onClickOutside, useEventListener } from '@vueuse/core'
+import { useRoute } from 'vue-router'
+import { adminServices, navbarData } from '~/data'
 import { useAuth } from '~/composables/useAuth'
 
 const colorMode = useColorMode()
@@ -7,6 +9,26 @@ const { y } = useWindowScroll()
 const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
 
 const scrolled = computed(() => y.value > 20)
+
+const isMobileOpen = ref(false)
+const headerRef = ref<HTMLElement | null>(null)
+const route = useRoute()
+
+onClickOutside(headerRef, () => {
+  isMobileOpen.value = false
+})
+
+useEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape') isMobileOpen.value = false
+})
+
+watch(() => route.fullPath, () => {
+  isMobileOpen.value = false
+})
+
+function toggleMobile() {
+  isMobileOpen.value = !isMobileOpen.value
+}
 
 function onClick(val: string) {
   colorMode.preference = val
@@ -29,6 +51,7 @@ async function onSignIn() {
 
 <template>
   <header
+    ref="headerRef"
     class="fixed w-full z-10 transition-all duration-300"
     :class="scrolled
       ? 'bg-[#F1F2F4]/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-transparent shadow-sm py-2'
@@ -37,30 +60,30 @@ async function onSignIn() {
     <div class="flex px-6 container max-w-5xl justify-between mx-auto items-baseline">
       <ul class="flex items-baseline space-x-5">
         <li class="text-base sm:text-2xl font-bold">
-          <NuxtLink to="/">
+          <NuxtLink to="/" class="nav-link">
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
       </ul>
 
       <ul class="flex items-center space-x-3 sm:space-x-6 text-sm sm:text-lg font-semibold">
-        <li>
-          <NuxtLink to="/blogs" class="hover:text-sky-700">
+        <li class="hidden sm:block">
+          <NuxtLink to="/blogs" class="nav-link hover:text-sky-700">
             Blogs
           </NuxtLink>
         </li>
-        <li>
-          <NuxtLink to="/categories" class="hover:text-sky-700">
+        <li class="hidden sm:block">
+          <NuxtLink to="/categories" class="nav-link hover:text-sky-700">
             Categories
           </NuxtLink>
         </li>
-        <li title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="hover:text-sky-700">
+        <li class="hidden sm:block" title="About Me">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-700">
             About
           </NuxtLink>
         </li>
         <ClientOnly>
-          <li v-if="isAdmin">
+          <li v-if="isAdmin" class="hidden sm:block">
             <MainServicesMenu />
           </li>
         </ClientOnly>
@@ -133,13 +156,89 @@ async function onSignIn() {
             </template>
           </ClientOnly>
         </li>
+        <li class="sm:hidden">
+          <button
+            type="button"
+            class="inline-flex items-center justify-center w-9 h-9 -mr-2 hover:text-sky-700 hover:cursor-pointer"
+            :aria-expanded="isMobileOpen"
+            aria-controls="mobile-nav"
+            aria-label="Toggle navigation menu"
+            @click="toggleMobile"
+          >
+            <Icon :name="isMobileOpen ? 'mdi:close' : 'mdi:menu'" size="26" />
+          </button>
+        </li>
       </ul>
     </div>
+
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0 -translate-y-2"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 -translate-y-2"
+    >
+      <nav
+        v-if="isMobileOpen"
+        id="mobile-nav"
+        class="sm:hidden absolute left-0 right-0 top-full bg-[#F1F2F4]/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 shadow-lg"
+        aria-label="Mobile navigation"
+      >
+        <ul class="container max-w-5xl mx-auto px-6 py-3 flex flex-col text-base font-semibold">
+          <li>
+            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-sky-700">
+              Blogs
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/categories" class="nav-link block py-3 hover:text-sky-700">
+              Categories
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-700">
+              About
+            </NuxtLink>
+          </li>
+          <ClientOnly>
+            <template v-if="isAdmin">
+              <li class="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Services
+              </li>
+              <li v-for="item in adminServices" :key="item.path">
+                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-700">
+                  {{ item.name }}
+                </NuxtLink>
+              </li>
+            </template>
+          </ClientOnly>
+        </ul>
+      </nav>
+    </Transition>
   </header>
 </template>
 
 <style>
-.router-link-active .router-link-exact-active {
-  @apply underline
+@reference "../../assets/css/tailwind.css";
+
+.nav-link {
+  @apply rounded-sm transition-colors;
+}
+
+.nav-link:focus {
+  @apply outline-none;
+}
+
+.nav-link:focus-visible {
+  @apply outline-2 outline-offset-4 outline-sky-500;
+}
+
+.nav-link.router-link-active {
+  @apply text-sky-700 dark:text-sky-400;
+}
+
+.nav-link.router-link-exact-active {
+  @apply underline underline-offset-4 decoration-2;
 }
 </style>

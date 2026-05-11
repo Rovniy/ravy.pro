@@ -14,7 +14,15 @@
       "PowerShell(cmd /c \"dir C:\\\\Users\\\\OS\\\\WebstormProjects\\\\ravy.pro\\\\node_modules\\\\@nuxt\\\\icon\\\\dist\")",
       "Bash(git rm *)",
       "Bash(wsl *)",
-      "Bash(docker *)"
+      "Bash(docker *)",
+      "Bash(npm run *)",
+      "Bash(npm ls *)",
+      "Bash(npx nuxt *)",
+      "Bash(curl -s http://localhost:3001/)",
+      "Bash(curl -s \"http://localhost:3001/blogs/tiny-boo-introduction\")",
+      "Bash(grep -o 'application/ld+json.\\\\{0,4000\\\\}')",
+      "Bash(curl -s \"http://localhost:3001/about\")",
+      "Bash(curl -s \"http://localhost:3001/categories/tiny-boo\")"
     ]
   }
 }

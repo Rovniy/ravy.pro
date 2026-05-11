@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { makeFirstCharUpper } from '@/utils/helper'
-import { blogsPage, categoriesPage } from '~/data'
+import { blogsPage, categoriesPage, seoData } from '~/data'
 
 const { data } = await useAsyncData('all-blog-post-for-category', () =>
   queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all(),
@@ -30,6 +30,14 @@ useHead({
       content: categoriesPage.meta.description,
     },
   ],
+})
+
+useCategoriesIndexSchema({
+  description: categoriesPage.meta.description,
+  items: Array.from(allTags.keys()).map(tag => ({
+    name: makeFirstCharUpper(tag),
+    url: `${seoData.mySite}/categories/${tag}`,
+  })),
 })
 
 // Generate OG Image

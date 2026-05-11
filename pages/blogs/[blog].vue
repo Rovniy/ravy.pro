@@ -32,7 +32,8 @@ function countWords(node: any): number {
   return 0
 }
 
-const readingTime = computed(() => Math.max(1, Math.ceil(countWords(articles.value?.body ?? {}) / 200)))
+const wordCount = computed(() => countWords(articles.value?.body ?? {}))
+const readingTime = computed(() => Math.max(1, Math.ceil(wordCount.value / 200)))
 
 const data = computed<BlogPost>(() => {
   return {
@@ -71,7 +72,7 @@ useHead({
     { property: 'og:locale', content: data.value.locale },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:site', content: seoData.twitterHandle },
-    { name: 'twitter:url', content: `${seoData.mySite}/${path}` },
+    { name: 'twitter:url', content: `${seoData.mySite}${path}` },
     { name: 'twitter:title', content: data.value.title },
     { name: 'twitter:description', content: data.value.description },
     { name: 'twitter:image', content: `${seoData.mySite}${data.value.ogImage || data.value.image}` },
@@ -79,7 +80,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: `${seoData.mySite}/${path}`,
+      href: `${seoData.mySite}${path}`,
     },
     {
       rel: 'preload',
@@ -88,6 +89,21 @@ useHead({
       type: 'image/webp',
     },
   ],
+})
+
+useBlogPostSchema({
+  url: `${seoData.mySite}${path}`,
+  title: data.value.title,
+  description: data.value.description,
+  image: data.value.image,
+  ogImage: data.value.ogImage,
+  alt: data.value.alt,
+  createdAt: articles.value?.createdAt || new Date().toISOString(),
+  lastUpdated: articles.value?.lastUpdated || articles.value?.createdAt,
+  tags: data.value.tags,
+  locale: data.value.locale,
+  wordCount: wordCount.value,
+  readingTime: readingTime.value,
 })
 
 const hashTags = computed(() => {

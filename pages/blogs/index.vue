@@ -69,6 +69,10 @@ useHead({
   ],
 })
 
+useBlogIndexSchema({
+  description: blogsPage.meta.description,
+})
+
 defineOgImage('Blog', {
   headline: blogsPage.og.headline,
   title: blogsPage.og.title,

@@ -17,6 +17,10 @@ useHead({
   ],
 })
 
+useAboutSchema({
+  description: aboutPage.meta.description,
+})
+
 defineOgImage('Blog', {
   headline: aboutPage.og.headline,
   title: aboutPage.og.title,

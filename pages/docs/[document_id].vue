@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { homePage } from '~/data'
+import { homePage, seoData } from '~/data'
 
 const { path } = useRoute()
 
@@ -18,6 +18,15 @@ useHead({
       content: articles.value.title || 'no-description available',
     },
   ],
+})
+
+useGenericPageSchema({
+  url: `${seoData.mySite}${path}`,
+  name: articles.value.title || 'Document',
+  description: articles.value.description || articles.value.title || '',
+  parents: [{ name: 'Docs', url: `${seoData.mySite}/docs` }],
+  datePublished: articles.value.createdAt,
+  dateModified: articles.value.lastUpdated || articles.value.createdAt,
 })
 
 // Generate OG Image

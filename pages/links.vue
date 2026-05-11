@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { linksPage } from '~/data'
+import { linksPage, seoData } from '~/data'
 
 const { data } = await useAsyncData('links', () =>
   queryCollection('content').where('path', '=', '/pages/links').first(),
@@ -15,6 +15,13 @@ useHead({
       content: linksPage.meta.description,
     },
   ],
+})
+
+useGenericPageSchema({
+  url: `${seoData.mySite}/links`,
+  name: 'Links',
+  description: linksPage.meta.description,
+  type: 'CollectionPage',
 })
 
 // Generate OG Image

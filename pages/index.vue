@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { homePage } from '~/data'
+import { homePage, navbarData } from '~/data'
 
 useHead({
   title: homePage.meta.title,
@@ -9,6 +9,11 @@ useHead({
       content: homePage.meta.description,
     },
   ],
+})
+
+useHomeSchema({
+  name: navbarData.homeTitle,
+  description: homePage.meta.description,
 })
 
 defineOgImage('Blog', {

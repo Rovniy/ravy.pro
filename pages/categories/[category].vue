@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { categoriesPage } from '~/data'
+import { categoriesPage, seoData } from '~/data'
+import { makeFirstCharUpper } from '@/utils/helper'
 
 const route = useRoute()
 
@@ -47,6 +48,18 @@ useHead({
       content: `You will find all the ${category.value} related post here`,
     },
   ],
+})
+
+useCategoryPageSchema({
+  url: `${seoData.mySite}/categories/${category.value}`,
+  category: makeFirstCharUpper(category.value),
+  description: `You will find all the ${category.value} related post here`,
+  posts: (formattedData.value || []).map(p => ({
+    path: p.path,
+    title: p.title,
+    image: p.image,
+    ogImage: p.ogImage,
+  })),
 })
 
 // Generate OG Image
