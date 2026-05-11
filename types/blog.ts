@@ -7,6 +7,7 @@ export interface BlogPost {
   ogImage: string
   tags: string[]
   published: boolean
+  trending?: boolean
   theme?: string
   createdAt: string
   lastUpdated?: string

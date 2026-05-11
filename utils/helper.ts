@@ -31,6 +31,24 @@ export function tagColorClass(tag: string): string {
   return TAG_COLORS[hash % TAG_COLORS.length]!
 }
 
+export function formatBlogDate(iso?: string): string {
+  if (!iso)
+    return 'no-date'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime()))
+    return 'no-date'
+  return d.toLocaleDateString('en-US', { timeZone: 'UTC' })
+}
+
+export function daysSince(iso?: string): number {
+  if (!iso)
+    return Number.POSITIVE_INFINITY
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime()))
+    return Number.POSITIVE_INFINITY
+  return Math.floor((Date.now() - d.getTime()) / 86_400_000)
+}
+
 declare global {
   interface Window {
     isYandexMetricaLoaded?: boolean

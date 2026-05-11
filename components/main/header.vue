@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import { adminServices, navbarData } from '~/data'
 import { useAuth } from '~/composables/useAuth'
 
-const colorMode = useColorMode()
 const { y } = useWindowScroll()
 const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
 
@@ -28,10 +27,6 @@ watch(() => route.fullPath, () => {
 
 function toggleMobile() {
   isMobileOpen.value = !isMobileOpen.value
-}
-
-function onClick(val: string) {
-  colorMode.preference = val
 }
 
 const userInitial = computed(() => {
@@ -87,31 +82,6 @@ async function onSignIn() {
             <MainServicesMenu />
           </li>
         </ClientOnly>
-        <li class="w-[22px] flex items-center">
-          <ClientOnly>
-            <button
-              v-if="colorMode.value === 'light'"
-              name="light-mode"
-              title="Light"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-5.5 flex"
-              @click="onClick('dark')"
-            >
-              <Icon name="icon-park:moon" size="22" />
-            </button>
-            <button
-              v-if="colorMode.value === 'dark'"
-              name="dark-mode"
-              title="Dark"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer w-5.5 flex"
-              @click="onClick('light')"
-            >
-              <Icon name="noto:sun" size="22" />
-            </button>
-            <template #fallback>
-              <Icon name="svg-spinners:180-ring" size="18" />
-            </template>
-          </ClientOnly>
-        </li>
         <li class="flex items-center gap-2">
           <ClientOnly>
             <button

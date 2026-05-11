@@ -87,6 +87,7 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
+		// @ts-ignore
     height: 630,
     renderer: 'satori',
   },
@@ -188,8 +189,8 @@ export default defineNuxtConfig({
 
   colorMode: {
     classSuffix: '',
-    preference: 'dark',
-    fallback: 'light',
+    preference: 'system',
+    fallback: 'dark',
   },
 
   icon: {

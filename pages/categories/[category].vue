@@ -33,9 +33,11 @@ const formattedData = computed(() => {
       image: articles?.image || '/not-found.png',
       alt: articles?.alt || articles?.description || 'no alter data available',
       ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      createdAt: new Date(articles?.createdAt).toLocaleDateString('en-US') || 'not-date-available',
+      createdAt: articles?.createdAt || '',
+      lastUpdated: articles?.lastUpdated || '',
       tags: articles?.tags || [],
       published: articles?.published || false,
+      trending: articles?.trending || false,
     }
   })
 })
@@ -82,12 +84,14 @@ defineOgImage('Blog', {
         :path="post?.path || ''"
         :title="post.title"
         :created-at="post.createdAt"
+        :last-updated="post.lastUpdated"
         :description="post.description"
         :image="post.image"
         :alt="post.alt"
         :og-image="post.ogImage"
         :tags="post.tags"
         :published="post.published"
+        :trending="post.trending"
       />
 
       <BlogEmpty v-if="data?.length === 0" />

@@ -39,7 +39,9 @@
       "Bash(curl -s http://localhost:3000/ -o /tmp/home.html)",
       "Read(//tmp/**)",
       "PowerShell(Get-NetTCPConnection *)",
-      "PowerShell(Get-Process *)"
+      "PowerShell(Get-Process *)",
+      "PowerShell(npm run *)",
+      "PowerShell(npx nuxi typecheck 2>&1 | Select-Object -First 80)"
     ]
   }
 }
