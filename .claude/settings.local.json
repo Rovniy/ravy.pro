@@ -22,7 +22,15 @@
       "Bash(curl -s \"http://localhost:3001/blogs/tiny-boo-introduction\")",
       "Bash(grep -o 'application/ld+json.\\\\{0,4000\\\\}')",
       "Bash(curl -s \"http://localhost:3001/about\")",
-      "Bash(curl -s \"http://localhost:3001/categories/tiny-boo\")"
+      "Bash(curl -s \"http://localhost:3001/categories/tiny-boo\")",
+      "Bash(curl -sI http://localhost:3001/)",
+      "Bash(node *)",
+      "Bash(taskkill *)",
+      "PowerShell(Stop-Process *)",
+      "Bash(curl -sI http://localhost:3000/)",
+      "Bash(curl -sI http://localhost:3000/blogs)",
+      "Bash(curl -sI http://localhost:3000/categories)",
+      "Bash(curl -s http://localhost:3000/)"
     ]
   }
 }

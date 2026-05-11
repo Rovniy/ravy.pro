@@ -1,4 +1,43 @@
+import { createHash } from 'node:crypto'
 import { navbarData, seoData } from './data'
+import { GTM_BOOTSTRAP, GTM_NOSCRIPT_HTML } from './data/gtm'
+
+const isDev = process.env.NODE_ENV !== 'production'
+
+// SHA-256 of the inline GTM bootstrap. Same constant feeds <script innerHTML>
+// and the CSP `script-src` directive, so the hash always matches what ships.
+const GTM_BOOTSTRAP_HASH = createHash('sha256').update(GTM_BOOTSTRAP).digest('base64')
+
+// Strict-CSP per https://web.dev/strict-csp/. 'strict-dynamic' propagates trust
+// from the hashed bootstrap to every script it loads (gtm.js → GA tags → …),
+// so no host allowlist is required. 'unsafe-inline' + https: are silently
+// ignored by browsers that understand 'strict-dynamic' (Chrome 52+, FF 52+,
+// Safari 15.4+) and serve as fallbacks for old ones.
+const CSP_HEADER = [
+  `default-src 'self'`,
+  `script-src 'sha256-${GTM_BOOTSTRAP_HASH}' 'strict-dynamic' 'unsafe-inline' https:`,
+  `style-src 'self' 'unsafe-inline'`,
+  `img-src 'self' data: blob: https:`,
+  `font-src 'self' data:`,
+  `connect-src 'self' https: wss:`,
+  `frame-src https://www.googletagmanager.com`,
+  `frame-ancestors 'self'`,
+  `object-src 'none'`,
+  `base-uri 'self'`,
+  `form-action 'self'`,
+].join('; ')
+
+const BASE_SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+}
+
+// CSP would break Vite's inline HMR scripts in dev — apply only in builds.
+const SECURITY_HEADERS = isDev
+  ? BASE_SECURITY_HEADERS
+  : { ...BASE_SECURITY_HEADERS, 'Content-Security-Policy': CSP_HEADER }
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -23,13 +62,12 @@ export default defineNuxtConfig({
       link: [],
       script: [
         {
-          innerHTML: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-57T2XCRL');`,
-          nonce: '3464ff42c5',
+          innerHTML: GTM_BOOTSTRAP,
         },
       ],
       noscript: [
         {
-          innerHTML: '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-57T2XCRL" height="0" width="0" style="display:none;visibility:hidden"></iframe>',
+          innerHTML: GTM_NOSCRIPT_HTML,
           tagPosition: 'bodyOpen',
         },
       ],
@@ -100,6 +138,11 @@ export default defineNuxtConfig({
         '/',
         '/rss.xml',
       ],
+    },
+    routeRules: {
+      '/**': {
+        headers: SECURITY_HEADERS,
+      },
     },
   },
 
