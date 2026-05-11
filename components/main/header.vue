@@ -91,7 +91,7 @@ async function onSignIn() {
               class="inline-flex items-center gap-1.5 hover:text-sky-700 hover:cursor-pointer text-sm sm:text-base font-medium"
               @click="onSignIn"
             >
-              <span class="hidden sm:inline">Sign in</span>
+							<Icon name="mdi:login" size="22" class="sm:hidden" />
             </button>
             <span
               v-else-if="state.ready && isAuthed"
