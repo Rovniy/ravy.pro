@@ -87,7 +87,7 @@ async function onSignIn() {
             <MainServicesMenu />
           </li>
         </ClientOnly>
-        <li class="w-[22px]">
+        <li class="w-[22px] flex items-center">
           <ClientOnly>
             <button
               v-if="colorMode.value === 'light'"
@@ -108,7 +108,7 @@ async function onSignIn() {
               <Icon name="noto:sun" size="22" />
             </button>
             <template #fallback>
-              <Icon name="svg-spinners:180-ring" size="22" />
+              <Icon name="svg-spinners:180-ring" size="18" />
             </template>
           </ClientOnly>
         </li>

@@ -32,7 +32,14 @@
       "Bash(curl -sI http://localhost:3000/categories)",
       "Bash(curl -s http://localhost:3000/)",
       "Bash(curl -sI http://localhost:3000/fonts/space-grotesk-400.woff2)",
-      "Bash(curl -sI http://localhost:3000/fonts/space-grotesk-700.woff2)"
+      "Bash(curl -sI http://localhost:3000/fonts/space-grotesk-700.woff2)",
+      "Bash(grep -oE \"sha256-[A-Za-z0-9+/=]{40,}\" .output/public/index.html)",
+      "Bash(sed 's/sha256-[^ ]*/sha256-…/g')",
+      "Bash(curl -s http://localhost:3000/blogs/tiny-boo-introduction)",
+      "Bash(curl -s http://localhost:3000/ -o /tmp/home.html)",
+      "Read(//tmp/**)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(Get-Process *)"
     ]
   }
 }
