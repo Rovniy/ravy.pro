@@ -30,7 +30,9 @@
       "Bash(curl -sI http://localhost:3000/)",
       "Bash(curl -sI http://localhost:3000/blogs)",
       "Bash(curl -sI http://localhost:3000/categories)",
-      "Bash(curl -s http://localhost:3000/)"
+      "Bash(curl -s http://localhost:3000/)",
+      "Bash(curl -sI http://localhost:3000/fonts/space-grotesk-400.woff2)",
+      "Bash(curl -sI http://localhost:3000/fonts/space-grotesk-700.woff2)"
     ]
   }
 }

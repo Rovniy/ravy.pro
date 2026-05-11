@@ -44,10 +44,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   css: [
-		'~/assets/css/tailwind.css',
-		'@fontsource/space-grotesk/400.css',
-		'@fontsource/space-grotesk/700.css'
-	],
+    '~/assets/css/tailwind.css',
+  ],
 
   components: {
     dirs: ['~/components'],
@@ -59,7 +57,26 @@ export default defineNuxtConfig({
       viewport: 'width=device-width,initial-scale=1',
       title: navbarData.homeTitle,
       titleTemplate: `%s - ${navbarData.homeTitle}`,
-      link: [],
+      link: [
+        // Self-hosted Space Grotesk woff2 (latin subset) — preloaded so the
+        // browser starts the font request while still parsing HTML, before
+        // the @font-face in entry CSS would have triggered it.
+        // crossorigin is required even for same-origin font requests.
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: '/fonts/space-grotesk-400.woff2',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: '/fonts/space-grotesk-700.woff2',
+          crossorigin: 'anonymous',
+        },
+      ],
       script: [
         {
           innerHTML: GTM_BOOTSTRAP,
@@ -136,7 +153,6 @@ export default defineNuxtConfig({
       crawlLinks: true,
       routes: [
         '/',
-        '/rss.xml',
       ],
     },
     routeRules: {
@@ -247,5 +263,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2025-04-26',
+  compatibilityDate: '2026-05-11',
 })
