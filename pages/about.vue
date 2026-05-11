@@ -9,6 +9,7 @@ if (!data?.value)
 
 useHead({
   title: aboutPage.meta.title,
+  titleTemplate: '%s',
   meta: [
     {
       name: 'description',

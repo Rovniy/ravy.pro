@@ -7,14 +7,19 @@ const links = [
 </script>
 
 <template>
-  <div class="border-t border-zinc-200 dark:border-zinc-800 mt-10 pt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-    <NuxtLink
-      v-for="item in links"
-      :key="item.to"
-      :to="item.to"
-      class="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
-    >
-      {{ item.text }}
-    </NuxtLink>
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px]">
+    <template v-for="(item, index) in links" :key="item.to">
+      <NuxtLink
+        :to="item.to"
+        class="text-zinc-500 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
+      >
+        {{ item.text }}
+      </NuxtLink>
+      <span
+        v-if="index < links.length - 1"
+        class="text-zinc-300 dark:text-zinc-700"
+        aria-hidden="true"
+      >·</span>
+    </template>
   </div>
 </template>

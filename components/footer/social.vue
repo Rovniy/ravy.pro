@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { footerData, socialNetworks } from '~/data'
+import { footerData, navbarData, socialNetworks } from '~/data'
 </script>
 
 <template>
   <div>
-    <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-4">
-      About
+    <p class="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      {{ navbarData.homeTitle }}
     </p>
 
-    <p class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+    <p class="mt-1 text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-sky-400">
       {{ footerData.author }}
     </p>
 
-    <p class="mt-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+    <p class="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
       {{ footerData.aboutAuthor }}
     </p>
 
-    <div class="mt-4 flex gap-2">
+    <div class="mt-5 flex flex-wrap gap-2.5">
       <NuxtLink
         v-for="item in socialNetworks"
         :key="item.name"
         :to="item.href"
         target="_blank"
         :aria-label="item.name"
-        class="w-8 h-8 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 transition-all"
+        class="w-9 h-9 flex items-center justify-center rounded-full text-zinc-500 dark:text-zinc-400 hover:bg-sky-500/10 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
       >
-        <Icon :name="item.icon" size="14" />
+        <Icon :name="item.icon" size="16" />
       </NuxtLink>
     </div>
   </div>

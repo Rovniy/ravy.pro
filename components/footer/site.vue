@@ -4,7 +4,8 @@ import { footerData } from '~/data'
 
 <template>
   <div>
-    <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-4">
+    <p class="mb-4 flex items-center gap-2 text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      <span class="inline-block w-1.5 h-1.5 rounded-full bg-sky-500" />
       About This Site
     </p>
 

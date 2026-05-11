@@ -162,17 +162,17 @@ export const categoriesPage = {
 export const aboutPage = {
   content: {
     title: baseData.me.name,
-    description: 'Founder. Inventor. Creator.',
-    aboutMe: 'Hello, fellow human! I\'m Andrei Rovnyi, a software sorcerer with over 15+ years of experience, leading teams and building robust systems.<br/><br/>Currently, I wield my code powers as a full-stack developer at Gaijin Entertainment, helping launch massive games like War Thunder, Crossout and each other while also development Web-apps. When I\'m not leading the charge in the digital battlefield, I’m crafting game mechanics or experimenting with new tech.<br/><br/>I won\'t cast love spells, but if you\'re looking for someone to magically optimize systems or create game-changing solutions, I\'m your wizard!',
+    description: 'Software Developer · Engineering Leader · Founder',
+    aboutMe: 'I\'m a software developer and engineering leader with 13+ years of experience building web platforms, game-related systems, internal tools, and digital products. I work at the intersection of engineering, product thinking, automation, and creativity — turning rough ideas into systems people can actually use.',
   },
   meta: {
-    title: 'About',
-    description: footerData.aboutAuthor,
+    title: 'About Andrei Rovnyi — Software Developer, Engineering Leader, Founder',
+    description: 'Andrei Rovnyi is a software developer, engineering leader, and founder with 13+ years of experience building web products, game systems, automation tools, and digital platforms.',
   },
   og: {
-    headline: 'Greetings 👋',
+    headline: 'About',
     title: navbarData.homeTitle,
-    description: 'Join me on a journey to build craft seamless digital experiences together!',
+    description: 'Software developer, engineering leader, and founder with 13+ years building web products, game systems, automation tools, and digital platforms.',
     link: '/open_graph/og_image_default.png',
   },
 }
