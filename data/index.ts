@@ -36,10 +36,10 @@ export const adminServices: { name: string, path: string }[] = [
 
 export const footerData = {
   author: baseData.me.name,
-  aboutAuthor: 'Hello! I\'m Andrei, a technology enthusiast, problem solver, and software developer. Currently employed at Gaijin.net.',
+  aboutAuthor: 'Engineering leader, founder, and software developer building web platforms, game systems, and automation tools. 13 years of shipped work — currently at Gaijin.net.',
   authorTitle: 'Get in Touch',
-  authorInterest: 'As a Founder, Inventor, and Creator, I have solid experience with Software Development. If you have an exciting idea, whether it\'s open source or a paid project, let\'s connect!',
-  aboutTheSite: 'This is the personal blog of Andrei Rovnyi. Feel free to contact me with any questions you may have.',
+  authorInterest: 'Building an MVP, shipping a game feature, or automating a team workflow? Open source or paid — let\'s talk.',
+  aboutTheSite: 'Personal blog of Andrei Rovnyi — notes on engineering, game tech, automation, and the craft of shipping software.',
   copyright: `© 2020-${currentYear} XPLOIT FZE. All trademarks, names and logos belong to their respective copyright holders.`,
 }
 
@@ -59,25 +59,25 @@ export const page404 = {
 export const homePage = {
   content: {
     title: 'Welcome to my personal blog!',
-    description: 'Get News, Software Development, Related Articles, Tips, Learning resources and more.',
+    description: 'Notes on engineering, game development, automation, and the craft of building digital products that ship.',
   },
   hero: {
     greeting: 'Welcome! I\'m',
     name: baseData.me.name,
-    roles: [ 'Software Developer', 'Engineering Leader', 'Founder', 'Creator' ],
-    tagline: 'Turning rough ideas into systems people actually use.',
+    roles: [ 'Software Developer', 'Engineering Leader', 'Founder', 'Game Systems Architect' ],
+    tagline: 'Turning rough ideas into shipped systems — web platforms, game tech, and automation that holds up in production.',
     ctaPrimary: { label: 'Read the Blog', href: '/blogs' },
     ctaSecondary: { label: 'About me', href: '/about' },
     status: 'Open to new projects',
   },
   meta: {
     title: 'Home',
-    description: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',
+    description: 'Andrei Rovnyi — software developer and engineering leader with 13 years building web platforms, game systems, and automation tools.',
   },
   og: {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
-    description: 'Join me on a journey to build craft seamless digital experiences together!',
+    description: 'Join me on a journey to craft seamless digital experiences together!',
     link: '/open_graph/og_image_default.png',
   },
 }
@@ -94,7 +94,7 @@ export const blogsPage = {
   og: {
     headline: 'Greetings 👋',
     title: 'Blogs',
-    description: 'Here you will find all the blog posts I have written & published on this site.',
+    description: 'Articles on game development, full-stack engineering, mobile games, AI music, and automation by Andrei Rovnyi.',
     link: '/open_graph/og_blogs.png',
   },
 }
@@ -111,7 +111,7 @@ export const linksPage = {
   og: {
     headline: 'Greetings 👋',
     title: 'Links',
-    description: 'Discover helpful resources for learning, tools, and personal growth. We\'ve curated links to platforms, articles, and services to support your productivity and success.',
+    description: 'Curated resources for software development, game engines, AI tools, and learning platforms.',
     link: '/open_graph/pages/links.png',
   },
 }
@@ -189,9 +189,9 @@ export const aboutPage = {
 export const seoData = {
   theme: 'Gamedev',
   author: baseData.me.name,
-  description: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',
+  description: 'Andrei Rovnyi — software developer and engineering leader with 13 years building web platforms, game systems, and automation tools.',
   ogTitle: 'Personal blog by Andrei Rovnyi',
-  twitterDescription: 'Andrei Rovnyi, Software Engineer with over 15+ years experience in software development.',
+  twitterDescription: 'Andrei Rovnyi — software developer and engineering leader with 13 years building web platforms, game systems, and automation tools.',
   image: `${baseData.site.url}/og-image.webp`,
   mySite: baseData.site.url,
   twitterHandle: '@xploitravy',

@@ -8,10 +8,6 @@ import { footerData, navbarData, socialNetworks } from '~/data'
       {{ navbarData.homeTitle }}
     </p>
 
-    <p class="mt-1 text-xs font-semibold uppercase tracking-widest text-sky-600 dark:text-sky-400">
-      {{ footerData.author }}
-    </p>
-
     <p class="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
       {{ footerData.aboutAuthor }}
     </p>
