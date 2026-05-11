@@ -19,6 +19,10 @@ useHead({
     </main>
 
     <LazyMainFooter />
+
+    <ClientOnly>
+      <LazyMainCookieBanner />
+    </ClientOnly>
   </div>
 </template>
 
