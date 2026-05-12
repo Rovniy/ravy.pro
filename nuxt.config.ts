@@ -152,11 +152,27 @@ export default defineNuxtConfig({
       '/shortify': { ssr: true, prerender: false },
       '/qr-code': { ssr: true, prerender: false },
       '/s/**': { prerender: false },
-      // Static asset cache hints. Nginx may also set these — verify in prod.
+      // Static asset cache hints. Firebase App Hosting CDN honours these
+      // as-is; `s-maxage` lets the edge cache longer than the browser if we
+      // ever want that, today both are the same. `immutable` tells browsers
+      // never to revalidate — safe for content-addressed (`/_nuxt/`) and for
+      // hand-managed image folders where filenames change when content
+      // changes. `/blog-content` is shorter (30 days) because images there
+      // are sometimes overwritten in place when posts get re-edited.
+      '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/_ipx/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/fonts/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/blog-cover/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/blog-content/**': { headers: { 'Cache-Control': 'public, max-age=2592000' } },
-      '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/blog-opengraph/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/open_graph/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/misc/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/favicon.ico': { headers: { 'Cache-Control': 'public, max-age=604800' } },
+      '/apple-touch-icon.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
+      '/android-chrome-192x192.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
+      '/android-chrome-512x512.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
+      '/og-image.webp': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/not-found.png': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
     },
   },
 

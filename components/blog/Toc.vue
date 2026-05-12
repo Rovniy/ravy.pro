@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ParsedContent } from '@nuxt/content'
+import type { ParsedContentv2 } from '@nuxt/content'
 
-const props = withDefaults(defineProps<{ articles: ParsedContent | null }>(), {
+const props = withDefaults(defineProps<{ articles: ParsedContentv2 | null }>(), {
   articles: null,
 })
 
@@ -30,8 +30,8 @@ const activeId = computed(() => {
 </script>
 
 <template>
-  <div v-if="links.length" class="lg:col-span-3 sticky top-28 max-h-[70vh] hidden lg:flex flex-col justify-self-end">
-    <div class="border dark:border-gray-800 rounded-xl p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto">
+  <div v-if="links.length" class="lg:col-span-3 sticky top-28 max-h-[70vh] hidden lg:flex flex-col justify-self-end pointer-events-none">
+    <div class="border dark:border-gray-800 rounded-xl p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto pointer-events-auto">
       <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3 pb-2 border-b dark:border-gray-800">
         On this page
       </p>

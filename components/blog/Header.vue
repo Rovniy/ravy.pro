@@ -33,8 +33,7 @@ withDefaults(defineProps<Props>(), {
       :alt="alt || ''"
       width="600"
       height="288"
-      sizes="(max-width: 768px) 67vw, 80vw"
-      densities="x1 x2"
+      sizes="sm:67vw md:80vw"
       class="m-auto rounded-2xl shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
     />
 

@@ -35,16 +35,7 @@ export function useAuth() {
     }
     authRef = fb.auth
     listenerAttached = true
-    const { onAuthStateChanged, getRedirectResult } = await import('firebase/auth')
-    // If we just came back from a Google OAuth redirect, drain the result so
-    // any auth error surfaces instead of silently leaving auth in flight.
-    // Returns null when there's no pending redirect — safe to always call.
-    try {
-      await getRedirectResult(authRef)
-    }
-    catch (e) {
-      console.error('Auth redirect failed', e)
-    }
+    const { onAuthStateChanged } = await import('firebase/auth')
     onAuthStateChanged(authRef, (user: User | null) => {
       state.value.user = user
         ? {
@@ -64,14 +55,16 @@ export function useAuth() {
     const fb = await $ensureFirebase()
     if (!fb)
       throw new Error('Firebase auth is not initialized')
-    // Redirect-flow instead of popup: avoids the noisy Chromium
-    // "Cross-Origin-Opener-Policy would block window.close" warnings that
-    // Firebase Auth popup flow logs even when auth succeeds. The trade-off
-    // is a full-page navigation through accounts.google.com.
-    const { GoogleAuthProvider, signInWithRedirect } = await import('firebase/auth')
+    // Popup-flow: Firebase recommends this as the primary sign-in path on web.
+    // `signInWithRedirect` is broken in modern browsers (Chrome 115+ storage
+    // partitioning, Safari ITP) unless `__/auth/handler` is hosted on this
+    // same origin, which Firebase App Hosting doesn't proxy out of the box.
+    // The Chromium "Cross-Origin-Opener-Policy would block window.close"
+    // console warning the popup emits is a known benign diagnostic — auth
+    // completes correctly. See firebase/firebase-js-sdk#7600.
+    const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth')
     const provider = new GoogleAuthProvider()
-    await signInWithRedirect(fb.auth, provider)
-    // The browser navigates away; nothing after this line runs.
+    await signInWithPopup(fb.auth, provider)
   }
 
   async function signOutUser() {
