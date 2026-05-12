@@ -35,7 +35,16 @@ export function useAuth() {
     }
     authRef = fb.auth
     listenerAttached = true
-    const { onAuthStateChanged } = await import('firebase/auth')
+    const { onAuthStateChanged, getRedirectResult } = await import('firebase/auth')
+    // If we just came back from a Google OAuth redirect, drain the result so
+    // any auth error surfaces instead of silently leaving auth in flight.
+    // Returns null when there's no pending redirect — safe to always call.
+    try {
+      await getRedirectResult(authRef)
+    }
+    catch (e) {
+      console.error('Auth redirect failed', e)
+    }
     onAuthStateChanged(authRef, (user: User | null) => {
       state.value.user = user
         ? {
@@ -55,9 +64,14 @@ export function useAuth() {
     const fb = await $ensureFirebase()
     if (!fb)
       throw new Error('Firebase auth is not initialized')
-    const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth')
+    // Redirect-flow instead of popup: avoids the noisy Chromium
+    // "Cross-Origin-Opener-Policy would block window.close" warnings that
+    // Firebase Auth popup flow logs even when auth succeeds. The trade-off
+    // is a full-page navigation through accounts.google.com.
+    const { GoogleAuthProvider, signInWithRedirect } = await import('firebase/auth')
     const provider = new GoogleAuthProvider()
-    await signInWithPopup(fb.auth, provider)
+    await signInWithRedirect(fb.auth, provider)
+    // The browser navigates away; nothing after this line runs.
   }
 
   async function signOutUser() {
