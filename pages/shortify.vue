@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ShortLink } from '~/types/shortify'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useShortify } from '~/composables/useShortify'
 import { baseData } from '~/data'
@@ -12,6 +12,7 @@ definePageMeta({
 useHead({
   title: 'Shortify',
   meta: [
+    { name: 'description', content: 'Internal admin tool for creating and managing short links.' },
     { name: 'robots', content: 'noindex, nofollow' },
   ],
 })
@@ -32,7 +33,8 @@ const copiedKey = ref<string | null>(null)
 let copyTimer: ReturnType<typeof setTimeout> | null = null
 
 async function refresh() {
-  if (!isAuthed.value) return
+  if (!isAuthed.value)
+    return
   loadingList.value = true
   errorMsg.value = ''
   try {
@@ -53,7 +55,8 @@ async function refresh() {
 }
 
 async function onSubmit() {
-  if (!inputUrl.value.trim() || submitting.value) return
+  if (!inputUrl.value.trim() || submitting.value)
+    return
   submitting.value = true
   errorMsg.value = ''
   try {
@@ -85,7 +88,8 @@ async function copy(text: string, key: string) {
   try {
     await navigator.clipboard.writeText(text)
     copiedKey.value = key
-    if (copyTimer) clearTimeout(copyTimer)
+    if (copyTimer)
+      clearTimeout(copyTimer)
     copyTimer = setTimeout(() => {
       copiedKey.value = null
     }, 1500)
@@ -98,7 +102,8 @@ function shortUrl(code: string): string {
 }
 
 function formatDate(iso: string | null): string {
-  if (!iso) return '—'
+  if (!iso)
+    return '—'
   try {
     return new Date(iso).toLocaleString()
   }
@@ -108,7 +113,8 @@ function formatDate(iso: string | null): string {
 }
 
 watch(isAuthed, (v) => {
-  if (v) refresh()
+  if (v)
+    refresh()
   else links.value = []
 })
 
@@ -225,10 +231,18 @@ if (import.meta.client) {
           <table class="w-full text-sm">
             <thead>
               <tr class="text-left text-xs uppercase tracking-wide text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
-                <th class="py-2 pr-4">Code</th>
-                <th class="py-2 pr-4">Target</th>
-                <th class="py-2 pr-4">Clicks</th>
-                <th class="py-2 pr-4">Created</th>
+                <th class="py-2 pr-4">
+                  Code
+                </th>
+                <th class="py-2 pr-4">
+                  Target
+                </th>
+                <th class="py-2 pr-4">
+                  Clicks
+                </th>
+                <th class="py-2 pr-4">
+                  Created
+                </th>
                 <th class="py-2" />
               </tr>
             </thead>

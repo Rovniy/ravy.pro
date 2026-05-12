@@ -14,8 +14,10 @@ const allLinks = computed(() =>
 const { y } = useWindowScroll()
 
 const activeId = computed(() => {
-  if (!import.meta.client || !allLinks.value.length) return ''
-  y.value // reactive dependency — re-evaluates on every scroll tick
+  if (!import.meta.client || !allLinks.value.length)
+    return ''
+  // touch `y.value` so this computed re-runs on every scroll tick
+  void y.value
 
   const all = allLinks.value
   for (let i = all.length - 1; i >= 0; i--) {

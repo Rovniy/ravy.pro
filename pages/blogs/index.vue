@@ -1,12 +1,12 @@
 <script lang="ts" setup>
+import { vAutoAnimate } from '@formkit/auto-animate/vue'
 import { blogsPage } from '~/data'
 
 const route = useRoute()
 const router = useRouter()
 
 const { data } = await useAsyncData('home', () =>
-  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all(),
-)
+  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all())
 
 const elementPerPage = 5
 const searchTest = ref('')
@@ -89,10 +89,11 @@ defineOgImage('Blog', {
 
     <div class="px-6 mt-2 mb-8">
       <div class="relative">
-        <Icon name="mdi:magnify" size="18" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+        <Icon name="mdi:magnify" size="18" aria-hidden="true" class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
         <input
           v-model="searchTest"
           placeholder="Search posts…"
+          aria-label="Search posts"
           type="text"
           class="block w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 dark:placeholder-zinc-500 text-zinc-700 dark:text-zinc-300 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-400/40 focus:border-sky-400 transition-all"
         >
@@ -126,20 +127,24 @@ defineOgImage('Blog', {
     <div class="flex justify-center items-center gap-4 pb-12">
       <button
         :disabled="pageNumber <= 1"
+        type="button"
+        aria-label="Previous page"
         class="w-9 h-9 flex items-center justify-center rounded-full border dark:border-zinc-700 disabled:opacity-30 hover:border-sky-400 hover:text-sky-500 transition-all"
         @click="onPreviousPageClick"
       >
-        <Icon name="mdi:chevron-left" size="20" />
+        <Icon name="mdi:chevron-left" size="20" aria-hidden="true" />
       </button>
-      <span class="text-sm text-zinc-500 dark:text-zinc-400 tabular-nums">
+      <span class="text-sm text-zinc-500 dark:text-zinc-400 tabular-nums" aria-live="polite">
         {{ pageNumber }} / {{ totalPage }}
       </span>
       <button
         :disabled="pageNumber >= totalPage"
+        type="button"
+        aria-label="Next page"
         class="w-9 h-9 flex items-center justify-center rounded-full border dark:border-zinc-700 disabled:opacity-30 hover:border-sky-400 hover:text-sky-500 transition-all"
         @click="onNextPageClick"
       >
-        <Icon name="mdi:chevron-right" size="20" />
+        <Icon name="mdi:chevron-right" size="20" aria-hidden="true" />
       </button>
     </div>
   </main>

@@ -2,8 +2,7 @@
 import { aboutPage } from '~/data'
 
 const { data } = await useAsyncData('about', () =>
-  queryCollection('content').where('path', '=', '/pages/about').first(),
-)
+  queryCollection('content').where('path', '=', '/pages/about').first())
 if (!data?.value)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 

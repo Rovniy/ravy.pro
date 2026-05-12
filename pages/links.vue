@@ -2,8 +2,7 @@
 import { linksPage, seoData } from '~/data'
 
 const { data } = await useAsyncData('links', () =>
-  queryCollection('content').where('path', '=', '/pages/links').first(),
-)
+  queryCollection('content').where('path', '=', '/pages/links').first())
 if (!data?.value)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 

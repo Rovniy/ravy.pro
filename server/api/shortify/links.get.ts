@@ -1,6 +1,6 @@
 import { defineEventHandler } from 'h3'
-import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
 import { requireAdminUser } from '~~/server/utils/auth'
+import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
 
 export default defineEventHandler(async (event) => {
   await requireAdminUser(event)

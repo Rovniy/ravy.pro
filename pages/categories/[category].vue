@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { categoriesPage, seoData } from '~/data'
 import { makeFirstCharUpper } from '@/utils/helper'
+import { categoriesPage, seoData } from '~/data'
 
 const route = useRoute()
 

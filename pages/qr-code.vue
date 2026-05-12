@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type QRCodeStyling from 'qr-code-styling'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
@@ -11,6 +11,7 @@ definePageMeta({
 useHead({
   title: 'QR-code',
   meta: [
+    { name: 'description', content: 'Internal admin tool for generating styled QR codes.' },
     { name: 'robots', content: 'noindex, nofollow' },
   ],
 })
@@ -75,7 +76,8 @@ function buildOptions() {
 }
 
 const debouncedUpdate = useDebounceFn(() => {
-  if (qrCode) qrCode.update(buildOptions())
+  if (qrCode)
+    qrCode.update(buildOptions())
 }, 50)
 
 watch(previewRef, async (el) => {
@@ -83,7 +85,8 @@ watch(previewRef, async (el) => {
     qrCode = null
     return
   }
-  if (qrCode) return
+  if (qrCode)
+    return
   try {
     const mod = await import('qr-code-styling')
     const QRCodeStyling = mod.default
@@ -107,7 +110,8 @@ onBeforeUnmount(() => {
 function onImagePick(e: Event) {
   const target = e.target as HTMLInputElement
   const file = target.files?.[0]
-  if (!file) return
+  if (!file)
+    return
   const reader = new FileReader()
   reader.onload = () => {
     image.value = typeof reader.result === 'string' ? reader.result : ''
@@ -118,11 +122,13 @@ function onImagePick(e: Event) {
 function clearImage() {
   image.value = ''
   const input = document.getElementById('qr-image-input') as HTMLInputElement | null
-  if (input) input.value = ''
+  if (input)
+    input.value = ''
 }
 
 function download() {
-  if (!qrCode || !canDownload.value) return
+  if (!qrCode || !canDownload.value)
+    return
   qrCode.download({ name: `qr-${Date.now()}`, extension: 'png' })
 }
 
@@ -213,20 +219,38 @@ async function onSignIn() {
           <div>
             <label class="block mb-1 font-medium" for="qr-dot">Dot style</label>
             <select id="qr-dot" v-model="dotStyle" class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2">
-              <option value="square">square</option>
-              <option value="rounded">rounded</option>
-              <option value="dots">dots</option>
-              <option value="classy">classy</option>
-              <option value="classy-rounded">classy-rounded</option>
-              <option value="extra-rounded">extra-rounded</option>
+              <option value="square">
+                square
+              </option>
+              <option value="rounded">
+                rounded
+              </option>
+              <option value="dots">
+                dots
+              </option>
+              <option value="classy">
+                classy
+              </option>
+              <option value="classy-rounded">
+                classy-rounded
+              </option>
+              <option value="extra-rounded">
+                extra-rounded
+              </option>
             </select>
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-corner-sq">Corner square</label>
             <select id="qr-corner-sq" v-model="cornerSquareStyle" class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2">
-              <option value="square">square</option>
-              <option value="dot">dot</option>
-              <option value="extra-rounded">extra-rounded</option>
+              <option value="square">
+                square
+              </option>
+              <option value="dot">
+                dot
+              </option>
+              <option value="extra-rounded">
+                extra-rounded
+              </option>
             </select>
           </div>
         </div>
@@ -235,8 +259,12 @@ async function onSignIn() {
           <div>
             <label class="block mb-1 font-medium" for="qr-corner-dot">Corner dot</label>
             <select id="qr-corner-dot" v-model="cornerDotStyle" class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2">
-              <option value="square">square</option>
-              <option value="dot">dot</option>
+              <option value="square">
+                square
+              </option>
+              <option value="dot">
+                dot
+              </option>
             </select>
           </div>
           <div>

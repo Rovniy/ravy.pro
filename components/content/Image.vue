@@ -8,9 +8,9 @@ defineProps([
 <template>
   <NuxtImg
     :src="imgSrc"
-    format="webp"
     quality="80"
     :width="width ? width : 720"
+    sizes="(max-width: 768px) 100vw, 720px"
     class="mx-auto"
     loading="lazy"
     :modifiers="{ roundCorner: '0:100' }"

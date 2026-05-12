@@ -2,8 +2,7 @@
 import { homePage } from '~/data'
 
 const { data } = await useAsyncData('recent-post', () =>
-  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').limit(10).all(),
-)
+  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').limit(10).all())
 
 const formattedData = computed(() => {
   return data.value?.map((articles) => {
@@ -32,7 +31,7 @@ useHead({
 <template>
   <section class="py-14 px-6">
     <div class="flex items-center gap-3 mb-8">
-      <Icon name="mdi:sort-clock-descending-outline" size="1.4em" class="text-zinc-400 dark:text-zinc-500" />
+      <Icon name="mdi:sort-clock-descending-outline" size="1.4em" aria-hidden="true" class="text-zinc-400 dark:text-zinc-500" />
       <h2 class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 tracking-tight">
         Recent Posts
       </h2>

@@ -48,7 +48,7 @@ function onToggleAds(granted: boolean) {
       <div class="mx-auto max-w-4xl rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg shadow-2xl shadow-black/20">
         <div class="p-5 sm:p-6">
           <div class="flex items-start gap-3">
-            <Icon name="mdi:cookie-outline" size="24" class="shrink-0 text-sky-500 mt-0.5" />
+            <Icon name="mdi:cookie-outline" size="24" aria-hidden="true" class="shrink-0 text-sky-500 mt-0.5" />
             <div class="flex-1 min-w-0">
               <h2 id="cookie-banner-title" class="text-base font-semibold text-zinc-900 dark:text-zinc-100">
                 We use cookies

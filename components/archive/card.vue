@@ -55,11 +55,12 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
 
     <div class="relative sm:col-span-3 overflow-hidden">
       <NuxtImg
-        format="webp"
         loading="lazy"
         class="h-48 sm:h-full w-full object-cover object-center group-hover:scale-[1.04] transition-all duration-500"
         width="289"
         height="184"
+        sizes="(max-width: 640px) 100vw, 289px"
+        densities="x1 x2"
         :src="image"
         :alt="alt"
       />
@@ -67,15 +68,15 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
 
       <div v-if="trending || isNew || isUpdated" class="absolute top-3 left-3 flex flex-wrap gap-1.5">
         <span v-if="trending" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/95 text-white shadow-sm backdrop-blur">
-          <Icon name="mdi:fire" size="12" />
+          <Icon name="mdi:fire" size="12" aria-hidden="true" />
           Trending
         </span>
         <span v-else-if="isNew" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/95 text-white shadow-sm backdrop-blur">
-          <Icon name="mdi:star-four-points" size="12" />
+          <Icon name="mdi:star-four-points" size="12" aria-hidden="true" />
           New
         </span>
         <span v-if="isUpdated" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-500/95 text-white shadow-sm backdrop-blur">
-          <Icon name="mdi:update" size="12" />
+          <Icon name="mdi:update" size="12" aria-hidden="true" />
           Updated
         </span>
       </div>
@@ -111,7 +112,7 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
 
       <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-zinc-100 dark:border-zinc-800/80">
         <div class="flex items-center gap-1.5 text-xs text-zinc-400 dark:text-zinc-500">
-          <Icon name="mdi:calendar-outline" size="14" />
+          <Icon name="mdi:calendar-outline" size="14" aria-hidden="true" />
           <span>{{ displayDate }}</span>
         </div>
         <div class="inline-flex items-center gap-1 text-xs font-semibold text-sky-600 dark:text-sky-400 group-hover:underline">

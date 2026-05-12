@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { onClickOutside, useEventListener } from '@vueuse/core'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { adminServices } from '~/data'
 
@@ -13,7 +13,8 @@ onClickOutside(menuRef, () => {
 })
 
 useEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === 'Escape') isOpen.value = false
+  if (e.key === 'Escape')
+    isOpen.value = false
 })
 
 watch(() => route.fullPath, () => {
@@ -35,7 +36,7 @@ function toggle() {
       @click="toggle"
     >
       Services
-      <Icon name="mdi:chevron-down" size="18" :class="isOpen ? 'rotate-180' : ''" class="transition-transform" />
+      <Icon name="mdi:chevron-down" size="18" aria-hidden="true" :class="isOpen ? 'rotate-180' : ''" class="transition-transform" />
     </button>
 
     <Transition

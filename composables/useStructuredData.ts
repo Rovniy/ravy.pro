@@ -10,13 +10,16 @@ const ID = {
 }
 
 function absUrl(path?: string): string {
-  if (!path) return SITE
-  if (/^https?:\/\//.test(path)) return path
+  if (!path)
+    return SITE
+  if (/^https?:\/\//.test(path))
+    return path
   return `${SITE}${path.startsWith('/') ? path : `/${path}`}`
 }
 
 function toIsoDate(value?: string): string | undefined {
-  if (!value) return undefined
+  if (!value)
+    return undefined
   const d = new Date(value)
   return Number.isNaN(d.getTime()) ? undefined : d.toISOString()
 }
@@ -128,12 +131,16 @@ function webPageNode(opts: WebPageOpts) {
       'url': absUrl(opts.image),
     }
   }
-  if (opts.breadcrumbId) node.breadcrumb = { '@id': opts.breadcrumbId }
+  if (opts.breadcrumbId)
+    node.breadcrumb = { '@id': opts.breadcrumbId }
   const pub = toIsoDate(opts.datePublished)
   const mod = toIsoDate(opts.dateModified)
-  if (pub) node.datePublished = pub
-  if (mod) node.dateModified = mod
-  if (opts.primaryEntityId) node.mainEntity = { '@id': opts.primaryEntityId }
+  if (pub)
+    node.datePublished = pub
+  if (mod)
+    node.dateModified = mod
+  if (opts.primaryEntityId)
+    node.mainEntity = { '@id': opts.primaryEntityId }
   return node
 }
 
@@ -181,8 +188,10 @@ function blogPostingNode(post: BlogPostingInput) {
     node.keywords = post.tags.join(', ')
     node.articleSection = post.tags
   }
-  if (post.wordCount && post.wordCount > 0) node.wordCount = post.wordCount
-  if (post.readingTime && post.readingTime > 0) node.timeRequired = `PT${post.readingTime}M`
+  if (post.wordCount && post.wordCount > 0)
+    node.wordCount = post.wordCount
+  if (post.readingTime && post.readingTime > 0)
+    node.timeRequired = `PT${post.readingTime}M`
   return node
 }
 

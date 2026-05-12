@@ -3,8 +3,7 @@ import { makeFirstCharUpper } from '@/utils/helper'
 import { blogsPage, categoriesPage, seoData } from '~/data'
 
 const { data } = await useAsyncData('all-blog-post-for-category', () =>
-  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all(),
-)
+  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all())
 
 const allTags = new Map()
 

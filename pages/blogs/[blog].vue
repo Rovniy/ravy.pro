@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import Image from '~/components/content/Image.vue'
 import type { BlogPost } from '@/types/blog'
+import Image from '~/components/content/Image.vue'
 import { blogsPage, navbarData, seoData } from '~/data'
 
 const { path } = useRoute()
 
 const { data: articles, error } = await useAsyncData(`blog-post-${path}`, () =>
-  queryCollection('content').where('path', '=', path).first(),
-)
+  queryCollection('content').where('path', '=', path).first())
 
 if (error.value || !articles?.value)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
@@ -27,8 +26,10 @@ const { data: surround } = await useAsyncData(`blog-surround-${path}`, async () 
 })
 
 function countWords(node: any): number {
-  if (node.type === 'text') return node.value?.split(/\s+/).filter(Boolean).length ?? 0
-  if (Array.isArray(node.children)) return node.children.reduce((s: number, c: any) => s + countWords(c), 0)
+  if (node.type === 'text')
+    return node.value?.split(/\s+/).filter(Boolean).length ?? 0
+  if (Array.isArray(node.children))
+    return node.children.reduce((s: number, c: any) => s + countWords(c), 0)
   return 0
 }
 

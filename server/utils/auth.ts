@@ -9,7 +9,10 @@ export interface AdminUser {
 
 export async function requireAdminUser(event: H3Event): Promise<AdminUser> {
   const header = getRequestHeader(event, 'authorization') ?? ''
-  const match = header.match(/^Bearer\s+(.+)$/i)
+  // Capture is anchored to a non-whitespace start so the regex stays linear
+  // (\s+ followed by .+ otherwise allows catastrophic backtracking on input
+  // crafted with many trailing spaces).
+  const match = header.match(/^Bearer\s+(\S.*)$/i)
   if (!match) {
     throw createError({ statusCode: 401, statusMessage: 'Missing bearer token' })
   }

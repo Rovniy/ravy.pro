@@ -17,7 +17,7 @@ function toggleTheme() {
       aria-label="Subscribe to RSS Feed"
       class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
     >
-      <Icon name="bi:rss-fill" size="14" />
+      <Icon name="bi:rss-fill" size="14" aria-hidden="true" />
     </a>
 
     <ClientOnly>
@@ -31,10 +31,11 @@ function toggleTheme() {
         <Icon
           :name="colorMode.value === 'dark' ? 'mdi:weather-sunny' : 'mdi:weather-night'"
           size="15"
+          aria-hidden="true"
         />
       </button>
       <template #fallback>
-        <Icon name="mdi:theme-light-dark" size="15" />
+        <Icon name="mdi:theme-light-dark" size="15" aria-hidden="true" />
       </template>
     </ClientOnly>
   </div>

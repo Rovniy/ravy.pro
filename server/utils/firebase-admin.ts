@@ -8,7 +8,8 @@ import { getFirestore } from 'firebase-admin/firestore'
 let cachedApp: App | null = null
 
 function getAdminApp(): App {
-  if (cachedApp) return cachedApp
+  if (cachedApp)
+    return cachedApp
   const existing = getApps()[0]
   cachedApp = existing ?? initializeApp()
   return cachedApp

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { useRoute } from 'vue-router'
-import { adminServices, navbarData } from '~/data'
 import { useAuth } from '~/composables/useAuth'
+import { adminServices, navbarData } from '~/data'
 
 const { y } = useWindowScroll()
 const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
@@ -18,7 +18,8 @@ onClickOutside(headerRef, () => {
 })
 
 useEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === 'Escape') isMobileOpen.value = false
+  if (e.key === 'Escape')
+    isMobileOpen.value = false
 })
 
 watch(() => route.fullPath, () => {
@@ -91,7 +92,7 @@ async function onSignIn() {
               class="inline-flex items-center gap-1.5 hover:text-sky-700 hover:cursor-pointer text-sm sm:text-base font-medium"
               @click="onSignIn"
             >
-							<Icon name="mdi:login" size="22" class="sm:hidden" />
+              <Icon name="mdi:login" size="22" aria-hidden="true" class="sm:hidden" />
             </button>
             <span
               v-else-if="state.ready && isAuthed"
@@ -118,11 +119,11 @@ async function onSignIn() {
                 @click="signOut"
               >
                 <span class="hidden sm:inline">Sign out</span>
-                <Icon name="mdi:logout" size="18" class="sm:hidden" />
+                <Icon name="mdi:logout" size="18" aria-hidden="true" class="sm:hidden" />
               </button>
             </span>
             <template #fallback>
-              <Icon name="svg-spinners:180-ring" size="18" />
+              <Icon name="svg-spinners:180-ring" size="18" aria-hidden="true" />
             </template>
           </ClientOnly>
         </li>
@@ -135,7 +136,7 @@ async function onSignIn() {
             aria-label="Toggle navigation menu"
             @click="toggleMobile"
           >
-            <Icon :name="isMobileOpen ? 'mdi:close' : 'mdi:menu'" size="26" />
+            <Icon :name="isMobileOpen ? 'mdi:close' : 'mdi:menu'" size="26" aria-hidden="true" />
           </button>
         </li>
       </ul>

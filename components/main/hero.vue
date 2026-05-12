@@ -15,7 +15,8 @@ const currentRole = computed(() => hero.roles[roleIndex.value])
 onMounted(() => {
   mounted.value = true
 
-  if (prefersReducedMotion.value) return
+  if (prefersReducedMotion.value)
+    return
 
   typedGreeting.value = ''
   typingDone.value = false
@@ -56,7 +57,7 @@ onMounted(() => {
             <span v-if="!typingDone" class="hero-caret ml-0.5" aria-hidden="true">▎</span>
           </p>
 
-          <h1 class="hero-step delay-1 font-bold leading-[1.1] tracking-tight text-6xl md:text-7xl lg:text-8xl mb-6 bg-gradient-to-r from-sky-400 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent animate-gradient">
+          <h1 class="hero-step delay-1 hero-h1 font-bold leading-[1.1] tracking-tight text-6xl md:text-7xl lg:text-8xl mb-6 bg-gradient-to-r from-sky-400 via-violet-500 to-fuchsia-500 bg-clip-text animate-gradient">
             {{ hero.name }}
           </h1>
 
@@ -82,7 +83,7 @@ onMounted(() => {
               class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white font-semibold text-base bg-gradient-to-r from-sky-500 to-violet-500 shadow-xl shadow-sky-500/30 hover:shadow-2xl hover:shadow-violet-500/40 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
             >
               {{ hero.ctaPrimary.label }}
-              <Icon name="mdi:arrow-right" size="20" class="group-hover:translate-x-1 transition-transform" />
+              <Icon name="mdi:arrow-right" size="20" aria-hidden="true" class="group-hover:translate-x-1 transition-transform" />
             </NuxtLink>
 
             <NuxtLink
@@ -111,7 +112,7 @@ onMounted(() => {
                 :aria-label="item.name"
                 class="w-9 h-9 flex items-center justify-center rounded-full text-zinc-500 dark:text-zinc-400 hover:bg-sky-500/10 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
               >
-                <Icon :name="item.icon" size="15" />
+                <Icon :name="item.icon" size="15" aria-hidden="true" />
               </NuxtLink>
             </div>
           </div>
@@ -164,7 +165,7 @@ onMounted(() => {
 .hero-blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(90px);
+  filter: blur(60px);
   pointer-events: none;
   will-change: transform, opacity;
   z-index: 0;
@@ -190,14 +191,19 @@ onMounted(() => {
   animation: float-blob 18s ease-in-out infinite reverse;
 }
 
+/* Third blob removed: 90px filter blur on a third 360px element is the
+   single most expensive paint cost in this section on mobile devices. */
 .hero-blob-3 {
-  width: 360px;
-  height: 360px;
-  top: 40%;
-  right: 30%;
-  background: radial-gradient(circle, var(--color-fuchsia-400), transparent 70%);
-  opacity: 0.18;
-  animation: float-blob 22s ease-in-out infinite;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hero-blob {
+    animation: none;
+    filter: blur(40px);
+  }
+  .hero-blob-1 { width: 320px; height: 320px; }
+  .hero-blob-2 { width: 280px; height: 280px; }
 }
 
 .creature-glow {
@@ -220,30 +226,45 @@ onMounted(() => {
   }
 }
 
+/* SSR default: visible. The LCP element (the gradient H1) must paint with
+   the initial HTML — gating it on hydration adds 1-3s to LCP on mobile. */
 .hero-step {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.is-mounted .hero-step {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
-.is-mounted .hero-step.delay-0 { transition-delay: 0ms; }
-.is-mounted .hero-step.delay-1 { transition-delay: 140ms; }
-.is-mounted .hero-step.delay-2 { transition-delay: 280ms; }
-.is-mounted .hero-step.delay-3 { transition-delay: 420ms; }
-.is-mounted .hero-step.delay-4 { transition-delay: 560ms; }
-.is-mounted .hero-step.delay-5 { transition-delay: 700ms; }
+/* Animate IN only after JS hydrates. One-shot keyframe from a transient
+   state to the same steady state, so the stagger effect remains intact. */
+.is-mounted .hero-step {
+  animation: hero-in 0.7s ease both;
+}
+.is-mounted .hero-step.delay-0 { animation-delay: 0ms; }
+.is-mounted .hero-step.delay-1 { animation-delay: 140ms; }
+.is-mounted .hero-step.delay-2 { animation-delay: 280ms; }
+.is-mounted .hero-step.delay-3 { animation-delay: 420ms; }
+.is-mounted .hero-step.delay-4 { animation-delay: 560ms; }
+.is-mounted .hero-step.delay-5 { animation-delay: 700ms; }
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-step {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  .is-mounted .hero-step { animation: none; }
+}
+
+/* Gradient text fallback: Lighthouse reads computed `color` (which is
+   `transparent` for bg-clip-text gradients) and flags contrast. Set a
+   high-contrast color first; bg-clip wins visually via -webkit-text-fill. */
+.hero-h1 {
+  color: #0f172a;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+:global(.dark) .hero-h1 {
+  color: #f1f5f9;
 }
 
 .hero-caret {
@@ -271,6 +292,11 @@ onMounted(() => {
   .animate-gradient { animation: none; }
   .hero-caret { animation: none; opacity: 1; }
   .hero-blob { animation: none; }
+}
+
+@media (max-width: 768px) {
+  .animate-gradient { animation: none; }
+  .creature-glow { display: none; }
 }
 
 .role-enter-active,

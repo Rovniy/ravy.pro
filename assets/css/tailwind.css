@@ -39,10 +39,6 @@
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     line-height: 1.75;
   }
@@ -50,5 +46,23 @@
   ::selection {
     background-color: var(--color-sky-400);
     color: #fff;
+  }
+
+  /* Visible focus ring on every interactive element. Tailwind 4 doesn't
+     ship one by default; without it Lighthouse a11y flags keyboard nav. */
+  :focus-visible {
+    outline: 2px solid var(--color-sky-500);
+    outline-offset: 2px;
+  }
+}
+
+/* Kill page/layout transitions on mobile and for reduced-motion users.
+   The 0.4s blur transition adds measurable INP regression on slow phones
+   and costs LCP on first navigation. Desktop keeps the brand touch. */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  .page-enter-active, .page-leave-active,
+  .layout-enter-active, .layout-leave-active {
+    transition: none !important;
+    animation: none !important;
   }
 }

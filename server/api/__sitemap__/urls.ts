@@ -1,7 +1,6 @@
 import { seoData } from '~/data'
 
 export default defineEventHandler(async (event) => {
-  // eslint-disable-next-line ts/no-unsafe-argument
   // @ts-expect-error — Nitro auto-import types only declare the 1-arg overload; event is required at runtime
   const posts = await queryCollection(event, 'content')
     .where('path', 'LIKE', '/blogs/%')

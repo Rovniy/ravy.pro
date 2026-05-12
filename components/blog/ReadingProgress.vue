@@ -2,7 +2,8 @@
 const { y } = useWindowScroll()
 
 const progress = computed(() => {
-  if (!import.meta.client) return 0
+  if (!import.meta.client)
+    return 0
   const scrollable = document.documentElement.scrollHeight - window.innerHeight
   return scrollable > 0 ? Math.min(100, (y.value / scrollable) * 100) : 0
 })

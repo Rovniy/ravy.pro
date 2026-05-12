@@ -1,8 +1,8 @@
-import { createError, defineEventHandler, readBody } from 'h3'
 import { FieldValue } from 'firebase-admin/firestore'
-import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
+import { createError, defineEventHandler, readBody } from 'h3'
 import { requireAdminUser } from '~~/server/utils/auth'
 import { generateUniqueCode } from '~~/server/utils/code'
+import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
 
 interface CreateBody {
   url?: string

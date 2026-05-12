@@ -6,7 +6,8 @@ export function useShortify() {
 
   async function authedFetch<T>(url: string, init: RequestInit = {}, retried = false): Promise<T> {
     const token = await getIdToken(retried)
-    if (!token) throw new Error('Not authenticated')
+    if (!token)
+      throw new Error('Not authenticated')
 
     const headers = new Headers(init.headers)
     headers.set('Authorization', `Bearer ${token}`)

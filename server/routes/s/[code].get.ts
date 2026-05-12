@@ -1,5 +1,5 @@
-import { defineEventHandler, getRouterParam, sendRedirect } from 'h3'
 import { FieldValue } from 'firebase-admin/firestore'
+import { defineEventHandler, getRouterParam, sendRedirect } from 'h3'
 import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
 
 const VALID_CODE = /^[\w-]{1,32}$/

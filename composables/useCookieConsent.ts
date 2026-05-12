@@ -1,4 +1,5 @@
-import { CONSENT_DEFAULTS, CONSENT_STORAGE_KEY, type ConsentCategory, type ConsentState } from '~/data/gtm'
+import type { ConsentCategory, ConsentState } from '~/data/gtm'
+import { CONSENT_DEFAULTS, CONSENT_STORAGE_KEY } from '~/data/gtm'
 
 interface StoredConsent {
   state: ConsentState
@@ -15,17 +16,21 @@ declare global {
 }
 
 function gtagUpdate(state: ConsentState) {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function') return
+  if (typeof window === 'undefined' || typeof window.gtag !== 'function')
+    return
   window.gtag('consent', 'update', state)
 }
 
 function readStored(): StoredConsent | null {
-  if (typeof window === 'undefined') return null
+  if (typeof window === 'undefined')
+    return null
   try {
     const raw = window.localStorage.getItem(CONSENT_STORAGE_KEY)
-    if (!raw) return null
+    if (!raw)
+      return null
     const parsed = JSON.parse(raw) as StoredConsent
-    if (parsed.version !== STORAGE_VERSION) return null
+    if (parsed.version !== STORAGE_VERSION)
+      return null
     return parsed
   }
   catch {
@@ -34,7 +39,8 @@ function readStored(): StoredConsent | null {
 }
 
 function writeStored(state: ConsentState) {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined')
+    return
   const payload: StoredConsent = {
     state,
     version: STORAGE_VERSION,

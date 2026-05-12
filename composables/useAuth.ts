@@ -1,5 +1,4 @@
 import type { Auth, User } from 'firebase/auth'
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
 import { useNuxtApp, useRuntimeConfig, useState } from 'nuxt/app'
 import { computed, onMounted } from 'vue'
 
@@ -9,11 +8,13 @@ interface AuthState {
 }
 
 let listenerAttached = false
+let authRef: Auth | null = null
 
 export function useAuth() {
   const state = useState<AuthState>('auth', () => ({ user: null, ready: false }))
-  const { $firebaseAuth } = useNuxtApp()
-  const auth = $firebaseAuth as Auth | undefined
+  const { $ensureFirebase } = useNuxtApp() as unknown as {
+    $ensureFirebase?: () => Promise<{ auth: Auth } | null>
+  }
 
   const config = useRuntimeConfig()
   const adminEmail = ((config.public.adminEmail as string) ?? '').toLowerCase()
@@ -24,10 +25,18 @@ export function useAuth() {
     return !!adminEmail && email === adminEmail
   })
 
-  onMounted(() => {
-    if (!auth || listenerAttached) return
+  onMounted(async () => {
+    if (listenerAttached || !$ensureFirebase)
+      return
+    const fb = await $ensureFirebase()
+    if (!fb) {
+      state.value.ready = true
+      return
+    }
+    authRef = fb.auth
     listenerAttached = true
-    onAuthStateChanged(auth, (user: User | null) => {
+    const { onAuthStateChanged } = await import('firebase/auth')
+    onAuthStateChanged(authRef, (user: User | null) => {
       state.value.user = user
         ? {
             uid: user.uid,
@@ -41,19 +50,27 @@ export function useAuth() {
   })
 
   async function signIn() {
-    if (!auth) throw new Error('Firebase auth is not initialized')
+    if (!$ensureFirebase)
+      throw new Error('Firebase auth is not available')
+    const fb = await $ensureFirebase()
+    if (!fb)
+      throw new Error('Firebase auth is not initialized')
+    const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth')
     const provider = new GoogleAuthProvider()
-    await signInWithPopup(auth, provider)
+    await signInWithPopup(fb.auth, provider)
   }
 
   async function signOutUser() {
-    if (!auth) return
-    await signOut(auth)
+    if (!authRef)
+      return
+    const { signOut } = await import('firebase/auth')
+    await signOut(authRef)
   }
 
   async function getIdToken(forceRefresh = false): Promise<string | null> {
-    if (!auth?.currentUser) return null
-    return auth.currentUser.getIdToken(forceRefresh)
+    if (!authRef?.currentUser)
+      return null
+    return authRef.currentUser.getIdToken(forceRefresh)
   }
 
   return {

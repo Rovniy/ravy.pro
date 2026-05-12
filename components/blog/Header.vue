@@ -27,13 +27,14 @@ withDefaults(defineProps<Props>(), {
     </h1>
 
     <NuxtImg
-      format="webp"
       fetchpriority="high"
       loading="eager"
       :src="image || ''"
       :alt="alt || ''"
       width="600"
       height="288"
+      sizes="(max-width: 768px) 67vw, 80vw"
+      densities="x1 x2"
       class="m-auto rounded-2xl shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
     />
 
@@ -50,7 +51,7 @@ withDefaults(defineProps<Props>(), {
         </div>
 
         <div v-if="readingTime" class="flex items-center gap-1 font-semibold">
-          <Icon name="mdi:clock-outline" size="18" />
+          <Icon name="mdi:clock-outline" size="18" aria-hidden="true" />
           <p>{{ readingTime }} min read</p>
         </div>
 

@@ -21,7 +21,7 @@ import { footerData, navbarData, socialNetworks } from '~/data'
         :aria-label="item.name"
         class="w-9 h-9 flex items-center justify-center rounded-full text-zinc-500 dark:text-zinc-400 hover:bg-sky-500/10 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
       >
-        <Icon :name="item.icon" size="16" />
+        <Icon :name="item.icon" size="16" aria-hidden="true" />
       </NuxtLink>
     </div>
   </div>
