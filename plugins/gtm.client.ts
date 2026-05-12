@@ -1,4 +1,4 @@
-import { GTM_LOADER_FN } from '~/data/gtm'
+import { loadGtm } from '~/data/gtm'
 
 // GTM container script (~90 KB) is deferred off the critical path. Consent
 // defaults still run synchronously in <head>, so any tag firing later
@@ -7,19 +7,14 @@ export default defineNuxtPlugin(() => {
   if (import.meta.server)
     return
 
-  const load = () => {
-    // eslint-disable-next-line no-eval
-    ;(0, eval)(GTM_LOADER_FN)
-  }
-
-  const ric = (window as any).requestIdleCallback as
-    | ((cb: () => void, opts?: { timeout: number }) => number)
-    | undefined
+  const ric = (window as unknown as {
+    requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
+  }).requestIdleCallback
 
   if (ric) {
-    ric(load, { timeout: 4000 })
+    ric(loadGtm, { timeout: 4000 })
   }
   else {
-    setTimeout(load, 2500)
+    setTimeout(loadGtm, 2500)
   }
 })
