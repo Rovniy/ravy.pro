@@ -65,7 +65,7 @@ export const homePage = {
     greeting: 'Welcome! I\'m',
     name: baseData.me.name,
     roles: ['Software Developer', 'Engineering Leader', 'Founder', 'Game Systems Architect'],
-    tagline: 'Turning rough ideas into shipped systems — web platforms, game tech, and automation that holds up in production.',
+    tagline: 'I build production-ready web platforms, game systems, automation tools, and AI-assisted workflows — from early product ideas to shipped systems used by real people.',
     ctaPrimary: { label: 'Read the Blog', href: '/blogs' },
     ctaSecondary: { label: 'About me', href: '/about' },
     status: 'Open to new projects',

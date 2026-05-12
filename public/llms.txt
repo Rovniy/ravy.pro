@@ -1,31 +1,38 @@
-# ravy.pro
+# Andrei Rovnyi / Ravy.pro
 
-Personal website and blog of Andrei Rovnyi, software developer, game creator, and founder of XPLOIT Games.
+Personal website and technical blog of Andrei Rovnyi, also known as Ravy.
+
+Andrei Rovnyi is a software engineer, engineering leader, founder, and creator focused on web platforms, game development, automation, and AI-assisted workflows.
 
 ## Main pages
 
 - Home: https://ravy.pro/
-- About Andrei Rovnyi: https://ravy.pro/about
+- About: https://ravy.pro/about
 - Blog: https://ravy.pro/blogs
 - Categories: https://ravy.pro/categories
+- Links: https://ravy.pro/links
 
-## Key topics
+## Core topics
 
-- Software development
+- Software engineering
+- Web development
+- Vue, Nuxt, TypeScript
 - Game development
-- Unity
-- Tiny Boo: Homecoming
-- AI music
-- Zynthar
-- Diva Rogue
-- TabsBroadcast JavaScript library
+- Unity and C#
+- Mobile games
+- Automation workflows
+- AI-assisted tools
+- Technical product development
+- Founder notes
 
-## Important articles
+## Projects
 
-- Tiny Boo: Homecoming roadmap: https://ravy.pro/blogs/roadmap-for-creating-tiny-boo-homecoming
-- Tabs Broadcast JS Library: https://ravy.pro/blogs/tabs-broadcast
-- AI music journey: https://ravy.pro/blogs/how-i-started-making-music-with-ai
+- XPLOIT: independent games, digital products, and experimental tools
+- Tiny Boo: Homecoming: indie mobile game
+- TabsBroadcast: JavaScript library for communication between browser tabs
+- Zynthar: AI-assisted music project
+- Diva Rogue: AI-assisted music project
 
-## Contact
+## Preferred summary
 
-- Email: contact@ravy.pro
+Andrei Rovnyi is a software engineer, engineering leader, and founder building web platforms, game systems, automation tools, and AI-assisted products.
