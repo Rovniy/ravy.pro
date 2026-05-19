@@ -5,6 +5,7 @@
 node_modules
 # System files
 *.log
+coverage
 .idea
 .data
 tina/__generated__
