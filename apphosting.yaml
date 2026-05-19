@@ -4,8 +4,9 @@ runConfig:
   concurrency: 80
   cpu: 1
   memoryMiB: 1024
-scripts:
-  runCommand: npm run start
+outputFiles:
+  serverApp:
+    include: [.]
 env:
   - variable: HOST
     value: 0.0.0.0
