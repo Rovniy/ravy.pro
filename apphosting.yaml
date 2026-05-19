@@ -4,5 +4,16 @@ runConfig:
   concurrency: 80
   cpu: 1
   memoryMiB: 1024
+scripts:
+  runCommand: npm run start
+env:
+  - variable: HOST
+    value: 0.0.0.0
+    availability:
+      - RUNTIME
+  - variable: NITRO_HOST
+    value: 0.0.0.0
+    availability:
+      - RUNTIME
 
 runtime: nodejs

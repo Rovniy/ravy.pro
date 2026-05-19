@@ -75,13 +75,13 @@ export const homePage = {
     status: 'Open to new projects',
   },
   meta: {
-    title: 'Home',
-    description: 'Andrei Rovnyi — software developer and engineering leader with 13 years building web platforms, game systems, and automation tools.',
+    title: 'Andrei Rovnyi — Blog, Tools, and Engineering Notes',
+    description: 'Personal site of Andrei Rovnyi: engineering blog, public tools like QR Code Generator, and software delivery insights from real projects.',
   },
   og: {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
-    description: 'Join me on a journey to craft seamless digital experiences together!',
+    description: 'Engineering blog and practical web tools, including QR Code Generator.',
     link: '/open_graph/og_image_default.png',
   },
 }
