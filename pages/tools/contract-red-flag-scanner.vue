@@ -28,6 +28,7 @@ const isSharing = ref(false)
 const isSubmitting = ref(false)
 const isExtractingPdf = ref(false)
 const isDragging = ref(false)
+const inputStage = ref('')
 const { state, isAuthed, isAdmin, signIn, signOut, getIdToken } = useAuth()
 let pollingTimer: ReturnType<typeof setInterval> | null = null
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -61,12 +62,14 @@ async function onFilePick(event: Event) {
     || file.type.startsWith('image/')
   ) {
     isExtractingPdf.value = true
+    inputStage.value = 'Reading file…'
     reader.onload = async () => {
       try {
         const base64 = typeof reader.result === 'string' ? reader.result : ''
         if (!base64)
           throw new Error('Failed to read file')
 
+        inputStage.value = 'Extracting text from file…'
         const extracted = await authedFetch<{ text: string }>('/api/contract-scanner/extract-text', {
           method: 'POST',
           body: JSON.stringify({
@@ -76,6 +79,7 @@ async function onFilePick(event: Event) {
           }),
         })
         contractText.value = extracted.text
+        inputStage.value = 'Text extracted. Ready to scan.'
       }
       catch (e: unknown) {
         runError.value = e instanceof Error
@@ -114,12 +118,14 @@ async function onPhotoPick(event: Event) {
 
   runError.value = ''
   isExtractingPdf.value = true
+  inputStage.value = 'Preparing photos…'
   try {
     const next: Array<{ name: string, mime: string, base64: string }> = []
     for (const file of Array.from(files)) {
       if (!file.type.startsWith('image/'))
         continue
       const reader = new FileReader()
+      inputStage.value = `Reading photo ${next.length + 1} of ${files.length}…`
       const base64 = await new Promise<string>((resolve, reject) => {
         reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '')
         reader.onerror = () => reject(new Error('Failed to read photo'))
@@ -136,6 +142,7 @@ async function onPhotoPick(event: Event) {
     photoPages.value = [...photoPages.value, ...next]
     fileName.value = `${photoPages.value.length} photo(s)`
     fileMime.value = 'image/*'
+    inputStage.value = `Photos ready: ${photoPages.value.length}.`
   }
   catch (e: unknown) {
     runError.value = e instanceof Error ? e.message : 'Failed to prepare photos'
@@ -157,6 +164,8 @@ function clearPhotos() {
   photoPages.value = []
   fileName.value = ''
   fileMime.value = ''
+  if (!contractText.value.trim())
+    inputStage.value = ''
 }
 
 async function onDrop(event: DragEvent) {
@@ -232,6 +241,7 @@ async function runScan() {
     shareError.value = ''
     if (photoPages.value.length > 0) {
       isExtractingPdf.value = true
+      inputStage.value = 'Extracting text from selected photos…'
       const extracted = await authedFetch<{ text: string }>('/api/contract-scanner/extract-text', {
         method: 'POST',
         body: JSON.stringify({
@@ -244,8 +254,10 @@ async function runScan() {
       })
       contractText.value = extracted.text
       isExtractingPdf.value = false
+      inputStage.value = 'Text extracted. Creating scan task…'
     }
 
+    inputStage.value = 'Sending document for GPT analysis…'
     const created = await authedFetch<{ id: string }>(
       '/api/contract-scanner/scans',
       {
@@ -259,11 +271,13 @@ async function runScan() {
       },
     )
     scanId.value = created.id
+    inputStage.value = 'Scan started. Waiting for analysis status…'
     await fetchScanState(created.id)
     startPolling(created.id)
   }
   catch (e: unknown) {
     runError.value = e instanceof Error ? e.message : 'Failed to start scan'
+    inputStage.value = 'Failed to process file.'
   }
   finally {
     isExtractingPdf.value = false
@@ -436,9 +450,10 @@ watch(
         <span v-if="fileName && (fileMime === 'application/pdf' || fileMime.startsWith('image/'))" class="block text-xs text-zinc-500">
           Text is extracted first and shown below for your review.
         </span>
-        <span v-if="isExtractingPdf" class="block text-xs text-zinc-500">
-          Extracting text from file…
-        </span>
+        <div v-if="inputStage" class="flex items-center gap-2 text-xs text-zinc-500">
+          <Icon :name="isExtractingPdf || isSubmitting ? 'svg-spinners:180-ring' : 'mdi:check-circle-outline'" size="14" />
+          <span>{{ inputStage }}</span>
+        </div>
 
         <div v-if="photoPages.length" class="pt-2 border-t border-zinc-200 dark:border-zinc-800">
           <div class="flex items-center justify-between mb-2">
