@@ -2,7 +2,7 @@
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { adminServices } from '~/data'
+import { publicServices } from '~/data'
 
 const isOpen = ref(false)
 const menuRef = ref<HTMLElement | null>(null)
@@ -35,7 +35,7 @@ function toggle() {
       aria-haspopup="menu"
       @click="toggle"
     >
-      Services
+      Tools
       <Icon name="mdi:chevron-down" size="18" aria-hidden="true" :class="isOpen ? 'rotate-180' : ''" class="transition-transform" />
     </button>
 
@@ -53,7 +53,7 @@ function toggle() {
         class="absolute right-0 top-full mt-2 w-44 rounded-md border border-zinc-200 dark:border-zinc-800 bg-[#F1F2F4] dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
-          v-for="item in adminServices"
+          v-for="item in publicServices"
           :key="item.path"
           :to="item.path"
           role="menuitem"

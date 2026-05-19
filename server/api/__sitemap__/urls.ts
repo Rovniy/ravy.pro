@@ -17,6 +17,9 @@ export default defineEventHandler(async (event) => {
   urls.push({
     loc: '/tools/qr-code-generator',
   })
+  urls.push({
+    loc: '/tools/contract-red-flag-scanner',
+  })
 
   const tagSet = new Set<string>()
 

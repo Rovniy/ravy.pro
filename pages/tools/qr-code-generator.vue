@@ -2,80 +2,30 @@
 import type QRCodeStyling from 'qr-code-styling'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { baseData } from '~/data'
 
 definePageMeta({
   layout: 'default',
 })
 
-useHead({
+useToolPageSchema({
+  path: '/tools/qr-code-generator',
   title: 'Free QR Code Generator',
-  link: [
-    { rel: 'canonical', href: `${baseData.site.url}/tools/qr-code-generator` },
-  ],
-  meta: [
-    { name: 'description', content: 'Create custom QR codes online for links, text, and contacts. Configure style, colors, and logo, then download PNG for free.' },
-    { name: 'robots', content: 'index, follow' },
-    { property: 'og:title', content: 'Free QR Code Generator' },
-    { property: 'og:description', content: 'Create custom QR codes online, customize style and colors, and download PNG for free.' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: `${baseData.site.url}/tools/qr-code-generator` },
-    { property: 'og:image', content: `${baseData.site.url}/open_graph/pages/qr-code-generator.png` },
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:title', content: 'Free QR Code Generator' },
-    { name: 'twitter:description', content: 'Create custom QR codes online, customize style and colors, and download PNG for free.' },
-    { name: 'twitter:image', content: `${baseData.site.url}/open_graph/pages/qr-code-generator.png` },
-  ],
-  script: [
+  description: 'Create custom QR codes online for links, text, and contacts. Configure style, colors, and logo, then download PNG for free.',
+  ogImage: '/open_graph/pages/qr-code-generator.png',
+  appDescription: 'Online QR code generator with style, color, and logo customization.',
+  appIsFree: true,
+  faq: [
     {
-      type: 'application/ld+json',
-      children: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        'name': 'Free QR Code Generator',
-        'applicationCategory': 'UtilitiesApplication',
-        'operatingSystem': 'Web',
-        'url': `${baseData.site.url}/tools/qr-code-generator`,
-        'description': 'Online QR code generator with style, color, and logo customization.',
-        'offers': {
-          '@type': 'Offer',
-          'price': '0',
-          'priceCurrency': 'USD',
-        },
-      }),
+      question: 'How do I create a QR code?',
+      answer: 'Paste your URL or text, choose style and colors, then download PNG.',
     },
     {
-      type: 'application/ld+json',
-      children: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        'mainEntity': [
-          {
-            '@type': 'Question',
-            'name': 'How do I create a QR code?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'Paste your URL or text, choose style and colors, then download PNG.',
-            },
-          },
-          {
-            '@type': 'Question',
-            'name': 'Can I add a logo to the QR code?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'Yes. Upload a center image to place your logo over the generated QR code.',
-            },
-          },
-          {
-            '@type': 'Question',
-            'name': 'Is this QR code generator free?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'Yes. You can generate and download styled QR codes for free.',
-            },
-          },
-        ],
-      }),
+      question: 'Can I add a logo to the QR code?',
+      answer: 'Yes. Upload a center image to place your logo over the generated QR code.',
+    },
+    {
+      question: 'Is this QR code generator free?',
+      answer: 'Yes. You can generate and download styled QR codes for free.',
     },
   ],
 })

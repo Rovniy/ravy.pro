@@ -118,6 +118,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     shortifyAdminEmail: '',
+    openaiApiKey: '',
     public: {
       adminEmail: '',
       firebase: {
@@ -140,6 +141,7 @@ export default defineNuxtConfig({
         '/about',
         '/links',
         '/tools/qr-code-generator',
+        '/tools/contract-red-flag-scanner',
       ],
     },
     routeRules: {
@@ -151,8 +153,10 @@ export default defineNuxtConfig({
       '/docs/**': { prerender: true },
       // Auth-gated / dynamic routes stay SSR.
       '/shortify': { ssr: true, prerender: false },
+      '/account': { ssr: true, prerender: false },
       '/qr-code': { redirect: '/tools/qr-code-generator' },
       '/tools/qr-code-generator': { ssr: true, prerender: true },
+      '/tools/contract-red-flag-scanner': { ssr: true, prerender: true },
       '/s/**': { prerender: false },
       // Static asset cache hints. Firebase App Hosting CDN honours these
       // as-is; `s-maxage` lets the edge cache longer than the browser if we
@@ -217,6 +221,7 @@ export default defineNuxtConfig({
       '/tag/customization/',
       '/projects',
       '/projects/',
+      '/account',
       '/shortify',
       '/s/',
     ],

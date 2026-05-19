@@ -201,6 +201,24 @@ interface ItemListOpts {
   items: Array<{ url: string, name: string, image?: string }>
 }
 
+interface ToolFaqItem {
+  question: string
+  answer: string
+}
+
+interface ToolPageSchemaOpts {
+  path: string
+  title: string
+  description: string
+  ogImage?: string
+  robots?: string
+  appCategory?: string
+  appName?: string
+  appDescription?: string
+  appIsFree?: boolean
+  faq?: ToolFaqItem[]
+}
+
 function itemListNode(opts: ItemListOpts) {
   return {
     '@type': 'ItemList',
@@ -432,4 +450,89 @@ export function useGenericPageSchema(opts: {
     }),
     crumb,
   ])
+}
+
+// Rule for new tool pages:
+// use this helper instead of custom useHead blocks to keep metadata/schema
+// formatting consistent with existing pages in this codebase.
+export function useToolPageSchema(opts: ToolPageSchemaOpts) {
+  const url = absUrl(opts.path)
+  const image = opts.ogImage ? absUrl(opts.ogImage) : absUrl('/og-image.webp')
+
+  useHead({
+    title: opts.title,
+    link: [
+      { rel: 'canonical', href: url },
+    ],
+    meta: [
+      { name: 'description', content: opts.description },
+      { name: 'robots', content: opts.robots || 'index, follow' },
+      { property: 'og:title', content: opts.title },
+      { property: 'og:description', content: opts.description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: url },
+      { property: 'og:image', content: image },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: opts.title },
+      { name: 'twitter:description', content: opts.description },
+      { name: 'twitter:image', content: image },
+    ],
+  })
+
+  const crumb = breadcrumbNode([
+    { name: 'Home', url: `${SITE}/` },
+    { name: 'Tools', url: `${SITE}/tools` },
+    { name: opts.title, url },
+  ])
+
+  const graph: unknown[] = [
+    websiteNode(),
+    organizationNode(),
+    personNode(),
+    webPageNode({
+      url,
+      name: opts.title,
+      description: opts.description,
+      type: 'WebPage',
+      breadcrumbId: crumb['@id'],
+      image: opts.ogImage || '/og-image.webp',
+      primaryEntityId: `${url}#app`,
+    }),
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${url}#app`,
+      'name': opts.appName || opts.title,
+      'applicationCategory': opts.appCategory || 'UtilitiesApplication',
+      'operatingSystem': 'Web',
+      'url': url,
+      'description': opts.appDescription || opts.description,
+      ...(opts.appIsFree
+        ? {
+            offers: {
+              '@type': 'Offer',
+              'price': '0',
+              'priceCurrency': 'USD',
+            },
+          }
+        : {}),
+    },
+    crumb,
+  ]
+
+  if (opts.faq?.length) {
+    graph.push({
+      '@type': 'FAQPage',
+      '@id': `${url}#faq`,
+      'mainEntity': opts.faq.map(item => ({
+        '@type': 'Question',
+        'name': item.question,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': item.answer,
+        },
+      })),
+    })
+  }
+
+  injectGraph(graph)
 }

@@ -31,6 +31,7 @@ export const navbarData = {
 
 export const adminServices: { name: string, path: string }[] = [
   { name: 'Shortify', path: '/shortify' },
+  { name: 'Contract Red-Flag Scanner', path: '/tools/contract-red-flag-scanner' },
 ]
 
 export const publicServices: { name: string, path: string }[] = [

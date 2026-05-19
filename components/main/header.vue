@@ -2,10 +2,10 @@
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
-import { navbarData, publicServices } from '~/data'
+import { adminServices, navbarData, publicServices } from '~/data'
 
 const { y } = useWindowScroll()
-const { state, isAuthed, signIn, signOut } = useAuth()
+const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
 
 const scrolled = computed(() => y.value > 20)
 
@@ -78,9 +78,19 @@ async function onSignIn() {
             About
           </NuxtLink>
         </li>
-        <li class="hidden sm:block">
-          <MainServicesMenu />
+        <li v-if="isAuthed" class="hidden sm:block">
+          <NuxtLink to="/account" class="nav-link hover:text-sky-700">
+            Account
+          </NuxtLink>
         </li>
+        <li class="hidden sm:block">
+          <MainToolsMenu />
+        </li>
+        <ClientOnly>
+          <li v-if="isAdmin" class="hidden sm:block">
+            <MainServicesMenu />
+          </li>
+        </ClientOnly>
         <li class="flex items-center gap-2">
           <ClientOnly>
             <button
@@ -170,9 +180,9 @@ async function onSignIn() {
               About
             </NuxtLink>
           </li>
-          <li>
-            <NuxtLink to="/tools/qr-code-generator" class="nav-link block py-3 hover:text-sky-700">
-              QR Tool
+          <li v-if="isAuthed">
+            <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-700">
+              Account
             </NuxtLink>
           </li>
           <li class="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -183,6 +193,18 @@ async function onSignIn() {
               {{ item.name }}
             </NuxtLink>
           </li>
+          <ClientOnly>
+            <template v-if="isAdmin">
+              <li class="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                Services
+              </li>
+              <li v-for="item in adminServices" :key="item.path">
+                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-700">
+                  {{ item.name }}
+                </NuxtLink>
+              </li>
+            </template>
+          </ClientOnly>
         </ul>
       </nav>
     </Transition>
