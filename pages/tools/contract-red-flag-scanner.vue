@@ -34,7 +34,9 @@ const fileInputRef = ref<HTMLInputElement | null>(null)
 const photoInputRef = ref<HTMLInputElement | null>(null)
 const photoPages = ref<Array<{ name: string, mime: string, base64: string }>>([])
 
-const hasInput = computed(() => contractText.value.trim().length > 0)
+const hasInput = computed(() => {
+  return contractText.value.trim().length > 0 || photoPages.value.length > 0
+})
 const isRunning = computed(() => {
   const status = scanState.value?.status
   return isSubmitting.value || isExtractingPdf.value || status === 'queued' || status === 'processing'
