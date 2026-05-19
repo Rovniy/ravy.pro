@@ -22,6 +22,9 @@ const scanId = ref('')
 const scanState = ref<ContractScanRecord | null>(null)
 const signInError = ref('')
 const runError = ref('')
+const shareError = ref('')
+const copiedShare = ref(false)
+const isSharing = ref(false)
 const isSubmitting = ref(false)
 const isExtractingPdf = ref(false)
 const isDragging = ref(false)
@@ -223,6 +226,8 @@ async function runScan() {
   scanId.value = ''
 
   try {
+    copiedShare.value = false
+    shareError.value = ''
     if (photoPages.value.length > 0) {
       isExtractingPdf.value = true
       const extracted = await authedFetch<{ text: string }>('/api/contract-scanner/extract-text', {
@@ -261,6 +266,34 @@ async function runScan() {
   finally {
     isExtractingPdf.value = false
     isSubmitting.value = false
+  }
+}
+
+async function shareCurrentScan() {
+  if (isSharing.value)
+    return
+  shareError.value = ''
+  copiedShare.value = false
+  isSharing.value = true
+  try {
+    const id = scanState.value?.id || scanId.value
+    if (!id)
+      throw new Error('Scan id not found')
+    const data = await authedFetch<{ shareId: string }>(`/api/contract-scanner/scans/${id}/share`, {
+      method: 'POST',
+    })
+    const url = `${window.location.origin}/scan-share/${data.shareId}`
+    await navigator.clipboard.writeText(url)
+    copiedShare.value = true
+    setTimeout(() => {
+      copiedShare.value = false
+    }, 2500)
+  }
+  catch (e: unknown) {
+    shareError.value = e instanceof Error ? e.message : 'Failed to create share link'
+  }
+  finally {
+    isSharing.value = false
   }
 }
 
@@ -481,166 +514,28 @@ watch(
       </div>
     </div>
 
-    <section v-if="isAuthed && isAdmin && scanState?.status === 'done' && scanResult" class="mt-8 rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 bg-white dark:bg-slate-900">
-      <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-        <Icon name="mdi:file-search-outline" size="20" />
-        Scan Results
-      </h2>
-      <p class="mt-1 text-base text-zinc-600 dark:text-zinc-400">
-        Found {{ flaggedCount }} potential red flags, including {{ highCount }} high-risk items.
-      </p>
-      <div class="mt-4 rounded-lg border border-zinc-200 dark:border-zinc-700 p-4 bg-zinc-50/60 dark:bg-zinc-900/40">
-        <p class="text-zinc-500 dark:text-zinc-400 text-sm flex items-center gap-2">
-          <Icon name="mdi:gauge" size="16" />
-          Overall risk
-        </p>
-        <p class="font-medium text-zinc-900 dark:text-zinc-100 capitalize">
-          {{ scanResult.overallRiskScore.score }}
-        </p>
-        <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-          {{ scanResult.overallRiskScore.reason }}
-        </p>
-      </div>
-      <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-        <div class="rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 bg-zinc-50/40 dark:bg-zinc-900/30">
-          <p class="text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-            <Icon name="mdi:translate" size="16" />
-            Language
-          </p>
-          <p class="font-medium text-zinc-900 dark:text-zinc-100">
-            {{ scanResult.language }}
-          </p>
-        </div>
-        <div class="rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 bg-zinc-50/40 dark:bg-zinc-900/30">
-          <p class="text-zinc-500 dark:text-zinc-400 flex items-center gap-2">
-            <span>{{ jurisdictionFlag(scanResult.jurisdiction) }}</span>
-            Jurisdiction
-          </p>
-          <p class="font-medium text-zinc-900 dark:text-zinc-100">
-            {{ scanResult.jurisdiction }}
-          </p>
-        </div>
-      </div>
-      <p class="mt-3 text-sm text-zinc-700 dark:text-zinc-300">
-        {{ scanResult.summary }}
-      </p>
+    <ContractScanResultPanel
+      v-if="isAuthed && isAdmin && scanState?.status === 'done' && scanResult"
+      class="mt-8"
+      :result="scanResult"
+    />
 
-      <div v-if="scanResult.narrowPoints?.length" class="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800">
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Icon name="mdi:tune-vertical" size="16" />
-          Narrow Points
-        </h3>
-        <ul class="mt-2 space-y-2 text-sm text-zinc-700 dark:text-zinc-300 list-disc pl-5">
-          <li v-for="(point, idx) in scanResult.narrowPoints" :key="`${idx}-${point.slice(0, 20)}`">
-            {{ point }}
-          </li>
-        </ul>
-      </div>
-
-      <div v-if="scanResult.hiddenRisks?.length" class="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800">
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Icon name="mdi:eye-off-outline" size="16" />
-          Hidden Risks
-        </h3>
-        <ul class="mt-2 space-y-2 text-sm text-zinc-700 dark:text-zinc-300 list-disc pl-5">
-          <li v-for="(risk, idx) in scanResult.hiddenRisks" :key="`${idx}-${risk.slice(0, 20)}`">
-            {{ risk }}
-          </li>
-        </ul>
-      </div>
-
-      <div v-if="scanResult.missingProtections?.length" class="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800">
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Icon name="mdi:shield-alert-outline" size="16" />
-          Missing Protections
-        </h3>
-        <ul class="mt-2 space-y-2 text-sm text-zinc-700 dark:text-zinc-300 list-disc pl-5">
-          <li v-for="(risk, idx) in scanResult.missingProtections" :key="`${idx}-${risk.slice(0, 20)}`">
-            {{ risk }}
-          </li>
-        </ul>
-      </div>
-
-      <div v-if="scanResult.questionsToClarify?.length" class="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800">
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Icon name="mdi:help-circle-outline" size="16" />
-          Questions to Clarify
-        </h3>
-        <ul class="mt-2 space-y-2 text-sm text-zinc-700 dark:text-zinc-300 list-disc pl-5">
-          <li v-for="(q, idx) in scanResult.questionsToClarify" :key="`${idx}-${q.slice(0, 20)}`">
-            {{ q }}
-          </li>
-        </ul>
-      </div>
-
-      <div v-if="scanResult.creatorNegotiationPriorities?.length" class="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800">
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Icon name="mdi:handshake-outline" size="16" />
-          Negotiation Priorities
-        </h3>
-        <div class="mt-2 space-y-3">
-          <article
-            v-for="(item, idx) in scanResult.creatorNegotiationPriorities"
-            :key="`${idx}-${item.priority}`"
-            class="rounded-md border border-zinc-200 dark:border-zinc-700 p-3"
-          >
-            <p class="font-medium text-zinc-900 dark:text-zinc-100">
-              {{ item.priority }}
-            </p>
-            <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-              {{ item.whyItMatters }}
-            </p>
-            <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-              Fallback: {{ item.fallbackPosition }}
-            </p>
-          </article>
-        </div>
-      </div>
-
-      <div v-if="sortedRedFlags.length" class="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800 space-y-3">
-        <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-          <Icon name="mdi:alert-decagram-outline" size="16" />
-          Red Flags (sorted by severity)
-        </h3>
-        <article
-          v-for="(item, idx) in sortedRedFlags"
-          :key="`${idx}-${item.title}`"
-          class="rounded-lg border p-4"
-          :class="item.severity === 'high'
-            ? 'border-red-300 dark:border-red-700 bg-red-50/70 dark:bg-red-950/20'
-            : item.severity === 'medium'
-              ? 'border-amber-300 dark:border-amber-700 bg-amber-50/70 dark:bg-amber-950/20'
-              : 'border-zinc-300 dark:border-zinc-700 bg-zinc-50/70 dark:bg-zinc-900/40'"
-        >
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-            <h3 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-              <Icon :name="severityIcon(item.severity)" size="16" />
-              {{ item.title }}
-            </h3>
-            <span class="text-xs uppercase font-semibold" :class="item.severity === 'high' ? 'text-red-700 dark:text-red-300' : 'text-amber-700 dark:text-amber-300'">
-              {{ item.severity }}
-            </span>
-          </div>
-          <p class="mt-2 text-sm text-zinc-700 dark:text-zinc-300 break-words">
-            Clause: <code class="px-1 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 break-words">{{ item.clauseQuote }}</code>
-          </p>
-          <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-            Risk type: <span class="font-medium">{{ item.riskType }}</span>
-          </p>
-          <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-            {{ item.whyRisky }}
-          </p>
-          <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-            Creator impact: {{ item.creatorImpact }}
-          </p>
-          <p class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-            Suggested action: {{ item.suggestion }}
-          </p>
-        </article>
-      </div>
-
-      <p v-else class="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-        No obvious red flags matched these 10 patterns. This does not mean the contract is safe.
+    <section
+      v-if="isAuthed && isAdmin && scanState?.status === 'done' && scanResult"
+      class="mt-4 flex flex-col items-start gap-2"
+    >
+      <button
+        type="button"
+        :disabled="isSharing"
+        class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-base hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        :class="isSharing ? 'opacity-70 cursor-not-allowed' : ''"
+        @click="shareCurrentScan"
+      >
+        <Icon :name="isSharing ? 'svg-spinners:180-ring' : copiedShare ? 'mdi:check' : 'mdi:share-variant'" size="18" />
+        {{ isSharing ? 'Creating share link…' : copiedShare ? 'Link copied' : 'Share scan result' }}
+      </button>
+      <p v-if="shareError" class="text-sm text-red-600 dark:text-red-400">
+        {{ shareError }}
       </p>
     </section>
 

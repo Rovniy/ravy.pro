@@ -154,6 +154,7 @@ export default defineNuxtConfig({
       // Auth-gated / dynamic routes stay SSR.
       '/shortify': { ssr: true, prerender: false },
       '/account': { ssr: true, prerender: false },
+      '/scan-share/**': { ssr: true, prerender: false },
       '/qr-code': { redirect: '/tools/qr-code-generator' },
       '/tools/qr-code-generator': { ssr: true, prerender: true },
       '/tools/contract-red-flag-scanner': { ssr: true, prerender: true },

@@ -31,6 +31,7 @@ const error = ref('')
 const historyError = ref('')
 const scans = ref<ContractScanRecord[]>([])
 const selectedScanId = ref('')
+const copiedShareFor = ref('')
 
 async function authedFetch<T>(url: string, init: RequestInit = {}) {
   const token = await getIdToken(true)
@@ -72,6 +73,25 @@ async function loadScanHistory() {
   }
   finally {
     loadingHistory.value = false
+  }
+}
+
+async function shareScan(scanId: string) {
+  historyError.value = ''
+  try {
+    const data = await authedFetch<{ shareId: string }>(`/api/contract-scanner/scans/${scanId}/share`, {
+      method: 'POST',
+    })
+    const url = `${window.location.origin}/scan-share/${data.shareId}`
+    await navigator.clipboard.writeText(url)
+    copiedShareFor.value = scanId
+    setTimeout(() => {
+      if (copiedShareFor.value === scanId)
+        copiedShareFor.value = ''
+    }, 2500)
+  }
+  catch (e: unknown) {
+    historyError.value = e instanceof Error ? e.message : 'Failed to create share link'
   }
 }
 
@@ -247,15 +267,24 @@ function formatDate(iso?: string) {
             </p>
 
             <div class="mt-3">
-              <button
-                v-if="scan.result"
-                type="button"
-                class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                @click="selectedScanId = selectedScanId === scan.id ? '' : scan.id"
-              >
-                <Icon :name="selectedScanId === scan.id ? 'mdi:chevron-up' : 'mdi:chevron-down'" size="16" />
-                {{ selectedScanId === scan.id ? 'Hide full report' : 'View full report' }}
-              </button>
+              <div v-if="scan.result" class="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  @click="selectedScanId = selectedScanId === scan.id ? '' : scan.id"
+                >
+                  <Icon :name="selectedScanId === scan.id ? 'mdi:chevron-up' : 'mdi:chevron-down'" size="16" />
+                  {{ selectedScanId === scan.id ? 'Hide full report' : 'View full report' }}
+                </button>
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  @click="shareScan(scan.id)"
+                >
+                  <Icon :name="copiedShareFor === scan.id ? 'mdi:check' : 'mdi:share-variant'" size="16" />
+                  {{ copiedShareFor === scan.id ? 'Link copied' : 'Share report' }}
+                </button>
+              </div>
             </div>
 
             <p v-if="scan.error" class="mt-2 text-sm text-red-600 dark:text-red-400">
