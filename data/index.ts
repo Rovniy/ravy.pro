@@ -31,7 +31,10 @@ export const navbarData = {
 
 export const adminServices: { name: string, path: string }[] = [
   { name: 'Shortify', path: '/shortify' },
-  { name: 'QR-code', path: '/qr-code' },
+]
+
+export const publicServices: { name: string, path: string }[] = [
+  { name: 'QR Code Generator', path: '/tools/qr-code-generator' },
 ]
 
 export const footerData = {

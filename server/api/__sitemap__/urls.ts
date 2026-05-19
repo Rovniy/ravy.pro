@@ -14,6 +14,10 @@ export default defineEventHandler(async (event) => {
     images?: { loc: string, title?: string, caption?: string }[]
   }[] = []
 
+  urls.push({
+    loc: '/tools/qr-code-generator',
+  })
+
   const tagSet = new Set<string>()
 
   for (const post of posts) {

@@ -7,6 +7,8 @@ export default defineNuxtRouteMiddleware((to, _) => {
     '/projects/tabs-broadcast/': '/blogs/tabs-broadcast',
     '/projects/boo-stories/': '/categories/tinyboo',
     '/boo-stories-privacy-policy/': '/docs/tiny-boo-privacy-policy',
+    '/qr-code': '/tools/qr-code-generator',
+    '/qr-code/': '/tools/qr-code-generator',
   }
 
   // Проверяем, нужно ли делать редирект

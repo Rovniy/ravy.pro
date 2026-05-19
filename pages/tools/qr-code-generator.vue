@@ -2,21 +2,83 @@
 import type QRCodeStyling from 'qr-code-styling'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useAuth } from '~/composables/useAuth'
+import { baseData } from '~/data'
 
 definePageMeta({
   layout: 'default',
 })
 
 useHead({
-  title: 'QR-code',
+  title: 'Free QR Code Generator',
+  link: [
+    { rel: 'canonical', href: `${baseData.site.url}/tools/qr-code-generator` },
+  ],
   meta: [
-    { name: 'description', content: 'Internal admin tool for generating styled QR codes.' },
-    { name: 'robots', content: 'noindex, nofollow' },
+    { name: 'description', content: 'Create custom QR codes online for links, text, and contacts. Configure style, colors, and logo, then download PNG for free.' },
+    { name: 'robots', content: 'index, follow' },
+    { property: 'og:title', content: 'Free QR Code Generator' },
+    { property: 'og:description', content: 'Create custom QR codes online, customize style and colors, and download PNG for free.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: `${baseData.site.url}/tools/qr-code-generator` },
+    { property: 'og:image', content: `${baseData.site.url}/open_graph/pages/qr-code-generator.png` },
+    { name: 'twitter:card', content: 'summary_large_image' },
+    { name: 'twitter:title', content: 'Free QR Code Generator' },
+    { name: 'twitter:description', content: 'Create custom QR codes online, customize style and colors, and download PNG for free.' },
+    { name: 'twitter:image', content: `${baseData.site.url}/open_graph/pages/qr-code-generator.png` },
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': 'Free QR Code Generator',
+        'applicationCategory': 'UtilitiesApplication',
+        'operatingSystem': 'Web',
+        'url': `${baseData.site.url}/tools/qr-code-generator`,
+        'description': 'Online QR code generator with style, color, and logo customization.',
+        'offers': {
+          '@type': 'Offer',
+          'price': '0',
+          'priceCurrency': 'USD',
+        },
+      }),
+    },
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'How do I create a QR code?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Paste your URL or text, choose style and colors, then download PNG.',
+            },
+          },
+          {
+            '@type': 'Question',
+            'name': 'Can I add a logo to the QR code?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Yes. Upload a center image to place your logo over the generated QR code.',
+            },
+          },
+          {
+            '@type': 'Question',
+            'name': 'Is this QR code generator free?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Yes. You can generate and download styled QR codes for free.',
+            },
+          },
+        ],
+      }),
+    },
   ],
 })
-
-const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
 
 type DotType = 'square' | 'rounded' | 'dots' | 'classy' | 'classy-rounded' | 'extra-rounded'
 type CornerSquareType = 'square' | 'dot' | 'extra-rounded'
@@ -33,7 +95,6 @@ const bgColor = ref('#ffffff')
 const image = ref<string>('')
 const imageSize = ref(0.3)
 const hideBgDots = ref(true)
-const signInError = ref('')
 
 const previewRef = ref<HTMLDivElement | null>(null)
 let qrCode: QRCodeStyling | null = null
@@ -131,66 +192,20 @@ function download() {
     return
   qrCode.download({ name: `qr-${Date.now()}`, extension: 'png' })
 }
-
-async function onSignIn() {
-  signInError.value = ''
-  try {
-    await signIn()
-  }
-  catch (e: unknown) {
-    signInError.value = e instanceof Error ? e.message : 'Sign-in failed'
-  }
-}
 </script>
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <header class="mb-8">
       <h1 class="text-3xl font-bold tracking-tight">
-        QR-code
+        Free QR Code Generator
       </h1>
       <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
         Generate a styled QR code, optionally with a center image, and download as PNG.
       </p>
     </header>
 
-    <div v-if="!state.ready" class="text-zinc-500">
-      Loading…
-    </div>
-
-    <div v-else-if="!isAuthed" class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 bg-zinc-50 dark:bg-zinc-900/50">
-      <h2 class="text-lg font-semibold mb-2">
-        Sign in required
-      </h2>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-        This area is restricted. Use the <strong>Sign in</strong> button in the top-right of the header, or click below.
-      </p>
-      <button
-        type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
-        @click="onSignIn"
-      >
-        <Icon name="mdi:google" class="w-4 h-4" />
-        Sign in with Google
-      </button>
-      <p v-if="signInError" class="mt-3 text-sm text-red-600 dark:text-red-400">
-        {{ signInError }}
-      </p>
-    </div>
-
-    <div v-else-if="!isAdmin" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
-      <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
-        Access denied
-      </h2>
-      <p class="text-sm text-red-700/80 dark:text-red-300/80 mb-4">
-        Your account <strong>{{ state.user?.email }}</strong> is not authorized to use this service.
-      </p>
-      <button type="button" class="text-sm underline hover:cursor-pointer" @click="signOut">
-        Sign out
-      </button>
-    </div>
-
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Form -->
       <form class="space-y-4 text-sm" @submit.prevent>
         <div>
@@ -333,5 +348,44 @@ async function onSignIn() {
         </button>
       </div>
     </div>
+
+    <section class="mt-12 border-t border-zinc-200 dark:border-zinc-800 pt-8">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+        Create QR Codes Online
+      </h2>
+      <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+        This free tool helps you generate QR codes for websites, text, contact cards, and marketing campaigns. Customize colors, dot styles, and corners to match your brand. You can also upload a center logo and download the final image as PNG.
+      </p>
+
+      <h2 class="mt-8 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+        FAQ
+      </h2>
+      <dl class="mt-3 space-y-4 text-sm">
+        <div>
+          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+            How to create a QR code online?
+          </dt>
+          <dd class="mt-1 text-zinc-600 dark:text-zinc-400">
+            Enter your URL or text, adjust style settings, and click download.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+            Can I create a QR code with logo?
+          </dt>
+          <dd class="mt-1 text-zinc-600 dark:text-zinc-400">
+            Yes. Upload a center image to place your logo in the code.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+            Is this QR code generator free to use?
+          </dt>
+          <dd class="mt-1 text-zinc-600 dark:text-zinc-400">
+            Yes, it is fully free and works in your browser.
+          </dd>
+        </div>
+      </dl>
+    </section>
   </div>
 </template>
