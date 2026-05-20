@@ -180,6 +180,7 @@ export default defineNuxtConfig({
       '/android-chrome-512x512.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
       '/og-image.webp': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/not-found.png': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/api/contract-scanner/**': { maxBodySize: '15mb' }, // sane cap
     },
   },
 

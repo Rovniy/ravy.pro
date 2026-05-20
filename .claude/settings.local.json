@@ -41,7 +41,9 @@
       "PowerShell(Get-NetTCPConnection *)",
       "PowerShell(Get-Process *)",
       "PowerShell(npm run *)",
-      "PowerShell(npx nuxi typecheck 2>&1 | Select-Object -First 80)"
+      "PowerShell(npx nuxi typecheck 2>&1 | Select-Object -First 80)",
+      "Bash(npm audit *)",
+      "Bash(grep -E \"google-credentials|serviceAccount|\\\\.env\\(\\\\.|$\\)\")"
     ]
   }
 }

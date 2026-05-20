@@ -5,19 +5,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run tina        # Dev server with TinaCMS visual editor (preferred for content work)
-npm run dev         # Dev server without TinaCMS
-npm run build       # Production build
-npm run generate    # Static site generation
-npm run lint        # ESLint check
-npm run lint:fix    # Auto-fix ESLint issues
+npm run tina          # Dev server with TinaCMS visual editor (preferred for content work)
+npm run dev           # Dev server without TinaCMS
+npm run build         # Production build
+npm run generate      # Static site generation
+npm run start         # Run the built server locally (node .output/server/index.mjs)
+npm run lint          # ESLint check
+npm run lint:fix      # Auto-fix ESLint issues
+npm test              # Run vitest once
+npm run test:watch    # Vitest watch mode
+npm run test:coverage # Vitest with coverage report
 ```
-
-No test suite is configured.
 
 ## Architecture
 
-**Nuxt 3** personal blog and portfolio site for Andrei Rovniy. Uses **Nuxt Content v2** for markdown-based content and **TinaCMS** as the visual CMS layer on top.
+**Nuxt 4** personal blog and portfolio site for Andrei Rovniy. Uses **@nuxt/content v3** for markdown-based content and **TinaCMS** as the visual CMS layer on top.
 
 ### Content Pipeline
 
@@ -39,15 +41,24 @@ Standard Nuxt file-based routing in `/pages/`. Key non-obvious routes:
 
 ### Styling
 
-Tailwind CSS with dark mode as default (`colorMode.defaultValue: 'dark'` in nuxt.config.ts). Dark mode toggled via class. Custom font is Space Grotesk. Page transitions use a 0.4s blur effect configured in nuxt.config.ts.
+Tailwind CSS v4 (via `@tailwindcss/postcss`) with dark mode as default (`colorMode.defaultValue: 'dark'` in nuxt.config.ts). Dark mode toggled via class. Custom font is Space Grotesk. Page transitions use a 0.4s blur effect configured in nuxt.config.ts.
 
 ### OG Images
 
-`OgImage.vue` component + `nuxt-og-image` module generates open graph images. The satori renderer is used. OG image template path per page is set via `defineOgImage()` in page components.
+`OgImage.vue` component + `nuxt-og-image` module generates open graph images. The Satori renderer is used. OG image template path per page is set via `defineOgImage()` in page components.
+
+### Tests
+
+Vitest with `happy-dom`. Specs live next to components/utils. Use `npm test` for one-shot runs, `npm run test:coverage` for coverage.
 
 ### Deployment
 
-Push to `master` → GitHub Actions (`.github/workflows/deploy.yml`) → SSH into VPS → `git pull` + hard reset → Docker rebuild via `docker-compose`. The container runs on port 3030 externally mapped to 3000 internally. Nginx config is at `ravy.pro.nginx`.
+Deployed to **Firebase App Hosting** (backend `ravy-pro` in Firebase project `xploit-games`). Configuration:
+- `apphosting.yaml` — runtime config (CPU, memory, instances, env vars)
+- `firebase.json` — backend wiring + Firestore rules
+- `.firebaserc` — Firebase project mapping
+
+App Hosting builds on push to `master` via its own integrated GitHub connector — there is no `.github/workflows/` in this repo. Runtime is Node.js (App Hosting default), Nitro server entry is `.output/server/index.mjs` after `npm run build`.
 
 ### ESLint
 

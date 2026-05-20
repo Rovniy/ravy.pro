@@ -10,7 +10,7 @@ Personal blog and portfolio of Andrei Rovniy. Built with Nuxt 4, markdown-based 
 
 | Layer | Technology |
 |---|---|
-| Framework | Nuxt 4.1 + Vue 3 |
+| Framework | Nuxt 4 + Vue 3 |
 | Content | @nuxt/content v3 (SQLite + markdown) |
 | CMS | TinaCMS 3.7 (visual editor at `/admin`) |
 | Styling | Tailwind CSS v4 via @tailwindcss/postcss |
@@ -19,10 +19,10 @@ Personal blog and portfolio of Andrei Rovniy. Built with Nuxt 4, markdown-based 
 | OG Images | nuxt-og-image v6 with Satori renderer |
 | SEO | @nuxtjs/sitemap, @nuxtjs/robots |
 | Fonts | Space Grotesk via @fontsource (self-hosted) |
-| Runtime | Node.js 22 + Nitro server |
-| Container | Docker (multi-stage) + docker-compose |
-| Reverse proxy | Nginx with Gzip + Brotli |
-| SSL | Let's Encrypt (Certbot) |
+| Runtime | Node.js 20 + Nitro server |
+| Tests | Vitest + happy-dom |
+| Hosting | Firebase App Hosting |
+| Backend services | Firebase / Firestore |
 
 ---
 
@@ -30,7 +30,7 @@ Personal blog and portfolio of Andrei Rovniy. Built with Nuxt 4, markdown-based 
 
 ### Prerequisites
 
-- Node.js 22+
+- Node.js 20+
 - npm 10+
 
 ### Setup
@@ -57,10 +57,15 @@ npm run lint
 # Auto-fix lint issues (run before committing)
 npm run lint:fix
 
+# Tests
+npm test
+npm run test:watch
+npm run test:coverage
+
 # Production build
 npm run build
 
-# Start production server locally
+# Start the production server locally (after build)
 npm run start
 ```
 
@@ -68,7 +73,7 @@ Dev server runs at **http://localhost:3000**.
 
 ### Environment
 
-No `.env` file is required for local development. All site-wide configuration (author name, social links, SEO defaults) lives in `data/index.ts`.
+Local development does not require a `.env` file for the public site. All site-wide configuration (author name, social links, SEO defaults) lives in `data/index.ts`. Firebase-related features rely on credentials provided by App Hosting at runtime; see `.env.example` for any values needed locally.
 
 ---
 
@@ -123,102 +128,36 @@ Place blog images in:
 
 ---
 
-## Server Setup (first time)
+## Deployment
 
-These steps are required once on a fresh VPS before CI/CD can deploy automatically.
+The site is hosted on **Firebase App Hosting** (backend `ravy-pro` in Firebase project `xploit-games`). Pushes to `master` trigger an automatic rebuild via App Hosting's GitHub connector — there is no GitHub Actions workflow in this repo.
 
-### 1. Install dependencies
+### Configuration files
 
-```bash
-# Docker
-curl -fsSL https://get.docker.com | sh
-usermod -aG docker $USER
-
-# Docker Compose
-apt install docker-compose-plugin
-
-# Nginx
-apt install nginx
-
-# Certbot (SSL)
-apt install certbot python3-certbot-nginx
-
-# Brotli module for Nginx
-apt install libnginx-mod-http-brotli-filter
-```
-
-### 2. Clone repository
-
-```bash
-mkdir -p /home/ravy_pro
-cd /home/ravy_pro
-git clone https://github.com/Rovniy/ravy.pro.git .
-```
-
-### 3. Configure Nginx
-
-```bash
-cp ravy.pro.nginx /etc/nginx/sites-available/ravy.pro
-ln -s /etc/nginx/sites-available/ravy.pro /etc/nginx/sites-enabled/ravy.pro
-nginx -t && systemctl reload nginx
-```
-
-The app is proxied from port `3030` (Docker) → `3000` (container internal).
-
-Cache strategy configured in `ravy.pro.nginx`:
-- `/_nuxt/*` — `max-age=31536000, immutable` (hashed filenames, safe to cache forever)
-- Static files (images, fonts) — `max-age=604800` (1 week)
-- HTML / API — `max-age=0, must-revalidate` (always fresh after deploy)
-
-### 4. Obtain SSL certificate
-
-```bash
-certbot --nginx -d ravy.pro -d www.ravy.pro
-```
-
-Certbot auto-patches the nginx config with SSL directives and sets up auto-renewal.
-
-### 5. Initial Docker build
-
-```bash
-cd /home/ravy_pro
-docker build . -t xploitravy/ravy_pro:latest
-docker-compose up -d
-```
-
----
-
-## CI/CD (GitHub Actions)
-
-Deploys automatically on every push to `master`.
-
-**Pipeline steps:**
-1. SSH into VPS → `git pull origin master`
-2. Update nginx config → test config → reload nginx (rolls back on failure)
-3. Rebuild Docker image
-4. `docker-compose down && docker-compose up -d`
-5. Send Discord notification
-
-### Required GitHub Secrets
-
-Go to **Settings → Secrets and variables → Actions** and add:
-
-| Secret | Value |
+| File | Purpose |
 |---|---|
-| `VPS_SERVER_HOST` | VPS IP address or hostname |
-| `VPS_SERVER_USERNAME` | SSH user (e.g. `root`) |
-| `VPS_SERVER_SSH_KEY` | Private SSH key (the VPS must have the matching public key in `~/.ssh/authorized_keys`) |
+| `apphosting.yaml` | Runtime config: instance count, CPU/memory, env vars (`HOST`, `NITRO_HOST`) |
+| `firebase.json` | Backend wiring and Firestore rules path |
+| `.firebaserc` | Firebase project alias (`xploit-games`) |
+| `firestore.rules` | Firestore security rules |
 
-### SSH Key Setup
+### Manual operations
 
-Generate a dedicated deploy key:
+Most changes flow through `git push`. For ad-hoc operations use the Firebase CLI:
 
 ```bash
-ssh-keygen -t ed25519 -C "github-deploy" -f ~/.ssh/ravy_pro_deploy
-cat ~/.ssh/ravy_pro_deploy.pub >> ~/.ssh/authorized_keys
+# Install CLI (one-time)
+npm i -g firebase-tools
+firebase login
+
+# Deploy Firestore rules without touching App Hosting
+firebase deploy --only firestore:rules
+
+# Tail backend logs
+firebase apphosting:backends:logs ravy-pro
 ```
 
-Copy the private key (`~/.ssh/ravy_pro_deploy`) into the `VPS_SERVER_SSH_KEY` GitHub secret.
+Tune scaling (instance count, CPU, memory) by editing `apphosting.yaml` and pushing — App Hosting picks up the change on the next deploy.
 
 ---
 
