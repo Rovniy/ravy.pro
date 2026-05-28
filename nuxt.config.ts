@@ -91,13 +91,13 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    // @ts-expect-error — nuxt-og-image type doesn't expose `height` here, but
-    // the option is honoured at runtime by the satori renderer.
+    // @ts-expect-error — nuxt-og-image type doesn't expose `height` here
     height: 630,
     renderer: 'satori',
   },
 
   site: {
+    name: seoData.ogTitle,
     url: seoData.mySite,
     identity: {
       type: 'Person',

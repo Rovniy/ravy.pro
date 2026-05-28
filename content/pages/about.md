@@ -1,15 +1,15 @@
 ---
+description: 'Software developer, engineering leader, and founder with 13+ years of experience building web products, game systems, automation tools, and digital platforms.'
 title: About Andrei Rovnyi
-description: Software developer, engineering leader, and founder with 13+ years of experience building web products, game systems, automation tools, and digital platforms.
 createdAt: 2025-05-05T22:00:00.000Z
-lastUpdated: 2026-05-11T00:00:00.000Z
+lastUpdated: 2026-05-28T09:10:08.839Z
 ---
 
 # Andrei Rovnyi
 
 **Software Developer · Engineering Leader · Founder**
 
-![Andrei Rovnyi](/andrei_rovnyi.webp "Andrei Rovnyi")
+![](/photos/a_rovnyi_lumy.webp)
 
 I'm a software developer and engineering leader with 13+ years of experience building web platforms, game-related systems, internal tools, and digital products. I work at the intersection of engineering, product thinking, automation, and creativity — turning rough ideas into systems people can actually use.
 
@@ -42,14 +42,14 @@ I'm a software developer and engineering leader with 13+ years of experience bui
 
 ## Experience Highlights
 
-- 13+ years in software development across web, games, and tooling.
-- Hands-on experience inside large-scale game and web ecosystems.
-- Founder of the esports platform [**ELOPUB**](https://elopub.com). Contributed to the early development of high-profile projects such as [**Play2Live**](https://www.eu-startups.com/directory/play2live/) and [**Streampub**](https://streampub.net/).
-- Worked on and around major titles at [**Wargaming**](https://wargaming.net/), including [*World of Tanks*](https://worldoftanks.eu).
-- Worked on and around major titles at [**Gaijin Entertainment**](https://gaijin.net/), including [*War Thunder*](https://warthunder.com/), [*Crossout*](https://crossout.net/), [*Active Matter*](https://activematter.game/) and [*Star Wrath*](https://starwrath.com/).
-- Built and maintained production systems, internal tools, websites, dashboards, and automation workflows.
-- Comfortable moving across frontend, backend, DevOps, game development, analytics, and product delivery.
-- Founder of [**XPLOIT**](https://xploit.games) — independent games, digital products, and experimental tools.
+* 13+ years in software development across web, games, and tooling.
+* Hands-on experience inside large-scale game and web ecosystems.
+* Founder of the esports platform **[ELOPUB](https://elopub.com)**. Contributed to the early development of high-profile projects such as **[Play2Live](https://www.eu-startups.com/directory/play2live/)** and **[Streampub](https://streampub.net/)**.
+* Worked on and around major titles at **[Wargaming](https://wargaming.net/)**, including *[World of Tanks](https://worldoftanks.eu)*.
+* Worked on and around major titles at **[Gaijin Entertainment](https://gaijin.net/)**, including *[War Thunder](https://warthunder.com/)*, *[Crossout](https://crossout.net/)*, *[Active Matter](https://activematter.game/)* and *[Star Wrath](https://starwrath.com/)*.
+* Built and maintained production systems, internal tools, websites, dashboards, and automation workflows.
+* Comfortable moving across frontend, backend, DevOps, game development, analytics, and product delivery.
+* Founder of **[XPLOIT](https://xploit.games)** — independent games, digital products, and experimental tools.
 
 ## My Technical Stack
 
@@ -127,13 +127,13 @@ I also spend time on creative technology adjacent to development: small games, a
 
 ## What I Can Help With
 
-- Building MVPs and early-stage products.
-- Designing technical architecture and choosing the right level of complexity.
-- Developing web apps, admin panels, dashboards, and APIs.
-- Creating automation workflows and internal tools.
-- Improving existing systems and technical processes.
-- Game development — Unity features, analytics, monetization, and production tooling.
-- Consulting on product and engineering decisions.
+* Building MVPs and early-stage products.
+* Designing technical architecture and choosing the right level of complexity.
+* Developing web apps, admin panels, dashboards, and APIs.
+* Creating automation workflows and internal tools.
+* Improving existing systems and technical processes.
+* Game development — Unity features, analytics, monetization, and production tooling.
+* Consulting on product and engineering decisions.
 
 If you have an idea, a product, a technical mess, or a project that needs a strong engineering hand, I can help you shape it, build it, improve it, or bring it to production.
 
