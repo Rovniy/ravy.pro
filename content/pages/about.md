@@ -9,7 +9,7 @@ lastUpdated: 2026-05-28T09:10:08.839Z
 
 **Software Developer · Engineering Leader · Founder**
 
-![](/photos/a_rovnyi_lumy.webp)
+![](/photos/a_rovnyi_deep.webp)
 
 I'm a software developer and engineering leader with 13+ years of experience building web platforms, game-related systems, internal tools, and digital products. I work at the intersection of engineering, product thinking, automation, and creativity — turning rough ideas into systems people can actually use.
 

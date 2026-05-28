@@ -118,9 +118,18 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="lg:col-span-5 hero-creature-wrap hidden md:flex justify-center items-center relative h-[320px] lg:h-[420px]">
-          <div class="creature-glow" aria-hidden="true" />
-          <CreatureHome class="relative z-1 drop-shadow-2xl hero-creature" />
+        <div class="aspect-square lg:col-span-5 hero-creature-wrap hidden md:flex justify-center items-center relative h-[312px] lg:h-[312px] xl:h-[512px]">
+          <NuxtImg
+            src="/photos/a_rovnyi_lumy.webp"
+            alt="Magic creation"
+            height="512"
+            width="512"
+            class="rounded-2xl"
+            sizes="(max-width: 640px) 312px, (max-width: 1024px) 312px, 512px"
+            densities="x1 x2"
+            loading="lazy"
+            fetchpriority="high"
+          />
         </div>
       </div>
     </div>

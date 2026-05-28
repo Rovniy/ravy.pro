@@ -55,39 +55,39 @@ async function onSignIn() {
   >
     <div class="flex px-6 container max-w-5xl justify-between mx-auto items-center">
       <ul class="flex items-baseline space-x-5">
-        <li class="text-base sm:text-2xl font-bold">
+        <li class="text-base lg:text-2xl font-bold">
           <NuxtLink to="/" class="nav-link">
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
       </ul>
 
-      <ul class="flex items-center space-x-3 sm:space-x-6 text-sm sm:text-lg font-semibold">
-        <li class="hidden sm:block">
+      <ul class="flex items-center space-x-3 lg:space-x-6 text-sm lg:text-lg font-semibold">
+        <li class="hidden lg:block">
           <NuxtLink to="/blogs" class="nav-link hover:text-sky-700">
             Blogs
           </NuxtLink>
         </li>
-        <li class="hidden sm:block">
+        <li class="hidden lg:block">
           <NuxtLink to="/categories" class="nav-link hover:text-sky-700">
             Categories
           </NuxtLink>
         </li>
-        <li class="hidden sm:block" title="About Me">
+        <li class="hidden lg:block" title="About Me">
           <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-700">
             About
           </NuxtLink>
         </li>
-        <li v-if="isAuthed" class="hidden sm:block">
+        <li v-if="isAuthed" class="hidden lg:block">
           <NuxtLink to="/account" class="nav-link hover:text-sky-700">
             Account
           </NuxtLink>
         </li>
-        <li class="hidden sm:block">
+        <li class="hidden lg:block">
           <MainToolsMenu />
         </li>
         <ClientOnly>
-          <li v-if="isAdmin" class="hidden sm:block">
+          <li v-if="isAdmin" class="hidden lg:block">
             <MainServicesMenu />
           </li>
         </ClientOnly>
@@ -97,10 +97,10 @@ async function onSignIn() {
               v-if="state.ready && !isAuthed"
               type="button"
               title="Sign in"
-              class="inline-flex items-center gap-1.5 hover:text-sky-700 hover:cursor-pointer text-sm sm:text-base font-medium"
+              class="inline-flex items-center gap-1.5 hover:text-sky-700 hover:cursor-pointer text-sm lg:text-base font-medium"
               @click="onSignIn"
             >
-              <Icon name="mdi:login" size="22" aria-hidden="true" class="sm:hidden" />
+              <Icon name="mdi:login" size="22" aria-hidden="true" class="lg:hidden" />
             </button>
             <span
               v-else-if="state.ready && isAuthed"
@@ -123,11 +123,11 @@ async function onSignIn() {
               <button
                 type="button"
                 title="Sign out"
-                class="hover:text-sky-700 hover:cursor-pointer text-sm sm:text-base font-medium flex items-center gap-2"
+                class="hover:text-sky-700 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
                 @click="signOut"
               >
-                <span class="hidden sm:inline">Sign out</span>
-                <Icon name="mdi:logout" size="18" aria-hidden="true" class="sm:hidden" />
+                <span class="hidden lg:inline">Sign out</span>
+                <Icon name="mdi:logout" size="18" aria-hidden="true" class="lg:hidden" />
               </button>
             </span>
             <template #fallback>
@@ -135,7 +135,7 @@ async function onSignIn() {
             </template>
           </ClientOnly>
         </li>
-        <li class="sm:hidden">
+        <li class="lg:hidden">
           <button
             type="button"
             class="inline-flex items-center justify-center w-9 h-9 -mr-2 hover:text-sky-700 hover:cursor-pointer"
@@ -161,7 +161,7 @@ async function onSignIn() {
       <nav
         v-if="isMobileOpen"
         id="mobile-nav"
-        class="sm:hidden absolute left-0 right-0 top-full bg-[#F1F2F4]/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 shadow-lg"
+        class="lg:hidden absolute left-0 right-0 top-full bg-[#F1F2F4]/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 shadow-lg"
         aria-label="Mobile navigation"
       >
         <ul class="container max-w-5xl mx-auto px-6 py-3 flex flex-col text-base font-semibold">
