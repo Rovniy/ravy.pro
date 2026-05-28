@@ -26,7 +26,7 @@ vi.mock('~~/server/utils/contract-scan', () => ({
 }))
 
 describe('contract scan read/share apis', () => {
-  it('GET /scans returns owner list', async () => {
+  it('gET /scans returns owner list', async () => {
     vi.stubGlobal('getQuery', () => ({ limit: '10' }))
     whereMock.mockReturnValueOnce({
       orderBy: vi.fn(() => ({
@@ -42,7 +42,7 @@ describe('contract scan read/share apis', () => {
     expect(result[0]).toMatchObject({ id: 's1', status: 'done' })
   })
 
-  it('GET /scans/[id] rejects чужой scan', async () => {
+  it('gET /scans/[id] rejects чужой scan', async () => {
     vi.stubGlobal('getRouterParam', () => 'scan-foreign')
     getMock.mockResolvedValueOnce({
       exists: true,

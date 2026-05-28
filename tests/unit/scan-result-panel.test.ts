@@ -1,8 +1,8 @@
+import type { ContractScanResult } from '~/types/contract-scan'
 // @vitest-environment happy-dom
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import ScanResultPanel from '../../components/contract/ScanResultPanel.vue'
-import type { ContractScanResult } from '~/types/contract-scan'
 
 function sampleResult(): ContractScanResult {
   return {
@@ -49,7 +49,7 @@ function sampleResult(): ContractScanResult {
   }
 }
 
-describe('ScanResultPanel', () => {
+describe('scanResultPanel', () => {
   it('sorts red flags by severity high -> medium -> low', () => {
     const wrapper = mount(ScanResultPanel, {
       props: { result: sampleResult() },

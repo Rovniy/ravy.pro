@@ -46,13 +46,13 @@ vi.mock('~~/server/utils/firebase-admin', () => ({
 }))
 
 describe('shortify api', () => {
-  it('POST rejects when url is missing', async () => {
+  it('pOST rejects when url is missing', async () => {
     readBodyMock.mockResolvedValueOnce({})
     const { default: handler } = await import('~~/server/api/shortify/links.post')
     await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 400 })
   })
 
-  it('GET returns links list', async () => {
+  it('gET returns links list', async () => {
     const { default: handler } = await import('~~/server/api/shortify/links.get')
     const list = await handler({} as never)
     expect(list[0]).toMatchObject({ code: 'abc123', url: 'https://example.com', clicks: 1 })

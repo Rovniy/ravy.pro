@@ -31,7 +31,7 @@ vi.mock('firebase-admin/firestore', () => ({
   },
 }))
 
-describe('GET /s/[code]', () => {
+describe('gET /s/[code]', () => {
   it('redirects to url and updates clicks', async () => {
     getMock.mockResolvedValueOnce({
       exists: true,

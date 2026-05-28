@@ -26,7 +26,7 @@ vi.mock('~~/server/utils/pdf-text', () => ({
   extractPdfTextFromBase64: vi.fn(async () => 'extracted text from pdf with enough length'),
 }))
 
-describe('POST /api/contract-scanner/scans', () => {
+describe('pOST /api/contract-scanner/scans', () => {
   it('returns 400 when text is too short', async () => {
     vi.stubGlobal('useRuntimeConfig', () => ({ openaiApiKey: 'k' }))
     readBodyMock.mockResolvedValueOnce({ text: 'tiny' })

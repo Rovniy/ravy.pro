@@ -31,7 +31,7 @@ vi.mock('nanoid', () => ({
   nanoid: vi.fn(() => 'share-123'),
 }))
 
-describe('POST /contract-scanner/scans/[id]/share', () => {
+describe('pOST /contract-scanner/scans/[id]/share', () => {
   it('returns share id for completed owned scan', async () => {
     vi.stubGlobal('getRouterParam', () => 'scan-1')
     getMock.mockResolvedValueOnce({

@@ -27,13 +27,13 @@ vi.mock('~~/server/utils/auth', () => ({
 }))
 
 describe('account profile api', () => {
-  it('GET returns en by default', async () => {
+  it('gET returns en by default', async () => {
     getMock.mockResolvedValueOnce({ exists: false, data: () => ({}) })
     const { default: handler } = await import('~~/server/api/account/profile.get')
     await expect(handler({} as never)).resolves.toEqual({ language: 'en' })
   })
 
-  it('POST rejects unsupported language', async () => {
+  it('pOST rejects unsupported language', async () => {
     readBodyMock.mockResolvedValueOnce({ language: 'de' })
     const { default: handler } = await import('~~/server/api/account/profile.post')
     await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 400 })

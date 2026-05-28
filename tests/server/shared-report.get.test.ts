@@ -23,7 +23,7 @@ vi.mock('~~/server/utils/contract-scan', () => ({
   })),
 }))
 
-describe('GET /api/contract-scanner/shared/[shareId]', () => {
+describe('gET /api/contract-scanner/shared/[shareId]', () => {
   it('returns shared report data by share mapping', async () => {
     vi.stubGlobal('getRouterParam', () => 'share-abc')
     shareGetMock.mockResolvedValueOnce({
