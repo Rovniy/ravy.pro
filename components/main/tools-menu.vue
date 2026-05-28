@@ -50,7 +50,7 @@ function toggle() {
       <div
         v-if="isOpen"
         role="menu"
-        class="absolute right-0 top-full mt-2 w-44 rounded-md border border-zinc-200 dark:border-zinc-800 bg-[#F1F2F4] dark:bg-slate-950 shadow-lg py-1 z-20"
+        class="absolute right-0 top-full mt-2 w-60 rounded-md border border-zinc-200 dark:border-zinc-800 bg-[#F1F2F4] dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
           v-for="item in publicServices"

@@ -68,16 +68,6 @@ async function onSignIn() {
             Blogs
           </NuxtLink>
         </li>
-        <li class="hidden lg:block">
-          <NuxtLink to="/categories" class="nav-link hover:text-sky-700">
-            Categories
-          </NuxtLink>
-        </li>
-        <li class="hidden lg:block" title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-700">
-            About
-          </NuxtLink>
-        </li>
         <li v-if="isAuthed" class="hidden lg:block">
           <NuxtLink to="/account" class="nav-link hover:text-sky-700">
             Account
@@ -85,6 +75,11 @@ async function onSignIn() {
         </li>
         <li class="hidden lg:block">
           <MainToolsMenu />
+        </li>
+        <li class="hidden lg:block" title="About Me">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-700">
+            About me
+          </NuxtLink>
         </li>
         <ClientOnly>
           <li v-if="isAdmin" class="hidden lg:block">
@@ -170,16 +165,6 @@ async function onSignIn() {
               Blogs
             </NuxtLink>
           </li>
-          <li>
-            <NuxtLink to="/categories" class="nav-link block py-3 hover:text-sky-700">
-              Categories
-            </NuxtLink>
-          </li>
-          <li>
-            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-700">
-              About
-            </NuxtLink>
-          </li>
           <li v-if="isAuthed">
             <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-700">
               Account
@@ -187,6 +172,11 @@ async function onSignIn() {
           </li>
           <li class="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
             Tools
+          </li>
+          <li>
+            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-700">
+              About me
+            </NuxtLink>
           </li>
           <li v-for="item in publicServices" :key="item.path">
             <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-700">
