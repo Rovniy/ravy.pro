@@ -166,6 +166,66 @@ export default defineConfig({
         ],
       },
       {
+        label: 'Instagram',
+        name: 'instagram',
+        path: 'content/instagram',
+        ui: {
+          filename: {
+            readonly: false,
+            slugify: (values: Record<string, any>) => `${values?.alt?.toLowerCase().replace(/ /g, '-')}`,
+          },
+          beforeSubmit: async ({ form, values }) => {
+            try {
+              if (form.crudType === 'create') {
+                return {
+                  ...values,
+                  postedAt: values?.postedAt || new Date().toISOString(),
+                }
+              }
+
+              return values
+            }
+            catch {
+              return values
+            }
+          },
+        },
+        fields: [
+          {
+            type: 'image',
+            name: 'image',
+            label: 'Photo',
+            required: true,
+            description: 'The Instagram photo',
+          },
+          {
+            type: 'string',
+            name: 'alt',
+            label: 'Alt text',
+            required: true,
+            description: 'Accessibility description of the photo',
+          },
+          {
+            type: 'string',
+            name: 'caption',
+            label: 'Caption',
+            description: 'Short caption shown on hover (optional)',
+          },
+          {
+            type: 'datetime',
+            name: 'postedAt',
+            label: 'Posted At',
+            description: 'When the photo was posted on Instagram',
+          },
+          {
+            type: 'boolean',
+            name: 'published',
+            label: 'Is published',
+            description: 'Show this photo on the site',
+          },
+        ],
+      },
+      {
         label: 'Pages',
         name: 'pages',
         path: 'content/pages',

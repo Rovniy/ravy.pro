@@ -50,7 +50,7 @@ const restTags = computed(() => props.tags.slice(1))
     <NuxtLink
       :to="path"
       :aria-label="title"
-      class="absolute inset-0 z-0 focus:outline-none"
+      class="absolute inset-0 z-1 focus:outline-none"
     />
 
     <div class="relative overflow-hidden">

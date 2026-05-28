@@ -13,6 +13,7 @@ const { data } = await useAsyncData('trending-post', () =>
 const formattedData = computed(() => {
   return data.value?.map((articles: BlogPost) => {
     return {
+      // @ts-expect-error path is exist
       path: articles.path,
       title: articles.title || 'no-title available',
       description: articles.description || 'no-description available',
@@ -34,7 +35,7 @@ useHead({
 </script>
 
 <template>
-  <section v-if="formattedData?.length" class="py-14 px-6 border-t dark:border-zinc-800">
+  <section v-if="formattedData?.length" class="py-14 px-6">
     <div class="flex items-center gap-3 mb-8">
       <Icon name="mdi:star-outline" size="1.4em" aria-hidden="true" class="text-zinc-400 dark:text-zinc-500" />
       <h2 class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 tracking-tight">

@@ -2,10 +2,22 @@
 import type QRCodeStyling from 'qr-code-styling'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 definePageMeta({
   layout: 'default',
 })
+
+const route = useRoute()
+
+function readQueryData(): string {
+  const raw = route.query.data
+  if (typeof raw === 'string' && raw.trim())
+    return raw
+  if (Array.isArray(raw) && raw[0])
+    return String(raw[0])
+  return 'https://ravy.pro'
+}
 
 useToolPageSchema({
   path: '/tools/qr-code-generator',
@@ -34,7 +46,7 @@ type DotType = 'square' | 'rounded' | 'dots' | 'classy' | 'classy-rounded' | 'ex
 type CornerSquareType = 'square' | 'dot' | 'extra-rounded'
 type CornerDotType = 'square' | 'dot'
 
-const data = ref('https://ravy.pro')
+const data = ref(readQueryData())
 const size = ref(512)
 const margin = ref(10)
 const dotStyle = ref<DotType>('rounded')

@@ -101,6 +101,10 @@ function shortUrl(code: string): string {
   return `${baseUrl}/s/${code}`
 }
 
+function qrLink(url: string): string {
+  return `/tools/qr-code-generator?data=${encodeURIComponent(url)}`
+}
+
 function formatDate(iso: string | null): string {
   if (!iso)
     return '—'
@@ -199,9 +203,16 @@ if (import.meta.client) {
         {{ errorMsg }}
       </div>
 
-      <div v-if="justCreated" class="mb-6 rounded-md border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm flex items-center gap-2">
+      <div v-if="justCreated" class="mb-6 rounded-md border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm flex items-center gap-2 flex-wrap">
         <span>Created:</span>
         <a class="underline font-mono" :href="shortUrl(justCreated.code)" target="_blank">{{ shortUrl(justCreated.code) }}</a>
+        <NuxtLink
+          :to="qrLink(shortUrl(justCreated.code))"
+          class="inline-flex items-center gap-1 text-xs underline text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+        >
+          <Icon name="mdi:qrcode" size="14" />
+          QR
+        </NuxtLink>
         <button
           type="button"
           class="ml-auto inline-flex items-center gap-1 text-xs hover:cursor-pointer"
@@ -262,16 +273,26 @@ if (import.meta.client) {
                 <td class="py-2 pr-4 text-zinc-500 whitespace-nowrap">
                   {{ formatDate(link.createdAt) }}
                 </td>
-                <td class="py-2 text-right">
-                  <button
-                    type="button"
-                    class="inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-                    :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white'"
-                    @click="copy(shortUrl(link.code), link.code)"
-                  >
-                    <Icon v-if="copiedKey === link.code" name="mdi:check" size="14" />
-                    {{ copiedKey === link.code ? 'copied!' : 'copy' }}
-                  </button>
+                <td class="py-2 text-right whitespace-nowrap">
+                  <div class="inline-flex items-center gap-3 justify-end">
+                    <NuxtLink
+                      :to="qrLink(shortUrl(link.code))"
+                      class="inline-flex items-center gap-1 text-xs underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+                      :title="`Create QR code for /s/${link.code}`"
+                    >
+                      <Icon name="mdi:qrcode" size="14" />
+                      QR
+                    </NuxtLink>
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 text-xs hover:cursor-pointer"
+                      :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white'"
+                      @click="copy(shortUrl(link.code), link.code)"
+                    >
+                      <Icon v-if="copiedKey === link.code" name="mdi:check" size="14" />
+                      {{ copiedKey === link.code ? 'copied!' : 'copy' }}
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>

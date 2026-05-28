@@ -85,6 +85,7 @@ defineOgImage('Blog', {
         </div>
       </section>
       <LazyMainRecent />
+      <LazyMainInstagram />
       <LazyMainTrending />
     </div>
   </main>
