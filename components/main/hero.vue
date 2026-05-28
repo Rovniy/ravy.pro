@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
+import { useEventListener, useMediaQuery } from '@vueuse/core'
 import { homePage, socialNetworks } from '~/data'
 
 const { hero } = homePage
@@ -9,11 +9,47 @@ const typedGreeting = ref(hero.greeting)
 const typingDone = ref(true)
 const roleIndex = ref(0)
 const mounted = ref(false)
+const tiltEl = ref<HTMLElement | null>(null)
 
 const currentRole = computed(() => hero.roles[roleIndex.value])
 
 onMounted(() => {
   mounted.value = true
+
+  const canTilt = window.matchMedia('(min-width: 768px) and (hover: hover) and (pointer: fine)').matches
+  if (!prefersReducedMotion.value && canTilt && tiltEl.value) {
+    const MAX_DEG = 8
+    let mx = 0
+    let my = 0
+    let rafId = 0
+
+    const apply = () => {
+      rafId = 0
+      const el = tiltEl.value
+      if (!el)
+        return
+      const r = el.getBoundingClientRect()
+      const dx = (mx - (r.left + r.width / 2)) / window.innerWidth
+      const dy = (my - (r.top + r.height / 2)) / window.innerHeight
+      el.style.transform = `rotateX(${(-dy * MAX_DEG).toFixed(2)}deg) rotateY(${(dx * MAX_DEG).toFixed(2)}deg)`
+    }
+
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX
+      my = e.clientY
+      if (!rafId)
+        rafId = requestAnimationFrame(apply)
+    }
+
+    const reset = () => {
+      if (tiltEl.value)
+        tiltEl.value.style.transform = ''
+    }
+
+    tiltEl.value.style.willChange = 'transform'
+    useEventListener(window, 'mousemove', onMove, { passive: true })
+    useEventListener(document, 'mouseleave', reset, { passive: true })
+  }
 
   if (prefersReducedMotion.value)
     return
@@ -119,17 +155,19 @@ onMounted(() => {
         </div>
 
         <div class="aspect-square lg:col-span-5 hero-creature-wrap hidden md:flex justify-center items-center relative h-[312px] lg:h-[312px] xl:h-[512px]">
-          <NuxtImg
-            src="/photos/a_rovnyi_lumy.webp"
-            alt="Magic creation"
-            height="512"
-            width="512"
-            class="rounded-2xl"
-            sizes="(max-width: 640px) 312px, (max-width: 1024px) 312px, 512px"
-            densities="x1 x2"
-            loading="lazy"
-            fetchpriority="high"
-          />
+          <div ref="tiltEl" class="hero-tilt">
+            <NuxtImg
+              src="/photos/a_rovnyi_lumy.webp"
+              alt="Magic creation"
+              height="512"
+              width="512"
+              class="rounded-2xl"
+              sizes="(max-width: 640px) 312px, (max-width: 1024px) 312px, 512px"
+              densities="x1 x2"
+              loading="lazy"
+              fetchpriority="high"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -142,6 +180,24 @@ onMounted(() => {
   isolation: isolate;
   background: radial-gradient(ellipse at top left, rgba(56, 189, 248, 0.08), transparent 50%),
               radial-gradient(ellipse at bottom right, rgba(168, 85, 247, 0.10), transparent 55%);
+}
+
+.hero-creature-wrap {
+  perspective: 1000px;
+}
+
+.hero-tilt {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-tilt { transition: none; }
 }
 
 .hero-bg-grid {
