@@ -91,7 +91,6 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    // @ts-expect-error — nuxt-og-image type doesn't expose `height` here
     height: 630,
     renderer: 'satori',
   },
@@ -144,6 +143,7 @@ export default defineNuxtConfig({
         '/tools/contract-red-flag-scanner',
         '/tools/credit-card-generator',
         '/tools/jwt-decoder',
+        '/tools/image-converter',
       ],
     },
     routeRules: {
@@ -162,6 +162,7 @@ export default defineNuxtConfig({
       '/tools/contract-red-flag-scanner': { ssr: true, prerender: true },
       '/tools/credit-card-generator': { ssr: true, prerender: true },
       '/tools/jwt-decoder': { ssr: true, prerender: true },
+      '/tools/image-converter': { ssr: true, prerender: true },
       '/s/**': { prerender: false },
       // Static asset cache hints. Firebase App Hosting CDN honours these
       // as-is; `s-maxage` lets the edge cache longer than the browser if we
