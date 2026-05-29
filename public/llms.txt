@@ -18,6 +18,7 @@ Free, browser-based developer utilities. All processing happens client-side.
 
 - QR Code Generator: https://ravy.pro/tools/qr-code-generator — create custom QR codes for links, text, and contacts with configurable style, colors, and logo, then download as PNG.
 - Credit Card Generator: https://ravy.pro/tools/credit-card-generator — generate Luhn-valid test credit card numbers for QA and sandbox payments, and validate a number to detect its brand. Supports Visa, MasterCard, American Express, Discover, JCB, Diners Club, and UnionPay, with optional custom BIN prefixes. Test data only — not real cards.
+- JWT Decoder: https://ravy.pro/tools/jwt-decoder — decode and verify JSON Web Tokens. Inspect the header and payload, read standard claims with human-readable expiry and status, and verify HMAC (HS256/384/512), RSA, RSA-PSS, and ECDSA (RS/PS/ES) signatures using a secret or public key (PEM or JWK). Tokens and keys never leave the browser.
 
 ## Core topics
 
