@@ -143,6 +143,7 @@ export default defineNuxtConfig({
         '/tools/qr-code-generator',
         '/tools/contract-red-flag-scanner',
         '/tools/credit-card-generator',
+        '/tools/jwt-decoder',
       ],
     },
     routeRules: {
@@ -160,6 +161,7 @@ export default defineNuxtConfig({
       '/tools/qr-code-generator': { ssr: true, prerender: true },
       '/tools/contract-red-flag-scanner': { ssr: true, prerender: true },
       '/tools/credit-card-generator': { ssr: true, prerender: true },
+      '/tools/jwt-decoder': { ssr: true, prerender: true },
       '/s/**': { prerender: false },
       // Static asset cache hints. Firebase App Hosting CDN honours these
       // as-is; `s-maxage` lets the edge cache longer than the browser if we

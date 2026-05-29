@@ -36,6 +36,7 @@
     "firebase": "^12.13.0",
     "firebase-admin": "^13.9.0",
     "ipx": "^3.1.1",
+    "jose": "^6.2.3",
     "nanoid": "^5.1.11",
     "nuxt": "^4.4.6",
     "nuxt-og-image": "^6.5.1",

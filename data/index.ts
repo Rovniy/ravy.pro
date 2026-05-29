@@ -37,6 +37,7 @@ export const adminServices: { name: string, path: string }[] = [
 export const publicServices: { name: string, path: string }[] = [
   { name: 'QR Code Generator', path: '/tools/qr-code-generator' },
   { name: 'Credit Card Generator', path: '/tools/credit-card-generator' },
+  { name: 'JWT Decoder', path: '/tools/jwt-decoder' },
 ]
 
 export const footerData = {
