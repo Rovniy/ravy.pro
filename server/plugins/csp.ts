@@ -26,6 +26,9 @@ function buildCsp(scriptHashes: string[]): string {
     ...scriptHashes,
     `'strict-dynamic'`,
     `'unsafe-inline'`,
+    // Required to compile/instantiate WebAssembly (the Image Converter loads
+    // lcms-wasm for ICC color management). Enables wasm only, not eval().
+    `'wasm-unsafe-eval'`,
     'https:',
   ].join(' ')
 

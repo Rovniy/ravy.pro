@@ -2,6 +2,8 @@
 import type { OutputFormat } from '~/utils/image-convert'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { transformToSrgb } from '~/utils/color-transform'
+import { embedIccProfile, extractIccProfile, readIccDescription } from '~/utils/icc'
 import {
   buildOutputName,
   formatBytes,
@@ -10,6 +12,8 @@ import {
   isSupportedInput,
   savingsPercent,
 } from '~/utils/image-convert'
+
+type ColorMode = 'srgb' | 'preserve'
 
 definePageMeta({
   layout: 'default',
@@ -39,6 +43,10 @@ useToolPageSchema({
       question: 'What does the quality slider do?',
       answer: 'For lossy formats (JPEG and WebP) it trades file size for visual fidelity. PNG is lossless, so the slider is hidden when PNG is selected.',
     },
+    {
+      question: 'Does it handle ICC color profiles?',
+      answer: 'Yes. "Convert to sRGB" color-manages wide-gamut images (Display P3, Adobe RGB, etc.) to standard sRGB using Little CMS so colors stay accurate. "Preserve original" keeps the source profile and re-embeds it in JPEG and PNG output. Note: embedded CMYK JPEGs are read by the browser as RGB, and WebP can\'t embed a profile so it falls back to sRGB.',
+    },
   ],
 })
 
@@ -55,10 +63,13 @@ interface ConvItem {
   outName?: string
   error?: string
   thumbUrl: string
+  profileName?: string | null
+  colorNote?: string
 }
 
 const items = ref<ConvItem[]>([])
 const targetFormat = ref<OutputFormat>('webp')
+const colorMode = ref<ColorMode>('srgb')
 const quality = ref(0.8)
 const isDragging = ref(false)
 const isConverting = ref(false)
@@ -84,32 +95,95 @@ function genId(): string {
   return `${Date.now()}-${Math.round(Math.random() * 1e9)}`
 }
 
-// --- canvas conversion (browser-only) --------------------------------------
-async function convertImage(file: File, format: OutputFormat, q: number): Promise<Blob> {
+interface ConversionResult {
+  blob: Blob
+  profileName: string | null
+  note: string
+}
+
+function newCanvas(w: number, h: number): { canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D } {
+  const canvas = document.createElement('canvas')
+  canvas.width = w
+  canvas.height = h
+  const ctx = canvas.getContext('2d')
+  if (!ctx)
+    throw new Error('Canvas 2D context unavailable.')
+  return { canvas, ctx }
+}
+
+async function canvasToBlob(canvas: HTMLCanvasElement, spec: { mime: string, label: string, lossy: boolean }, q: number): Promise<Blob> {
+  const blob = await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob(resolve, spec.mime, spec.lossy ? q : undefined)
+  })
+  if (!blob)
+    throw new Error(`Your browser could not encode ${spec.label}.`)
+  return blob
+}
+
+/** Composite over white for JPEG (no alpha) so transparency doesn't go black. */
+function flattenForJpeg(source: HTMLCanvasElement, format: OutputFormat): HTMLCanvasElement {
+  if (format !== 'jpeg')
+    return source
+  const { canvas, ctx } = newCanvas(source.width, source.height)
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.drawImage(source, 0, 0)
+  return canvas
+}
+
+// --- canvas conversion + color management (browser-only) -------------------
+async function convertImage(file: File, format: OutputFormat, q: number, mode: ColorMode): Promise<ConversionResult> {
   const spec = getFormat(format)
-  const bitmap = await createImageBitmap(file)
-  try {
-    const canvas = document.createElement('canvas')
-    canvas.width = bitmap.width
-    canvas.height = bitmap.height
-    const ctx = canvas.getContext('2d')
-    if (!ctx)
-      throw new Error('Canvas 2D context unavailable.')
-    // JPEG has no alpha channel: paint white first so transparency doesn't turn black.
-    if (format === 'jpeg') {
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+  const srcBytes = new Uint8Array(await file.arrayBuffer())
+  const srcProfile = extractIccProfile(srcBytes, file.type)
+  const profileName = srcProfile ? (readIccDescription(srcProfile) || 'Embedded ICC profile') : null
+
+  // Decide the colour pipeline.
+  let doTransform = false
+  let doEmbed = false
+  let note = ''
+  if (srcProfile) {
+    if (mode === 'preserve' && format !== 'webp') {
+      doEmbed = true
+      note = 'Original profile embedded'
     }
+    else if (mode === 'preserve') {
+      doTransform = true
+      note = 'WebP can’t embed ICC — converted to sRGB'
+    }
+    else {
+      doTransform = true
+      note = 'Converted to sRGB'
+    }
+  }
+
+  // Decode without the browser's automatic colour management so the raw,
+  // profile-encoded pixels reach Little CMS unchanged.
+  const bitmap = await createImageBitmap(file, { colorSpaceConversion: 'none' })
+  try {
+    const { canvas: draw, ctx } = newCanvas(bitmap.width, bitmap.height)
     ctx.drawImage(bitmap, 0, 0)
-    const blob = await new Promise<Blob | null>((resolve) => {
-      canvas.toBlob(resolve, spec.mime, spec.lossy ? q : undefined)
-    })
-    // Free the backing store for large images.
-    canvas.width = 0
-    canvas.height = 0
-    if (!blob)
-      throw new Error(`Your browser could not encode ${spec.label}.`)
-    return blob
+
+    if (doTransform && srcProfile) {
+      const imageData = ctx.getImageData(0, 0, draw.width, draw.height)
+      const transformed = await transformToSrgb(imageData.data, srcProfile)
+      imageData.data.set(transformed)
+      ctx.putImageData(imageData, 0, 0)
+    }
+
+    let blob = await canvasToBlob(flattenForJpeg(draw, format), spec, q)
+    draw.width = 0
+    draw.height = 0
+
+    if (doEmbed && srcProfile) {
+      const embedded = embedIccProfile(new Uint8Array(await blob.arrayBuffer()), srcProfile, spec.mime)
+      if (embedded)
+        blob = new Blob([embedded], { type: spec.mime })
+      else
+        note = 'Profile could not be embedded'
+    }
+
+    return { blob, profileName, note }
   }
   finally {
     bitmap.close()
@@ -137,16 +211,18 @@ async function processQueue() {
       item.status = 'converting'
       const version = runVersion.value
       try {
-        const blob = await convertImage(item.file, targetFormat.value, quality.value)
+        const result = await convertImage(item.file, targetFormat.value, quality.value, colorMode.value)
         // Settings changed mid-flight — a fresh run is already queued; discard.
         if (version !== runVersion.value)
           return
         if (item.outUrl)
           URL.revokeObjectURL(item.outUrl)
-        item.outBlob = blob
-        item.outUrl = URL.createObjectURL(blob)
-        item.outSize = blob.size
+        item.outBlob = result.blob
+        item.outUrl = URL.createObjectURL(result.blob)
+        item.outSize = result.blob.size
         item.outName = buildOutputName(item.name, getFormat(targetFormat.value).extension)
+        item.profileName = result.profileName
+        item.colorNote = result.note
         item.error = undefined
         item.status = 'done'
       }
@@ -173,6 +249,8 @@ function reconvertAll() {
     item.outBlob = undefined
     item.outSize = undefined
     item.outName = undefined
+    item.profileName = undefined
+    item.colorNote = undefined
     item.error = undefined
     item.status = 'queued'
   }
@@ -187,6 +265,13 @@ function selectFormat(id: OutputFormat) {
   if (targetFormat.value === id)
     return
   targetFormat.value = id
+  reconvertAll()
+}
+
+function selectColorMode(mode: ColorMode) {
+  if (colorMode.value === mode)
+    return
+  colorMode.value = mode
   reconvertAll()
 }
 
@@ -413,6 +498,34 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
             @input="onQualityInput"
           >
         </div>
+
+        <div>
+          <span class="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1.5">Color profile</span>
+          <div class="inline-flex rounded-md border border-zinc-300 dark:border-zinc-700 p-0.5">
+            <button
+              type="button"
+              class="px-3 py-1.5 text-sm font-medium rounded transition-colors hover:cursor-pointer"
+              :class="colorMode === 'srgb'
+                ? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
+                : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'"
+              title="Color-manage to standard sRGB (best for the web)"
+              @click="selectColorMode('srgb')"
+            >
+              Convert to sRGB
+            </button>
+            <button
+              type="button"
+              class="px-3 py-1.5 text-sm font-medium rounded transition-colors hover:cursor-pointer"
+              :class="colorMode === 'preserve'
+                ? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
+                : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'"
+              title="Keep the original embedded ICC profile (JPEG/PNG)"
+              @click="selectColorMode('preserve')"
+            >
+              Preserve original
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -511,6 +624,15 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           </template>
         </div>
 
+        <p
+          v-if="item.status === 'done' && item.profileName"
+          class="mt-1 flex items-center gap-1 text-[11px] text-zinc-400 truncate"
+          :title="`${item.profileName}${item.colorNote ? ` — ${item.colorNote}` : ''}`"
+        >
+          <Icon name="mdi:palette-outline" size="12" class="shrink-0" aria-hidden="true" />
+          <span class="truncate">{{ item.profileName }}<template v-if="item.colorNote"> · {{ item.colorNote }}</template></span>
+        </p>
+
         <div class="mt-3 flex items-center justify-between">
           <span class="inline-flex items-center gap-1.5 text-xs font-medium" :class="STATUS_META[item.status].classes">
             <Icon :name="STATUS_META[item.status].icon" size="14" aria-hidden="true" />
@@ -541,7 +663,8 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         Convert images between <span class="font-medium">PNG</span>, <span class="font-medium">JPEG</span>, and
         <span class="font-medium">WebP</span> without uploading anything. Pick a target format, drop one or many
         files, and each is decoded and re-encoded locally with the browser's Canvas API — then download them one
-        by one or all at once as a ZIP.
+        by one or all at once as a ZIP. Wide-gamut images are color-managed with Little CMS: convert to sRGB for
+        the web, or preserve and re-embed the original ICC profile in JPEG and PNG output.
       </p>
 
       <h2 class="mt-8 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
@@ -578,6 +701,14 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           </dt>
           <dd class="mt-1">
             For lossy formats (JPEG and WebP) it trades file size for visual fidelity. PNG is lossless, so the slider is hidden when PNG is selected.
+          </dd>
+        </div>
+        <div>
+          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+            Does it handle ICC color profiles?
+          </dt>
+          <dd class="mt-1">
+            Yes. “Convert to sRGB” color-manages wide-gamut images (Display P3, Adobe RGB, etc.) to standard sRGB using Little CMS so colors stay accurate. “Preserve original” keeps the source profile and re-embeds it in JPEG and PNG output. Embedded CMYK JPEGs are read by the browser as RGB, and WebP can’t embed a profile, so it falls back to sRGB.
           </dd>
         </div>
       </dl>
