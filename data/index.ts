@@ -23,6 +23,7 @@ export const BlogPostTag = [
   'tabs-broadcast',
   'tiny-boo',
   'zynthar',
+  'animation',
 ]
 
 export const navbarData = {
