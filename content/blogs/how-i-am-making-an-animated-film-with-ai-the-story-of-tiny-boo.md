@@ -7,9 +7,9 @@ tags:
   - tiny-boo
   - animation
 published: true
-trending: true
+trending: false
 createdAt: 2026-05-31T17:36:32.987Z
-lastUpdated: 2026-05-31T17:41:31.351Z
+lastUpdated: 2026-06-10T07:59:56.270Z
 ---
 
 ## YouTube video
