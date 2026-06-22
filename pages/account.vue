@@ -137,21 +137,21 @@ function formatDate(iso?: string) {
 
 <template>
   <main class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <h1 class="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+    <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
       Account Settings
     </h1>
 
-    <div v-if="!state.ready" class="mt-6 text-zinc-500">
+    <div v-if="!state.ready" class="mt-6 text-slate-500">
       Loading…
     </div>
 
-    <div v-else-if="!isAuthed" class="mt-6 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 bg-zinc-50 dark:bg-zinc-900/50">
-      <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+    <div v-else-if="!isAuthed" class="mt-6 rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
         Please sign in to manage account settings.
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
         @click="signIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />
@@ -160,13 +160,13 @@ function formatDate(iso?: string) {
     </div>
 
     <div v-else class="mt-6 space-y-6">
-      <section class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-slate-900 space-y-5">
+      <section class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 space-y-5">
         <div>
-          <label class="block mb-1 text-sm font-medium text-zinc-900 dark:text-zinc-100">Response language</label>
+          <label class="block mb-1 text-sm font-medium text-slate-900 dark:text-slate-100">Response language</label>
           <select
             v-model="language"
             :disabled="loading || saving"
-            class="w-full max-w-xs rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2"
+            class="w-full max-w-xs rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2"
           >
             <option value="en">
               English
@@ -181,7 +181,7 @@ function formatDate(iso?: string) {
           <button
             type="button"
             :disabled="loading || saving"
-            class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
+            class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
             @click="saveProfile"
           >
             <Icon :name="saving ? 'svg-spinners:180-ring' : 'mdi:content-save-outline'" size="16" />
@@ -204,15 +204,15 @@ function formatDate(iso?: string) {
         </p>
       </section>
 
-      <section class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-slate-900">
+      <section class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
         <div class="flex items-center justify-between gap-3">
-          <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+          <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
             Scan History
           </h2>
           <button
             type="button"
             :disabled="loadingHistory"
-            class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50"
+            class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
             @click="loadScanHistory"
           >
             <Icon :name="loadingHistory ? 'svg-spinners:180-ring' : 'mdi:refresh'" size="14" />
@@ -224,11 +224,11 @@ function formatDate(iso?: string) {
           {{ historyError }}
         </p>
 
-        <div v-if="loadingHistory" class="mt-4 text-sm text-zinc-500">
+        <div v-if="loadingHistory" class="mt-4 text-sm text-slate-500">
           Loading scan history…
         </div>
 
-        <div v-else-if="scans.length === 0" class="mt-4 text-sm text-zinc-500">
+        <div v-else-if="scans.length === 0" class="mt-4 text-sm text-slate-500">
           No scans yet.
         </div>
 
@@ -236,10 +236,10 @@ function formatDate(iso?: string) {
           <article
             v-for="scan in scans"
             :key="scan.id"
-            class="rounded-md border border-zinc-200 dark:border-zinc-700 p-4"
+            class="rounded-md border border-slate-200 dark:border-slate-700 p-4"
           >
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <p class="text-sm font-medium text-slate-900 dark:text-slate-100">
                 {{ formatDate(scan.createdAt) }}
               </p>
               <span
@@ -254,15 +254,15 @@ function formatDate(iso?: string) {
               </span>
             </div>
 
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
               {{ scan.step }}
             </p>
 
-            <p v-if="scan.result?.overallRiskScore" class="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
+            <p v-if="scan.result?.overallRiskScore" class="mt-1 text-sm text-slate-700 dark:text-slate-300">
               Overall risk: <span class="font-medium capitalize">{{ scan.result.overallRiskScore.score }}</span>
             </p>
 
-            <p v-if="scan.result?.summary" class="mt-2 text-sm text-zinc-700 dark:text-zinc-300 line-clamp-3">
+            <p v-if="scan.result?.summary" class="mt-2 text-sm text-slate-700 dark:text-slate-300 line-clamp-3">
               {{ scan.result.summary }}
             </p>
 
@@ -270,7 +270,7 @@ function formatDate(iso?: string) {
               <div v-if="scan.result" class="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
-                  class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800"
                   @click="selectedScanId = selectedScanId === scan.id ? '' : scan.id"
                 >
                   <Icon :name="selectedScanId === scan.id ? 'mdi:chevron-up' : 'mdi:chevron-down'" size="16" />
@@ -278,7 +278,7 @@ function formatDate(iso?: string) {
                 </button>
                 <button
                   type="button"
-                  class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800"
                   @click="shareScan(scan.id)"
                 >
                   <Icon :name="copiedShareFor === scan.id ? 'mdi:check' : 'mdi:share-variant'" size="16" />

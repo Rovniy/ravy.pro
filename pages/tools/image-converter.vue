@@ -435,7 +435,7 @@ onBeforeUnmount(() => {
 })
 
 const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: string }> = {
-  queued: { icon: 'mdi:clock-outline', classes: 'text-zinc-400', label: 'Queued' },
+  queued: { icon: 'mdi:clock-outline', classes: 'text-slate-400', label: 'Queued' },
   converting: { icon: 'svg-spinners:180-ring', classes: 'text-sky-500', label: 'Converting' },
   done: { icon: 'mdi:check-circle', classes: 'text-emerald-500', label: 'Done' },
   error: { icon: 'mdi:alert-circle', classes: 'text-rose-500', label: 'Error' },
@@ -448,23 +448,23 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       <h1 class="text-3xl font-bold tracking-tight">
         Image Converter
       </h1>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
         Convert images between PNG, JPEG, and WebP. Drop files, get downloads.
       </p>
     </header>
 
     <!-- Privacy banner -->
-    <div class="mb-6 flex items-start gap-3 rounded-md border border-zinc-200 dark:border-zinc-800 p-4 text-sm text-zinc-600 dark:text-zinc-300">
+    <div class="mb-6 flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300">
       <Icon name="mdi:shield-check" size="20" class="shrink-0 mt-0.5 text-emerald-500" aria-hidden="true" />
       <p>Everything runs in your browser. Your images never leave this page.</p>
     </div>
 
     <!-- Top controls -->
-    <div class="sticky top-0 z-10 mb-6 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-950/85 backdrop-blur p-4">
+    <div class="sticky top-0 z-10 mb-6 rounded-md border border-slate-200 dark:border-slate-800 bg-white/85 dark:bg-slate-950/85 backdrop-blur p-4">
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <div>
-          <span class="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1.5">Convert to</span>
-          <div class="inline-flex rounded-md border border-zinc-300 dark:border-zinc-700 p-0.5">
+          <span class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Convert to</span>
+          <div class="inline-flex rounded-md border border-slate-300 dark:border-slate-700 p-0.5">
             <button
               v-for="f in FORMATS"
               :key="f.id"
@@ -473,8 +473,8 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
               :title="f.id === 'webp' && !webpSupported ? 'Your browser can\'t encode WebP' : undefined"
               class="px-3 py-1.5 text-sm font-medium rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer"
               :class="targetFormat === f.id
-                ? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
-                : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'"
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
               @click="selectFormat(f.id)"
             >
               {{ f.label }}
@@ -483,7 +483,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         </div>
 
         <div v-if="activeFormat.lossy" class="min-w-[200px]">
-          <label for="quality" class="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1.5">
+          <label for="quality" class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
             Quality — {{ Math.round(quality * 100) }}%
           </label>
           <input
@@ -500,14 +500,14 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         </div>
 
         <div>
-          <span class="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1.5">Color profile</span>
-          <div class="inline-flex rounded-md border border-zinc-300 dark:border-zinc-700 p-0.5">
+          <span class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Color profile</span>
+          <div class="inline-flex rounded-md border border-slate-300 dark:border-slate-700 p-0.5">
             <button
               type="button"
               class="px-3 py-1.5 text-sm font-medium rounded transition-colors hover:cursor-pointer"
               :class="colorMode === 'srgb'
-                ? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
-                : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'"
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
               title="Color-manage to standard sRGB (best for the web)"
               @click="selectColorMode('srgb')"
             >
@@ -517,8 +517,8 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
               type="button"
               class="px-3 py-1.5 text-sm font-medium rounded transition-colors hover:cursor-pointer"
               :class="colorMode === 'preserve'
-                ? 'bg-zinc-900 dark:bg-white text-white dark:text-zinc-900'
-                : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'"
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
               title="Keep the original embedded ICC profile (JPEG/PNG)"
               @click="selectColorMode('preserve')"
             >
@@ -535,18 +535,18 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       class="w-full rounded-lg border-2 border-dashed p-10 text-center transition-colors hover:cursor-pointer"
       :class="isDragging
         ? 'border-sky-500 bg-sky-50/60 dark:bg-sky-900/20'
-        : 'border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600'"
+        : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600'"
       aria-label="Add images: drag and drop, click to browse, or paste from clipboard"
       @click="openPicker"
       @drop="onDrop"
       @dragover="onDragOver"
       @dragleave="onDragLeave"
     >
-      <Icon name="mdi:image-plus-outline" size="36" class="mx-auto text-zinc-400" aria-hidden="true" />
-      <p class="mt-3 text-sm font-medium text-zinc-700 dark:text-zinc-200">
+      <Icon name="mdi:image-plus-outline" size="36" class="mx-auto text-slate-400" aria-hidden="true" />
+      <p class="mt-3 text-sm font-medium text-slate-700 dark:text-slate-200">
         Drag &amp; drop images here
       </p>
-      <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+      <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
         or click to browse · paste from clipboard · PNG, JPEG, WebP
       </p>
     </button>
@@ -568,7 +568,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       <button
         type="button"
         :disabled="!hasDone"
-        class="inline-flex items-center gap-1.5 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-1.5 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
         @click="downloadZip"
       >
         <Icon name="mdi:folder-zip-outline" size="16" aria-hidden="true" />
@@ -576,12 +576,12 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       </button>
       <button
         type="button"
-        class="rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:cursor-pointer"
+        class="rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 hover:cursor-pointer"
         @click="clearAll"
       >
         Clear
       </button>
-      <span class="text-sm text-zinc-500 dark:text-zinc-400" aria-live="polite">{{ queueLabel }}</span>
+      <span class="text-sm text-slate-500 dark:text-slate-400" aria-live="polite">{{ queueLabel }}</span>
     </div>
 
     <!-- Results grid -->
@@ -589,28 +589,28 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       <div
         v-for="item in items"
         :key="item.id"
-        class="relative rounded-md border border-zinc-200 dark:border-zinc-800 p-4"
+        class="relative rounded-md border border-slate-200 dark:border-slate-800 p-4"
       >
         <button
           type="button"
-          class="absolute right-2 top-2 rounded p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:cursor-pointer"
+          class="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer"
           aria-label="Remove"
           @click="removeItem(item.id)"
         >
           <Icon name="mdi:close" size="16" aria-hidden="true" />
         </button>
 
-        <img :src="item.thumbUrl" :alt="item.name" class="h-32 w-full rounded object-cover bg-zinc-100 dark:bg-zinc-800">
+        <img :src="item.thumbUrl" :alt="item.name" class="h-32 w-full rounded object-cover bg-slate-100 dark:bg-slate-800">
 
-        <p class="mt-3 truncate text-sm font-medium text-zinc-800 dark:text-zinc-100" :title="item.name">
+        <p class="mt-3 truncate text-sm font-medium text-slate-800 dark:text-slate-100" :title="item.name">
           {{ item.name }}
         </p>
 
-        <div class="mt-1 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+        <div class="mt-1 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <span>{{ formatBytes(item.originalSize) }}</span>
           <template v-if="item.status === 'done' && item.outSize !== undefined">
             <Icon name="mdi:arrow-right" size="12" aria-hidden="true" />
-            <span class="text-zinc-700 dark:text-zinc-200">{{ formatBytes(item.outSize) }}</span>
+            <span class="text-slate-700 dark:text-slate-200">{{ formatBytes(item.outSize) }}</span>
             <span
               class="rounded-full px-1.5 py-0.5 font-medium"
               :class="savingsPercent(item.originalSize, item.outSize) >= 0
@@ -626,7 +626,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 
         <p
           v-if="item.status === 'done' && item.profileName"
-          class="mt-1 flex items-center gap-1 text-[11px] text-zinc-400 truncate"
+          class="mt-1 flex items-center gap-1 text-[11px] text-slate-400 truncate"
           :title="`${item.profileName}${item.colorNote ? ` — ${item.colorNote}` : ''}`"
         >
           <Icon name="mdi:palette-outline" size="12" class="shrink-0" aria-hidden="true" />
@@ -641,7 +641,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           <button
             v-if="item.status === 'done'"
             type="button"
-            class="inline-flex items-center gap-1 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-2.5 py-1.5 text-xs font-medium hover:opacity-90 hover:cursor-pointer"
+            class="inline-flex items-center gap-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-2.5 py-1.5 text-xs font-medium hover:opacity-90 hover:cursor-pointer"
             @click="downloadItem(item)"
           >
             <Icon name="mdi:download" size="14" aria-hidden="true" />
@@ -655,8 +655,8 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     </div>
 
     <!-- About / FAQ -->
-    <section class="mt-12 border-t border-zinc-200 dark:border-zinc-800 pt-8 text-sm text-zinc-600 dark:text-zinc-300">
-      <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8 text-sm text-slate-600 dark:text-slate-300">
+      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
         About this tool
       </h2>
       <p class="mt-2">
@@ -667,12 +667,12 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         the web, or preserve and re-embed the original ICC profile in JPEG and PNG output.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
         FAQ
       </h2>
       <dl class="mt-2 space-y-4">
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Are my images uploaded to a server?
           </dt>
           <dd class="mt-1">
@@ -680,7 +680,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Which formats are supported?
           </dt>
           <dd class="mt-1">
@@ -688,7 +688,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Why is GIF not supported?
           </dt>
           <dd class="mt-1">
@@ -696,7 +696,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             What does the quality slider do?
           </dt>
           <dd class="mt-1">
@@ -704,7 +704,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Does it handle ICC color profiles?
           </dt>
           <dd class="mt-1">

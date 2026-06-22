@@ -23,7 +23,7 @@ const photos = computed(() => {
     <div class="flex items-center justify-between gap-3 mb-8 flex-wrap">
       <div class="flex items-center gap-3">
         <Icon name="fa:instagram" size="1.4em" aria-hidden="true" class="text-pink-500" />
-        <h2 class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 tracking-tight">
+        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">
           Instagram
         </h2>
       </div>

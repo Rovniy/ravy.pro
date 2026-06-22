@@ -17,7 +17,7 @@ withDefaults(defineProps<Props>(), {
     target="_blank"
     rel="noopener noreferrer"
     :aria-label="alt"
-    class="aspect-square group relative block overflow-hidden rounded-sm bg-white dark:bg-slate-900/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 focus:outline-none"
+    class="aspect-square group relative block overflow-hidden rounded-xl bg-white dark:bg-slate-900/50 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 focus:outline-none"
   >
     <NuxtImg
       loading="lazy"

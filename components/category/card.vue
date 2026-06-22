@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { tagColorClass } from '@/utils/helper'
+
 interface Props {
   title: string
   count: number
@@ -8,44 +10,15 @@ withDefaults(defineProps<Props>(), {
   title: 'No title available',
   count: 0,
 })
-
-// some random color for tags
-const color = [
-  '#dc2626',
-  '#d97706',
-  '#65a30d',
-  '#059669',
-  '#0891b2',
-  '#0284c7',
-  '#4f46e5',
-  '#7c3aed',
-  '#c026d3',
-  '#db2777',
-]
-
-// get a random number
-function getRandomInt(min: number, max: number) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-const picAColor = ref(`${color.at(getRandomInt(0, 8))}`)
 </script>
 
 <template>
-  <div
-    class="text-[#F1F2F4]  px-5 py-3 rounded hover:underline
-    rand-bg-color hover:scale-[1.05] transition-all duration-500"
+  <NuxtLink
+    :to="`/categories/${title.toLocaleLowerCase()}`"
+    class="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold capitalize transition-transform duration-300 hover:scale-[1.05] focus-visible:scale-[1.05]"
+    :class="tagColorClass(title.toLowerCase())"
   >
-    <NuxtLink :to="`/categories/${title.toLocaleLowerCase()}`" class="text-lg font-extrabold capitalize">
-      <h1>#{{ title }} ({{ count }})</h1>
-    </NuxtLink>
-  </div>
+    <span>#{{ title }}</span>
+    <span class="font-spacemono text-xs font-normal opacity-60">{{ count }}</span>
+  </NuxtLink>
 </template>
-
-<style scoped>
-.rand-bg-color {
-  background-color: v-bind(picAColor);
-}
-</style>

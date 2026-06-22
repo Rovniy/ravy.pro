@@ -31,8 +31,8 @@ const activeId = computed(() => {
 
 <template>
   <div v-if="links.length" class="lg:col-span-3 sticky top-28 max-h-[70vh] hidden lg:flex flex-col justify-self-end pointer-events-none">
-    <div class="border dark:border-gray-800 rounded-xl p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto pointer-events-auto">
-      <p class="text-xs font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-3 pb-2 border-b dark:border-gray-800">
+    <div class="border dark:border-slate-800 rounded-xl p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto pointer-events-auto">
+      <p class="font-spacemono text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3 pb-2 border-b dark:border-slate-800">
         On this page
       </p>
 
@@ -44,7 +44,7 @@ const activeId = computed(() => {
               class="flex items-center text-xs py-1 pl-2 border-l-2 transition-all duration-200"
               :class="activeId === link.id
                 ? 'border-sky-500 text-sky-500 dark:text-sky-400 font-semibold'
-                : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-600'"
+                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'"
             >
               {{ link.text }}
             </NuxtLink>
@@ -57,7 +57,7 @@ const activeId = computed(() => {
                 class="flex items-center text-xs py-1 pl-5 border-l-2 transition-all duration-200"
                 :class="activeId === child.id
                   ? 'border-sky-500 text-sky-500 dark:text-sky-400 font-semibold'
-                  : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-600'"
+                  : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'"
               >
                 {{ child.text }}
               </NuxtLink>

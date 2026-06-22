@@ -219,13 +219,13 @@ function stringify(value: unknown): string {
       <h1 class="text-3xl font-bold tracking-tight">
         JWT Decoder &amp; Verifier
       </h1>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
         Decode a JSON Web Token, read its claims, and verify its signature.
       </p>
     </header>
 
     <!-- Privacy banner -->
-    <div class="mb-8 flex items-start gap-3 rounded-md border border-zinc-200 dark:border-zinc-800 p-4 text-sm text-zinc-600 dark:text-zinc-300">
+    <div class="mb-8 flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300">
       <Icon name="mdi:shield-check" size="20" class="shrink-0 mt-0.5 text-emerald-500" aria-hidden="true" />
       <p>Everything runs in your browser. Your token, secret, and keys never leave this page.</p>
     </div>
@@ -235,10 +235,10 @@ function stringify(value: unknown): string {
       <div class="flex items-center justify-between mb-2">
         <label for="jwt-input" class="text-sm font-medium">Encoded token</label>
         <div class="flex items-center gap-3 text-xs">
-          <button type="button" class="underline text-zinc-600 dark:text-zinc-300 hover:cursor-pointer" @click="loadSample">
+          <button type="button" class="underline text-slate-600 dark:text-slate-300 hover:cursor-pointer" @click="loadSample">
             Load sample
           </button>
-          <button type="button" class="underline text-zinc-600 dark:text-zinc-300 hover:cursor-pointer" @click="clearToken">
+          <button type="button" class="underline text-slate-600 dark:text-slate-300 hover:cursor-pointer" @click="clearToken">
             Clear
           </button>
         </div>
@@ -249,16 +249,16 @@ function stringify(value: unknown): string {
         rows="5"
         spellcheck="false"
         placeholder="Paste a JWT here (header.payload.signature)…"
-        class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 font-mono text-sm break-all focus:outline-none focus:ring-2 focus:ring-sky-400"
+        class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono text-sm break-all focus:outline-none focus:ring-2 focus:ring-sky-400"
       />
 
       <!-- Colored token preview -->
-      <div v-if="decoded.partCount >= 2" class="mt-3 rounded-md border border-zinc-200 dark:border-zinc-800 p-3 font-mono text-sm break-all bg-zinc-50 dark:bg-zinc-900/50">
+      <div v-if="decoded.partCount >= 2" class="mt-3 rounded-md border border-slate-200 dark:border-slate-800 p-3 font-mono text-sm break-all bg-slate-50 dark:bg-slate-900/50">
         <span class="text-rose-500">{{ decoded.raw.header }}</span>
-        <span class="text-zinc-400">.</span>
+        <span class="text-slate-400">.</span>
         <span class="text-fuchsia-500">{{ decoded.raw.payload }}</span>
         <template v-if="decoded.raw.signature">
-          <span class="text-zinc-400">.</span>
+          <span class="text-slate-400">.</span>
           <span class="text-sky-500">{{ decoded.raw.signature }}</span>
         </template>
       </div>
@@ -272,7 +272,7 @@ function stringify(value: unknown): string {
           {{ statusMeta.label }}
         </span>
       </ClientOnly>
-      <span v-if="algInfo.alg" class="inline-flex items-center gap-1.5 rounded-full border border-zinc-300 dark:border-zinc-700 px-3 py-1 font-medium text-zinc-700 dark:text-zinc-200">
+      <span v-if="algInfo.alg" class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 dark:border-slate-700 px-3 py-1 font-medium text-slate-700 dark:text-slate-200">
         <Icon name="mdi:key-variant" size="16" aria-hidden="true" />
         {{ algInfo.alg }}
       </span>
@@ -291,7 +291,7 @@ function stringify(value: unknown): string {
 
     <!-- Header + Payload panels -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="rounded-md border border-zinc-200 dark:border-zinc-800 p-4">
+      <div class="rounded-md border border-slate-200 dark:border-slate-800 p-4">
         <div class="flex items-center justify-between mb-2">
           <h2 class="inline-flex items-center gap-1.5 text-sm font-semibold text-rose-500">
             <Icon name="mdi:code-json" size="16" aria-hidden="true" />
@@ -300,23 +300,23 @@ function stringify(value: unknown): string {
           <button
             v-if="headerJson"
             type="button"
-            class="inline-flex items-center gap-1 text-xs underline text-zinc-600 dark:text-zinc-300 hover:cursor-pointer"
+            class="inline-flex items-center gap-1 text-xs underline text-slate-600 dark:text-slate-300 hover:cursor-pointer"
             @click="copyText(headerJson, 'header')"
           >
             <Icon :name="copied === 'header' ? 'mdi:check' : 'mdi:content-copy'" size="14" :class="copied === 'header' ? 'text-emerald-500' : ''" />
             {{ copied === 'header' ? 'Copied' : 'Copy' }}
           </button>
         </div>
-        <pre v-if="headerJson" class="font-mono text-xs overflow-auto text-zinc-900 dark:text-zinc-100">{{ headerJson }}</pre>
+        <pre v-if="headerJson" class="font-mono text-xs overflow-auto text-slate-900 dark:text-slate-100">{{ headerJson }}</pre>
         <p v-else-if="partError('header')" class="text-xs text-rose-500">
           {{ partError('header') }}
         </p>
-        <p v-else class="text-xs text-zinc-400">
+        <p v-else class="text-xs text-slate-400">
           —
         </p>
       </div>
 
-      <div class="rounded-md border border-zinc-200 dark:border-zinc-800 p-4">
+      <div class="rounded-md border border-slate-200 dark:border-slate-800 p-4">
         <div class="flex items-center justify-between mb-2">
           <h2 class="inline-flex items-center gap-1.5 text-sm font-semibold text-fuchsia-500">
             <Icon name="mdi:code-json" size="16" aria-hidden="true" />
@@ -325,18 +325,18 @@ function stringify(value: unknown): string {
           <button
             v-if="payloadJson"
             type="button"
-            class="inline-flex items-center gap-1 text-xs underline text-zinc-600 dark:text-zinc-300 hover:cursor-pointer"
+            class="inline-flex items-center gap-1 text-xs underline text-slate-600 dark:text-slate-300 hover:cursor-pointer"
             @click="copyText(payloadJson, 'payload')"
           >
             <Icon :name="copied === 'payload' ? 'mdi:check' : 'mdi:content-copy'" size="14" :class="copied === 'payload' ? 'text-emerald-500' : ''" />
             {{ copied === 'payload' ? 'Copied' : 'Copy' }}
           </button>
         </div>
-        <pre v-if="payloadJson" class="font-mono text-xs overflow-auto text-zinc-900 dark:text-zinc-100">{{ payloadJson }}</pre>
+        <pre v-if="payloadJson" class="font-mono text-xs overflow-auto text-slate-900 dark:text-slate-100">{{ payloadJson }}</pre>
         <p v-else-if="partError('payload')" class="text-xs text-rose-500">
           {{ partError('payload') }}
         </p>
-        <p v-else class="text-xs text-zinc-400">
+        <p v-else class="text-xs text-slate-400">
           —
         </p>
       </div>
@@ -344,7 +344,7 @@ function stringify(value: unknown): string {
 
     <!-- Claims interpretation -->
     <ClientOnly>
-      <section v-if="decoded.ok && claims.length" class="mt-8 rounded-md border border-zinc-200 dark:border-zinc-800 p-4">
+      <section v-if="decoded.ok && claims.length" class="mt-8 rounded-md border border-slate-200 dark:border-slate-800 p-4">
         <h2 class="text-sm font-semibold mb-3">
           Claims
         </h2>
@@ -352,25 +352,25 @@ function stringify(value: unknown): string {
         <!-- Time claims with friendly absolute + relative time -->
         <dl v-if="timeClaims.length" class="mb-4 space-y-1.5 text-sm">
           <div v-for="t in timeClaims" :key="t.claim" class="flex flex-wrap gap-x-2">
-            <dt class="font-medium text-zinc-700 dark:text-zinc-200">
+            <dt class="font-medium text-slate-700 dark:text-slate-200">
               {{ CLAIM_LABEL[t.claim] }}
             </dt>
-            <dd class="text-zinc-600 dark:text-zinc-400">
+            <dd class="text-slate-600 dark:text-slate-400">
               {{ t.absolute }} ({{ t.relative }})
             </dd>
           </div>
         </dl>
 
         <!-- All claims with standard-claim descriptions -->
-        <dl class="space-y-2 text-sm border-t border-zinc-200 dark:border-zinc-800 pt-3">
+        <dl class="space-y-2 text-sm border-t border-slate-200 dark:border-slate-800 pt-3">
           <div v-for="c in claims" :key="c.key" class="grid grid-cols-[8rem_1fr] gap-x-3 gap-y-0.5">
-            <dt class="font-mono text-zinc-700 dark:text-zinc-200">
+            <dt class="font-mono text-slate-700 dark:text-slate-200">
               {{ c.key }}
-              <span v-if="c.name" class="block text-[11px] font-sans font-normal text-zinc-400">{{ c.name }}</span>
+              <span v-if="c.name" class="block text-[11px] font-sans font-normal text-slate-400">{{ c.name }}</span>
             </dt>
             <dd class="min-w-0">
-              <span class="font-mono break-all text-zinc-900 dark:text-zinc-100">{{ stringify(c.value) }}</span>
-              <span v-if="c.description" class="block text-[11px] text-zinc-400">{{ c.description }}</span>
+              <span class="font-mono break-all text-slate-900 dark:text-slate-100">{{ stringify(c.value) }}</span>
+              <span v-if="c.description" class="block text-[11px] text-slate-400">{{ c.description }}</span>
             </dd>
           </div>
         </dl>
@@ -378,7 +378,7 @@ function stringify(value: unknown): string {
     </ClientOnly>
 
     <!-- Verify signature -->
-    <section v-if="decoded.ok" class="mt-8 rounded-md border border-zinc-200 dark:border-zinc-800 p-4">
+    <section v-if="decoded.ok" class="mt-8 rounded-md border border-slate-200 dark:border-slate-800 p-4">
       <button
         type="button"
         class="flex w-full items-center justify-between text-sm font-semibold hover:cursor-pointer"
@@ -393,14 +393,14 @@ function stringify(value: unknown): string {
 
       <div v-if="showVerify" class="mt-4 space-y-3 text-sm">
         <template v-if="inputMode === 'secret'">
-          <label for="jwt-secret" class="block font-medium">Secret <span class="font-normal text-zinc-400">(HMAC, treated as UTF-8 text)</span></label>
+          <label for="jwt-secret" class="block font-medium">Secret <span class="font-normal text-slate-400">(HMAC, treated as UTF-8 text)</span></label>
           <input
             id="jwt-secret"
             v-model="secret"
             type="text"
             spellcheck="false"
             placeholder="your-256-bit-secret"
-            class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 font-mono"
+            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono"
           >
         </template>
 
@@ -419,11 +419,11 @@ function stringify(value: unknown): string {
             rows="6"
             spellcheck="false"
             :placeholder="keyFormat === 'pem' ? '-----BEGIN PUBLIC KEY-----\n…' : '{ &quot;kty&quot;: &quot;RSA&quot;, … }'"
-            class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 font-mono text-xs"
+            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono text-xs"
           />
         </template>
 
-        <p v-else class="text-zinc-500 dark:text-zinc-400">
+        <p v-else class="text-slate-500 dark:text-slate-400">
           This token's algorithm (<code class="font-mono">{{ algInfo.alg ?? 'none' }}</code>) cannot be verified.
         </p>
 
@@ -431,7 +431,7 @@ function stringify(value: unknown): string {
           <button
             type="button"
             :disabled="verifyState === 'verifying'"
-            class="rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+            class="rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
             @click="verify"
           >
             {{ verifyState === 'verifying' ? 'Verifying…' : 'Verify' }}
@@ -446,15 +446,15 @@ function stringify(value: unknown): string {
           </span>
         </div>
 
-        <p v-if="verifyError" class="text-xs text-zinc-500 dark:text-zinc-400 break-words">
+        <p v-if="verifyError" class="text-xs text-slate-500 dark:text-slate-400 break-words">
           {{ verifyError }}
         </p>
       </div>
     </section>
 
     <!-- About / FAQ -->
-    <section class="mt-12 border-t border-zinc-200 dark:border-zinc-800 pt-8 text-sm text-zinc-600 dark:text-zinc-300">
-      <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8 text-sm text-slate-600 dark:text-slate-300">
+      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
         About this tool
       </h2>
       <p class="mt-2">
@@ -466,12 +466,12 @@ function stringify(value: unknown): string {
         is uploaded.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
         FAQ
       </h2>
       <dl class="mt-2 space-y-4">
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Is my token sent to a server?
           </dt>
           <dd class="mt-1">
@@ -479,7 +479,7 @@ function stringify(value: unknown): string {
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Which signature algorithms are supported?
           </dt>
           <dd class="mt-1">
@@ -487,7 +487,7 @@ function stringify(value: unknown): string {
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Does it validate token expiry?
           </dt>
           <dd class="mt-1">
@@ -495,7 +495,7 @@ function stringify(value: unknown): string {
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Can it verify a token signed with "alg: none"?
           </dt>
           <dd class="mt-1">

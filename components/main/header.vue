@@ -50,8 +50,8 @@ async function onSignIn() {
     ref="headerRef"
     class="fixed w-full z-10 transition-all duration-300"
     :class="scrolled
-      ? 'bg-[#F1F2F4]/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-transparent shadow-sm py-2'
-      : 'bg-[#F1F2F4] dark:bg-slate-950 border-b border-transparent py-5'"
+      ? 'bg-slate-100/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-transparent shadow-sm py-2'
+      : 'bg-slate-100 dark:bg-slate-950 border-b border-transparent py-5'"
   >
     <div class="flex px-6 container max-w-5xl justify-between mx-auto items-center">
       <ul class="flex items-baseline space-x-5">
@@ -64,12 +64,12 @@ async function onSignIn() {
 
       <ul class="flex items-center space-x-3 lg:space-x-6 text-sm lg:text-lg font-semibold">
         <li class="hidden lg:block">
-          <NuxtLink to="/blogs" class="nav-link hover:text-sky-700">
+          <NuxtLink to="/blogs" class="nav-link hover:text-sky-600 dark:hover:text-sky-400">
             Blogs
           </NuxtLink>
         </li>
         <li v-if="isAuthed" class="hidden lg:block">
-          <NuxtLink to="/account" class="nav-link hover:text-sky-700">
+          <NuxtLink to="/account" class="nav-link hover:text-sky-600 dark:hover:text-sky-400">
             Account
           </NuxtLink>
         </li>
@@ -77,7 +77,7 @@ async function onSignIn() {
           <MainToolsMenu />
         </li>
         <li class="hidden lg:block" title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-700">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-600 dark:hover:text-sky-400">
             About me
           </NuxtLink>
         </li>
@@ -92,7 +92,7 @@ async function onSignIn() {
               v-if="state.ready && !isAuthed"
               type="button"
               title="Sign in"
-              class="inline-flex items-center gap-1.5 hover:text-sky-700 hover:cursor-pointer text-sm lg:text-base font-medium"
+              class="inline-flex items-center gap-1.5 hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer text-sm lg:text-base font-medium"
               @click="onSignIn"
             >
               <Icon name="mdi:login" size="22" aria-hidden="true" class="lg:hidden" />
@@ -104,21 +104,21 @@ async function onSignIn() {
               <span
                 v-if="state.user?.photoURL"
                 :title="state.user.email ?? ''"
-                class="inline-block w-6 h-6 rounded-full overflow-hidden bg-zinc-300 dark:bg-zinc-700"
+                class="inline-block w-6 h-6 rounded-full overflow-hidden bg-slate-300 dark:bg-slate-700"
               >
                 <img :src="state.user.photoURL" alt="avatar" class="w-full h-full object-cover">
               </span>
               <span
                 v-else
                 :title="state.user?.email ?? ''"
-                class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-zinc-300 dark:bg-zinc-700 text-xs font-bold uppercase"
+                class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-300 dark:bg-slate-700 text-xs font-bold uppercase"
               >
                 {{ userInitial }}
               </span>
               <button
                 type="button"
                 title="Sign out"
-                class="hover:text-sky-700 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
+                class="hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
                 @click="signOut"
               >
                 <span class="hidden lg:inline">Sign out</span>
@@ -133,7 +133,7 @@ async function onSignIn() {
         <li class="lg:hidden">
           <button
             type="button"
-            class="inline-flex items-center justify-center w-9 h-9 -mr-2 hover:text-sky-700 hover:cursor-pointer"
+            class="inline-flex items-center justify-center w-9 h-9 -mr-2 hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer"
             :aria-expanded="isMobileOpen"
             aria-controls="mobile-nav"
             aria-label="Toggle navigation menu"
@@ -156,40 +156,40 @@ async function onSignIn() {
       <nav
         v-if="isMobileOpen"
         id="mobile-nav"
-        class="lg:hidden absolute left-0 right-0 top-full bg-[#F1F2F4]/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 shadow-lg"
+        class="lg:hidden absolute left-0 right-0 top-full bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-lg"
         aria-label="Mobile navigation"
       >
         <ul class="container max-w-5xl mx-auto px-6 py-3 flex flex-col text-base font-semibold">
           <li>
-            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-sky-700">
+            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
               Blogs
             </NuxtLink>
           </li>
           <li v-if="isAuthed">
-            <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-700">
+            <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
               Account
             </NuxtLink>
           </li>
-          <li class="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Tools
           </li>
           <li>
-            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-700">
+            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
               About me
             </NuxtLink>
           </li>
           <li v-for="item in publicServices" :key="item.path">
-            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-700">
+            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
               {{ item.name }}
             </NuxtLink>
           </li>
           <ClientOnly>
             <template v-if="isAdmin">
-              <li class="mt-2 pt-2 border-t border-zinc-200 dark:border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+              <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Services
               </li>
               <li v-for="item in adminServices" :key="item.path">
-                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-700">
+                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
                   {{ item.name }}
                 </NuxtLink>
               </li>
@@ -217,7 +217,7 @@ async function onSignIn() {
 }
 
 .nav-link.router-link-active {
-  @apply text-sky-700 dark:text-sky-400;
+  @apply text-sky-600 dark:text-sky-400;
 }
 
 .nav-link.router-link-exact-active {

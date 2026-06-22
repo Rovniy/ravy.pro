@@ -55,6 +55,24 @@ export default defineNuxtConfig({
           href: '/fonts/space-grotesk-700.woff2',
           crossorigin: 'anonymous',
         },
+        // 500 is the most-used body/UI weight after 400/700; preload it so the
+        // weight hierarchy lands without a flash of the wrong weight.
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: '/fonts/space-grotesk-500.woff2',
+          crossorigin: 'anonymous',
+        },
+        // Space Mono drives the "data layer" (eyebrows, dates, tags, code) that
+        // appears above the fold on most pages — preload the regular weight.
+        {
+          rel: 'preload',
+          as: 'font',
+          type: 'font/woff2',
+          href: '/fonts/space-mono-400.woff2',
+          crossorigin: 'anonymous',
+        },
       ],
       script: [
         {
@@ -271,6 +289,7 @@ export default defineNuxtConfig({
   fontMetrics: {
     fonts: [
       { family: 'Space Grotesk', fallbacks: ['Inter', 'sans-serif'] },
+      { family: 'Space Mono', fallbacks: ['ui-monospace', 'monospace'] },
     ],
   },
 

@@ -9,13 +9,13 @@ function toggleTheme() {
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] text-zinc-500 dark:text-zinc-400">
+  <div class="flex flex-wrap items-center gap-x-3 gap-y-2 font-spacemono text-xs text-slate-500 dark:text-slate-400">
     <span>{{ footerData.copyright }}</span>
 
     <a
       href="/rss.xml"
       aria-label="Subscribe to RSS Feed"
-      class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
+      class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
     >
       <Icon name="bi:rss-fill" size="14" aria-hidden="true" />
     </a>
@@ -25,7 +25,7 @@ function toggleTheme() {
         type="button"
         :aria-label="colorMode.value === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
         :title="colorMode.value === 'dark' ? 'Light theme' : 'Dark theme'"
-        class="hover:text-sky-500 dark:hover:text-sky-400 transition-colors hover:cursor-pointer"
+        class="hover:text-sky-600 dark:hover:text-sky-400 transition-colors hover:cursor-pointer"
         @click="toggleTheme"
       >
         <Icon

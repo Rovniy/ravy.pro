@@ -10,7 +10,7 @@ const links: { to: string, text: string }[] = [
 
 <template>
   <div>
-    <p class="mb-4 flex items-center gap-2 text-sm font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+    <p class="mb-4 flex items-center gap-2 text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100">
       <span class="inline-block w-1.5 h-1.5 rounded-full bg-sky-500" />
       Quick Links
     </p>
@@ -20,7 +20,7 @@ const links: { to: string, text: string }[] = [
         v-for="item in links"
         :key="item.to"
         :to="item.to"
-        class="group inline-flex items-center text-sm text-zinc-600 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
+        class="group inline-flex items-center text-sm text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
       >
         <span>{{ item.text }}</span>
         <Icon

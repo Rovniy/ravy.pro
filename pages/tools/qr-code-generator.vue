@@ -162,7 +162,7 @@ function download() {
       <h1 class="text-3xl font-bold tracking-tight">
         Free QR Code Generator
       </h1>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
         Generate a styled QR code, optionally with a center image, and download as PNG.
       </p>
     </header>
@@ -177,7 +177,7 @@ function download() {
             v-model="data"
             rows="3"
             placeholder="https://ravy.pro"
-            class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-400"
+            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500/60"
           />
         </div>
 
@@ -195,7 +195,7 @@ function download() {
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block mb-1 font-medium" for="qr-dot">Dot style</label>
-            <select id="qr-dot" v-model="dotStyle" class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2">
+            <select id="qr-dot" v-model="dotStyle" class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
               <option value="square">
                 square
               </option>
@@ -218,7 +218,7 @@ function download() {
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-corner-sq">Corner square</label>
-            <select id="qr-corner-sq" v-model="cornerSquareStyle" class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2">
+            <select id="qr-corner-sq" v-model="cornerSquareStyle" class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
               <option value="square">
                 square
               </option>
@@ -235,7 +235,7 @@ function download() {
         <div class="grid grid-cols-3 gap-3 items-end">
           <div>
             <label class="block mb-1 font-medium" for="qr-corner-dot">Corner dot</label>
-            <select id="qr-corner-dot" v-model="cornerDotStyle" class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2">
+            <select id="qr-corner-dot" v-model="cornerDotStyle" class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
               <option value="square">
                 square
               </option>
@@ -246,11 +246,11 @@ function download() {
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-fg">Foreground</label>
-            <input id="qr-fg" v-model="fgColor" type="color" class="w-full h-10 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 cursor-pointer">
+            <input id="qr-fg" v-model="fgColor" type="color" class="w-full h-10 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer">
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-bg">Background</label>
-            <input id="qr-bg" v-model="bgColor" type="color" class="w-full h-10 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 cursor-pointer">
+            <input id="qr-bg" v-model="bgColor" type="color" class="w-full h-10 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer">
           </div>
         </div>
 
@@ -261,13 +261,13 @@ function download() {
               id="qr-image-input"
               type="file"
               accept="image/*"
-              class="flex-1 text-xs file:mr-2 file:rounded-md file:border-0 file:bg-zinc-900 dark:file:bg-white file:text-white dark:file:text-zinc-900 file:px-3 file:py-1.5 file:hover:opacity-90 file:cursor-pointer"
+              class="flex-1 text-xs file:mr-2 file:rounded-md file:border-0 file:bg-slate-900 dark:file:bg-white file:text-white dark:file:text-slate-900 file:px-3 file:py-1.5 file:hover:opacity-90 file:cursor-pointer"
               @change="onImagePick"
             >
             <button
               v-if="image"
               type="button"
-              class="text-xs underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:cursor-pointer"
+              class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white hover:cursor-pointer"
               @click="clearImage"
             >
               Clear
@@ -289,11 +289,11 @@ function download() {
 
       <!-- Preview -->
       <div class="flex flex-col items-center gap-4">
-        <div class="rounded-md border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50 dark:bg-zinc-900/50 max-w-full overflow-auto">
+        <div class="rounded-md border border-slate-200 dark:border-slate-800 p-4 bg-slate-50 dark:bg-slate-900/50 max-w-full overflow-auto">
           <ClientOnly>
             <div ref="previewRef" class="flex items-center justify-center [&_canvas]:max-w-full [&_canvas]:h-auto" />
             <template #fallback>
-              <div class="w-[300px] h-[300px] flex items-center justify-center text-zinc-400">
+              <div class="w-[300px] h-[300px] flex items-center justify-center text-slate-400">
                 <Icon name="svg-spinners:180-ring" size="32" />
               </div>
             </template>
@@ -302,7 +302,7 @@ function download() {
         <button
           type="button"
           :disabled="!canDownload"
-          class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+          class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
           @click="download"
         >
           <Icon name="mdi:download" size="16" />
@@ -311,39 +311,39 @@ function download() {
       </div>
     </div>
 
-    <section class="mt-12 border-t border-zinc-200 dark:border-zinc-800 pt-8">
-      <h2 class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8">
+      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
         Create QR Codes Online
       </h2>
-      <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
         This free tool helps you generate QR codes for websites, text, contact cards, and marketing campaigns. Customize colors, dot styles, and corners to match your brand. You can also upload a center logo and download the final image as PNG.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
         FAQ
       </h2>
       <dl class="mt-3 space-y-4 text-sm">
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             How to create a QR code online?
           </dt>
-          <dd class="mt-1 text-zinc-600 dark:text-zinc-400">
+          <dd class="mt-1 text-slate-600 dark:text-slate-400">
             Enter your URL or text, adjust style settings, and click download.
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Can I create a QR code with logo?
           </dt>
-          <dd class="mt-1 text-zinc-600 dark:text-zinc-400">
+          <dd class="mt-1 text-slate-600 dark:text-slate-400">
             Yes. Upload a center image to place your logo in the code.
           </dd>
         </div>
         <div>
-          <dt class="font-medium text-zinc-900 dark:text-zinc-100">
+          <dt class="font-medium text-slate-900 dark:text-slate-100">
             Is this QR code generator free to use?
           </dt>
-          <dd class="mt-1 text-zinc-600 dark:text-zinc-400">
+          <dd class="mt-1 text-slate-600 dark:text-slate-400">
             Yes, it is fully free and works in your browser.
           </dd>
         </div>

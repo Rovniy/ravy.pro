@@ -46,7 +46,7 @@ const restTags = computed(() => props.tags.slice(1))
 </script>
 
 <template>
-  <article class="group relative border border-zinc-200 dark:border-zinc-800 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl bg-white dark:bg-slate-900/50 text-zinc-700 dark:text-zinc-300 transition-all duration-300 hover:-translate-y-1.5 hover:border-sky-300 dark:hover:border-sky-700/60 flex flex-col focus-within:ring-2 focus-within:ring-sky-400">
+  <article class="group relative border border-slate-200 dark:border-slate-800 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl bg-white dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 transition-all duration-300 hover:-translate-y-1.5 hover:border-sky-300 dark:hover:border-sky-700/60 flex flex-col focus-within:ring-2 focus-within:ring-sky-400">
     <NuxtLink
       :to="path"
       :aria-label="title"
@@ -83,18 +83,18 @@ const restTags = computed(() => props.tags.slice(1))
 
       <span
         v-if="primaryTag"
-        class="absolute bottom-3 left-3 inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-white/95 text-zinc-800 shadow-sm backdrop-blur"
+        class="absolute bottom-3 left-3 inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-spacemono font-semibold bg-white/95 text-slate-800 shadow-sm backdrop-blur"
       >
         #{{ primaryTag }}
       </span>
     </div>
 
     <div class="p-5 flex flex-col gap-2.5 flex-1">
-      <h2 class="text-lg font-bold leading-snug tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors line-clamp-2">
+      <h2 class="text-lg font-bold leading-snug tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors line-clamp-2">
         {{ title }}
       </h2>
 
-      <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 line-clamp-2 flex-1">
+      <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-2 flex-1">
         {{ description }}
       </p>
 
@@ -104,18 +104,18 @@ const restTags = computed(() => props.tags.slice(1))
           :key="tag"
           :to="`/categories/${tag}`"
           :class="tagColorClass(tag)"
-          class="rounded-full px-2 py-0.5 text-[11px] font-medium"
+          class="rounded-full px-2 py-0.5 text-[11px] font-spacemono font-medium"
         >
           #{{ tag }}
         </NuxtLink>
       </div>
 
-      <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-zinc-100 dark:border-zinc-800/80">
-        <div class="flex items-center gap-1.5 text-xs text-zinc-400 dark:text-zinc-500">
+      <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-slate-100 dark:border-slate-800/80">
+        <div class="flex items-center gap-1.5 font-spacemono text-[11px] text-slate-400 dark:text-slate-500">
           <Icon name="mdi:calendar-outline" size="14" aria-hidden="true" />
           <span>{{ displayDate }}</span>
         </div>
-        <div class="inline-flex items-center gap-1 text-xs font-semibold text-sky-600 dark:text-sky-400 group-hover:underline">
+        <div class="inline-flex items-center gap-1 text-[11px] font-spacemono uppercase tracking-wider text-sky-600 dark:text-sky-400 group-hover:underline">
           Read More
           <LogoArrow />
         </div>

@@ -353,28 +353,28 @@ watch(
 <template>
   <main class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl text-[18px] leading-relaxed">
     <header class="mb-6 sm:mb-8">
-      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
         Contract Red-Flag Scanner
       </h1>
-      <p class="mt-2 text-base text-zinc-600 dark:text-zinc-400">
+      <p class="mt-2 text-base text-slate-600 dark:text-slate-400">
         Check influencer brand contracts for 10 common traps before you sign.
       </p>
     </header>
 
-    <div v-if="!state.ready" class="text-zinc-500">
+    <div v-if="!state.ready" class="text-slate-500">
       Loading…
     </div>
 
-    <div v-else-if="!isAuthed" class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 sm:p-6 bg-zinc-50 dark:bg-zinc-900/50">
+    <div v-else-if="!isAuthed" class="rounded-lg border border-slate-200 dark:border-slate-800 p-4 sm:p-6 bg-slate-50 dark:bg-slate-900/50">
       <h2 class="text-lg font-semibold mb-2">
         Sign in required
       </h2>
-      <p class="text-base text-zinc-600 dark:text-zinc-400 mb-4">
+      <p class="text-base text-slate-600 dark:text-slate-400 mb-4">
         This service is private and available only to the site owner.
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-base font-medium hover:opacity-90 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-base font-medium hover:opacity-90 hover:cursor-pointer"
         @click="onSignIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />
@@ -397,7 +397,7 @@ watch(
       </button>
     </div>
 
-    <div v-else class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4 sm:p-5 bg-white dark:bg-slate-900">
+    <div v-else class="rounded-lg border border-slate-200 dark:border-slate-800 p-4 sm:p-5 bg-white dark:bg-slate-900">
       <div class="mb-4 space-y-3">
         <input
           ref="fileInputRef"
@@ -422,16 +422,16 @@ watch(
           type="button"
           :disabled="isRunning"
           class="w-full rounded-lg border-2 border-dashed p-4 sm:p-5 text-left transition-colors disabled:opacity-60"
-          :class="isDragging ? 'border-sky-500 bg-sky-50/60 dark:bg-sky-900/20' : 'border-zinc-300 dark:border-zinc-700 hover:border-sky-400'"
+          :class="isDragging ? 'border-sky-500 bg-sky-50/60 dark:bg-sky-900/20' : 'border-slate-300 dark:border-slate-700 hover:border-sky-400'"
           @click="openFilePicker"
           @drop="onDrop"
           @dragover="onDragOver"
           @dragleave="onDragLeave"
         >
-          <p class="text-base font-medium text-zinc-900 dark:text-zinc-100">
+          <p class="text-base font-medium text-slate-900 dark:text-slate-100">
             Drag and drop document here
           </p>
-          <p class="mt-1 text-sm text-zinc-500">
+          <p class="mt-1 text-sm text-slate-500">
             or tap to choose a file (.txt, .pdf, image)
           </p>
         </button>
@@ -439,25 +439,25 @@ watch(
         <button
           type="button"
           :disabled="isRunning"
-          class="sm:hidden w-full inline-flex items-center justify-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-4 py-2 text-base font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-60"
+          class="sm:hidden w-full inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-60"
           @click="openPhotoPicker"
         >
           <Icon name="mdi:camera" size="18" />
           Take photo (mobile)
         </button>
 
-        <span v-if="fileName" class="block text-xs text-zinc-500">{{ fileName }}</span>
-        <span v-if="fileName && (fileMime === 'application/pdf' || fileMime.startsWith('image/'))" class="block text-xs text-zinc-500">
+        <span v-if="fileName" class="block text-xs text-slate-500">{{ fileName }}</span>
+        <span v-if="fileName && (fileMime === 'application/pdf' || fileMime.startsWith('image/'))" class="block text-xs text-slate-500">
           Text is extracted first and shown below for your review.
         </span>
-        <div v-if="inputStage" class="flex items-center gap-2 text-xs text-zinc-500">
+        <div v-if="inputStage" class="flex items-center gap-2 text-xs text-slate-500">
           <Icon :name="isExtractingPdf || isSubmitting ? 'svg-spinners:180-ring' : 'mdi:check-circle-outline'" size="14" />
           <span>{{ inputStage }}</span>
         </div>
 
-        <div v-if="photoPages.length" class="pt-2 border-t border-zinc-200 dark:border-zinc-800">
+        <div v-if="photoPages.length" class="pt-2 border-t border-slate-200 dark:border-slate-800">
           <div class="flex items-center justify-between mb-2">
-            <p class="text-sm text-zinc-600 dark:text-zinc-400">
+            <p class="text-sm text-slate-600 dark:text-slate-400">
               Photos selected: {{ photoPages.length }}
             </p>
             <button
@@ -472,7 +472,7 @@ watch(
             <div
               v-for="(photo, idx) in photoPages"
               :key="`${photo.name}-${idx}`"
-              class="relative rounded-md overflow-hidden border border-zinc-200 dark:border-zinc-700"
+              class="relative rounded-md overflow-hidden border border-slate-200 dark:border-slate-700"
             >
               <img :src="photo.base64" :alt="`photo-${idx + 1}`" class="w-full h-20 object-cover">
               <button
@@ -491,13 +491,13 @@ watch(
       </div>
 
       <label class="block text-base">
-        <span class="block mb-1 font-medium text-zinc-900 dark:text-zinc-100">Document text</span>
+        <span class="block mb-1 font-medium text-slate-900 dark:text-slate-100">Document text</span>
         <textarea
           v-model="contractText"
           rows="12"
           placeholder="Paste contract text here..."
           :disabled="isRunning"
-          class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-[18px] focus:outline-none focus:ring-2 focus:ring-zinc-400"
+          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-[18px] focus:outline-none focus:ring-2 focus:ring-sky-500/60"
         />
       </label>
 
@@ -505,7 +505,7 @@ watch(
         <button
           type="button"
           :disabled="!hasInput || isRunning"
-          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-base font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-base font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           @click="runScan"
         >
           <Icon :name="isRunning ? 'svg-spinners:180-ring' : 'mdi:shield-search'" size="16" />
@@ -518,11 +518,11 @@ watch(
       </p>
 
       <div v-if="scanState" class="mt-4">
-        <div class="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 mb-1">
+        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
           <span>Status: {{ scanState.step }}</span>
           <span>{{ scanState.progress }}%</span>
         </div>
-        <div class="h-2 rounded bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+        <div class="h-2 rounded bg-slate-200 dark:bg-slate-800 overflow-hidden">
           <div
             class="h-full bg-sky-500 transition-all duration-500"
             :style="{ width: `${scanState.progress}%` }"
@@ -544,7 +544,7 @@ watch(
       <button
         type="button"
         :disabled="isSharing"
-        class="inline-flex items-center gap-2 rounded-md border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-base hover:bg-zinc-100 dark:hover:bg-zinc-800"
+        class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-base hover:bg-slate-100 dark:hover:bg-slate-800"
         :class="isSharing ? 'opacity-70 cursor-not-allowed' : ''"
         @click="shareCurrentScan"
       >

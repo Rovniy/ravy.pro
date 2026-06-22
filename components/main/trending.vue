@@ -37,8 +37,8 @@ useHead({
 <template>
   <section v-if="formattedData?.length" class="py-14 px-6">
     <div class="flex items-center gap-3 mb-8">
-      <Icon name="mdi:star-outline" size="1.4em" aria-hidden="true" class="text-zinc-400 dark:text-zinc-500" />
-      <h2 class="text-2xl font-bold text-zinc-800 dark:text-zinc-200 tracking-tight">
+      <Icon name="mdi:star-outline" size="1.4em" aria-hidden="true" class="text-slate-400 dark:text-slate-500" />
+      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">
         Trending Posts
       </h2>
     </div>

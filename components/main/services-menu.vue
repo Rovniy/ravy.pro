@@ -30,7 +30,7 @@ function toggle() {
   <div ref="menuRef" class="relative">
     <button
       type="button"
-      class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-sky-700 hover:cursor-pointer"
+      class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer"
       :aria-expanded="isOpen"
       aria-haspopup="menu"
       @click="toggle"
@@ -50,14 +50,14 @@ function toggle() {
       <div
         v-if="isOpen"
         role="menu"
-        class="absolute right-0 top-full mt-2 w-60 rounded-md border border-zinc-200 dark:border-zinc-800 bg-[#F1F2F4] dark:bg-slate-950 shadow-lg py-1 z-20"
+        class="absolute right-0 top-full mt-2 w-60 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
           v-for="item in adminServices"
           :key="item.path"
           :to="item.path"
           role="menuitem"
-          class="services-item block px-4 py-2 text-sm sm:text-base font-medium hover:bg-zinc-200 dark:hover:bg-slate-800 hover:text-sky-700"
+          class="services-item block px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
         >
           {{ item.name }}
         </NuxtLink>
@@ -82,10 +82,10 @@ function toggle() {
 }
 
 .services-item:focus-visible {
-  @apply bg-zinc-200 dark:bg-slate-800 text-sky-700;
+  @apply bg-slate-200 dark:bg-slate-800 text-sky-600 dark:text-sky-400;
 }
 
 .services-item.router-link-active {
-  @apply text-sky-700 dark:text-sky-400 bg-zinc-100 dark:bg-slate-900;
+  @apply text-sky-600 dark:text-sky-400 bg-slate-100 dark:bg-slate-900;
 }
 </style>

@@ -136,27 +136,27 @@ if (import.meta.client) {
       <h1 class="text-3xl font-bold tracking-tight">
         Shortify
       </h1>
-      <p class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
         Personal URL shortener. Links are served from <code>{{ baseUrl }}/s/&lt;code&gt;</code>.
       </p>
     </header>
 
     <!-- Loading auth state -->
-    <div v-if="!state.ready" class="text-zinc-500">
+    <div v-if="!state.ready" class="text-slate-500">
       Loading…
     </div>
 
     <!-- Not signed in -->
-    <div v-else-if="!isAuthed" class="rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 bg-zinc-50 dark:bg-zinc-900/50">
+    <div v-else-if="!isAuthed" class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
       <h2 class="text-lg font-semibold mb-2">
         Sign in required
       </h2>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
         This area is restricted. Use the <strong>Sign in</strong> button in the top-right of the header, or click below.
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
         @click="onSignIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />
@@ -188,12 +188,12 @@ if (import.meta.client) {
           type="url"
           required
           placeholder="https://example.com/long-link"
-          class="flex-1 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400"
+          class="flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/60"
         >
         <button
           type="submit"
           :disabled="submitting"
-          class="rounded-md bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+          class="rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
         >
           {{ submitting ? 'Creating…' : 'Shorten' }}
         </button>
@@ -208,7 +208,7 @@ if (import.meta.client) {
         <a class="underline font-mono" :href="shortUrl(justCreated.code)" target="_blank">{{ shortUrl(justCreated.code) }}</a>
         <NuxtLink
           :to="qrLink(shortUrl(justCreated.code))"
-          class="inline-flex items-center gap-1 text-xs underline text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white"
+          class="inline-flex items-center gap-1 text-xs underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
         >
           <Icon name="mdi:qrcode" size="14" />
           QR
@@ -216,7 +216,7 @@ if (import.meta.client) {
         <button
           type="button"
           class="ml-auto inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-          :class="copiedKey === `created-${justCreated.code}` ? 'text-green-700 dark:text-green-400' : 'underline text-zinc-600 dark:text-zinc-300'"
+          :class="copiedKey === `created-${justCreated.code}` ? 'text-green-700 dark:text-green-400' : 'underline text-slate-600 dark:text-slate-300'"
           @click="copy(shortUrl(justCreated.code), `created-${justCreated.code}`)"
         >
           <Icon v-if="copiedKey === `created-${justCreated.code}`" name="mdi:check" size="14" />
@@ -229,19 +229,19 @@ if (import.meta.client) {
           <h2 class="text-lg font-semibold">
             Links
           </h2>
-          <button type="button" class="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-white underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
+          <button type="button" class="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
             {{ loadingList ? 'Refreshing…' : 'Refresh' }}
           </button>
         </div>
 
-        <div v-if="!loadingList && links.length === 0" class="text-sm text-zinc-500">
+        <div v-if="!loadingList && links.length === 0" class="text-sm text-slate-500">
           No links yet.
         </div>
 
         <div v-else class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
-              <tr class="text-left text-xs uppercase tracking-wide text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
+              <tr class="text-left text-xs uppercase tracking-wide text-slate-500 border-b border-slate-200 dark:border-slate-800">
                 <th class="py-2 pr-4">
                   Code
                 </th>
@@ -258,7 +258,7 @@ if (import.meta.client) {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="link in links" :key="link.code" class="border-b border-zinc-100 dark:border-zinc-800/50">
+              <tr v-for="link in links" :key="link.code" class="border-b border-slate-100 dark:border-slate-800/50">
                 <td class="py-2 pr-4 font-mono">
                   <a :href="shortUrl(link.code)" target="_blank" class="hover:underline">
                     /s/{{ link.code }}
@@ -270,14 +270,14 @@ if (import.meta.client) {
                 <td class="py-2 pr-4 tabular-nums">
                   {{ link.clicks }}
                 </td>
-                <td class="py-2 pr-4 text-zinc-500 whitespace-nowrap">
+                <td class="py-2 pr-4 text-slate-500 whitespace-nowrap">
                   {{ formatDate(link.createdAt) }}
                 </td>
                 <td class="py-2 text-right whitespace-nowrap">
                   <div class="inline-flex items-center gap-3 justify-end">
                     <NuxtLink
                       :to="qrLink(shortUrl(link.code))"
-                      class="inline-flex items-center gap-1 text-xs underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+                      class="inline-flex items-center gap-1 text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white"
                       :title="`Create QR code for /s/${link.code}`"
                     >
                       <Icon name="mdi:qrcode" size="14" />
@@ -286,7 +286,7 @@ if (import.meta.client) {
                     <button
                       type="button"
                       class="inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-                      :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-zinc-500 hover:text-zinc-900 dark:hover:text-white'"
+                      :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-slate-500 hover:text-slate-900 dark:hover:text-white'"
                       @click="copy(shortUrl(link.code), link.code)"
                     >
                       <Icon v-if="copiedKey === link.code" name="mdi:check" size="14" />

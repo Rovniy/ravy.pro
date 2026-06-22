@@ -22,7 +22,7 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <header>
-    <h1 class="text-xl dark:text-zinc-300 md:text-3xl lg:text-4xl m-7 font-bold text-center">
+    <h1 class="text-3xl md:text-4xl lg:text-5xl m-7 font-bold tracking-tight text-center text-slate-900 dark:text-white">
       {{ title || '' }}
     </h1>
 
@@ -37,19 +37,19 @@ withDefaults(defineProps<Props>(), {
       class="m-auto rounded-2xl shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
     />
 
-    <p class="text-xs sm:text-sm my-3 max-w-xl mx-auto text-center text-zinc-600 dark:text-zinc-400">
+    <p class="text-xs sm:text-sm my-3 max-w-xl mx-auto text-center text-slate-600 dark:text-slate-400">
       {{ description }}
     </p>
 
     <div class="flex w-full justify-center text-xs md:text-base my-8">
-      <div class="md:flex text-black dark:text-zinc-300 content-center gap-8 text-xs sm:text-sm">
-        <div class="flex items-center font-semibold">
+      <div class="md:flex items-center text-black dark:text-slate-300 content-center gap-8 text-xs sm:text-sm">
+        <div class="flex items-center gap-1 font-spacemono">
           <LogoDate />
 
           <p>{{ createdAt }}</p>
         </div>
 
-        <div v-if="readingTime" class="flex items-center gap-1 font-semibold">
+        <div v-if="readingTime" class="flex items-center gap-1 font-spacemono">
           <Icon name="mdi:clock-outline" size="18" aria-hidden="true" />
           <p>{{ readingTime }} min read</p>
         </div>
@@ -60,7 +60,7 @@ withDefaults(defineProps<Props>(), {
             :key="tag"
             :to="`/categories/${tag}`"
             :class="tagColorClass(tag)"
-            class="rounded-full px-3 py-1 text-sm font-medium transition-opacity hover:opacity-80"
+            class="rounded-full px-3 py-1 text-xs font-spacemono font-medium transition-opacity hover:opacity-80"
           >
             #{{ tag }}
           </NuxtLink>

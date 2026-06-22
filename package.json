@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@fontsource/space-grotesk": "^5.2.10",
+    "@fontsource/space-mono": "^5.2.9",
     "@formkit/auto-animate": "^0.9.0",
     "@nuxt/content": "^3.13.0",
     "@nuxt/icon": "2.2.1",

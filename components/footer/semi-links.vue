@@ -11,13 +11,13 @@ const links = [
     <template v-for="(item, index) in links" :key="item.to">
       <NuxtLink
         :to="item.to"
-        class="text-zinc-500 dark:text-zinc-400 hover:text-sky-500 dark:hover:text-sky-400 transition-colors"
+        class="text-slate-500 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
       >
         {{ item.text }}
       </NuxtLink>
       <span
         v-if="index < links.length - 1"
-        class="text-zinc-300 dark:text-zinc-700"
+        class="text-slate-300 dark:text-slate-700"
         aria-hidden="true"
       >·</span>
     </template>

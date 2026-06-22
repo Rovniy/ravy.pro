@@ -21,10 +21,16 @@ defineOgImage('Blog', {
 
 <template>
   <div class="min-h-screen">
-    <div class="py-5 container max-w-xl mx-auto flex flex-col items-center min-h-screen">
+    <div class="py-5 container max-w-xl mx-auto flex flex-col items-center justify-center gap-8 min-h-screen text-center">
       <Logo404 />
 
-      <a href="/" class="btn btn-primary">Go to home page</a>
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-semibold hover:opacity-90 transition-opacity"
+      >
+        <Icon name="mdi:arrow-left" size="18" aria-hidden="true" />
+        Go to home page
+      </a>
     </div>
   </div>
 </template>

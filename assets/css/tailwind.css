@@ -24,14 +24,57 @@
 @font-face {
   font-family: "Space Grotesk";
   font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/space-grotesk-500.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/space-grotesk-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
   font-weight: 700;
   font-display: swap;
   src: url("/fonts/space-grotesk-700.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/*
+ * Space Mono — the utility/data face. Same Colophon foundry as Space Grotesk,
+ * so the two are designed to coexist. Used for the monospace "data layer":
+ * eyebrow labels, dates, reading time, tags, code, hero status line, footer
+ * meta. Self-hosted latin subset, copied from @fontsource/space-mono.
+ */
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/space-mono-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/space-mono-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
   --font-spacegrotesk: "Space Grotesk", sans-serif;
+  --font-spacemono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 :root {
@@ -65,4 +108,116 @@
     transition: none !important;
     animation: none !important;
   }
+}
+
+/*
+ * Article (prose) polish. Centralised here so all three prose containers
+ * (ContainerOneCol, ContainerTwoCol, blogs/[blog].vue) share one definition
+ * instead of duplicating prose-* modifier strings. Plain `.prose el` selectors
+ * have higher specificity than the typography plugin's `:where()`-wrapped
+ * defaults (which carry 0 specificity), so these win cleanly.
+ */
+@layer components {
+  /* Links — the one accent, underlined with breathing room. */
+  .prose a {
+    color: var(--color-sky-600);
+    text-decoration-line: underline;
+    text-decoration-color: color-mix(in oklab, var(--color-sky-600) 35%, transparent);
+    text-underline-offset: 3px;
+    font-weight: 500;
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+  .prose a:hover {
+    color: var(--color-sky-500);
+    text-decoration-color: var(--color-sky-500);
+  }
+  .dark .prose a { color: var(--color-sky-400); }
+  .dark .prose a:hover { color: var(--color-sky-300); }
+
+  /* Headings — tighter, heavier, and clear of the sticky header on anchor jump. */
+  .prose :is(h1, h2, h3, h4) {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+
+  /* Lead — first paragraph reads as an intro. */
+  .prose > p:first-of-type {
+    font-size: 1.125em;
+    line-height: 1.7;
+    color: var(--color-slate-600);
+  }
+  .dark .prose > p:first-of-type { color: var(--color-slate-300); }
+
+  /* Blockquote — slate rule accented with sky, no decorative quote glyphs. */
+  .prose blockquote {
+    border-left-color: var(--color-sky-400);
+    font-style: normal;
+    font-weight: 400;
+    color: var(--color-slate-600);
+  }
+  .dark .prose blockquote {
+    border-left-color: var(--color-sky-500);
+    color: var(--color-slate-300);
+  }
+  .prose blockquote p:first-of-type::before,
+  .prose blockquote p:last-of-type::after { content: none; }
+
+  /* Code — the data layer. Inline code gets a subtle slate chip; both inline
+     and block code render in Space Mono. The default backtick quotes are off. */
+  .prose code, .prose pre {
+    font-family: var(--font-spacemono);
+    font-size: 0.875em;
+  }
+  .prose :not(pre) > code {
+    background-color: var(--color-slate-100);
+    color: var(--color-slate-800);
+    padding: 0.15em 0.4em;
+    border-radius: 0.375rem;
+    font-weight: 400;
+  }
+  .dark .prose :not(pre) > code {
+    background-color: var(--color-slate-800);
+    color: var(--color-slate-100);
+  }
+  .prose :not(pre) > code::before,
+  .prose :not(pre) > code::after { content: none; }
+  .prose pre {
+    border: 1px solid var(--color-slate-200);
+    border-radius: 0.75rem;
+  }
+  .dark .prose pre { border-color: var(--color-slate-800); }
+
+  /* Tables — header band + hairline rows. */
+  .prose thead { border-bottom-color: var(--color-slate-300); }
+  .prose thead th { background-color: var(--color-slate-100); }
+  .dark .prose thead { border-bottom-color: var(--color-slate-700); }
+  .dark .prose thead th { background-color: var(--color-slate-800); }
+  .prose tbody tr { border-bottom-color: var(--color-slate-200); }
+  .dark .prose tbody tr { border-bottom-color: var(--color-slate-800); }
+
+  /* Divider + images. */
+  .prose hr { border-color: var(--color-slate-200); }
+  .dark .prose hr { border-color: var(--color-slate-800); }
+  .prose img {
+    box-shadow: 0 0 0 1px var(--color-slate-200);
+  }
+  .dark .prose img {
+    box-shadow: 0 0 0 1px var(--color-slate-800);
+  }
+}
+
+/*
+ * Mono "eyebrow" — the recurring spec-sheet label (uppercase, tracked, in
+ * Space Mono). Use on section kickers, metadata labels, and data captions.
+ */
+@layer components {
+  .eyebrow {
+    font-family: var(--font-spacemono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-slate-500);
+  }
+  .dark .eyebrow { color: var(--color-slate-400); }
 }
