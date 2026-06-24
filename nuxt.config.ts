@@ -136,8 +136,18 @@ export default defineNuxtConfig({
   runtimeConfig: {
     shortifyAdminEmail: '',
     openaiApiKey: '',
+    // Steam AI Disclosure service — server-only secrets.
+    stripeSecretKey: '',
+    stripeWebhookSecret: '',
+    stripePriceId: '',
+    resendApiKey: '',
+    steamAuditTokenSecret: '',
     public: {
       adminEmail: '',
+      steamAudit: {
+        priceUsd: '',
+        currency: 'usd',
+      },
       firebase: {
         apiKey: '',
         authDomain: '',
@@ -162,6 +172,7 @@ export default defineNuxtConfig({
         '/tools/credit-card-generator',
         '/tools/jwt-decoder',
         '/tools/image-converter',
+        '/tools/steam-ai-disclosure',
       ],
     },
     routeRules: {
@@ -181,6 +192,9 @@ export default defineNuxtConfig({
       '/tools/credit-card-generator': { ssr: true, prerender: true },
       '/tools/jwt-decoder': { ssr: true, prerender: true },
       '/tools/image-converter': { ssr: true, prerender: true },
+      '/tools/steam-ai-disclosure': { ssr: true, prerender: true },
+      '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
+      '/api/steam-audit/**': { prerender: false },
       '/s/**': { prerender: false },
       // Static asset cache hints. Firebase App Hosting CDN honours these
       // as-is; `s-maxage` lets the edge cache longer than the browser if we

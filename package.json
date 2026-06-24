@@ -46,6 +46,7 @@
     "pdf-parse": "^2.4.5",
     "qr-code-styling": "^1.9.2",
     "satori": "^0.26.0",
+    "stripe": "^22.2.3",
     "vue-content-loader": "^2.0.1"
   },
   "devDependencies": {
