@@ -1,11 +1,11 @@
 import { createError } from 'h3'
 import { nanoid } from 'nanoid'
-import { requireAdminUser } from '~~/server/utils/auth'
+import { requireToolAccess } from '~~/server/utils/access'
 import { contractScanCollection } from '~~/server/utils/contract-scan'
 import { getDb } from '~~/server/utils/firebase-admin'
 
 export default defineEventHandler(async (event) => {
-  const admin = await requireAdminUser(event)
+  const user = await requireToolAccess(event, 'contract-scanner')
   const id = getRouterParam(event, 'id')
   if (!id) {
     throw createError({ statusCode: 400, statusMessage: 'Scan id is required' })
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const data = snap.data() as Record<string, unknown>
-  if (data.ownerUid !== admin.uid) {
+  if (data.ownerUid !== user.uid) {
     throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
   }
   if (data.status !== 'done' || !data.result) {
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
 
   await getDb().collection('contract_scan_shares').doc(shareId).set({
     scanId: id,
-    ownerUid: admin.uid,
+    ownerUid: user.uid,
     createdAt: new Date().toISOString(),
   }, { merge: true })
 

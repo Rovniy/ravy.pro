@@ -54,6 +54,8 @@ export interface SteamAuditRecord {
   classification: SteamAuditClassification
   result?: SteamAuditResult
   customerEmail?: string
+  ownerUid?: string
+  ownerEmail?: string
   stripeSessionId?: string
   shareId?: string
   error?: string

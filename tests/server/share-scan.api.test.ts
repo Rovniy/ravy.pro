@@ -4,6 +4,10 @@ vi.mock('~~/server/utils/auth', () => ({
   requireAdminUser: vi.fn(async () => ({ uid: 'admin-1', email: 'a@test.dev' })),
 }))
 
+vi.mock('~~/server/utils/access', () => ({
+  requireToolAccess: vi.fn(async () => ({ uid: 'admin-1', email: 'a@test.dev' })),
+}))
+
 const getMock = vi.fn()
 const setMock = vi.fn(async () => {})
 const shareSetMock = vi.fn(async () => {})

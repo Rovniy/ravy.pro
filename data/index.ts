@@ -30,10 +30,8 @@ export const navbarData = {
   homeTitle: baseData.me.name,
 }
 
-export const adminServices: { name: string, path: string }[] = [
-  { name: 'Shortify', path: '/shortify' },
-  { name: 'Red-Flag Scanner', path: '/tools/contract-red-flag-scanner' },
-]
+// Access-gated tools live in `data/services.ts` (GATED_TOOLS) and are surfaced
+// per-user via the access-grant system, not listed here.
 
 export const publicServices: { name: string, path: string }[] = [
   { name: 'Steam AI Disclosure', path: '/tools/steam-ai-disclosure' },

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SteamAuditAnswers, SteamAuditClassification } from '~/types/steam-audit'
 import { computed, ref } from 'vue'
+import { useAuth } from '~/composables/useAuth'
 import { classifyAudit, RULESET_VERSION } from '~/utils/steam-ai-ruleset'
 
 definePageMeta({ layout: 'default' })
@@ -22,6 +23,7 @@ useToolPageSchema({
 })
 
 const config = useRuntimeConfig()
+const { getIdToken } = useAuth()
 const priceLabel = computed(() => {
   const raw = (config.public as Record<string, any>)?.steamAudit?.priceUsd
   const value = (typeof raw === 'string' && raw.trim()) ? raw.trim() : '39'
@@ -68,8 +70,12 @@ async function startCheckout() {
   checkoutLoading.value = true
   checkoutError.value = ''
   try {
+    // Attach the Firebase token when signed in so the audit is linked to the
+    // account (shows up in /account history). Anonymous checkout still works.
+    const token = await getIdToken().catch(() => null)
     const res = await $fetch<{ url: string }>('/api/steam-audit/checkout', {
       method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       body: { answers: answers.value, gameName: gameName.value.trim() || undefined },
     })
     if (!res?.url)

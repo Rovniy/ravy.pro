@@ -1,4 +1,5 @@
 import { createError, getRequestURL, readBody } from 'h3'
+import { getOptionalUser } from '~~/server/utils/access'
 import { steamAuditCollection } from '~~/server/utils/steam-audit'
 import { getStripe } from '~~/server/utils/stripe'
 import { classifyAudit, normalizeAnswers } from '~~/utils/steam-ai-ruleset'
@@ -30,6 +31,15 @@ export default defineEventHandler(async (event) => {
   }
   if (gameName)
     doc.gameName = gameName
+
+  // Link the audit to the buyer when signed in, so it appears in their account
+  // history. Anonymous purchases stay accessible via the emailed link.
+  const owner = await getOptionalUser(event)
+  if (owner) {
+    doc.ownerUid = owner.uid
+    doc.ownerEmail = owner.email
+  }
+
   await docRef.set(doc)
 
   const origin = getRequestURL(event).origin

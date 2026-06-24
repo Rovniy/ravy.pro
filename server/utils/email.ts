@@ -2,7 +2,7 @@
 // fetch, CSP untouched). Used to send the buyer their private result link.
 // Sending is best-effort: a failure here must never break payment processing.
 
-const FROM = 'ravy.pro <noreply@ravy.pro>'
+const FROM = 'Ravy.pro <noreply@ravy.pro>'
 
 export async function sendResultEmail(params: {
   to: string

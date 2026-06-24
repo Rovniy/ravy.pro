@@ -1,6 +1,6 @@
 import { FieldValue } from 'firebase-admin/firestore'
 import { createError, defineEventHandler, readBody } from 'h3'
-import { requireAdminUser } from '~~/server/utils/auth'
+import { requireToolAccess } from '~~/server/utils/access'
 import { generateUniqueCode } from '~~/server/utils/code'
 import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
 
@@ -19,7 +19,7 @@ function normalizeUrl(input: string): string {
 }
 
 export default defineEventHandler(async (event) => {
-  const user = await requireAdminUser(event)
+  const user = await requireToolAccess(event, 'shortify')
   const body = await readBody<CreateBody>(event)
   const raw = body?.url
 

@@ -1,7 +1,7 @@
 import { Buffer } from 'node:buffer'
 import { createError, readBody } from 'h3'
 import { PDFParse } from 'pdf-parse'
-import { requireAdminUser } from '~~/server/utils/auth'
+import { requireToolAccess } from '~~/server/utils/access'
 import { extractPdfTextFromBase64 } from '~~/server/utils/pdf-text'
 
 function extractResponseText(payload: Record<string, unknown>): string {
@@ -70,7 +70,7 @@ async function ocrPdfFirstPageWithOpenAI(fileBase64: string, openaiApiKey: strin
 }
 
 export default defineEventHandler(async (event) => {
-  await requireAdminUser(event)
+  await requireToolAccess(event, 'contract-scanner')
   const body = await readBody<{
     fileName?: string
     fileMime?: string

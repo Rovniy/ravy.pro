@@ -13,6 +13,10 @@ vi.mock('~~/server/utils/auth', () => ({
   requireAdminUser: vi.fn(async () => ({ uid: 'admin-1', email: 'a@test.dev' })),
 }))
 
+vi.mock('~~/server/utils/access', () => ({
+  requireToolAccess: vi.fn(async () => ({ uid: 'admin-1', email: 'a@test.dev' })),
+}))
+
 vi.mock('~~/server/utils/code', () => ({
   generateUniqueCode: vi.fn(async () => 'abc123'),
 }))
@@ -28,14 +32,14 @@ vi.mock('~~/server/utils/firebase-admin', () => ({
         set: setMock,
         get: getMock,
       })),
-      orderBy: vi.fn(() => ({
+      where: vi.fn(() => ({
         get: vi.fn(async () => ({
           docs: [{
             id: 'abc123',
             data: () => ({
               url: 'https://example.com',
               clicks: 1,
-              createdAt: { toDate: () => new Date('2026-01-01T00:00:00.000Z') },
+              createdAt: { toDate: () => new Date('2026-01-01T00:00:00.000Z'), toMillis: () => 0 },
               lastClickedAt: null,
             }),
           }],

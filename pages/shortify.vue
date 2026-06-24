@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ShortLink } from '~/types/shortify'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useAccess } from '~/composables/useAccess'
 import { useAuth } from '~/composables/useAuth'
 import { useShortify } from '~/composables/useShortify'
 import { baseData } from '~/data'
@@ -17,7 +18,9 @@ useHead({
   ],
 })
 
-const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
+const { state, isAuthed, signIn, signOut } = useAuth()
+const { hasTool } = useAccess()
+const canUse = computed(() => hasTool('shortify'))
 const { listLinks, createLink } = useShortify()
 
 const baseUrl = baseData.site.url
@@ -124,7 +127,7 @@ watch(isAuthed, (v) => {
 
 if (import.meta.client) {
   watchEffect(() => {
-    if (state.value.ready && isAuthed.value && isAdmin.value && links.value.length === 0)
+    if (state.value.ready && isAuthed.value && canUse.value && links.value.length === 0)
       refresh()
   })
 }
@@ -167,8 +170,8 @@ if (import.meta.client) {
       </p>
     </div>
 
-    <!-- Authed but not admin -->
-    <div v-else-if="!isAdmin" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
+    <!-- Authed but no access to this tool -->
+    <div v-else-if="!canUse" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
       <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
         Access denied
       </h2>

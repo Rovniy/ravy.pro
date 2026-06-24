@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { useRoute } from 'vue-router'
+import { useAccess } from '~/composables/useAccess'
 import { useAuth } from '~/composables/useAuth'
-import { adminServices, navbarData, publicServices } from '~/data'
+import { navbarData, publicServices } from '~/data'
 
 const { y } = useWindowScroll()
-const { state, isAuthed, isAdmin, signIn, signOut } = useAuth()
+const { state, isAuthed, signIn, signOut } = useAuth()
+const { accessibleServices, isAdmin } = useAccess()
 
 const scrolled = computed(() => y.value > 20)
 
@@ -82,7 +84,7 @@ async function onSignIn() {
           </NuxtLink>
         </li>
         <ClientOnly>
-          <li v-if="isAdmin" class="hidden lg:block">
+          <li v-if="accessibleServices.length" class="hidden lg:block">
             <MainServicesMenu />
           </li>
         </ClientOnly>
@@ -184,13 +186,18 @@ async function onSignIn() {
             </NuxtLink>
           </li>
           <ClientOnly>
-            <template v-if="isAdmin">
+            <template v-if="accessibleServices.length">
               <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Services
               </li>
-              <li v-for="item in adminServices" :key="item.path">
+              <li v-for="item in accessibleServices" :key="item.path">
                 <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
                   {{ item.name }}
+                </NuxtLink>
+              </li>
+              <li v-if="isAdmin">
+                <NuxtLink to="/account?tab=access" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+                  Manage access
                 </NuxtLink>
               </li>
             </template>

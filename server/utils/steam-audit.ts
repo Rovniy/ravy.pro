@@ -253,7 +253,7 @@ export async function markPaidAndGenerate(
     updatedAt: nowIso(),
   }
   if (email)
-    patch.customerEmail = email
+    patch.customerEmail = email.toLowerCase()
   await ref.set(patch, { merge: true })
 
   void runGenerationThenEmail(id, config).catch((err) => {

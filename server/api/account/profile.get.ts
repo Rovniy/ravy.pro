@@ -12,6 +12,9 @@ export default defineEventHandler(async (event) => {
     ? ((snap.data()?.language as string | undefined) || 'en')
     : 'en'
 
+  // Record the email so the admin's access manager can list who has signed in.
+  await ref.set({ email: user.email, lastSeenAt: new Date().toISOString() }, { merge: true })
+
   return {
     language,
   }

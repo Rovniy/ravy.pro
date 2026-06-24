@@ -1,10 +1,10 @@
 import { createError, readBody } from 'h3'
-import { requireAdminUser } from '~~/server/utils/auth'
+import { requireToolAccess } from '~~/server/utils/access'
 import { contractScanCollection, processContractScan } from '~~/server/utils/contract-scan'
 import { extractPdfTextFromBase64 } from '~~/server/utils/pdf-text'
 
 export default defineEventHandler(async (event) => {
-  const admin = await requireAdminUser(event)
+  const admin = await requireToolAccess(event, 'contract-scanner')
   const body = await readBody<{
     text?: string
     fileName?: string

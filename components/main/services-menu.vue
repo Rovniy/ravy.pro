@@ -2,7 +2,9 @@
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { adminServices } from '~/data'
+import { useAccess } from '~/composables/useAccess'
+
+const { accessibleServices, isAdmin } = useAccess()
 
 const isOpen = ref(false)
 const menuRef = ref<HTMLElement | null>(null)
@@ -53,13 +55,23 @@ function toggle() {
         class="absolute right-0 top-full mt-2 w-60 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
-          v-for="item in adminServices"
+          v-for="item in accessibleServices"
           :key="item.path"
           :to="item.path"
           role="menuitem"
-          class="services-item block px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
+          class="services-item flex items-center gap-2 px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
         >
+          <Icon :name="item.icon" size="18" aria-hidden="true" />
           {{ item.name }}
+        </NuxtLink>
+        <NuxtLink
+          v-if="isAdmin"
+          to="/account?tab=access"
+          role="menuitem"
+          class="services-item flex items-center gap-2 mt-1 pt-2 border-t border-slate-200 dark:border-slate-800 px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
+        >
+          <Icon name="mdi:account-key-outline" size="18" aria-hidden="true" />
+          Manage access
         </NuxtLink>
       </div>
     </Transition>

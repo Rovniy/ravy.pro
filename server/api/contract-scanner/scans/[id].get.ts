@@ -1,9 +1,9 @@
 import { createError } from 'h3'
-import { requireAdminUser } from '~~/server/utils/auth'
+import { requireToolAccess } from '~~/server/utils/access'
 import { contractScanCollection } from '~~/server/utils/contract-scan'
 
 export default defineEventHandler(async (event) => {
-  const admin = await requireAdminUser(event)
+  const user = await requireToolAccess(event, 'contract-scanner')
   const id = getRouterParam(event, 'id')
 
   if (!id) {
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const data = snap.data() as Record<string, unknown>
-  if (data.ownerUid !== admin.uid) {
+  if (data.ownerUid !== user.uid) {
     throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
   }
 

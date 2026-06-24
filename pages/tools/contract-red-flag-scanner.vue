@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContractScanRecord, ContractScanResult } from '~/types/contract-scan'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useAccess } from '~/composables/useAccess'
 import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
@@ -29,7 +30,9 @@ const isSubmitting = ref(false)
 const isExtractingPdf = ref(false)
 const isDragging = ref(false)
 const inputStage = ref('')
-const { state, isAuthed, isAdmin, signIn, signOut, getIdToken } = useAuth()
+const { state, isAuthed, signIn, signOut, getIdToken } = useAuth()
+const { hasTool } = useAccess()
+const canUse = computed(() => hasTool('contract-scanner'))
 let pollingTimer: ReturnType<typeof setInterval> | null = null
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const photoInputRef = ref<HTMLInputElement | null>(null)
@@ -385,7 +388,7 @@ watch(
       </p>
     </div>
 
-    <div v-else-if="!isAdmin" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-6">
+    <div v-else-if="!canUse" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-6">
       <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
         Access denied
       </h2>
@@ -532,13 +535,13 @@ watch(
     </div>
 
     <ContractScanResultPanel
-      v-if="isAuthed && isAdmin && scanState?.status === 'done' && scanResult"
+      v-if="isAuthed && canUse && scanState?.status === 'done' && scanResult"
       class="mt-8"
       :result="scanResult"
     />
 
     <section
-      v-if="isAuthed && isAdmin && scanState?.status === 'done' && scanResult"
+      v-if="isAuthed && canUse && scanState?.status === 'done' && scanResult"
       class="mt-4 flex flex-col items-start gap-2"
     >
       <button
@@ -556,7 +559,7 @@ watch(
       </p>
     </section>
 
-    <section v-if="isAuthed && isAdmin && scanState?.status === 'error'" class="mt-8 rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-5">
+    <section v-if="isAuthed && canUse && scanState?.status === 'error'" class="mt-8 rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-5">
       <h2 class="text-lg font-semibold text-red-700 dark:text-red-300">
         Scan Failed
       </h2>

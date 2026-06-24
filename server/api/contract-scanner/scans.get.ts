@@ -1,13 +1,13 @@
-import { requireAdminUser } from '~~/server/utils/auth'
+import { requireToolAccess } from '~~/server/utils/access'
 import { contractScanCollection } from '~~/server/utils/contract-scan'
 
 export default defineEventHandler(async (event) => {
-  const admin = await requireAdminUser(event)
+  const user = await requireToolAccess(event, 'contract-scanner')
   const q = getQuery(event)
   const limit = Math.min(Math.max(Number(q.limit) || 20, 1), 100)
 
   const snap = await contractScanCollection()
-    .where('ownerUid', '==', admin.uid)
+    .where('ownerUid', '==', user.uid)
     .orderBy('createdAt', 'desc')
     .limit(limit)
     .get()
