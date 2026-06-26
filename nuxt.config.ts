@@ -308,6 +308,7 @@ export default defineNuxtConfig({
         'mdi:steam',
         'mdi:account-key-outline',
         'mdi:content-copy',
+        'mdi:history',
       ],
       sizeLimitKb: 128,
     },

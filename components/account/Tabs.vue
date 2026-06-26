@@ -6,7 +6,7 @@ defineEmits<{ (e: 'update:modelValue', key: string): void }>()
 </script>
 
 <template>
-  <div class="flex flex-wrap gap-1 border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
+  <div class="flex flex-wrap gap-1 border-b border-slate-200 dark:border-slate-800 overflow-x-auto overflow-y-hidden">
     <button
       v-for="t in tabs"
       :key="t.key"

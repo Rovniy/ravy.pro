@@ -24,3 +24,15 @@ export interface ManagedAccount {
   tools: string[]
   hasSignedIn: boolean
 }
+
+// One immutable entry in the access audit log.
+export interface AccessAuditEntry {
+  id: string
+  createdAt: string
+  action: 'set' | 'revoke'
+  targetEmail: string
+  oldTools: string[]
+  newTools: string[]
+  adminEmail?: string
+  adminUid?: string
+}

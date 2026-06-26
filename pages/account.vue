@@ -35,8 +35,10 @@ const tabs = computed(() => {
   ]
   if (hasTool('contract-scanner'))
     list.push({ key: 'scans', label: 'Red-Flag Scanner', icon: 'mdi:shield-search' })
-  if (isAdmin.value)
+  if (isAdmin.value) {
     list.push({ key: 'access', label: 'Access', icon: 'mdi:account-key-outline' })
+    list.push({ key: 'audit', label: 'Audit log', icon: 'mdi:history' })
+  }
   return list
 })
 
@@ -91,6 +93,7 @@ function selectTab(key: string) {
         <AccountSteamHistory v-else-if="activeTab === 'steam'" />
         <AccountScanHistory v-else-if="activeTab === 'scans' && hasTool('contract-scanner')" />
         <AccountAccessManager v-else-if="activeTab === 'access' && isAdmin" />
+        <AccountAccessAuditLog v-else-if="activeTab === 'audit' && isAdmin" />
       </div>
     </div>
   </main>
