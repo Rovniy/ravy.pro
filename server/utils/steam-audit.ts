@@ -9,6 +9,7 @@ import { getQuery } from 'h3'
 import { seoData } from '~~/data'
 import { sendResultEmail } from './email'
 import { getDb } from './firebase-admin'
+import { reportServerError, reportServerEvent } from './report-error'
 import { signAccessToken, verifyAccessToken } from './steam-audit-token'
 import { getStripe } from './stripe'
 
@@ -257,7 +258,7 @@ export async function markPaidAndGenerate(
   await ref.set(patch, { merge: true })
 
   void runGenerationThenEmail(id, config).catch((err) => {
-    console.error('Steam audit generation failed', err)
+    reportServerError(err, { kind: 'steam-generation' })
   })
 }
 
@@ -278,7 +279,7 @@ async function runGenerationThenEmail(id: string, config: GenerationConfig): Pro
       await sendResultEmail({ to: after.customerEmail, url, gameName: after.gameName, apiKey: config.resendApiKey })
     }
     catch (err) {
-      console.error('Steam audit result email failed', err)
+      reportServerEvent('WARNING', 'Steam audit result email failed', { kind: 'steam-email', detail: String(err) })
     }
   }
 }
@@ -336,7 +337,7 @@ export async function retryGeneration(id: string, config: GenerationConfig): Pro
     return 'in_progress'
 
   void runGenerationThenEmail(id, config).catch((err) => {
-    console.error('Steam audit retry failed', err)
+    reportServerError(err, { kind: 'steam-retry' })
   })
   return 'retrying'
 }

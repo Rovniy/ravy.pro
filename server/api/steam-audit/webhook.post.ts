@@ -1,5 +1,6 @@
 import type Stripe from 'stripe'
 import { createError, getRequestHeader, readRawBody } from 'h3'
+import { reportServerEvent } from '~~/server/utils/report-error'
 import { markPaidAndGenerate } from '~~/server/utils/steam-audit'
 import { getStripe } from '~~/server/utils/stripe'
 
@@ -21,7 +22,8 @@ export default defineEventHandler(async (event) => {
   try {
     stripeEvent = stripe.webhooks.constructEvent(raw, signature, config.stripeWebhookSecret)
   }
-  catch {
+  catch (err) {
+    reportServerEvent('WARNING', 'Stripe webhook signature verification failed', { kind: 'stripe-webhook', detail: String(err) })
     throw createError({ statusCode: 400, statusMessage: 'Invalid webhook signature' })
   }
 

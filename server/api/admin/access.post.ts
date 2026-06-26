@@ -3,6 +3,7 @@ import { GATED_TOOL_KEYS } from '~~/data/services'
 import { accessCollection } from '~~/server/utils/access'
 import { requireAdminUser } from '~~/server/utils/auth'
 import { getDb } from '~~/server/utils/firebase-admin'
+import { reportServerError } from '~~/server/utils/report-error'
 
 const AUDIT_COLLECTION = 'access_audit_log'
 
@@ -49,7 +50,7 @@ export default defineEventHandler(async (event) => {
     })
   }
   catch (err) {
-    console.error('Failed to write access audit log', err)
+    reportServerError(err, { kind: 'access-audit-write', targetEmail: email })
   }
 
   return { email, tools }

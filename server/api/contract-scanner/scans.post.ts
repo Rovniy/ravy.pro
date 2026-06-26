@@ -3,6 +3,7 @@ import { requireToolAccess } from '~~/server/utils/access'
 import { contractScanCollection, processContractScan } from '~~/server/utils/contract-scan'
 import { extractPdfTextFromBase64 } from '~~/server/utils/pdf-text'
 import { assertRateLimit } from '~~/server/utils/rate-limit'
+import { reportServerError } from '~~/server/utils/report-error'
 
 export default defineEventHandler(async (event) => {
   const admin = await requireToolAccess(event, 'contract-scanner')
@@ -68,7 +69,7 @@ export default defineEventHandler(async (event) => {
   })
 
   void processContractScan(docRef.id, text, openaiApiKey, responseLanguage).catch((err) => {
-    console.error('Contract scan failed', err)
+    reportServerError(err, { kind: 'contract-scan' })
   })
 
   return {

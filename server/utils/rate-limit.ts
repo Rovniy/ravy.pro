@@ -1,6 +1,7 @@
 import type { H3Event } from 'h3'
 import { createError, getRequestIP } from 'h3'
 import { getDb } from './firebase-admin'
+import { reportServerEvent } from './report-error'
 
 const COLLECTION = 'rate_limits'
 
@@ -36,7 +37,7 @@ export async function assertRateLimit(opts: RateLimitOptions): Promise<void> {
     })
   }
   catch (err) {
-    console.error('Rate limit check failed — allowing request', err)
+    reportServerEvent('WARNING', 'Rate limit check failed — allowing request', { kind: 'rate-limit', detail: String(err) })
     return
   }
 
