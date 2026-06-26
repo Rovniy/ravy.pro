@@ -12,6 +12,37 @@ definePageMeta({
   layout: 'default',
 })
 
+const faqItems = [
+  {
+    question: 'Are these real credit card numbers?',
+    answer: 'No. The generated numbers pass the Luhn check used by payment forms, but they are fake test data — not issued by any bank, not linked to any account, and they cannot be charged or used for real purchases.',
+  },
+  {
+    question: 'Is it legal to use this generator?',
+    answer: 'Yes, for testing your own software, forms, and QA flows. The output is fake test data, not a real card. Using any card number — real or generated — to attempt a real or fraudulent transaction is illegal, so keep these strictly inside your own test environment.',
+  },
+  {
+    question: 'Will these numbers work for real purchases?',
+    answer: 'No. They are not backed by funds and are not connected to any issuer, so a real payment processor will decline them. They only satisfy format and checksum rules so your test forms accept them.',
+  },
+  {
+    question: 'What is the Luhn check?',
+    answer: 'The Luhn algorithm is a checksum formula that most payment forms run to catch typos before submitting a card. A Luhn-valid number has a correct final check digit; the tool computes this digit so generated numbers pass the same client-side validation real cards do.',
+  },
+  {
+    question: 'Which card brands are supported?',
+    answer: 'Visa, Mastercard, American Express, Discover, JCB, Diners Club, and UnionPay, each using that brand\'s real prefix and length rules.',
+  },
+  {
+    question: 'Can I set a custom BIN or prefix?',
+    answer: 'Yes. Enter the BIN (the leading digits of the card) and the tool fills in the remaining digits and appends a valid Luhn check digit, so you can target a specific test range.',
+  },
+  {
+    question: 'Does the tool store or send anything?',
+    answer: 'No. Generation and validation run entirely in your browser. Nothing you type or generate is stored or sent to any server.',
+  },
+]
+
 useToolPageSchema({
   path: '/tools/credit-card-generator',
   title: 'Free Credit Card Number Generator & Validator',
@@ -19,24 +50,19 @@ useToolPageSchema({
   ogImage: '/open_graph/og_image_default.png',
   appDescription: 'Online credit card number generator and Luhn validator for QA and sandbox testing.',
   appIsFree: true,
-  faq: [
-    {
-      question: 'Are these real credit card numbers?',
-      answer: 'No. The generated numbers pass the Luhn check used by payment forms, but they are not issued by any bank and cannot be used for real purchases.',
-    },
-    {
-      question: 'What card brands are supported?',
-      answer: 'Visa, MasterCard, American Express, Discover, JCB, Diners Club, and UnionPay.',
-    },
-    {
-      question: 'Can I use a custom BIN prefix?',
-      answer: 'Yes. Enter the BIN (the first digits of the card) and the tool will fill in the rest and compute a valid Luhn check digit.',
-    },
-    {
-      question: 'How does the validator work?',
-      answer: 'It strips spaces and dashes, detects the card brand from the prefix, checks the length against the brand specification, and verifies the Luhn checksum.',
-    },
-  ],
+  datePublished: '2026-05-20',
+  dateModified: '2026-06-26',
+  howTo: {
+    name: 'How to generate a test card number',
+    description: 'Create a Luhn-valid test credit card number for QA, or paste a number to validate it and detect its brand — entirely in your browser.',
+    steps: [
+      { name: 'Choose a card brand or BIN', text: 'Pick a card brand (Visa, Mastercard, Amex, Discover, JCB, Diners Club, or UnionPay), or enter a custom BIN prefix to target a specific test range.' },
+      { name: 'Generate a Luhn-valid test number', text: 'Generate one or more fake test numbers with a valid Luhn check digit, brand-correct length, and matching expiry and CVV.' },
+      { name: 'Copy it into your test environment', text: 'Copy a number into your QA forms or sandbox payment gateway. These are test-only numbers and cannot be charged.' },
+      { name: 'Or validate an existing number', text: 'Paste a number into the validator to detect its brand, check the length, and verify the Luhn checksum.' },
+    ],
+  },
+  faq: faqItems,
 })
 
 const brand = ref<CardBrand>('visa')
@@ -337,53 +363,71 @@ generate()
       </section>
     </div>
 
-    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
-        About this tool
+    <!-- Reference / SEO content -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+      <span class="eyebrow">Reference</span>
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        Test credit card numbers, explained
       </h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-        This generator creates credit card numbers that satisfy the
-        <a href="https://en.wikipedia.org/wiki/Luhn_algorithm" class="underline hover:text-sky-600">Luhn checksum</a>
-        and follow brand-specific prefix and length rules for Visa, MasterCard, American Express, Discover, JCB, Diners Club, and UnionPay. The numbers are useful for filling out test payment forms, exercising QA flows, and seeding sandbox payment gateways. They are <strong>not real</strong> and cannot be used for any purchase or subscription.
-      </p>
-      <p class="mt-3 text-sm text-slate-600 dark:text-slate-400">
-        The validator does the reverse: strip spaces and dashes from the input, detect the brand by prefix, check that the length matches what the brand allows, and verify the Luhn checksum. Use it to sanity-check the test data your QA stack is producing.
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Are generated credit card numbers real?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        No. This tool produces <strong>fake test card numbers</strong> for QA, development, and form
+        testing. They are <em>Luhn-valid</em> — they pass the same client-side checksum a payment form
+        runs — but they are not issued by any bank, not linked to any account, and have no funds behind
+        them. A real payment processor will decline them, so they <strong>cannot be used for
+          purchases</strong>.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
-        FAQ
-      </h2>
-      <dl class="mt-3 space-y-4 text-sm">
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Are these real credit card numbers?
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        What is the Luhn check?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        The
+        <a href="https://en.wikipedia.org/wiki/Luhn_algorithm" class="underline hover:text-sky-600">Luhn algorithm</a>
+        is a simple checksum that most payment forms use to catch typos before a card is submitted. A
+        valid number ends in a correct check digit derived from the others. This tool computes that
+        digit for every generated number and follows each brand's real prefix and length rules, so your
+        test forms accept the data exactly as they would a real card.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Is it legal to use a credit card generator?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Yes, when you use the output to test your own software, forms, and QA flows. These numbers are
+        fake test data, not real cards. What is illegal is using any card number — real or generated —
+        to attempt a real or fraudulent transaction. Keep generated numbers strictly inside your own
+        test environment and never enter a real card number into a tool on the public internet.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        What this tool produces
+      </h3>
+      <ul class="mt-2 space-y-1.5 text-slate-600 dark:text-slate-300 leading-relaxed list-disc pl-5">
+        <li>Luhn-valid <strong>test card numbers</strong> for Visa, Mastercard, American Express, Discover, JCB, Diners Club, and UnionPay</li>
+        <li>Optional <strong>custom BIN prefixes</strong> to target a specific test range</li>
+        <li>A <strong>validator</strong> that detects brand, checks length, and verifies the Luhn checksum of a pasted number</li>
+        <li>Fully <strong>client-side</strong> operation — nothing you type or generate is stored or sent anywhere</li>
+      </ul>
+
+      <p class="mt-6 text-sm text-slate-400">
+        For software testing only. Generated numbers are fake test data and cannot be used for real transactions.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+      <span class="eyebrow">FAQ</span>
+      <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div v-for="item in faqItems" :key="item.question">
+          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+            {{ item.question }}
           </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            No. They pass the Luhn check used by payment forms, but they are not issued by any bank and have no funds behind them.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Which card brands are supported?
-          </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            Visa, MasterCard, American Express, Discover, JCB, Diners Club, and UnionPay.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Can I generate a card for a specific BIN range?
-          </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            Yes. Enter the BIN prefix and the tool fills in the rest, then appends a valid Luhn check digit.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Is the data sent anywhere?
-          </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            No. Everything runs in your browser. Nothing you type or generate leaves your device.
+          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            {{ item.answer }}
           </dd>
         </div>
       </dl>

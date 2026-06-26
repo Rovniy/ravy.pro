@@ -19,6 +19,37 @@ definePageMeta({
   layout: 'default',
 })
 
+const faqItems = [
+  {
+    question: 'Are my images uploaded to a server?',
+    answer: 'No. Conversion runs entirely in your browser using the Canvas API. Your images never leave your device — nothing is uploaded anywhere.',
+  },
+  {
+    question: 'Which image formats are supported?',
+    answer: 'You can convert between PNG, JPEG, and WebP in any direction. Files of those three types are accepted as input.',
+  },
+  {
+    question: 'Why is GIF not supported?',
+    answer: 'Browser canvas can only decode the first frame of a GIF and cannot encode GIF at all, so animated GIFs would be flattened and broken. GIF is intentionally excluded to avoid silently corrupting files.',
+  },
+  {
+    question: 'Can I convert many images at once?',
+    answer: 'Yes. Drop or paste any number of files and they run through a sequential queue with a per-file status. When they are done you can download each one or grab them all together with “Download all (ZIP)”.',
+  },
+  {
+    question: 'Does the quality slider apply to PNG?',
+    answer: 'No. The quality slider only affects lossy formats — JPEG and WebP — where it trades file size for visual fidelity. PNG is lossless, so the slider is hidden when PNG is the target format.',
+  },
+  {
+    question: 'Does it handle ICC color profiles?',
+    answer: 'Yes. “Convert to sRGB” color-manages wide-gamut images (Display P3, Adobe RGB, etc.) to standard sRGB using Little CMS so colors stay accurate. “Preserve original” keeps the source profile and re-embeds it — JPEG via APP2, PNG via iCCP. WebP cannot embed a profile, so it falls back to sRGB.',
+  },
+  {
+    question: 'Is there a file size or count limit?',
+    answer: 'There is no hard limit imposed by the tool. Because everything is processed locally, the practical ceiling is your device’s memory — very large images or very long queues are bounded by the RAM available to the browser tab.',
+  },
+]
+
 useToolPageSchema({
   path: '/tools/image-converter',
   title: 'Image Converter',
@@ -26,28 +57,18 @@ useToolPageSchema({
   ogImage: '/open_graph/og_image_default.png',
   appDescription: 'Client-side image converter for PNG, JPEG, and WebP with batch processing and ZIP download.',
   appIsFree: true,
-  faq: [
-    {
-      question: 'Are my images uploaded to a server?',
-      answer: 'No. Conversion runs entirely in your browser using the Canvas API. Your images never leave your device.',
-    },
-    {
-      question: 'Which formats are supported?',
-      answer: 'You can convert between PNG, JPEG, and WebP in any direction. Files of those three types are accepted as input.',
-    },
-    {
-      question: 'Why is GIF not supported?',
-      answer: 'Browser canvas can only decode the first frame of a GIF and cannot encode GIF at all, so animated GIFs would be flattened and broken. We exclude GIF to avoid silently corrupting files.',
-    },
-    {
-      question: 'What does the quality slider do?',
-      answer: 'For lossy formats (JPEG and WebP) it trades file size for visual fidelity. PNG is lossless, so the slider is hidden when PNG is selected.',
-    },
-    {
-      question: 'Does it handle ICC color profiles?',
-      answer: 'Yes. "Convert to sRGB" color-manages wide-gamut images (Display P3, Adobe RGB, etc.) to standard sRGB using Little CMS so colors stay accurate. "Preserve original" keeps the source profile and re-embeds it in JPEG and PNG output. Note: embedded CMYK JPEGs are read by the browser as RGB, and WebP can\'t embed a profile so it falls back to sRGB.',
-    },
-  ],
+  datePublished: '2026-05-20',
+  dateModified: '2026-06-26',
+  howTo: {
+    name: 'How to convert an image',
+    description: 'Convert PNG, JPEG, and WebP images privately in your browser, then download them individually or as a ZIP.',
+    steps: [
+      { name: 'Add your images', text: 'Add images by drag-and-drop, by clicking to browse, or by pasting from the clipboard. PNG, JPEG, and WebP are accepted.' },
+      { name: 'Choose format and options', text: 'Pick the output format (PNG, JPEG, or WebP), set the quality for lossy formats, and choose color-profile handling — convert to sRGB or preserve the original ICC profile.' },
+      { name: 'Convert and download', text: 'Each file is converted locally, then download them one by one or all at once as a ZIP.' },
+    ],
+  },
+  faq: faqItems,
 })
 
 type ItemStatus = 'queued' | 'converting' | 'done' | 'error'
@@ -654,61 +675,74 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       </div>
     </div>
 
-    <!-- About / FAQ -->
-    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8 text-sm text-slate-600 dark:text-slate-300">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
-        About this tool
+    <!-- Reference / SEO content -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+      <span class="eyebrow">Reference</span>
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        Converting images in your browser, explained
       </h2>
-      <p class="mt-2">
-        Convert images between <span class="font-medium">PNG</span>, <span class="font-medium">JPEG</span>, and
-        <span class="font-medium">WebP</span> without uploading anything. Pick a target format, drop one or many
-        files, and each is decoded and re-encoded locally with the browser's Canvas API — then download them one
-        by one or all at once as a ZIP. Wide-gamut images are color-managed with Little CMS: convert to sRGB for
-        the web, or preserve and re-embed the original ICC profile in JPEG and PNG output.
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        How does this image converter work?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        It converts images between <strong>PNG</strong>, <strong>JPEG</strong>, and <strong>WebP</strong> entirely
+        on your device. Each file is decoded and re-encoded locally with the browser's
+        <strong>Canvas API</strong> — the images are <em>never uploaded to a server</em>. Pick a target format,
+        add one or many files, and download them individually or all at once as a ZIP.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
-        FAQ
-      </h2>
-      <dl class="mt-2 space-y-4">
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Are my images uploaded to a server?
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Are my images private?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Yes. Because conversion happens in the browser, nothing is sent anywhere — no upload, no account, no
+        server-side processing. The files stay on your machine for the whole conversion, which makes the tool
+        suitable for sensitive or unreleased images.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Which formats and options are supported?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        You can convert between PNG, JPEG, and WebP in any direction. A quality slider tunes the trade-off between
+        file size and fidelity for the lossy formats (JPEG and WebP); PNG is lossless, so the slider is hidden when
+        it is selected. JPEG output paints a white background so transparent areas don't turn black. Animated
+        <strong>GIF is intentionally not supported</strong> — the canvas can only read a GIF's first frame and
+        cannot encode GIF, so converting one would silently break it.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        How are ICC color profiles handled?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Wide-gamut images are color-managed with Little CMS. <strong>Convert to sRGB</strong> maps Display P3,
+        Adobe RGB, and similar profiles to standard sRGB so colors stay accurate on the web. <strong>Preserve
+          original</strong> re-embeds the source profile — JPEG via APP2, PNG via iCCP. WebP can't embed a profile,
+        so it falls back to sRGB.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Can I batch-convert many images?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Yes. Drop, click, or paste any number of files and they run through a sequential queue with a per-file
+        status. Each card shows the size before and after conversion, and you can download results one by one or
+        bundle them all with <strong>Download all (ZIP)</strong>. There is no hard file-size or count limit — the
+        practical ceiling is your device's available memory.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+      <span class="eyebrow">FAQ</span>
+      <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div v-for="item in faqItems" :key="item.question">
+          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+            {{ item.question }}
           </dt>
-          <dd class="mt-1">
-            No. Conversion runs entirely in your browser using the Canvas API. Your images never leave your device.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Which formats are supported?
-          </dt>
-          <dd class="mt-1">
-            You can convert between PNG, JPEG, and WebP in any direction. Files of those three types are accepted as input.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Why is GIF not supported?
-          </dt>
-          <dd class="mt-1">
-            Browser canvas can only decode the first frame of a GIF and cannot encode GIF at all, so animated GIFs would be flattened and broken. We exclude GIF to avoid silently corrupting files.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            What does the quality slider do?
-          </dt>
-          <dd class="mt-1">
-            For lossy formats (JPEG and WebP) it trades file size for visual fidelity. PNG is lossless, so the slider is hidden when PNG is selected.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Does it handle ICC color profiles?
-          </dt>
-          <dd class="mt-1">
-            Yes. “Convert to sRGB” color-manages wide-gamut images (Display P3, Adobe RGB, etc.) to standard sRGB using Little CMS so colors stay accurate. “Preserve original” keeps the source profile and re-embeds it in JPEG and PNG output. Embedded CMYK JPEGs are read by the browser as RGB, and WebP can’t embed a profile, so it falls back to sRGB.
+          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            {{ item.answer }}
           </dd>
         </div>
       </dl>

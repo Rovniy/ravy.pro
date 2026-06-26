@@ -19,6 +19,15 @@ function readQueryData(): string {
   return 'https://ravy.pro'
 }
 
+const faqItems = [
+  { question: 'Is this QR code generator free?', answer: 'Yes. You can generate and download fully customized QR codes for free, with no account, sign-up, or usage limits.' },
+  { question: 'Is my data private — does this upload anything?', answer: 'No. The generator runs entirely in your browser. Your text, links, colors, and logo never leave your device and are never sent to a server.' },
+  { question: 'Can I add a logo to the QR code?', answer: 'Yes. Upload an image to place your logo in the center of the QR code, then adjust its size. The error-correction level is raised automatically so the code still scans.' },
+  { question: 'What file format is the download?', answer: 'The QR code downloads as a PNG image rendered from a canvas at the size you choose, up to 1024px, with a transparent-free solid background.' },
+  { question: 'Do these QR codes expire or track scans?', answer: 'No. The codes are static — your URL or text is encoded directly into the pattern. There is no redirect link, no analytics, and they never expire.' },
+  { question: 'Can I make a QR code for a URL, Wi-Fi, or plain text?', answer: 'Yes. Paste any content into the Data field — a website URL, plain text, a Wi-Fi join string, or contact details — and the QR code updates instantly.' },
+]
+
 useToolPageSchema({
   path: '/tools/qr-code-generator',
   title: 'Free QR Code Generator',
@@ -26,20 +35,18 @@ useToolPageSchema({
   ogImage: '/open_graph/pages/qr-code-generator.png',
   appDescription: 'Online QR code generator with style, color, and logo customization.',
   appIsFree: true,
-  faq: [
-    {
-      question: 'How do I create a QR code?',
-      answer: 'Paste your URL or text, choose style and colors, then download PNG.',
-    },
-    {
-      question: 'Can I add a logo to the QR code?',
-      answer: 'Yes. Upload a center image to place your logo over the generated QR code.',
-    },
-    {
-      question: 'Is this QR code generator free?',
-      answer: 'Yes. You can generate and download styled QR codes for free.',
-    },
-  ],
+  datePublished: '2026-05-20',
+  dateModified: '2026-06-26',
+  howTo: {
+    name: 'How to generate a QR code',
+    description: 'Encode any link or text into a styled, downloadable QR code entirely in your browser.',
+    steps: [
+      { name: 'Enter your text or URL', text: 'Paste a website link, plain text, or any data into the Data field. The preview updates as you type.' },
+      { name: 'Customize the look', text: 'Adjust the size, margin, foreground and background colors, dot and corner styles, and optionally upload a center logo.' },
+      { name: 'Download as PNG', text: 'Click Download PNG to save the finished QR code image to your device.' },
+    ],
+  },
+  faq: faqItems,
 })
 
 type DotType = 'square' | 'rounded' | 'dots' | 'classy' | 'classy-rounded' | 'extra-rounded'
@@ -311,40 +318,61 @@ function download() {
       </div>
     </div>
 
-    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
-        Create QR Codes Online
+    <!-- Reference / SEO content -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+      <span class="eyebrow">Reference</span>
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        Creating QR codes, explained
       </h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-        This free tool helps you generate QR codes for websites, text, contact cards, and marketing campaigns. Customize colors, dot styles, and corners to match your brand. You can also upload a center logo and download the final image as PNG.
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        What is a QR code and how does this tool make one?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        A QR code is a square matrix barcode that encodes text — most often a URL — directly into its
+        pattern, so any phone camera can read it. This generator encodes whatever you type into the
+        <strong>Data</strong> field and renders the result to a canvas in real time, then lets you
+        download it as a PNG image.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
-        FAQ
-      </h2>
-      <dl class="mt-3 space-y-4 text-sm">
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            How to create a QR code online?
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Does my data stay private?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Yes. The tool runs <strong>fully in your browser</strong> — your links, text, colors, and any
+        logo image never leave your device and are never uploaded to a server. There is no account, no
+        tracking, and nothing is stored.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Are these QR codes static, and do they expire?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        The codes are <strong>static</strong>: your content is baked into the pattern itself rather than
+        pointing to a redirect link. That means they never expire, cannot be edited after the fact, and
+        do not track scans — but it also means changing the destination requires generating a new code.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        How do I customize the look?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        You can set the size and quiet-zone margin, pick foreground and background colors, choose dot and
+        corner styles, and add an optional center logo. When a logo is present, the error-correction level
+        is raised automatically so the code still scans reliably.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+      <span class="eyebrow">FAQ</span>
+      <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div v-for="item in faqItems" :key="item.question">
+          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+            {{ item.question }}
           </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            Enter your URL or text, adjust style settings, and click download.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Can I create a QR code with logo?
-          </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            Yes. Upload a center image to place your logo in the code.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Is this QR code generator free to use?
-          </dt>
-          <dd class="mt-1 text-slate-600 dark:text-slate-400">
-            Yes, it is fully free and works in your browser.
+          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            {{ item.answer }}
           </dd>
         </div>
       </dl>

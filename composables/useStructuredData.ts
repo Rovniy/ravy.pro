@@ -216,6 +216,10 @@ interface ToolPageSchemaOpts {
   appName?: string
   appDescription?: string
   appIsFree?: boolean
+  offer?: { price: string, currency?: string }
+  datePublished?: string
+  dateModified?: string
+  howTo?: { name: string, description?: string, steps: Array<{ name: string, text: string }> }
   faq?: ToolFaqItem[]
 }
 
@@ -496,6 +500,8 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
       type: 'WebPage',
       breadcrumbId: crumb['@id'],
       image: opts.ogImage || '/og-image.webp',
+      datePublished: opts.datePublished,
+      dateModified: opts.dateModified,
       primaryEntityId: `${url}#app`,
     }),
     {
@@ -506,15 +512,25 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
       'operatingSystem': 'Web',
       'url': url,
       'description': opts.appDescription || opts.description,
-      ...(opts.appIsFree
+      ...(opts.offer
         ? {
             offers: {
               '@type': 'Offer',
-              'price': '0',
-              'priceCurrency': 'USD',
+              'price': opts.offer.price,
+              'priceCurrency': (opts.offer.currency || 'USD').toUpperCase(),
+              'availability': 'https://schema.org/OnlineOnly',
+              'url': url,
             },
           }
-        : {}),
+        : opts.appIsFree
+          ? {
+              offers: {
+                '@type': 'Offer',
+                'price': '0',
+                'priceCurrency': 'USD',
+              },
+            }
+          : {}),
     },
     crumb,
   ]
@@ -530,6 +546,21 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
           '@type': 'Answer',
           'text': item.answer,
         },
+      })),
+    })
+  }
+
+  if (opts.howTo?.steps.length) {
+    graph.push({
+      '@type': 'HowTo',
+      '@id': `${url}#howto`,
+      'name': opts.howTo.name,
+      ...(opts.howTo.description ? { description: opts.howTo.description } : {}),
+      'step': opts.howTo.steps.map((s, i) => ({
+        '@type': 'HowToStep',
+        'position': i + 1,
+        'name': s.name,
+        'text': s.text,
       })),
     })
   }

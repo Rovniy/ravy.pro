@@ -6,28 +6,51 @@ import { classifyAudit, RULESET_VERSION } from '~/utils/steam-ai-ruleset'
 
 definePageMeta({ layout: 'default' })
 
+const config = useRuntimeConfig()
+const { getIdToken } = useAuth()
+
+const PUBLISHED = '2026-06-23'
+const UPDATED = '2026-06-26'
+
+const priceUsd = computed(() => {
+  const raw = (config.public as Record<string, any>)?.steamAudit?.priceUsd
+  return (typeof raw === 'string' && raw.trim()) ? raw.trim() : '39'
+})
+const priceLabel = computed(() => `$${priceUsd.value}`)
+
+const steps = [
+  { icon: 'mdi:format-list-checks', title: 'Answer 10 quick questions', text: 'Plain language, per asset type — art, audio, writing, code, runtime AI. No uploads, no account.' },
+  { icon: 'mdi:scale-balance', title: 'Get your verdict — free', text: 'See exactly what must be disclosed as Pre-Generated or Live-Generated, what is exempt, and the gray areas.' },
+  { icon: 'mdi:file-document-check', title: 'Unlock the paste-ready pack', text: 'Ready-to-paste Steamworks texts, a player-facing store disclosure, and a dated compliance protocol.' },
+]
+
+const faqItems = computed(() => [
+  { question: 'What does Steam require me to disclose?', answer: 'In the Steamworks Content Survey, Valve asks you to declare AI-generated content that ships with your game and is consumed by players. It is split into Pre-Generated (created during development) and Live-Generated (created at runtime). Behind-the-scenes efficiency tools are not the focus.' },
+  { question: 'What is the difference between Pre-Generated and Live-Generated AI content?', answer: 'Pre-Generated is AI-assisted content made during development that ships in the build — art, audio, writing, or models. Live-Generated is content an AI produces while the game runs, such as an LLM-driven NPC; for it, Valve also requires you to describe the guardrails that prevent illegal content.' },
+  { question: 'Do I need to disclose AI-assisted code?', answer: 'Generally no. AI coding assistants are development-efficiency tools, and code that ships but is not player-facing content is outside the disclosure. The exception is a game that generates content via AI at runtime — that is Live-Generated and must be disclosed.' },
+  { question: 'Does AI used in marketing capsules or screenshots need disclosure?', answer: 'Store capsule art, screenshots, and trailers are player-facing, so AI used there is in scope and draws extra community scrutiny. Make sure you hold the rights to any AI-generated marketing assets.' },
+  { question: 'Can a wrong AI disclosure get my game delisted?', answer: 'Yes. Valve reviews disclosures and can delay review, reject, or remove a store page when the AI disclosure is missing or incorrect. This tool helps you fill it in correctly and keep a dated record of your good-faith review.' },
+  { question: 'Is this legal advice?', answer: 'No. The tool helps you complete and document Steam\'s AI disclosure against the current policy. It is informational, not legal advice.' },
+  { question: 'Why pay if ChatGPT can write the text?', answer: 'You pay for a verdict matched to Valve\'s current ruleset, a dated proof-of-good-faith protocol you can keep, and wording tuned to avoid community backlash — not for three paragraphs of generic text.' },
+  { question: 'How much does it cost and what do I get?', answer: `The verdict is free. For ${priceLabel.value} one-time per game you unlock paste-ready text for each Steamworks field, a player-facing store disclosure, and a downloadable dated compliance protocol.` },
+])
+
 useToolPageSchema({
   path: '/tools/steam-ai-disclosure',
-  title: 'Steam AI Disclosure Generator & Audit',
-  description: 'Answer a few plain-language questions and get a correct, paste-ready Steam AI content disclosure — Pre-Generated, Live-Generated, and store-page text — plus a dated compliance protocol. Matches Valve policy.',
+  title: 'Steam AI Content Disclosure Generator & Audit',
+  description: 'Generate a correct, paste-ready Steam AI content disclosure for the Steamworks Content Survey — Pre-Generated, Live-Generated, and store-page text — plus a dated compliance protocol. Free verdict; matches current Valve policy.',
   appName: 'Steam AI Disclosure Generator',
   appCategory: 'DeveloperApplication',
   appDescription: 'Generates a correct Steamworks AI content disclosure and a dated compliance protocol for game developers.',
-  appIsFree: false,
-  faq: [
-    { question: 'What does Steam require me to disclose?', answer: 'Valve\'s Content Survey asks you to disclose AI-generated content that ships with your game and is consumed by players, split into Pre-Generated (made during development) and Live-Generated (made at runtime). Behind-the-scenes efficiency tools are not the focus.' },
-    { question: 'Is this legal advice?', answer: 'No. This tool helps you complete and document Steam\'s AI disclosure based on the current policy. It is informational, not legal advice.' },
-    { question: 'Why pay if ChatGPT can write text?', answer: 'You pay for a verdict matched to Valve\'s current ruleset, a dated proof-of-good-faith protocol, and wording tuned to avoid community backlash — not for three paragraphs.' },
-    { question: 'What do I get?', answer: 'Paste-ready text for each Steamworks field, a player-facing store disclosure, and a downloadable dated protocol documenting what you reviewed.' },
-  ],
-})
-
-const config = useRuntimeConfig()
-const { getIdToken } = useAuth()
-const priceLabel = computed(() => {
-  const raw = (config.public as Record<string, any>)?.steamAudit?.priceUsd
-  const value = (typeof raw === 'string' && raw.trim()) ? raw.trim() : '39'
-  return `$${value}`
+  offer: { price: priceUsd.value, currency: 'usd' },
+  datePublished: PUBLISHED,
+  dateModified: UPDATED,
+  howTo: {
+    name: 'How to complete your Steam AI content disclosure',
+    description: 'Answer a short questionnaire, get a free verdict, then unlock paste-ready Steamworks disclosure text and a dated protocol.',
+    steps: steps.map(s => ({ name: s.title, text: s.text })),
+  },
+  faq: faqItems.value,
 })
 
 type Stage = 'intro' | 'wizard' | 'verdict'
@@ -38,12 +61,6 @@ const gameName = ref('')
 
 const checkoutLoading = ref(false)
 const checkoutError = ref('')
-
-const steps = [
-  { icon: 'mdi:format-list-checks', title: 'Answer 10 quick questions', text: 'Plain language, per asset type. No uploads, no account.' },
-  { icon: 'mdi:scale-balance', title: 'Get your verdict — free', text: 'See exactly what must be disclosed, what\'s exempt, and the gray areas.' },
-  { icon: 'mdi:file-document-check', title: 'Unlock the paste-ready pack', text: 'Ready Steamworks texts + a dated compliance protocol.' },
-]
 
 function startWizard() {
   checkoutError.value = ''
@@ -179,42 +196,71 @@ async function startCheckout() {
       />
     </div>
 
+    <!-- Reference / SEO content -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+      <span class="eyebrow">Reference</span>
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        Steam's AI content disclosure, explained
+      </h2>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        What is the Steam AI content disclosure?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Before a game goes live on Steam, Valve requires developers to complete the
+        <strong>Steamworks Content Survey</strong>, which includes a dedicated
+        <strong>Generative AI Content</strong> section. A January 2026 update clarified that the
+        disclosure targets AI-generated content that <em>ships with your game and is consumed by
+          players</em> — not behind-the-scenes efficiency tools used during development.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Pre-Generated vs Live-Generated AI content
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        <strong>Pre-Generated</strong> is AI-assisted content created during development that ships in
+        the build — art, textures, models, animation, music, sound, voice, or writing.
+        <strong>Live-Generated</strong> is content an AI produces at runtime, while the game is
+        running, such as an LLM-driven NPC. For Live-Generated content, Valve also asks you to describe
+        the guardrails that prevent the AI from generating illegal content.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Do you need to disclose AI in your Steam game?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        You must disclose when AI-generated content ships and is seen, heard, or read by players. You
+        generally do not need to disclose AI used purely as a development or efficiency tool — for
+        example, an AI coding assistant whose output is not player-facing content — or placeholder
+        assets that a human replaced before release. When you are unsure whether something reaches
+        players, Valve's guidance is to disclose.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        What this tool produces
+      </h3>
+      <ul class="mt-2 space-y-1.5 text-slate-600 dark:text-slate-300 leading-relaxed list-disc pl-5">
+        <li>Paste-ready text for the Steamworks <strong>Pre-Generated AI Content</strong> field</li>
+        <li>Paste-ready <strong>Live-Generated</strong> text plus a guardrails statement, when runtime AI applies</li>
+        <li>A calm, player-facing <strong>store-page disclosure</strong> worded to reduce community backlash</li>
+        <li>A downloadable, dated <strong>compliance protocol</strong> documenting your review against Valve policy v{{ RULESET_VERSION }}</li>
+      </ul>
+
+      <p class="mt-6 text-sm text-slate-400">
+        Informational, not legal advice. Reflects Valve's Steamworks AI content policy as of v{{ RULESET_VERSION }}.
+      </p>
+    </section>
+
     <!-- FAQ -->
     <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-        <div>
+        <div v-for="item in faqItems" :key="item.question">
           <dt class="font-semibold text-slate-900 dark:text-slate-100">
-            What does Steam make me disclose?
+            {{ item.question }}
           </dt>
           <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-            AI content that ships with your game and is consumed by players — split into Pre-Generated (made during development)
-            and Live-Generated (made at runtime). Behind-the-scenes efficiency tools are not the focus.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
-            Is this legal advice?
-          </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-            No. It helps you complete and document Steam's disclosure against the current policy. Informational, not legal advice.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
-            Why pay if ChatGPT writes text?
-          </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-            You pay for a verdict matched to Valve's current ruleset, a dated proof-of-good-faith protocol, and backlash-safe
-            wording — not for three paragraphs.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
-            What exactly do I get?
-          </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-            Paste-ready text for each Steamworks field, a player-facing store disclosure, and a downloadable dated protocol.
+            {{ item.answer }}
           </dd>
         </div>
       </dl>

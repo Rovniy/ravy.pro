@@ -28,6 +28,33 @@ function readQueryToken(): string {
   return SAMPLE_TOKEN
 }
 
+const faqItems = [
+  {
+    question: 'Is it safe to paste my token here?',
+    answer: 'Yes. Decoding and signature verification run entirely in your browser using the Web Crypto API. Your token, secret, and keys are never uploaded or stored, so it is safe to inspect sensitive or production tokens.',
+  },
+  {
+    question: 'What is the difference between decoding and verifying a JWT?',
+    answer: 'Decoding reads the base64url-encoded header and payload so you can see the claims — it does not prove the token is genuine. Verifying checks the signature against a secret or public key, which confirms the token was issued by a trusted party and has not been tampered with.',
+  },
+  {
+    question: 'Which signature algorithms are supported?',
+    answer: 'HMAC (HS256/HS384/HS512) with a shared secret, and RSA (RS256/384/512), RSA-PSS (PS256/384/512), and ECDSA (ES256/384/512) with a public key in PEM or JWK format.',
+  },
+  {
+    question: 'Can it verify the signature of an expired token?',
+    answer: 'Yes. Signature verification uses compactVerify, which checks the signature independently of the exp claim, so an expired-but-otherwise-valid token still verifies. Expiry is reported separately as token status.',
+  },
+  {
+    question: 'Do I need a secret or a public key?',
+    answer: 'It depends on the algorithm. HMAC tokens (HS256/384/512) are verified with the shared secret used to sign them. RSA, RSA-PSS, and ECDSA tokens (RS*/PS*/ES*) are verified with the matching public key in PEM or JWK format.',
+  },
+  {
+    question: 'Does it store my token or keys?',
+    answer: 'No. Nothing is uploaded to a server or saved. Everything stays in the current browser tab and is discarded when you close it.',
+  },
+]
+
 useToolPageSchema({
   path: '/tools/jwt-decoder',
   title: 'JWT Decoder & Verifier',
@@ -35,24 +62,18 @@ useToolPageSchema({
   ogImage: '/open_graph/og_image_default.png',
   appDescription: 'Client-side JWT decoder and signature verifier (HS/RS/ES/PS).',
   appIsFree: true,
-  faq: [
-    {
-      question: 'Is my token sent to a server?',
-      answer: 'No. Decoding and signature verification run entirely in your browser using the Web Crypto API. Your token, secret, and keys never leave your device.',
-    },
-    {
-      question: 'Which signature algorithms are supported?',
-      answer: 'HMAC (HS256/384/512) with a shared secret, and RSA, RSA-PSS, and ECDSA (RS/PS/ES 256/384/512) with a public key in PEM or JWK format.',
-    },
-    {
-      question: 'Does it validate token expiry?',
-      answer: 'The decoder shows token status from the exp and nbf claims, but signature verification is reported separately so you can verify the signature of an already-expired token.',
-    },
-    {
-      question: 'Can it verify a token signed with "alg: none"?',
-      answer: 'No. "alg: none" carries no signature, so the tool reports it as unverifiable and flags it as insecure.',
-    },
-  ],
+  datePublished: '2026-05-20',
+  dateModified: '2026-06-26',
+  howTo: {
+    name: 'How to decode and verify a JWT',
+    description: 'Paste a JSON Web Token to read its header, payload, and claims, then optionally verify its signature with a secret or public key — all in your browser.',
+    steps: [
+      { name: 'Paste your JWT', text: 'Paste the encoded token (header.payload.signature) into the input. Decoding starts instantly and runs entirely in your browser.' },
+      { name: 'Read the decoded token', text: 'Review the decoded Header and Payload JSON panels and the friendly interpretation of standard claims and expiry status.' },
+      { name: 'Verify the signature', text: 'Optionally verify the signature with a shared secret for HMAC (HS*) or a public key (PEM or JWK) for RSA, RSA-PSS, and ECDSA (RS*/PS*/ES*).' },
+    ],
+  },
+  faq: faqItems,
 })
 
 const token = ref(readQueryToken())
@@ -452,54 +473,72 @@ function stringify(value: unknown): string {
       </div>
     </section>
 
-    <!-- About / FAQ -->
-    <section class="mt-12 border-t border-slate-200 dark:border-slate-800 pt-8 text-sm text-slate-600 dark:text-slate-300">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
-        About this tool
+    <!-- Reference / SEO content -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+      <span class="eyebrow">Reference</span>
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        Decoding and verifying JSON Web Tokens
       </h2>
-      <p class="mt-2">
-        A JSON Web Token (JWT) is made of three base64url-encoded parts separated by dots: a
-        <span class="text-rose-500 font-medium">header</span>, a
-        <span class="text-fuchsia-500 font-medium">payload</span> of claims, and a
-        <span class="text-sky-500 font-medium">signature</span>. This decoder parses the header
-        and payload locally and can verify the signature with your secret or public key — nothing
-        is uploaded.
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        What is a JWT made of?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        A JSON Web Token (JWT) is three base64url-encoded parts separated by dots: a
+        <span class="text-rose-500 font-medium">header</span> that names the signing algorithm, a
+        <span class="text-fuchsia-500 font-medium">payload</span> of claims such as
+        <code class="font-spacemono">sub</code>, <code class="font-spacemono">iat</code>, and
+        <code class="font-spacemono">exp</code>, and a
+        <span class="text-sky-500 font-medium">signature</span>. This tool parses the header and
+        payload locally, interprets the standard claims, and shows the token's expiry status.
       </p>
 
-      <h2 class="mt-8 text-xl font-semibold text-slate-900 dark:text-slate-100">
-        FAQ
-      </h2>
-      <dl class="mt-2 space-y-4">
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Is my token sent to a server?
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        How is decoding different from verifying?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Decoding only reads the encoded header and payload — anyone can do it, and it proves nothing
+        about authenticity. Verifying checks the signature against a secret or public key, which
+        confirms the token was issued by a trusted party and has not been altered. Signature
+        verification here uses <code class="font-spacemono">compactVerify</code>, so it is checked
+        independently of the <code class="font-spacemono">exp</code> claim: an expired but otherwise
+        valid token still verifies, with expiry reported separately.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Which algorithms and keys can it verify?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        HMAC tokens (<code class="font-spacemono">HS256</code>,
+        <code class="font-spacemono">HS384</code>, <code class="font-spacemono">HS512</code>) are
+        verified with the shared secret used to sign them. RSA
+        (<code class="font-spacemono">RS*</code>), RSA-PSS
+        (<code class="font-spacemono">PS*</code>), and ECDSA
+        (<code class="font-spacemono">ES*</code>) tokens are verified with the matching public key,
+        supplied as PEM or JWK.
+      </p>
+
+      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+        Is it safe to inspect sensitive tokens?
+      </h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+        Yes. Everything runs in your browser. Your token, secret, and keys are never uploaded or
+        stored, so you can safely inspect production or otherwise sensitive tokens. You can also
+        prefill the decoder by passing a token in the <code class="font-spacemono">?token=</code>
+        query parameter.
+      </p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+      <span class="eyebrow">FAQ</span>
+      <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        <div v-for="item in faqItems" :key="item.question">
+          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+            {{ item.question }}
           </dt>
-          <dd class="mt-1">
-            No. Decoding and signature verification run entirely in your browser using the Web Crypto API. Your token, secret, and keys never leave your device.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Which signature algorithms are supported?
-          </dt>
-          <dd class="mt-1">
-            HMAC (HS256/384/512) with a shared secret, and RSA, RSA-PSS, and ECDSA (RS/PS/ES 256/384/512) with a public key in PEM or JWK format.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Does it validate token expiry?
-          </dt>
-          <dd class="mt-1">
-            The decoder shows token status from the <code class="font-mono">exp</code> and <code class="font-mono">nbf</code> claims, but signature verification is reported separately so you can verify the signature of an already-expired token.
-          </dd>
-        </div>
-        <div>
-          <dt class="font-medium text-slate-900 dark:text-slate-100">
-            Can it verify a token signed with "alg: none"?
-          </dt>
-          <dd class="mt-1">
-            No. "alg: none" carries no signature, so the tool reports it as unverifiable and flags it as insecure.
+          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            {{ item.answer }}
           </dd>
         </div>
       </dl>
