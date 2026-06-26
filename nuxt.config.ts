@@ -301,12 +301,13 @@ export default defineNuxtConfig({
         'mdi:menu',
         'mdi:weather-sunny',
         'mdi:weather-night',
-        // Dynamically-bound icons (registry / tabs) the scanner can't see.
+        // Dynamically-bound icons (registry / tabs / code copy) the scanner can't see.
         'mdi:link-variant',
         'mdi:shield-search',
         'mdi:account-outline',
         'mdi:steam',
         'mdi:account-key-outline',
+        'mdi:content-copy',
       ],
       sizeLimitKb: 128,
     },
