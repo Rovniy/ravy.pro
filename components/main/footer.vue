@@ -9,6 +9,8 @@ const path = computed(() => route.fullPath.replace('/', ''))
     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent pointer-events-none" />
 
     <div class="px-6 container max-w-5xl mx-auto py-12 md:py-16">
+      <FooterNewsletter class="mb-10 pb-10 border-b border-slate-200 dark:border-slate-800" />
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-10">
         <FooterSite v-if="path === 'about'" />
         <FooterSocial v-else />

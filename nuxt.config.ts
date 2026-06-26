@@ -141,6 +141,7 @@ export default defineNuxtConfig({
     stripeWebhookSecret: '',
     stripePriceId: '',
     resendApiKey: '',
+    resendSegmentId: '',
     steamAuditTokenSecret: '',
     public: {
       adminEmail: '',

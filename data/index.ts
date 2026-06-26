@@ -48,6 +48,10 @@ export const footerData = {
   authorInterest: 'Building an MVP, shipping a game feature, or automating a team workflow? Open source or paid — let\'s talk.',
   aboutTheSite: 'Personal blog of Andrei Rovnyi — notes on engineering, game tech, automation, and the craft of shipping software.',
   copyright: `© 2020-${currentYear} XPLOIT FZE. All trademarks, names and logos belong to their respective copyright holders.`,
+  newsletter: {
+    title: 'Newsletter',
+    blurb: 'Occasional notes on engineering, game tech, and new tools — no spam, unsubscribe anytime.',
+  },
 }
 
 export const page404 = {
