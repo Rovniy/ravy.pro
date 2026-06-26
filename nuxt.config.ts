@@ -73,6 +73,19 @@ export default defineNuxtConfig({
           href: '/fonts/space-mono-400.woff2',
           crossorigin: 'anonymous',
         },
+        // DNS warm-up for third parties that load late or conditionally: GTM is
+        // deferred to idle, Firebase auth only calls Google when a returning user
+        // has a session, and Stripe is reached via redirect (no Stripe.js here).
+        // None are on the critical path, so dns-prefetch (DNS only) is the right
+        // hint — a preconnect would burn a TLS handshake every page for
+        // connections most visits never use.
+        { rel: 'dns-prefetch', href: 'https://www.googletagmanager.com' },
+        { rel: 'dns-prefetch', href: 'https://www.google-analytics.com' },
+        { rel: 'dns-prefetch', href: 'https://identitytoolkit.googleapis.com' },
+        { rel: 'dns-prefetch', href: 'https://securetoken.googleapis.com' },
+        { rel: 'dns-prefetch', href: 'https://apis.google.com' },
+        { rel: 'dns-prefetch', href: 'https://accounts.google.com' },
+        { rel: 'dns-prefetch', href: 'https://checkout.stripe.com' },
       ],
       script: [
         {
