@@ -268,6 +268,15 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
+    // Gated / private / per-user routes must stay out of the sitemap even though
+    // some of them are prerendered (the module auto-includes prerendered routes).
+    exclude: [
+      '/tools/contract-red-flag-scanner',
+      '/shortify',
+      '/account',
+      '/scan-share/**',
+      '/tools/steam-ai-disclosure/result/**',
+    ],
   },
 
   colorMode: {

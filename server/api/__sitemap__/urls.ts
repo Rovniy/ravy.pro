@@ -1,4 +1,4 @@
-import { seoData } from '~/data'
+import { publicServices, seoData } from '~/data'
 
 export default defineEventHandler(async (event) => {
   // @ts-expect-error — Nitro auto-import types only declare the 1-arg overload; event is required at runtime
@@ -14,12 +14,11 @@ export default defineEventHandler(async (event) => {
     images?: { loc: string, title?: string, caption?: string }[]
   }[] = []
 
-  urls.push({
-    loc: '/tools/qr-code-generator',
-  })
-  urls.push({
-    loc: '/tools/contract-red-flag-scanner',
-  })
+  // Public tools come from the single source of truth (data/index.ts). Gated
+  // tools live in GATED_TOOLS (data/services.ts) and are intentionally excluded.
+  for (const tool of publicServices) {
+    urls.push({ loc: tool.path })
+  }
 
   const tagSet = new Set<string>()
 
