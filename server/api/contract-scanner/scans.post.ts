@@ -39,6 +39,15 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // ~100 KB cap — guards against OOM and runaway OpenAI token spend.
+  const maxLength = 100_000
+  if (text.length > maxLength) {
+    throw createError({
+      statusCode: 413,
+      statusMessage: `Contract text is too long (${text.length} chars, maximum ${maxLength}). Trim it to the most relevant sections and try again.`,
+    })
+  }
+
   const config = useRuntimeConfig(event)
   const openaiApiKey = config.openaiApiKey
   if (!openaiApiKey) {

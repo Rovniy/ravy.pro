@@ -61,6 +61,12 @@ describe('shortify api', () => {
     await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 400 })
   })
 
+  it('pOST rejects when url is too long', async () => {
+    readBodyMock.mockResolvedValueOnce({ url: `https://example.com/${'a'.repeat(2100)}` })
+    const { default: handler } = await import('~~/server/api/shortify/links.post')
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 413 })
+  })
+
   it('gET returns links list', async () => {
     const { default: handler } = await import('~~/server/api/shortify/links.get')
     const list = await handler({} as never)

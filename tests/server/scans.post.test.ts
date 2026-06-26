@@ -46,6 +46,14 @@ describe('pOST /api/contract-scanner/scans', () => {
     })
   })
 
+  it('returns 413 when text is too long', async () => {
+    vi.stubGlobal('useRuntimeConfig', () => ({ openaiApiKey: 'k' }))
+    readBodyMock.mockResolvedValueOnce({ text: 'a'.repeat(100_001) })
+    const { default: handler } = await import('~~/server/api/contract-scanner/scans.post')
+
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 413 })
+  })
+
   it('creates queued scan and triggers async processing', async () => {
     vi.stubGlobal('useRuntimeConfig', () => ({ openaiApiKey: 'test-key' }))
     readBodyMock.mockResolvedValueOnce({

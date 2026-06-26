@@ -5,6 +5,9 @@ import { generateUniqueCode } from '~~/server/utils/code'
 import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
 import { assertRateLimit } from '~~/server/utils/rate-limit'
 
+// ~2 KB cap — well above any legitimate URL, blocks payload abuse.
+const MAX_URL_LENGTH = 2048
+
 interface CreateBody {
   url?: string
 }
@@ -27,6 +30,10 @@ export default defineEventHandler(async (event) => {
 
   if (!raw || typeof raw !== 'string') {
     throw createError({ statusCode: 400, statusMessage: 'url is required' })
+  }
+
+  if (raw.length > MAX_URL_LENGTH) {
+    throw createError({ statusCode: 413, statusMessage: `URL is too long (max ${MAX_URL_LENGTH} characters)` })
   }
 
   let url: string
