@@ -1,4 +1,5 @@
 import { createError, getRequestURL, readBody } from 'h3'
+import { seoData } from '~~/data'
 import { getOptionalUser } from '~~/server/utils/access'
 import { steamAuditCollection } from '~~/server/utils/steam-audit'
 import { getStripe } from '~~/server/utils/stripe'
@@ -42,7 +43,13 @@ export default defineEventHandler(async (event) => {
 
   await docRef.set(doc)
 
-  const origin = getRequestURL(event).origin
+  // In prod the request arrives on the internal Cloud Run host, so deriving the
+  // origin from the request would send Stripe to the locked-down run.app URL
+  // (Google Frontend returns 403 there). Use the canonical site URL in prod and
+  // the live request origin only in dev (so localhost + `stripe listen` work).
+  const origin = import.meta.dev
+    ? getRequestURL(event).origin
+    : seoData.mySite.replace(/\/+$/, '')
   const stripe = getStripe(event)
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
