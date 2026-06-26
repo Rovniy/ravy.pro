@@ -43,4 +43,22 @@ describe('client-error endpoint', () => {
     expect(res).toBeNull()
     expect((event as { node: { res: { statusCode?: number } } }).node.res.statusCode).toBe(204)
   })
+
+  it('survives an oversized payload and still acks 204 (fuzz)', async () => {
+    reportServerErrorMock.mockClear()
+    readBodyMock.mockResolvedValueOnce({
+      message: 'x'.repeat(5000),
+      stack: 'y'.repeat(200_000),
+      source: 'window',
+      url: 'z'.repeat(5000),
+    })
+    const { default: handler } = await import('~~/server/api/client-error.post')
+    const event = makeEvent()
+
+    const res = await handler(event)
+
+    expect(res).toBeNull()
+    expect((event as { node: { res: { statusCode?: number } } }).node.res.statusCode).toBe(204)
+    expect(reportServerErrorMock).toHaveBeenCalledTimes(1)
+  })
 })

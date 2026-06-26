@@ -323,6 +323,11 @@ export default defineNuxtConfig({
         'mdi:account-key-outline',
         'mdi:content-copy',
         'mdi:history',
+        // Home "Tools" cards (per-tool icons bound dynamically).
+        'mdi:qrcode',
+        'mdi:credit-card-outline',
+        'mdi:shield-key-outline',
+        'mdi:image-sync-outline',
       ],
       sizeLimitKb: 128,
     },

@@ -33,12 +33,12 @@ export const navbarData = {
 // Access-gated tools live in `data/services.ts` (GATED_TOOLS) and are surfaced
 // per-user via the access-grant system, not listed here.
 
-export const publicServices: { name: string, path: string }[] = [
-  { name: 'Steam AI Disclosure', path: '/tools/steam-ai-disclosure' },
-  { name: 'QR Code Generator', path: '/tools/qr-code-generator' },
-  { name: 'Credit Card Generator', path: '/tools/credit-card-generator' },
-  { name: 'JWT Decoder', path: '/tools/jwt-decoder' },
-  { name: 'Image Converter', path: '/tools/image-converter' },
+export const publicServices: { name: string, path: string, icon?: string, blurb?: string }[] = [
+  { name: 'Steam AI Disclosure', path: '/tools/steam-ai-disclosure', icon: 'mdi:steam', blurb: 'Fill Steam\'s AI content disclosure correctly.' },
+  { name: 'QR Code Generator', path: '/tools/qr-code-generator', icon: 'mdi:qrcode', blurb: 'Styled QR codes with a logo, export as PNG.' },
+  { name: 'Credit Card Generator', path: '/tools/credit-card-generator', icon: 'mdi:credit-card-outline', blurb: 'Luhn-valid test card numbers for QA.' },
+  { name: 'JWT Decoder', path: '/tools/jwt-decoder', icon: 'mdi:shield-key-outline', blurb: 'Decode and verify JWTs in your browser.' },
+  { name: 'Image Converter', path: '/tools/image-converter', icon: 'mdi:image-sync-outline', blurb: 'Convert PNG, JPEG and WebP locally.' },
 ]
 
 export const footerData = {

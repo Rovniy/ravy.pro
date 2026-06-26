@@ -57,4 +57,13 @@ describe('newsletter subscribe', () => {
     const { default: handler } = await import('~~/server/api/newsletter/subscribe.post')
     await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 500 })
   })
+
+  it('rejects an absurdly long garbage email without calling Resend (fuzz)', async () => {
+    vi.stubGlobal('useRuntimeConfig', () => ({ resendApiKey: 're_x', resendSegmentId: '' }))
+    readBodyMock.mockResolvedValueOnce({ email: 'a'.repeat(10000) })
+    addContactMock.mockClear()
+    const { default: handler } = await import('~~/server/api/newsletter/subscribe.post')
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 400 })
+    expect(addContactMock).not.toHaveBeenCalled()
+  })
 })

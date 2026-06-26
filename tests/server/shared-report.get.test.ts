@@ -68,4 +68,16 @@ describe('gET /api/contract-scanner/shared/[shareId]', () => {
     const { default: handler } = await import('~~/server/api/contract-scanner/shared/[shareId].get')
     await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 404 })
   })
+
+  it('refuses a scan that is not actually shared, even via a valid mapping (no leak)', async () => {
+    vi.stubGlobal('getRouterParam', () => 'forged-share')
+    shareGetMock.mockResolvedValueOnce({ exists: true, data: () => ({ scanId: 'scan-private' }) })
+    docGetMock.mockResolvedValueOnce({
+      id: 'scan-private',
+      exists: true,
+      data: () => ({ isShared: false, status: 'done', result: { summary: 'secret' } }),
+    })
+    const { default: handler } = await import('~~/server/api/contract-scanner/shared/[shareId].get')
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 404 })
+  })
 })
