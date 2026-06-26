@@ -1,6 +1,7 @@
 import { createError, getRequestURL, readBody } from 'h3'
 import { seoData } from '~~/data'
 import { getOptionalUser } from '~~/server/utils/access'
+import { assertRateLimit, clientIdentity } from '~~/server/utils/rate-limit'
 import { steamAuditCollection } from '~~/server/utils/steam-audit'
 import { getStripe } from '~~/server/utils/stripe'
 import { classifyAudit, normalizeAnswers } from '~~/utils/steam-ai-ruleset'
@@ -9,6 +10,9 @@ import { classifyAudit, normalizeAnswers } from '~~/utils/steam-ai-ruleset'
 // The classification is recomputed server-side from the submitted answers —
 // the client-sent verdict is never trusted.
 export default defineEventHandler(async (event) => {
+  // Public endpoint: throttle by IP to prevent Stripe-session / Firestore spam.
+  await assertRateLimit({ bucket: 'steam-checkout', identity: clientIdentity(event), limit: 10, windowMs: 60 * 60 * 1000 })
+
   const body = await readBody<{ answers?: unknown, gameName?: unknown }>(event)
   const answers = normalizeAnswers(body?.answers)
   const classification = classifyAudit(answers)

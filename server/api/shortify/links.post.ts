@@ -3,6 +3,7 @@ import { createError, defineEventHandler, readBody } from 'h3'
 import { requireToolAccess } from '~~/server/utils/access'
 import { generateUniqueCode } from '~~/server/utils/code'
 import { getDb, SHORTLINKS_COLLECTION } from '~~/server/utils/firebase-admin'
+import { assertRateLimit } from '~~/server/utils/rate-limit'
 
 interface CreateBody {
   url?: string
@@ -20,6 +21,7 @@ function normalizeUrl(input: string): string {
 
 export default defineEventHandler(async (event) => {
   const user = await requireToolAccess(event, 'shortify')
+  await assertRateLimit({ bucket: 'shortify-create', identity: user.uid, limit: 30, windowMs: 60 * 60 * 1000 })
   const body = await readBody<CreateBody>(event)
   const raw = body?.url
 

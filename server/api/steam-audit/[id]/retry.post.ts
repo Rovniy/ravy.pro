@@ -1,4 +1,5 @@
 import { createError, getRouterParam } from 'h3'
+import { assertRateLimit, clientIdentity } from '~~/server/utils/rate-limit'
 import { authorizeAuditAccess, retryGeneration } from '~~/server/utils/steam-audit'
 
 // Re-runs generation for a paid audit that errored or got stuck. No new charge —
@@ -11,6 +12,9 @@ export default defineEventHandler(async (event) => {
 
   if (!(await authorizeAuditAccess(event, id)))
     throw createError({ statusCode: 403, statusMessage: 'Not authorized' })
+
+  // Throttle OpenAI-triggering retries (per IP).
+  await assertRateLimit({ bucket: 'steam-retry', identity: clientIdentity(event), limit: 12, windowMs: 60 * 60 * 1000 })
 
   const config = useRuntimeConfig(event)
   const status = await retryGeneration(id, {

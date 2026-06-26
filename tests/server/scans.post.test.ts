@@ -17,6 +17,11 @@ vi.mock('~~/server/utils/access', () => ({
   requireToolAccess: vi.fn(async () => ({ uid: 'admin-1', email: 'admin@test.dev' })),
 }))
 
+vi.mock('~~/server/utils/rate-limit', () => ({
+  assertRateLimit: vi.fn(async () => {}),
+  clientIdentity: vi.fn(() => 'test-ip'),
+}))
+
 const setMock = vi.fn(async () => {})
 const docMock = vi.fn(() => ({ id: 'scan-1', set: setMock }))
 

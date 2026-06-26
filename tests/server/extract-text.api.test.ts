@@ -17,6 +17,11 @@ vi.mock('~~/server/utils/access', () => ({
   requireToolAccess: vi.fn(async () => ({ uid: 'admin-1', email: 'a@test.dev' })),
 }))
 
+vi.mock('~~/server/utils/rate-limit', () => ({
+  assertRateLimit: vi.fn(async () => {}),
+  clientIdentity: vi.fn(() => 'test-ip'),
+}))
+
 vi.mock('~~/server/utils/pdf-text', () => ({
   extractPdfTextFromBase64: vi.fn(async () => 'pdf text'),
 }))

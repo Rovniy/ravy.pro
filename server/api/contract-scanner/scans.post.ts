@@ -2,9 +2,11 @@ import { createError, readBody } from 'h3'
 import { requireToolAccess } from '~~/server/utils/access'
 import { contractScanCollection, processContractScan } from '~~/server/utils/contract-scan'
 import { extractPdfTextFromBase64 } from '~~/server/utils/pdf-text'
+import { assertRateLimit } from '~~/server/utils/rate-limit'
 
 export default defineEventHandler(async (event) => {
   const admin = await requireToolAccess(event, 'contract-scanner')
+  await assertRateLimit({ bucket: 'contract-scan', identity: admin.uid, limit: 20, windowMs: 60 * 60 * 1000 })
   const body = await readBody<{
     text?: string
     fileName?: string
