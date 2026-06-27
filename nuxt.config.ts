@@ -1,5 +1,22 @@
+import { createRequire } from 'node:module'
 import { navbarData, seoData } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
+
+// pdfjs-dist (used by the contract scanner's PDF text extraction + OCR) lazily
+// imports its worker via a runtime-computed path, so Nitro's tracer never bundles
+// it — and the deployed server then crashes with "Cannot find module pdf.worker.mjs".
+// Resolve the legacy worker at build time and force it into the trace.
+const nodeRequire = createRequire(import.meta.url)
+const PDF_WORKER_INCLUDES = ['pdfjs-dist/legacy/build/pdf.worker.mjs', 'pdfjs-dist/legacy/build/pdf.worker.min.mjs']
+  .map((m) => {
+    try {
+      return nodeRequire.resolve(m)
+    }
+    catch {
+      return ''
+    }
+  })
+  .filter(Boolean)
 
 // CSP is set per-route by `server/plugins/csp.ts`, which hashes every inline
 // <script> in the actually-rendered HTML — including Nuxt's payload, JSON-LD,
@@ -179,6 +196,11 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Force the pdfjs worker into the server trace so the deployed bundle can
+    // resolve it at runtime (see PDF_WORKER_INCLUDES above).
+    externals: {
+      traceInclude: PDF_WORKER_INCLUDES,
+    },
     prerender: {
       crawlLinks: true,
       failOnError: false,
