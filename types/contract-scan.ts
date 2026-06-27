@@ -32,13 +32,65 @@ export interface ContractScanResult {
   redFlags: ContractScanRedFlag[]
 }
 
+export type ContractScanStatus = 'queued' | 'processing' | 'done' | 'error'
+
 export interface ContractScanRecord {
   id: string
-  ownerUid: string
-  status: 'queued' | 'processing' | 'done' | 'error'
+  // Set when the scan was started by a signed-in user; anonymous scans omit it.
+  ownerUid?: string
+  ownerEmail?: string
+  status: ContractScanStatus
   progress: number
   step: string
   inputPreview?: string
+  result?: ContractScanResult
+  responseLanguage?: string
+  error?: string
+  // Paywall state. The scan + result are produced for free; `paid` unlocks the
+  // full report. Set by the Stripe webhook (source of truth).
+  paid?: boolean
+  paidAt?: string
+  stripeSessionId?: string
+  customerEmail?: string
+  // Public sharing (post-purchase) — see /scan-share/[shareId].
+  shareId?: string
+  isShared?: boolean
+  sharedAt?: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ContractScanRedFlagCounts {
+  high: number
+  medium: number
+  low: number
+  total: number
+}
+
+// Free, pre-payment view: enough to prove value (risk level + how many flags)
+// without exposing the actual clause analysis.
+export interface ContractScanTeaser {
+  id: string
+  status: ContractScanStatus
+  progress: number
+  step: string
+  paid: boolean
+  jurisdiction?: string
+  overallRiskScore?: ContractScanOverallRisk
+  summary?: string
+  redFlagCounts?: ContractScanRedFlagCounts
+  error?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// Full result with internal Stripe/email fields stripped, for the paid result page.
+export interface ContractScanPublicRecord {
+  id: string
+  status: ContractScanStatus
+  progress: number
+  step: string
+  paid: boolean
   result?: ContractScanResult
   error?: string
   createdAt: string

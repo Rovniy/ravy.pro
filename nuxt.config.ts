@@ -156,9 +156,16 @@ export default defineNuxtConfig({
     resendApiKey: '',
     resendSegmentId: '',
     steamAuditTokenSecret: '',
+    // Contract Red-Flag Scanner — public paid tool (own Stripe Price + token secret).
+    contractScanPriceId: '',
+    contractScanTokenSecret: '',
     public: {
       adminEmail: '',
       steamAudit: {
+        priceUsd: '',
+        currency: 'usd',
+      },
+      contractScan: {
         priceUsd: '',
         currency: 'usd',
       },
@@ -203,6 +210,7 @@ export default defineNuxtConfig({
       '/qr-code': { redirect: '/tools/qr-code-generator' },
       '/tools/qr-code-generator': { ssr: true, prerender: true },
       '/tools/contract-red-flag-scanner': { ssr: true, prerender: true },
+      '/tools/contract-red-flag-scanner/result/**': { ssr: true, prerender: false },
       '/tools/credit-card-generator': { ssr: true, prerender: true },
       '/tools/jwt-decoder': { ssr: true, prerender: true },
       '/tools/image-converter': { ssr: true, prerender: true },
@@ -285,7 +293,7 @@ export default defineNuxtConfig({
     // Gated / private / per-user routes must stay out of the sitemap even though
     // some of them are prerendered (the module auto-includes prerendered routes).
     exclude: [
-      '/tools/contract-red-flag-scanner',
+      '/tools/contract-red-flag-scanner/result/**',
       '/shortify',
       '/account',
       '/scan-share/**',

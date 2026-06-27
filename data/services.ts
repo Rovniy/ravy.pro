@@ -10,9 +10,12 @@ export interface GatedTool {
   icon: string
 }
 
+// NOTE: the Contract Red-Flag Scanner used to live here as a gated tool. It is
+// now a public, paid tool (see `publicServices` in data/index.ts) — access to the
+// full report is gated by Stripe payment, not by a per-user grant. Admins still
+// get the full report for free via their `isAdmin` flag.
 export const GATED_TOOLS: GatedTool[] = [
   { key: 'shortify', name: 'Shortify', path: '/shortify', icon: 'mdi:link-variant' },
-  { key: 'contract-scanner', name: 'Contract Red-Flag Scanner', path: '/tools/contract-red-flag-scanner', icon: 'mdi:shield-search' },
 ]
 
 export const GATED_TOOL_KEYS: string[] = GATED_TOOLS.map(t => t.key)

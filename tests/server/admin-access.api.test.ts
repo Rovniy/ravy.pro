@@ -26,18 +26,20 @@ vi.mock('~~/server/utils/firebase-admin', () => ({
 
 describe('admin access grant + audit log', () => {
   it('grant: normalizes email, filters unknown keys, and logs old/new + admin', async () => {
+    // 'contract-scanner' is no longer a gated tool, so it is filtered out
+    // alongside the bogus key — only 'shortify' survives.
     readBodyMock.mockResolvedValueOnce({ email: 'User@Example.com', tools: ['shortify', 'contract-scanner', 'bogus'] })
     const { default: handler } = await import('~~/server/api/admin/access.post')
 
     const res = await handler({} as never)
 
-    expect(res).toEqual({ email: 'user@example.com', tools: ['shortify', 'contract-scanner'] })
+    expect(res).toEqual({ email: 'user@example.com', tools: ['shortify'] })
     expect(grantSet).toHaveBeenCalled()
     expect(auditAdd).toHaveBeenCalledWith(expect.objectContaining({
       action: 'set',
       targetEmail: 'user@example.com',
       oldTools: ['shortify'],
-      newTools: ['shortify', 'contract-scanner'],
+      newTools: ['shortify'],
       adminEmail: 'admin@test.dev',
       adminUid: 'admin-1',
     }))

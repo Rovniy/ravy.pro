@@ -20,8 +20,8 @@ describe('sitemap and rss routes', () => {
     const locs = urls.map((x: { loc: string }) => x.loc)
     expect(locs).toContain('/tools/qr-code-generator')
     expect(locs).toContain('/tools/steam-ai-disclosure')
-    // Gated tools must not be advertised in the sitemap.
-    expect(locs).not.toContain('/tools/contract-red-flag-scanner')
+    // Contract Red-Flag Scanner is now a public, paid tool — it must be indexed.
+    expect(locs).toContain('/tools/contract-red-flag-scanner')
     expect(locs).toContain('/categories/nuxt')
   })
 

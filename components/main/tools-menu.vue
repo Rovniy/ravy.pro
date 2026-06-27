@@ -24,6 +24,8 @@ watch(() => route.fullPath, () => {
 function toggle() {
   isOpen.value = !isOpen.value
 }
+
+const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCompare(b.name)))
 </script>
 
 <template>
@@ -50,15 +52,16 @@ function toggle() {
       <div
         v-if="isOpen"
         role="menu"
-        class="absolute right-0 top-full mt-2 w-60 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
+        class="absolute right-0 top-full mt-2 w-70 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
-          v-for="item in publicServices"
+          v-for="item in sortedList"
           :key="item.path"
           :to="item.path"
           role="menuitem"
-          class="services-item block px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400"
+          class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400 flex items-center gap-3"
         >
+          <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400" />
           {{ item.name }}
         </NuxtLink>
       </div>

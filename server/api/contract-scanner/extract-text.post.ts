@@ -1,9 +1,8 @@
 import { Buffer } from 'node:buffer'
 import { createError, readBody } from 'h3'
 import { PDFParse } from 'pdf-parse'
-import { requireToolAccess } from '~~/server/utils/access'
 import { extractPdfTextFromBase64 } from '~~/server/utils/pdf-text'
-import { assertRateLimit } from '~~/server/utils/rate-limit'
+import { assertRateLimit, clientIdentity } from '~~/server/utils/rate-limit'
 
 function extractResponseText(payload: Record<string, unknown>): string {
   const top = payload.output_text
@@ -70,9 +69,10 @@ async function ocrPdfFirstPageWithOpenAI(fileBase64: string, openaiApiKey: strin
   return extractResponseText(payload)
 }
 
+// Public: needed so anonymous users can extract text from a PDF/photo before
+// the (free) scan. OCR hits OpenAI, so throttle by IP.
 export default defineEventHandler(async (event) => {
-  const user = await requireToolAccess(event, 'contract-scanner')
-  await assertRateLimit({ bucket: 'extract-text', identity: user.uid, limit: 40, windowMs: 60 * 60 * 1000 })
+  await assertRateLimit({ bucket: 'extract-text', identity: clientIdentity(event), limit: 40, windowMs: 60 * 60 * 1000 })
   const body = await readBody<{
     fileName?: string
     fileMime?: string

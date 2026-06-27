@@ -33,12 +33,13 @@ export const navbarData = {
 // Access-gated tools live in `data/services.ts` (GATED_TOOLS) and are surfaced
 // per-user via the access-grant system, not listed here.
 
-export const publicServices: { name: string, path: string, icon?: string, blurb?: string }[] = [
+export const publicServices: { name: string, path: string, icon: string, blurb?: string }[] = [
   { name: 'Steam AI Disclosure', path: '/tools/steam-ai-disclosure', icon: 'mdi:steam', blurb: 'Fill Steam\'s AI content disclosure correctly.' },
   { name: 'QR Code Generator', path: '/tools/qr-code-generator', icon: 'mdi:qrcode', blurb: 'Styled QR codes with a logo, export as PNG.' },
   { name: 'Credit Card Generator', path: '/tools/credit-card-generator', icon: 'mdi:credit-card-outline', blurb: 'Luhn-valid test card numbers for QA.' },
   { name: 'JWT Decoder', path: '/tools/jwt-decoder', icon: 'mdi:shield-key-outline', blurb: 'Decode and verify JWTs in your browser.' },
   { name: 'Image Converter', path: '/tools/image-converter', icon: 'mdi:image-sync-outline', blurb: 'Convert PNG, JPEG and WebP locally.' },
+  { name: 'Contract Red-Flag Scanner', path: '/tools/contract-red-flag-scanner', icon: 'mdi:shield-search', blurb: 'Spot risky clauses in influencer/brand contracts — free risk check, $10 for the full report.' },
 ]
 
 export const footerData = {

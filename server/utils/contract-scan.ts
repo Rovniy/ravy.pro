@@ -1,4 +1,13 @@
-import type { ContractScanResult } from '~~/types/contract-scan'
+import type { H3Event } from 'h3'
+import type {
+  ContractScanPublicRecord,
+  ContractScanRecord,
+  ContractScanResult,
+  ContractScanTeaser,
+} from '~~/types/contract-scan'
+import { getQuery } from 'h3'
+import { getOptionalUser, isAdminEmail } from './access'
+import { verifyScanToken } from './contract-scan-token'
 import { getDb } from './firebase-admin'
 
 const COLLECTION = 'contract_scans'
@@ -221,4 +230,126 @@ export async function processContractScan(id: string, text: string, openaiApiKey
 
 export function contractScanCollection() {
   return getDb().collection(COLLECTION)
+}
+
+export async function getScanRecord(id: string): Promise<ContractScanRecord | null> {
+  const snap = await contractScanCollection().doc(id).get()
+  if (!snap.exists)
+    return null
+  return { id, ...(snap.data() as Omit<ContractScanRecord, 'id'>) }
+}
+
+// Free, pre-payment view: risk level, jurisdiction, summary and how many red
+// flags were found — never the clause-level analysis (that is the paid product).
+export function toTeaser(id: string, data: ContractScanRecord): ContractScanTeaser {
+  const flags = data.result?.redFlags ?? []
+  const counts = flags.reduce(
+    (acc, f) => {
+      acc.total += 1
+      if (f.severity === 'high')
+        acc.high += 1
+      else if (f.severity === 'medium')
+        acc.medium += 1
+      else if (f.severity === 'low')
+        acc.low += 1
+      return acc
+    },
+    { high: 0, medium: 0, low: 0, total: 0 },
+  )
+
+  return {
+    id,
+    status: data.status,
+    progress: data.progress,
+    step: data.step,
+    paid: data.paid === true,
+    jurisdiction: data.result?.jurisdiction,
+    overallRiskScore: data.result?.overallRiskScore,
+    summary: data.result?.summary,
+    redFlagCounts: data.result ? counts : undefined,
+    error: data.error,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+  }
+}
+
+// Full result with Stripe/email internals stripped — for the paid result page.
+// Named distinctly from steam-audit's toPublicRecord to avoid an auto-import clash.
+export function toPublicScanRecord(id: string, data: ContractScanRecord): ContractScanPublicRecord {
+  return {
+    id,
+    status: data.status,
+    progress: data.progress,
+    step: data.step,
+    paid: data.paid === true,
+    result: data.result,
+    error: data.error,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+  }
+}
+
+// Authorisation for the full-report endpoints. Grants access when:
+//  - a valid signed token (?t=) names this scan (only ever minted post-payment), OR
+//  - a Stripe checkout session_id paid for this exact scan, OR
+//  - the caller is the signed-in admin (always free), OR
+//  - the caller is the scan's owner AND the scan is already paid.
+//
+// Crucially, ownership alone does NOT grant access — otherwise any signed-in user
+// could read their own report for free and the paywall would be moot.
+export async function authorizeContractScanAccess(event: H3Event, id: string): Promise<boolean> {
+  const config = useRuntimeConfig(event)
+  const query = getQuery(event)
+
+  const token = typeof query.t === 'string' ? query.t : ''
+  if (token && (await verifyScanToken(token, config.contractScanTokenSecret)) === id)
+    return true
+
+  if (typeof query.session_id === 'string' && query.session_id) {
+    try {
+      // Lazy import keeps the `stripe` package out of contract-scan.ts's static
+      // graph, so it never leaks into the page/prerender bundle.
+      const { getStripe } = await import('./stripe')
+      const stripe = getStripe(event)
+      const session = await stripe.checkout.sessions.retrieve(query.session_id)
+      if (session.payment_status === 'paid' && session.metadata?.scanId === id)
+        return true
+    }
+    catch {
+      // invalid session — not authorized
+    }
+  }
+
+  const user = await getOptionalUser(event)
+  if (user) {
+    if (isAdminEmail(event, user.email))
+      return true
+    const record = await getScanRecord(id)
+    if (record?.paid === true && record.ownerUid && record.ownerUid === user.uid)
+      return true
+  }
+
+  return false
+}
+
+// Called from the Stripe webhook (source of truth for payment). Idempotent:
+// only the first transition to paid records the email/session.
+export async function markScanPaid(id: string, email: string | undefined, sessionId: string): Promise<void> {
+  const ref = contractScanCollection().doc(id)
+  const snap = await ref.get()
+  if (!snap.exists)
+    return
+  const data = snap.data() as ContractScanRecord
+  if (data.paid === true)
+    return // already handled — idempotent
+
+  const patch: Record<string, unknown> = {
+    paid: true,
+    paidAt: nowIso(),
+    stripeSessionId: sessionId,
+    updatedAt: nowIso(),
+  }
+  if (email)
+    patch.customerEmail = email.toLowerCase()
+  await ref.set(patch, { merge: true })
 }

@@ -27,7 +27,8 @@ describe('access — tool registry', () => {
 
   it('validates known and rejects unknown keys', () => {
     expect(isValidToolKey('shortify')).toBe(true)
-    expect(isValidToolKey('contract-scanner')).toBe(true)
+    // contract-scanner is no longer gated (it's a public, paid tool now).
+    expect(isValidToolKey('contract-scanner')).toBe(false)
     expect(isValidToolKey('nope')).toBe(false)
   })
 })

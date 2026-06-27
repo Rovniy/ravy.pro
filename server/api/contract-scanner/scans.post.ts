@@ -1,13 +1,16 @@
 import { createError, readBody } from 'h3'
-import { requireToolAccess } from '~~/server/utils/access'
+import { getOptionalUser } from '~~/server/utils/access'
 import { contractScanCollection, processContractScan } from '~~/server/utils/contract-scan'
 import { extractPdfTextFromBase64 } from '~~/server/utils/pdf-text'
-import { assertRateLimit } from '~~/server/utils/rate-limit'
+import { assertRateLimit, clientIdentity } from '~~/server/utils/rate-limit'
 import { reportServerError } from '~~/server/utils/report-error'
 
+// Public endpoint: the scan (and its result) is produced for free; the paywall
+// only gates *viewing the full report*. Throttle by IP to cap pre-payment
+// OpenAI spend / Firestore writes from anonymous callers.
 export default defineEventHandler(async (event) => {
-  const admin = await requireToolAccess(event, 'contract-scanner')
-  await assertRateLimit({ bucket: 'contract-scan', identity: admin.uid, limit: 20, windowMs: 60 * 60 * 1000 })
+  await assertRateLimit({ bucket: 'contract-scan', identity: clientIdentity(event), limit: 20, windowMs: 60 * 60 * 1000 })
+  const owner = await getOptionalUser(event)
   const body = await readBody<{
     text?: string
     fileName?: string
@@ -58,11 +61,15 @@ export default defineEventHandler(async (event) => {
   const docRef = contractScanCollection().doc()
   const now = new Date().toISOString()
   await docRef.set({
-    ownerUid: admin.uid,
+    // Link to the buyer when signed in so the scan shows in their account
+    // history; anonymous scans stay reachable via the paid token link.
+    ...(owner ? { ownerUid: owner.uid, ownerEmail: owner.email } : {}),
     status: 'queued',
     progress: 5,
     step: 'Queued',
+    paid: false,
     sourceFileName: fileName || undefined,
+    responseLanguage,
     inputPreview: text.slice(0, 280),
     createdAt: now,
     updatedAt: now,

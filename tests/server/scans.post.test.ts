@@ -14,7 +14,8 @@ vi.mock('~~/server/utils/auth', () => ({
 }))
 
 vi.mock('~~/server/utils/access', () => ({
-  requireToolAccess: vi.fn(async () => ({ uid: 'admin-1', email: 'admin@test.dev' })),
+  // Public endpoint now: anonymous scan (no signed-in owner).
+  getOptionalUser: vi.fn(async () => null),
 }))
 
 vi.mock('~~/server/utils/rate-limit', () => ({

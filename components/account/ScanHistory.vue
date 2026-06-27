@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import type { ContractScanRecord } from '~/types/contract-scan'
+import type { ContractScanTeaser } from '~/types/contract-scan'
 import { onMounted, ref } from 'vue'
 import { useAuthedFetch } from '~/composables/useAuthedFetch'
 
+interface Item { teaser: ContractScanTeaser, token: string }
+
 const { authedFetch } = useAuthedFetch()
-const scans = ref<ContractScanRecord[]>([])
+const items = ref<Item[]>([])
 const loading = ref(false)
 const error = ref('')
-const selectedScanId = ref('')
-const copiedShareFor = ref('')
 
 async function load() {
   loading.value = true
   error.value = ''
   try {
-    scans.value = await authedFetch<ContractScanRecord[]>('/api/contract-scanner/scans?limit=30')
+    const res = await authedFetch<{ items: Item[] }>('/api/account/contract-scans')
+    items.value = res.items
   }
   catch (e: unknown) {
     error.value = e instanceof Error ? e.message : 'Failed to load scan history'
@@ -24,28 +25,19 @@ async function load() {
   }
 }
 
-async function shareScan(scanId: string) {
-  error.value = ''
-  try {
-    const data = await authedFetch<{ shareId: string }>(`/api/contract-scanner/scans/${scanId}/share`, { method: 'POST' })
-    const url = `${window.location.origin}/scan-share/${data.shareId}`
-    await navigator.clipboard.writeText(url)
-    copiedShareFor.value = scanId
-    setTimeout(() => {
-      if (copiedShareFor.value === scanId)
-        copiedShareFor.value = ''
-    }, 2500)
-  }
-  catch (e: unknown) {
-    error.value = e instanceof Error ? e.message : 'Failed to create share link'
-  }
-}
-
 function formatDate(iso?: string) {
   if (!iso)
     return '—'
   const d = new Date(iso)
   return Number.isNaN(d.getTime()) ? iso : d.toLocaleString()
+}
+
+function resultLink(item: Item): string {
+  // Always deep-link to the specific scan. Paid scans carry a durable token;
+  // for the rest the result page authorizes the signed-in owner/admin via their
+  // bearer token, or shows the teaser + unlock for an unpaid scan.
+  const base = `/tools/contract-red-flag-scanner/result/${item.teaser.id}`
+  return item.token ? `${base}?t=${item.token}` : base
 }
 
 onMounted(load)
@@ -75,65 +67,41 @@ onMounted(load)
     <div v-if="loading" class="mt-4 text-sm text-slate-500">
       Loading…
     </div>
-    <div v-else-if="scans.length === 0" class="mt-4 text-sm text-slate-500">
-      No scans yet.
+
+    <div v-else-if="items.length === 0" class="mt-4">
+      <p class="text-sm text-slate-500">
+        No scans yet.
+      </p>
+      <NuxtLink to="/tools/contract-red-flag-scanner" class="mt-2 inline-flex items-center gap-1.5 text-sm text-sky-600 dark:text-sky-400 hover:underline">
+        <Icon name="mdi:arrow-right" class="w-4 h-4" /> Scan a contract
+      </NuxtLink>
     </div>
 
     <div v-else class="mt-4 space-y-3">
-      <article v-for="scan in scans" :key="scan.id" class="rounded-md border border-slate-200 dark:border-slate-700 p-4">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <p class="text-sm font-medium text-slate-900 dark:text-slate-100">
-            {{ formatDate(scan.createdAt) }}
+      <article
+        v-for="item in items"
+        :key="item.teaser.id"
+        class="rounded-md border border-slate-200 dark:border-slate-700 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+      >
+        <div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-spacemono">
+            {{ formatDate(item.teaser.createdAt) }}
           </p>
-          <span
-            class="text-xs uppercase font-semibold"
-            :class="scan.status === 'done'
-              ? 'text-emerald-600 dark:text-emerald-400'
-              : scan.status === 'error'
-                ? 'text-rose-600 dark:text-rose-400'
-                : 'text-amber-600 dark:text-amber-400'"
-          >
-            {{ scan.status }}
-          </span>
+          <p v-if="item.teaser.overallRiskScore" class="mt-1 text-sm text-slate-700 dark:text-slate-300">
+            Overall risk: <span class="font-medium capitalize">{{ item.teaser.overallRiskScore.score }}</span>
+            <span v-if="item.teaser.redFlagCounts" class="text-slate-500">· {{ item.teaser.redFlagCounts.total }} red flag(s)</span>
+          </p>
+          <p class="mt-1 text-sm font-medium" :class="item.teaser.paid ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">
+            {{ item.teaser.paid ? 'Unlocked' : 'Not unlocked' }}
+          </p>
         </div>
-
-        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
-          {{ scan.step }}
-        </p>
-        <p v-if="scan.result?.overallRiskScore" class="mt-1 text-sm text-slate-700 dark:text-slate-300">
-          Overall risk: <span class="font-medium capitalize">{{ scan.result.overallRiskScore.score }}</span>
-        </p>
-        <p v-if="scan.result?.summary" class="mt-2 text-sm text-slate-700 dark:text-slate-300 line-clamp-3">
-          {{ scan.result.summary }}
-        </p>
-
-        <div v-if="scan.result" class="mt-3 flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer"
-            @click="selectedScanId = selectedScanId === scan.id ? '' : scan.id"
-          >
-            <Icon :name="selectedScanId === scan.id ? 'mdi:chevron-up' : 'mdi:chevron-down'" size="16" />
-            {{ selectedScanId === scan.id ? 'Hide full report' : 'View full report' }}
-          </button>
-          <button
-            type="button"
-            class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer"
-            @click="shareScan(scan.id)"
-          >
-            <Icon :name="copiedShareFor === scan.id ? 'mdi:check' : 'mdi:share-variant'" size="16" />
-            {{ copiedShareFor === scan.id ? 'Link copied' : 'Share report' }}
-          </button>
-        </div>
-
-        <p v-if="scan.error" class="mt-2 text-sm text-rose-600 dark:text-rose-400">
-          {{ scan.error }}
-        </p>
-
-        <ContractScanResultPanel
-          v-if="selectedScanId === scan.id && scan.result"
-          :result="scan.result"
-        />
+        <NuxtLink
+          :to="resultLink(item)"
+          class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800"
+        >
+          <Icon name="mdi:open-in-new" class="w-4 h-4" />
+          {{ item.teaser.paid ? 'Open report' : 'View / unlock' }}
+        </NuxtLink>
       </article>
     </div>
   </section>
