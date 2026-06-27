@@ -32,6 +32,11 @@ function toggleMobile() {
   isMobileOpen.value = !isMobileOpen.value
 }
 
+const { track } = useAnalytics()
+function navClick(item: string, location: 'header' | 'mobile' = 'header') {
+  track('nav_click', { nav_item: item, location })
+}
+
 const userInitial = computed(() => {
   const email = state.value.user?.email ?? ''
   return email ? email?.at(0)?.toUpperCase() : '?'
@@ -40,10 +45,16 @@ const userInitial = computed(() => {
 async function onSignIn() {
   try {
     await signIn()
+    track('login', { method: 'firebase' })
   }
   catch (e) {
     console.error('Sign-in failed', e)
   }
+}
+
+async function onSignOut() {
+  track('logout', { method: 'firebase' })
+  await signOut()
 }
 </script>
 
@@ -58,7 +69,7 @@ async function onSignIn() {
     <div class="flex px-6 container max-w-5xl justify-between mx-auto items-center">
       <ul class="flex items-baseline space-x-5">
         <li class="text-base lg:text-2xl font-bold">
-          <NuxtLink to="/" class="nav-link">
+          <NuxtLink to="/" class="nav-link" @click="navClick('home')">
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
@@ -66,12 +77,12 @@ async function onSignIn() {
 
       <ul class="flex items-center space-x-3 lg:space-x-6 text-sm lg:text-lg font-semibold">
         <li class="hidden lg:block">
-          <NuxtLink to="/blogs" class="nav-link hover:text-sky-600 dark:hover:text-sky-400">
+          <NuxtLink to="/blogs" class="nav-link hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('blogs')">
             Blogs
           </NuxtLink>
         </li>
         <li v-if="isAuthed" class="hidden lg:block">
-          <NuxtLink to="/account" class="nav-link hover:text-sky-600 dark:hover:text-sky-400">
+          <NuxtLink to="/account" class="nav-link hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('account')">
             Account
           </NuxtLink>
         </li>
@@ -79,7 +90,7 @@ async function onSignIn() {
           <MainToolsMenu />
         </li>
         <li class="hidden lg:block" title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-600 dark:hover:text-sky-400">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('about')">
             About me
           </NuxtLink>
         </li>
@@ -121,7 +132,7 @@ async function onSignIn() {
                 type="button"
                 title="Sign out"
                 class="hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
-                @click="signOut"
+                @click="onSignOut"
               >
                 <span class="hidden lg:inline">Sign out</span>
                 <Icon name="mdi:logout" size="18" aria-hidden="true" class="lg:hidden" />
@@ -163,12 +174,12 @@ async function onSignIn() {
       >
         <ul class="container max-w-5xl mx-auto px-6 py-3 flex flex-col text-base font-semibold">
           <li>
-            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('blogs', 'mobile')">
               Blogs
             </NuxtLink>
           </li>
           <li v-if="isAuthed">
-            <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+            <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('account', 'mobile')">
               Account
             </NuxtLink>
           </li>
@@ -176,12 +187,12 @@ async function onSignIn() {
             Tools
           </li>
           <li>
-            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('about', 'mobile')">
               About me
             </NuxtLink>
           </li>
           <li v-for="item in publicServices" :key="item.path">
-            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick(item.path, 'mobile')">
               {{ item.name }}
             </NuxtLink>
           </li>

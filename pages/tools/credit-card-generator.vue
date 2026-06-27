@@ -80,7 +80,11 @@ const prefixHint = computed(() => {
   return `Optional. Defaults to a random ${spec.label} prefix (${spec.prefixes.slice(0, 3).join(', ')}…).`
 })
 
-function generate() {
+const { trackTool } = useAnalytics()
+
+// `emit` is false for the initial seed render (line below the validator watch);
+// true only for user-triggered generation so we don't log a synthetic action.
+function generate(emit = false) {
   const count = Math.min(Math.max(Math.floor(quantity.value || 1), 1), 50)
   const next: GeneratedCard[] = []
   for (let i = 0; i < count; i++) {
@@ -90,6 +94,8 @@ function generate() {
     }))
   }
   cards.value = next
+  if (emit)
+    trackTool('credit-card', 'generate', { brand: brand.value, count })
 }
 
 const copied = ref<string | null>(null)
@@ -99,6 +105,7 @@ function copyNumber(value: string) {
     return
   navigator.clipboard.writeText(value).then(() => {
     copied.value = value
+    trackTool('credit-card', 'copy')
     if (copyTimer)
       clearTimeout(copyTimer)
     copyTimer = setTimeout(() => {
@@ -115,6 +122,7 @@ function copyAll() {
     .join('\n')
   if (typeof navigator !== 'undefined' && navigator.clipboard)
     navigator.clipboard.writeText(text).catch(() => {})
+  trackTool('credit-card', 'copy_all', { count: cards.value.length })
 }
 
 watch(validatorInput, (value) => {
@@ -163,7 +171,7 @@ generate()
         <h2 class="text-xl font-semibold mb-3">
           Generator
         </h2>
-        <form class="space-y-4 text-sm" @submit.prevent="generate">
+        <form class="space-y-4 text-sm" @submit.prevent="generate(true)">
           <div>
             <label class="block mb-1 font-medium" for="cc-brand">Card brand</label>
             <select

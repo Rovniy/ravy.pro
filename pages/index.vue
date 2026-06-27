@@ -39,6 +39,8 @@ defineOgImage('Blog', {
   description: homePage.og.description,
   link: homePage.og.link,
 })
+
+const { trackCta } = useAnalytics()
 </script>
 
 <template>
@@ -59,6 +61,7 @@ defineOgImage('Blog', {
             :key="service.path"
             :to="service.path"
             class="group flex flex-col rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-sky-400 dark:hover:border-sky-500 hover:shadow-sm"
+            @click="trackCta(service.path, 'home_tools')"
           >
             <span class="grid place-items-center w-10 h-10 rounded-lg bg-sky-50 text-sky-600 ring-1 ring-sky-100 dark:bg-sky-950/50 dark:text-sky-400 dark:ring-sky-900/60">
               <Icon :name="service.icon || 'mdi:tools'" class="w-5 h-5" aria-hidden="true" />

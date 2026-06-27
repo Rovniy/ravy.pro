@@ -137,6 +137,20 @@ onBeforeUnmount(() => {
   qrCode = null
 })
 
+const { trackTool, trackDownload } = useAnalytics()
+
+// Debounced `generate` once the user has entered content to encode.
+let genTimer: ReturnType<typeof setTimeout> | null = null
+watch(data, (value) => {
+  if (genTimer)
+    clearTimeout(genTimer)
+  if (!value?.trim())
+    return
+  genTimer = setTimeout(() => {
+    trackTool('qr-code', 'generate', { has_logo: !!image.value })
+  }, 900)
+})
+
 function onImagePick(e: Event) {
   const target = e.target as HTMLInputElement
   const file = target.files?.[0]
@@ -147,6 +161,7 @@ function onImagePick(e: Event) {
     image.value = typeof reader.result === 'string' ? reader.result : ''
   }
   reader.readAsDataURL(file)
+  trackTool('qr-code', 'logo_upload')
 }
 
 function clearImage() {
@@ -160,6 +175,7 @@ function download() {
   if (!qrCode || !canDownload.value)
     return
   qrCode.download({ name: `qr-${Date.now()}`, extension: 'png' })
+  trackDownload('qr-code', { format: 'png' })
 }
 </script>
 

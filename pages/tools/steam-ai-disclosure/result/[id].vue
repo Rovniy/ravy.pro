@@ -9,8 +9,17 @@ useHead({
   meta: [{ name: 'robots', content: 'noindex, nofollow' }],
 })
 
+const config = useRuntimeConfig()
 const route = useRoute()
 const id = computed(() => String(route.params.id || ''))
+
+const priceUsd = computed(() => {
+  const raw = (config.public as Record<string, any>)?.steamAudit?.priceUsd
+  return (typeof raw === 'string' && raw.trim()) ? raw.trim() : '39'
+})
+
+// Fire the GA4 `purchase` once — the post-checkout redirect carries session_id.
+let purchaseTracked = false
 
 const record = ref<SteamAuditPublicRecord | null>(null)
 const token = ref('')
@@ -70,6 +79,16 @@ async function fetchState() {
     record.value = res.record
     token.value = res.token
     loadError.value = ''
+
+    if (!purchaseTracked && typeof route.query.session_id === 'string') {
+      purchaseTracked = true
+      useAnalytics().trackPurchase({
+        transactionId: route.query.session_id,
+        value: Number(priceUsd.value),
+        currency: 'USD',
+        item: 'steam-ai-disclosure',
+      })
+    }
 
     // Swap the address bar to the durable token link so a refresh keeps working
     // and the one-time Stripe session_id stops lingering in history.

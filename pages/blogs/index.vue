@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { vAutoAnimate } from '@formkit/auto-animate/vue'
 import { blogsPage } from '~/data'
+import { EVENTS } from '~/data/analytics'
 
 const route = useRoute()
 const router = useRouter()
@@ -16,8 +17,13 @@ const activeTag = computed({
   set: (val: string) => router.push({ query: { ...route.query, tag: val || undefined, page: undefined } }),
 })
 
+const { track } = useAnalytics()
+
 function toggleTag(tag: string) {
-  activeTag.value = activeTag.value === tag ? '' : tag
+  const next = activeTag.value === tag ? '' : tag
+  activeTag.value = next
+  if (next)
+    track(EVENTS.BLOG_FILTER, { tag: next })
 }
 
 const pageNumber = computed({
@@ -27,6 +33,19 @@ const pageNumber = computed({
 
 watch(searchTest, () => {
   pageNumber.value = 1
+})
+
+// Debounced search event — only when there's a meaningful query.
+let searchTimer: ReturnType<typeof setTimeout> | null = null
+watch(searchTest, (value) => {
+  if (searchTimer)
+    clearTimeout(searchTimer)
+  const q = value.trim()
+  if (q.length < 2)
+    return
+  searchTimer = setTimeout(() => {
+    track(EVENTS.BLOG_SEARCH, { query_length: q.length })
+  }, 800)
 })
 
 const formattedData = computed(() => {

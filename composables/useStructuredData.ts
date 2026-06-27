@@ -1,4 +1,6 @@
+import { useAnalytics } from '~/composables/useAnalytics'
 import { baseData, footerData, seoData, socialNetworks } from '~/data'
+import { EVENTS, toolIdFromPath } from '~/data/analytics'
 
 const SITE = seoData.mySite
 
@@ -566,4 +568,13 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
   }
 
   injectGraph(graph)
+
+  // Funnel entry: every tool page calls this helper, so all tools emit a
+  // `tool_view` automatically. Client-only via onMounted.
+  const toolId = toolIdFromPath(opts.path)
+  if (toolId) {
+    onMounted(() => {
+      useAnalytics().track(EVENTS.TOOL_VIEW, { tool_id: toolId })
+    })
+  }
 }

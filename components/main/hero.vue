@@ -10,6 +10,8 @@ const mounted = ref(false)
 onMounted(() => {
   mounted.value = true
 })
+
+const { trackCta } = useAnalytics()
 </script>
 
 <template>
@@ -42,6 +44,7 @@ onMounted(() => {
             <NuxtLink
               :to="hero.ctaPrimary.href"
               class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white font-semibold text-base bg-sky-500 hover:bg-sky-400 shadow-lg shadow-sky-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
+              @click="trackCta('hero_primary', 'hero')"
             >
               {{ hero.ctaPrimary.label }}
               <Icon name="mdi:arrow-right" size="20" aria-hidden="true" class="group-hover:translate-x-1 transition-transform" />
@@ -50,6 +53,7 @@ onMounted(() => {
             <NuxtLink
               :to="hero.ctaSecondary.href"
               class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 hover:border-sky-500/40 transition-colors duration-300"
+              @click="trackCta('hero_secondary', 'hero')"
             >
               {{ hero.ctaSecondary.label }}
             </NuxtLink>

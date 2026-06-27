@@ -2,6 +2,7 @@
 import type { ContractScanPublicRecord, ContractScanTeaser } from '~/types/contract-scan'
 import { computed, onMounted, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import { EVENTS } from '~/data/analytics'
 
 definePageMeta({ layout: 'default' })
 
@@ -78,9 +79,22 @@ async function fetchState() {
     record.value = res.record
     token.value = res.token
 
+    // A session_id in the URL means we just came back from a successful Stripe
+    // checkout — fire the GA4 `purchase` exactly once (the durable ?t= link has
+    // no session_id, so refreshes don't double-count).
+    const sessionId = typeof route.query.session_id === 'string' ? route.query.session_id : ''
+    if (sessionId) {
+      useAnalytics().trackPurchase({
+        transactionId: sessionId,
+        value: Number(priceUsd.value),
+        currency: 'USD',
+        item: 'contract-scanner',
+      })
+    }
+
     // Swap to the durable token link so a refresh keeps working and the
     // one-time Stripe session_id stops lingering in browser history.
-    if (import.meta.client && res.token && typeof route.query.session_id === 'string')
+    if (import.meta.client && res.token && sessionId)
       window.history.replaceState({}, '', `/tools/contract-red-flag-scanner/result/${id.value}?t=${res.token}`)
 
     mode.value = 'report'
@@ -104,6 +118,7 @@ async function startCheckout() {
     return
   checkoutLoading.value = true
   checkoutError.value = ''
+  useAnalytics().track(EVENTS.BEGIN_CHECKOUT, { tool_id: 'contract-scanner', value: Number(priceUsd.value), currency: 'USD' })
   try {
     const res = await $fetch<{ url: string }>('/api/contract-scanner/checkout', {
       method: 'POST',

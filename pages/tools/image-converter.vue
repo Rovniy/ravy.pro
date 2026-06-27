@@ -219,6 +219,8 @@ function revokeItemUrls(item: ConvItem) {
     URL.revokeObjectURL(item.outUrl)
 }
 
+const { trackTool, trackDownload } = useAnalytics()
+
 // --- queue -----------------------------------------------------------------
 async function processQueue() {
   if (isConverting.value)
@@ -246,6 +248,7 @@ async function processQueue() {
         item.colorNote = result.note
         item.error = undefined
         item.status = 'done'
+        trackTool('image-converter', 'convert', { format: targetFormat.value })
       }
       catch (e) {
         if (version !== runVersion.value)
@@ -327,8 +330,10 @@ function addFiles(fileList: FileList | File[] | null | undefined) {
       thumbUrl: URL.createObjectURL(file),
     })
   }
-  if (accepted.length)
+  if (accepted.length) {
+    trackTool('image-converter', 'upload', { count: accepted.length, format: targetFormat.value })
     void processQueue()
+  }
 }
 
 // --- drag & drop / picker / paste ------------------------------------------
@@ -376,8 +381,10 @@ function triggerDownload(url: string, filename: string) {
 }
 
 function downloadItem(item: ConvItem) {
-  if (item.outUrl && item.outName)
+  if (item.outUrl && item.outName) {
     triggerDownload(item.outUrl, item.outName)
+    trackDownload('image-converter', { format: targetFormat.value })
+  }
 }
 
 /** Ensure ZIP/download names are unique: a.webp, a (2).webp, … */
@@ -416,6 +423,7 @@ async function downloadZip() {
   const url = URL.createObjectURL(blob)
   triggerDownload(url, 'images.zip')
   URL.revokeObjectURL(url)
+  trackDownload('image-converter', { format: 'zip', count: done.length })
 }
 
 // --- removal / cleanup -----------------------------------------------------

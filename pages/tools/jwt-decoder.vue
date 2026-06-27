@@ -111,6 +111,8 @@ const statusMeta = computed(() => STATUS_META[status.value])
 
 const CLAIM_LABEL: Record<string, string> = { iat: 'Issued at', nbf: 'Not before', exp: 'Expiration' }
 
+const { trackTool, trackToolError } = useAnalytics()
+
 // --- copy-to-clipboard -----------------------------------------------------
 const copied = ref<string | null>(null)
 let copyTimer: ReturnType<typeof setTimeout> | null = null
@@ -119,6 +121,7 @@ function copyText(value: string, id: string) {
     return
   navigator.clipboard.writeText(value).then(() => {
     copied.value = id
+    trackTool('jwt-decoder', 'copy', { part: id })
     if (copyTimer)
       clearTimeout(copyTimer)
     copyTimer = setTimeout(() => {
@@ -140,6 +143,7 @@ function loadSample() {
   token.value = SAMPLE_TOKEN
   secret.value = SAMPLE_SECRET
   keyText.value = ''
+  trackTool('jwt-decoder', 'load_sample')
 }
 
 function clearToken() {
@@ -159,6 +163,29 @@ const inputMode = computed<'secret' | 'key' | 'none'>(() => {
 watch([token, secret, keyText, keyFormat], () => {
   verifyState.value = 'idle'
   verifyError.value = ''
+})
+
+// Debounced `decode` action once a token parses cleanly — captures real usage
+// without firing on every keystroke.
+let decodeTimer: ReturnType<typeof setTimeout> | null = null
+watch(token, () => {
+  if (decodeTimer)
+    clearTimeout(decodeTimer)
+  decodeTimer = setTimeout(() => {
+    const d = decoded.value
+    if (d.header && d.payload && !d.errors.length)
+      trackTool('jwt-decoder', 'decode', { alg: algInfo.value.alg || 'unknown' })
+  }, 800)
+})
+
+// Verification outcome — verified is a success action, the rest are errors.
+watch(verifyState, (s) => {
+  if (s === 'verified')
+    trackTool('jwt-decoder', 'verify', { result: 'verified', alg: algInfo.value.alg || 'unknown' })
+  else if (s === 'invalid')
+    trackToolError('jwt-decoder', 'verify', 'invalid_signature')
+  else if (s === 'unable')
+    trackToolError('jwt-decoder', 'verify', 'unable')
 })
 
 async function verify() {

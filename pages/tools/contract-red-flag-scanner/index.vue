@@ -3,6 +3,7 @@ import type { ContractScanResult, ContractScanTeaser } from '~/types/contract-sc
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useAccess } from '~/composables/useAccess'
 import { useAuth } from '~/composables/useAuth'
+import { EVENTS } from '~/data/analytics'
 
 definePageMeta({ layout: 'default' })
 
@@ -78,6 +79,9 @@ let pollingTimer: ReturnType<typeof setInterval> | null = null
 
 const route = useRoute()
 const checkoutCancelled = computed(() => route.query.checkout === 'cancelled')
+
+const { track } = useAnalytics()
+const TOOL_ID = 'contract-scanner'
 
 const hasInput = computed(() => contractText.value.trim().length > 0 || photoPages.value.length > 0)
 const isRunning = computed(() => {
@@ -240,9 +244,16 @@ function stopPolling() {
 
 async function fetchTeaser(id: string) {
   const result = await $fetch<ContractScanTeaser>(`/api/contract-scanner/scans/${id}`)
+  const wasDone = teaser.value?.status === 'done'
   teaser.value = result
   if (result.status === 'done' || result.status === 'error') {
     stopPolling()
+    if (result.status === 'done' && !wasDone) {
+      track(EVENTS.SCAN_RESULT, { tool_id: TOOL_ID, risk_score: result.overallRiskScore })
+      // Paywall shows only to users who must pay for the full report.
+      if (!canSeeFreeFull.value)
+        track(EVENTS.PAYWALL_VIEW, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
+    }
     if (result.status === 'done' && canSeeFreeFull.value)
       await loadFullResult(id)
   }
@@ -274,6 +285,10 @@ async function runScan() {
   fullResult.value = null
   scanId.value = ''
   checkoutError.value = ''
+  track(EVENTS.SCAN_START, {
+    tool_id: TOOL_ID,
+    input: photoPages.value.length > 0 ? 'photo' : (fileName.value ? 'file' : 'text'),
+  })
 
   try {
     if (photoPages.value.length > 0) {
@@ -291,6 +306,7 @@ async function runScan() {
     }
 
     inputStage.value = 'Analyzing your contract…'
+    track(EVENTS.SCAN_SUBMIT, { tool_id: TOOL_ID, language: responseLanguage.value })
     const created = await apiFetch<{ id: string }>('/api/contract-scanner/scans', {
       method: 'POST',
       body: JSON.stringify({
@@ -319,6 +335,7 @@ async function startCheckout() {
     return
   checkoutLoading.value = true
   checkoutError.value = ''
+  track(EVENTS.BEGIN_CHECKOUT, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
   try {
     const res = await apiFetch<{ url: string }>('/api/contract-scanner/checkout', {
       method: 'POST',

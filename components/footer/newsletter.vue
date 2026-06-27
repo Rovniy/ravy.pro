@@ -20,6 +20,10 @@ async function subscribe() {
     message.value = res.status === 'already'
       ? 'You\'re already on the list — thanks!'
       : 'You\'re in! Thanks for subscribing.'
+    useAnalytics().track('newsletter_subscribe', {
+      status: res.status === 'already' ? 'existing' : 'new',
+      location: 'footer',
+    })
     email.value = ''
   }
   catch (e: unknown) {

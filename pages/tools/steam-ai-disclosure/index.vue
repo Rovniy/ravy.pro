@@ -2,6 +2,7 @@
 import type { SteamAuditAnswers, SteamAuditClassification } from '~/types/steam-audit'
 import { computed, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import { EVENTS } from '~/data/analytics'
 import { classifyAudit, RULESET_VERSION } from '~/utils/steam-ai-ruleset'
 
 definePageMeta({ layout: 'default' })
@@ -62,15 +63,22 @@ const gameName = ref('')
 const checkoutLoading = ref(false)
 const checkoutError = ref('')
 
+const { track } = useAnalytics()
+const TOOL_ID = 'steam-ai-disclosure'
+
 function startWizard() {
   checkoutError.value = ''
   stage.value = 'wizard'
+  track(EVENTS.SCAN_START, { tool_id: TOOL_ID })
 }
 
 function onComplete(result: SteamAuditAnswers) {
   answers.value = result
   classification.value = classifyAudit(result)
   stage.value = 'verdict'
+  track(EVENTS.SCAN_SUBMIT, { tool_id: TOOL_ID })
+  track(EVENTS.SCAN_RESULT, { tool_id: TOOL_ID })
+  track(EVENTS.PAYWALL_VIEW, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
   if (import.meta.client)
     window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -86,6 +94,7 @@ async function startCheckout() {
     return
   checkoutLoading.value = true
   checkoutError.value = ''
+  track(EVENTS.BEGIN_CHECKOUT, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
   try {
     // Attach the Firebase token when signed in so the audit is linked to the
     // account (shows up in /account history). Anonymous checkout still works.

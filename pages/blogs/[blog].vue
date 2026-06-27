@@ -2,6 +2,7 @@
 import type { BlogPost } from '@/types/blog'
 import Image from '~/components/content/Image.vue'
 import { blogsPage, navbarData, seoData } from '~/data'
+import { EVENTS } from '~/data/analytics'
 
 const { path } = useRoute()
 
@@ -35,6 +36,15 @@ function countWords(node: any): number {
 
 const wordCount = computed(() => countWords(articles.value?.body ?? {}))
 const readingTime = computed(() => Math.max(1, Math.ceil(wordCount.value / 200)))
+
+onMounted(() => {
+  useAnalytics().track(EVENTS.BLOG_VIEW, {
+    slug: path,
+    title: articles.value?.title || '',
+    reading_time: readingTime.value,
+    tags: articles.value?.tags || [],
+  })
+})
 
 const data = computed<BlogPost>(() => {
   return {
@@ -127,7 +137,7 @@ defineOgImage('Blog', {
 
 <template>
   <div>
-    <BlogReadingProgress />
+    <BlogReadingProgress :slug="path" />
 
     <div class="px-6 container max-w-5xl mx-auto sm:grid grid-cols-12 gap-x-12">
       <div class="col-span-12 lg:col-span-9">
