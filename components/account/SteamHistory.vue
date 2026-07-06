@@ -79,7 +79,7 @@ onMounted(load)
       <p class="text-sm text-slate-500">
         No audits yet.
       </p>
-      <NuxtLink to="/tools/steam-ai-disclosure" class="mt-2 inline-flex items-center gap-1.5 text-sm text-sky-600 dark:text-sky-400 hover:underline">
+      <NuxtLink to="/tools/steam-ai-disclosure" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-600 dark:text-accent-400 hover:underline">
         <Icon name="mdi:arrow-right" class="w-4 h-4" /> Run a Steam AI disclosure check
       </NuxtLink>
     </div>

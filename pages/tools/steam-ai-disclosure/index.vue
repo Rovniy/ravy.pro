@@ -143,8 +143,8 @@ async function startCheckout() {
           class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
         >
           <div class="flex items-center gap-2">
-            <span class="font-spacemono text-xs text-sky-500">0{{ i + 1 }}</span>
-            <Icon :name="s.icon" class="w-5 h-5 text-sky-500" />
+            <span class="font-spacemono text-xs text-accent-500">0{{ i + 1 }}</span>
+            <Icon :name="s.icon" class="w-5 h-5 text-accent-500" />
           </div>
           <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
             {{ s.title }}
@@ -179,7 +179,7 @@ async function startCheckout() {
     <div v-else-if="stage === 'verdict' && classification" class="mt-8 space-y-6">
       <div class="flex items-center justify-between gap-3">
         <span class="eyebrow">Your verdict</span>
-        <button type="button" class="text-xs font-spacemono text-slate-400 hover:text-sky-500 transition-colors" @click="restart">
+        <button type="button" class="text-xs font-spacemono text-slate-400 hover:text-accent-500 transition-colors" @click="restart">
           ↺ Start over
         </button>
       </div>
@@ -192,7 +192,7 @@ async function startCheckout() {
           v-model="gameName"
           type="text"
           placeholder="e.g. Tiny Boo: Homecoming"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500/60"
+          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         >
       </label>
 

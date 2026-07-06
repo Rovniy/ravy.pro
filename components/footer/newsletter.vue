@@ -38,7 +38,7 @@ async function subscribe() {
   <div class="grid gap-4 sm:grid-cols-2 sm:items-center">
     <div>
       <p class="flex items-center gap-2 text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100">
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-sky-500" />
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent-500" />
         {{ footerData.newsletter.title }}
       </p>
       <p class="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
@@ -57,12 +57,12 @@ async function subscribe() {
           autocomplete="email"
           placeholder="you@example.com"
           :disabled="status === 'loading'"
-          class="flex-1 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-sky-400/40 focus:border-sky-400 disabled:opacity-60"
+          class="flex-1 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 disabled:opacity-60"
         >
         <button
           type="submit"
           :disabled="status === 'loading'"
-          class="inline-flex items-center justify-center gap-2 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold px-5 py-2.5 ring-1 ring-sky-400/30 shadow-sm hover:shadow-md disabled:opacity-60 hover:cursor-pointer transition-all"
+          class="inline-flex items-center justify-center gap-2 rounded-full bg-accent-600 hover:bg-accent-700 text-white dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 text-sm font-semibold px-5 py-2.5 ring-1 ring-accent-400/30 shadow-sm hover:shadow-md disabled:opacity-60 hover:cursor-pointer transition-all"
         >
           <Icon v-if="status === 'loading'" name="svg-spinners:180-ring" size="16" aria-hidden="true" />
           <Icon v-else name="mdi:email-fast-outline" size="16" aria-hidden="true" />

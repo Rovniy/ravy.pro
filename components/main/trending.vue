@@ -6,6 +6,7 @@ const { data } = await useAsyncData('trending-post', () =>
   queryCollection('content')
     .where('path', 'LIKE', '/blogs/%')
     .where('trending', '=', true)
+    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
     .order('createdAt', 'DESC')
     .limit(3)
     .all()) as { data: Ref<BlogPost[]> }
@@ -36,16 +37,12 @@ useHead({
 
 <template>
   <section v-if="formattedData?.length" class="py-14 px-6">
-    <div class="flex items-center gap-3 mb-8">
-      <Icon name="mdi:star-outline" size="1.4em" aria-hidden="true" class="text-slate-400 dark:text-slate-500" />
-      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">
-        Trending Posts
-      </h2>
-    </div>
+    <UiSectionHeader eyebrow="Popular" title="Trending Posts" />
 
     <div class="flex flex-col gap-4">
       <template v-for="post in formattedData" :key="post.title">
-        <ArchiveCard
+        <BlogCard
+          horizontal
           :path="post.path"
           :title="post.title"
           :created-at="post.createdAt"

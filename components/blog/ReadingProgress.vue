@@ -31,7 +31,7 @@ watch(progress, (p) => {
 <template>
   <div
     aria-hidden="true"
-    class="fixed top-0 left-0 z-50 h-[3px] bg-sky-500 transition-[width] duration-100 ease-linear"
+    class="fixed top-0 left-0 z-50 h-[3px] bg-accent-500 transition-[width] duration-100 ease-linear"
     :style="{ width: `${progress}%` }"
   />
 </template>

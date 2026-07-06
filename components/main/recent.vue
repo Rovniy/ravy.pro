@@ -2,7 +2,13 @@
 import { homePage } from '~/data'
 
 const { data } = await useAsyncData('recent-post', () =>
-  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').limit(10).all())
+  queryCollection('content')
+    .where('path', 'LIKE', '/blogs/%')
+    .where('published', '=', true)
+    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
+    .order('createdAt', 'DESC')
+    .limit(3)
+    .all())
 
 const formattedData = computed(() => {
   return data.value?.map((articles) => {
@@ -19,7 +25,7 @@ const formattedData = computed(() => {
       published: articles.published || false,
       trending: articles.trending || false,
     }
-  }).filter(post => post.published).splice(0, 3)
+  })
 })
 
 useHead({
@@ -30,12 +36,7 @@ useHead({
 
 <template>
   <section class="py-14 px-6">
-    <div class="flex items-center gap-3 mb-8">
-      <Icon name="mdi:sort-clock-descending-outline" size="1.4em" aria-hidden="true" class="text-slate-400 dark:text-slate-500" />
-      <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">
-        Recent Posts
-      </h2>
-    </div>
+    <UiSectionHeader eyebrow="Writing" title="Recent Posts" to="/blogs" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <template v-for="post in formattedData" :key="post.title">

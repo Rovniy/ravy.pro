@@ -465,7 +465,7 @@ onBeforeUnmount(() => {
 
 const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: string }> = {
   queued: { icon: 'mdi:clock-outline', classes: 'text-slate-400', label: 'Queued' },
-  converting: { icon: 'svg-spinners:180-ring', classes: 'text-sky-500', label: 'Converting' },
+  converting: { icon: 'svg-spinners:180-ring', classes: 'text-accent-500', label: 'Converting' },
   done: { icon: 'mdi:check-circle', classes: 'text-emerald-500', label: 'Done' },
   error: { icon: 'mdi:alert-circle', classes: 'text-rose-500', label: 'Error' },
 }
@@ -473,8 +473,8 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-6">
-      <h1 class="text-3xl font-bold tracking-tight">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
         Image Converter
       </h1>
       <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -522,7 +522,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
             min="0.1"
             max="1"
             step="0.05"
-            class="w-full accent-sky-500"
+            class="w-full accent-accent-500"
             :aria-valuetext="`${Math.round(quality * 100)}% quality`"
             @input="onQualityInput"
           >
@@ -563,7 +563,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       type="button"
       class="w-full rounded-lg border-2 border-dashed p-10 text-center transition-colors hover:cursor-pointer"
       :class="isDragging
-        ? 'border-sky-500 bg-sky-50/60 dark:bg-sky-900/20'
+        ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20'
         : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600'"
       aria-label="Add images: drag and drop, click to browse, or paste from clipboard"
       @click="openPicker"
@@ -594,22 +594,13 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 
     <!-- Batch actions -->
     <div v-if="items.length" class="mt-6 flex flex-wrap items-center gap-3">
-      <button
-        type="button"
-        :disabled="!hasDone"
-        class="inline-flex items-center gap-1.5 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
-        @click="downloadZip"
-      >
+      <UiButton :disabled="!hasDone" @click="downloadZip">
         <Icon name="mdi:folder-zip-outline" size="16" aria-hidden="true" />
         Download all (ZIP)
-      </button>
-      <button
-        type="button"
-        class="rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 hover:cursor-pointer"
-        @click="clearAll"
-      >
+      </UiButton>
+      <UiButton variant="ghost" @click="clearAll">
         Clear
-      </button>
+      </UiButton>
       <span class="text-sm text-slate-500 dark:text-slate-400" aria-live="polite">{{ queueLabel }}</span>
     </div>
 

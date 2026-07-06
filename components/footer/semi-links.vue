@@ -11,7 +11,7 @@ const links = [
     <template v-for="(item, index) in links" :key="item.to">
       <NuxtLink
         :to="item.to"
-        class="text-slate-500 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+        class="text-slate-500 dark:text-slate-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
       >
         {{ item.text }}
       </NuxtLink>

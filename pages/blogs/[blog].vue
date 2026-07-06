@@ -152,7 +152,7 @@ defineOgImage('Blog', {
         />
         <div
           class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg
-          prose-h1:no-underline max-w-5xl mx-auto prose-slate dark:prose-invert prose-img:rounded-lg prose-img:mx-auto prose-img:block"
+          prose-h1:no-underline mx-auto prose-slate dark:prose-invert prose-img:rounded-lg prose-img:mx-auto prose-img:block"
         >
           <ContentRenderer v-if="articles" :value="articles" :components="{ Image }">
             <template #empty>
@@ -164,7 +164,7 @@ defineOgImage('Blog', {
 
       <BlogToc :articles="articles" />
 
-      <div class="flex flex-row flex-wrap md:flex-nowrap mt-10 gap-2">
+      <div class="col-span-12 flex flex-row flex-wrap md:flex-nowrap mt-10 gap-2">
         <LazySocialShare
           v-for="network in ['facebook', 'twitter', 'linkedin', 'telegram', 'email']"
           :key="network"

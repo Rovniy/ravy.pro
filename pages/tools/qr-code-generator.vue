@@ -182,7 +182,7 @@ function download() {
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <header class="mb-8">
-      <h1 class="text-3xl font-bold tracking-tight">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
         Free QR Code Generator
       </h1>
       <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -200,7 +200,7 @@ function download() {
             v-model="data"
             rows="3"
             placeholder="https://ravy.pro"
-            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500/60"
+            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
           />
         </div>
 
@@ -322,15 +322,10 @@ function download() {
             </template>
           </ClientOnly>
         </div>
-        <button
-          type="button"
-          :disabled="!canDownload"
-          class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
-          @click="download"
-        >
+        <UiButton :disabled="!canDownload" @click="download">
           <Icon name="mdi:download" size="16" />
           Download PNG
-        </button>
+        </UiButton>
       </div>
     </div>
 

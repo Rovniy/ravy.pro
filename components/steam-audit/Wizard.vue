@@ -85,13 +85,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
       <!-- Progress -->
       <div class="h-1.5 bg-slate-100 dark:bg-slate-800">
-        <div class="h-full bg-sky-500 transition-all duration-500" :style="{ width: `${progress}%` }" />
+        <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${progress}%` }" />
       </div>
 
       <div class="p-5 sm:p-7">
         <div class="flex items-center justify-between">
           <span class="eyebrow">Step {{ stepIndex + 1 }} / {{ total }}</span>
-          <button type="button" class="text-xs font-spacemono text-slate-400 hover:text-sky-500 transition-colors" @click="back">
+          <button type="button" class="text-xs font-spacemono text-slate-400 hover:text-accent-500 transition-colors" @click="back">
             {{ stepIndex === 0 ? 'Back to start' : '← Previous' }}
           </button>
         </div>
@@ -99,7 +99,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         <Transition :name="direction === 'fwd' ? 'step-fwd' : 'step-back'" mode="out-in">
           <div :key="category.id" class="mt-4">
             <div class="flex items-start gap-3">
-              <Icon :name="category.icon" class="w-7 h-7 text-sky-500 shrink-0 mt-0.5" />
+              <Icon :name="category.icon" class="w-7 h-7 text-accent-500 shrink-0 mt-0.5" />
               <div>
                 <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
                   {{ category.prompt }}
@@ -127,15 +127,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 type="button"
                 class="group w-full text-left rounded-lg border p-3.5 sm:p-4 transition-all hover:cursor-pointer flex items-start gap-3"
                 :class="answers[category.id] === opt.value
-                  ? 'border-sky-500 bg-sky-50/70 dark:bg-sky-900/20 ring-1 ring-sky-500/40'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-sky-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'"
+                  ? 'border-accent-500 bg-accent-50/70 dark:bg-accent-900/20 ring-1 ring-accent-500/40'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-accent-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'"
                 @click="select(opt.value)"
               >
                 <span
                   class="shrink-0 mt-0.5 w-6 h-6 rounded-md grid place-items-center font-spacemono text-xs border transition-colors"
                   :class="answers[category.id] === opt.value
-                    ? 'bg-sky-500 border-sky-500 text-white'
-                    : 'border-slate-300 dark:border-slate-600 text-slate-400 group-hover:border-sky-400'"
+                    ? 'bg-accent-600 border-accent-600 text-white dark:bg-accent-400 dark:border-accent-400 dark:text-slate-950'
+                    : 'border-slate-300 dark:border-slate-600 text-slate-400 group-hover:border-accent-400'"
                 >
                   {{ i + 1 }}
                 </span>

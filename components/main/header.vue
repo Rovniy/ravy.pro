@@ -61,15 +61,18 @@ async function onSignOut() {
 <template>
   <header
     ref="headerRef"
-    class="fixed w-full z-10 transition-all duration-300"
-    :class="scrolled
-      ? 'bg-slate-100/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-transparent shadow-sm py-2'
-      : 'bg-slate-100 dark:bg-slate-950 border-b border-transparent py-5'"
+    class="fixed inset-x-0 top-0 z-10 px-4 sm:px-6 pt-3"
   >
-    <div class="flex px-6 container max-w-5xl justify-between mx-auto items-center">
+    <div
+      class="flex px-4 sm:px-5 container max-w-5xl justify-between mx-auto items-center rounded-2xl border backdrop-blur-xl transition-all duration-300"
+      :class="scrolled
+        ? 'py-2 bg-white/85 dark:bg-slate-950/85 border-slate-200/70 dark:border-white/10 shadow-lg shadow-slate-950/5 dark:shadow-black/20'
+        : 'py-2.5 bg-white/70 dark:bg-slate-950/70 border-slate-200/60 dark:border-white/5 shadow-sm shadow-slate-950/5'"
+    >
       <ul class="flex items-baseline space-x-5">
         <li class="text-base lg:text-2xl font-bold">
-          <NuxtLink to="/" class="nav-link" @click="navClick('home')">
+          <NuxtLink to="/" class="nav-link inline-flex items-center gap-2.5" @click="navClick('home')">
+            <span class="w-2 h-2 rounded-full bg-gradient-to-br from-accent-400 to-emerald-500 shadow-[0_0_8px] shadow-accent-400/60" aria-hidden="true" />
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
@@ -77,12 +80,12 @@ async function onSignOut() {
 
       <ul class="flex items-center space-x-3 lg:space-x-6 text-sm lg:text-lg font-semibold">
         <li class="hidden lg:block">
-          <NuxtLink to="/blogs" class="nav-link hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('blogs')">
+          <NuxtLink to="/blogs" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs')">
             Blogs
           </NuxtLink>
         </li>
         <li v-if="isAuthed" class="hidden lg:block">
-          <NuxtLink to="/account" class="nav-link hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('account')">
+          <NuxtLink to="/account" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('account')">
             Account
           </NuxtLink>
         </li>
@@ -90,7 +93,7 @@ async function onSignOut() {
           <MainToolsMenu />
         </li>
         <li class="hidden lg:block" title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('about')">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about')">
             About me
           </NuxtLink>
         </li>
@@ -99,13 +102,19 @@ async function onSignOut() {
             <MainServicesMenu />
           </li>
         </ClientOnly>
+        <li class="flex items-center">
+          <UiThemeToggle
+            icon-size="20"
+            class="inline-flex items-center justify-center w-11 h-11 -my-2"
+          />
+        </li>
         <li class="flex items-center gap-2">
           <ClientOnly>
             <button
               v-if="state.ready && !isAuthed"
               type="button"
               title="Sign in"
-              class="inline-flex items-center gap-1.5 hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer text-sm lg:text-base font-medium"
+              class="inline-flex items-center gap-1.5 hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer text-sm lg:text-base font-medium"
               @click="onSignIn"
             >
               <Icon name="mdi:login" size="22" aria-hidden="true" class="lg:hidden" />
@@ -131,7 +140,7 @@ async function onSignOut() {
               <button
                 type="button"
                 title="Sign out"
-                class="hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
+                class="hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
                 @click="onSignOut"
               >
                 <span class="hidden lg:inline">Sign out</span>
@@ -146,7 +155,7 @@ async function onSignOut() {
         <li class="lg:hidden">
           <button
             type="button"
-            class="inline-flex items-center justify-center w-9 h-9 -mr-2 hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer"
+            class="inline-flex items-center justify-center w-11 h-11 -my-1 -mr-3 hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
             :aria-expanded="isMobileOpen"
             aria-controls="mobile-nav"
             aria-label="Toggle navigation menu"
@@ -169,17 +178,17 @@ async function onSignOut() {
       <nav
         v-if="isMobileOpen"
         id="mobile-nav"
-        class="lg:hidden absolute left-0 right-0 top-full bg-slate-100/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-lg"
+        class="lg:hidden absolute left-4 right-4 sm:left-6 sm:right-6 top-full mt-2 rounded-2xl overflow-hidden bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-xl shadow-slate-950/10 dark:shadow-black/30"
         aria-label="Mobile navigation"
       >
-        <ul class="container max-w-5xl mx-auto px-6 py-3 flex flex-col text-base font-semibold">
+        <ul class="px-6 py-3 flex flex-col text-base font-semibold">
           <li>
-            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('blogs', 'mobile')">
+            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs', 'mobile')">
               Blogs
             </NuxtLink>
           </li>
           <li v-if="isAuthed">
-            <NuxtLink to="/account" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('account', 'mobile')">
+            <NuxtLink to="/account" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('account', 'mobile')">
               Account
             </NuxtLink>
           </li>
@@ -187,12 +196,12 @@ async function onSignOut() {
             Tools
           </li>
           <li>
-            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick('about', 'mobile')">
+            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about', 'mobile')">
               About me
             </NuxtLink>
           </li>
           <li v-for="item in publicServices" :key="item.path">
-            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400" @click="navClick(item.path, 'mobile')">
+            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick(item.path, 'mobile')">
               {{ item.name }}
             </NuxtLink>
           </li>
@@ -202,12 +211,12 @@ async function onSignOut() {
                 Services
               </li>
               <li v-for="item in accessibleServices" :key="item.path">
-                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400">
                   {{ item.name }}
                 </NuxtLink>
               </li>
               <li v-if="isAdmin">
-                <NuxtLink to="/account?tab=access" class="nav-link block py-3 hover:text-sky-600 dark:hover:text-sky-400">
+                <NuxtLink to="/account?tab=access" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400">
                   Manage access
                 </NuxtLink>
               </li>
@@ -231,11 +240,11 @@ async function onSignOut() {
 }
 
 .nav-link:focus-visible {
-  @apply outline-2 outline-offset-4 outline-sky-500;
+  @apply outline-2 outline-offset-4 outline-accent-500;
 }
 
 .nav-link.router-link-active {
-  @apply text-sky-600 dark:text-sky-400;
+  @apply text-accent-600 dark:text-accent-400;
 }
 
 .nav-link.router-link-exact-active {

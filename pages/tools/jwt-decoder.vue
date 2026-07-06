@@ -263,8 +263,8 @@ function stringify(value: unknown): string {
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-6">
-      <h1 class="text-3xl font-bold tracking-tight">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
         JWT Decoder &amp; Verifier
       </h1>
       <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -297,7 +297,7 @@ function stringify(value: unknown): string {
         rows="5"
         spellcheck="false"
         placeholder="Paste a JWT here (header.payload.signature)…"
-        class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono text-sm break-all focus:outline-none focus:ring-2 focus:ring-sky-400"
+        class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono text-sm break-all focus:outline-none focus:ring-2 focus:ring-accent-500/60"
       />
 
       <!-- Colored token preview -->
@@ -307,7 +307,7 @@ function stringify(value: unknown): string {
         <span class="text-fuchsia-500">{{ decoded.raw.payload }}</span>
         <template v-if="decoded.raw.signature">
           <span class="text-slate-400">.</span>
-          <span class="text-sky-500">{{ decoded.raw.signature }}</span>
+          <span class="text-accent-500">{{ decoded.raw.signature }}</span>
         </template>
       </div>
     </section>
@@ -476,14 +476,9 @@ function stringify(value: unknown): string {
         </p>
 
         <div v-if="inputMode !== 'none'" class="flex items-center gap-3">
-          <button
-            type="button"
-            :disabled="verifyState === 'verifying'"
-            class="rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
-            @click="verify"
-          >
+          <UiButton :disabled="verifyState === 'verifying'" @click="verify">
             {{ verifyState === 'verifying' ? 'Verifying…' : 'Verify' }}
-          </button>
+          </UiButton>
           <span
             v-if="verifyState !== 'idle' && verifyState !== 'verifying'"
             class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-medium"
@@ -516,7 +511,7 @@ function stringify(value: unknown): string {
         <span class="text-fuchsia-500 font-medium">payload</span> of claims such as
         <code class="font-spacemono">sub</code>, <code class="font-spacemono">iat</code>, and
         <code class="font-spacemono">exp</code>, and a
-        <span class="text-sky-500 font-medium">signature</span>. This tool parses the header and
+        <span class="text-accent-500 font-medium">signature</span>. This tool parses the header and
         payload locally, interprets the standard claims, and shows the token's expiry status.
       </p>
 

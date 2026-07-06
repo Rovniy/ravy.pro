@@ -178,7 +178,7 @@ onMounted(fetchState)
 
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-3xl">
-    <NuxtLink to="/tools/contract-red-flag-scanner" class="inline-flex items-center gap-1.5 eyebrow hover:text-sky-500 transition-colors">
+    <NuxtLink to="/tools/contract-red-flag-scanner" class="inline-flex items-center gap-1.5 eyebrow hover:text-accent-500 transition-colors">
       <Icon name="mdi:arrow-left" class="w-3.5 h-3.5" /> Contract Red-Flag Scanner
     </NuxtLink>
 
@@ -194,7 +194,7 @@ onMounted(fetchState)
 
     <!-- Loading -->
     <div v-else-if="mode === 'loading'" class="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 text-center">
-      <Icon name="svg-spinners:180-ring" class="w-10 h-10 mx-auto text-sky-500" />
+      <Icon name="svg-spinners:180-ring" class="w-10 h-10 mx-auto text-accent-500" />
       <h1 class="mt-4 text-xl font-bold text-slate-900 dark:text-slate-100">
         Opening your report…
       </h1>
@@ -235,8 +235,8 @@ onMounted(fetchState)
       </header>
 
       <!-- Save your link -->
-      <div class="rounded-xl border border-sky-200 dark:border-sky-900/60 bg-sky-50/60 dark:bg-sky-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
-        <Icon name="mdi:bookmark-outline" class="w-5 h-5 text-sky-500 shrink-0" />
+      <div class="rounded-xl border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+        <Icon name="mdi:bookmark-outline" class="w-5 h-5 text-accent-500 shrink-0" />
         <p class="text-sm text-slate-600 dark:text-slate-300 flex-1">
           Save this private link to return to your report anytime — we also emailed it to you.
         </p>

@@ -4,7 +4,12 @@ import { socialNetworks } from '~/data'
 const profileUrl = socialNetworks.find(s => s.name === 'Instagram')?.href || 'https://www.instagram.com/ravygo'
 
 const { data } = await useAsyncData('instagram-recent', () =>
-  queryCollection('content').where('path', 'LIKE', '/instagram/%').order('postedAt', 'DESC').limit(8).all())
+  queryCollection('content')
+    .where('path', 'LIKE', '/instagram/%')
+    .select('path', 'image', 'alt', 'caption', 'published', 'postedAt')
+    .order('postedAt', 'DESC')
+    .limit(8)
+    .all())
 
 const photos = computed(() => {
   return (data.value || [])
@@ -20,23 +25,19 @@ const photos = computed(() => {
 
 <template>
   <section v-if="photos.length" class="py-14 px-6">
-    <div class="flex items-center justify-between gap-3 mb-8 flex-wrap">
-      <div class="flex items-center gap-3">
-        <Icon name="fa:instagram" size="1.4em" aria-hidden="true" class="text-pink-500" />
-        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">
-          Instagram
-        </h2>
-      </div>
-      <a
-        :href="profileUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 text-sm font-semibold text-pink-600 dark:text-pink-400 hover:underline"
-      >
-        Follow @ravygo
-        <Icon name="mdi:arrow-right" size="14" aria-hidden="true" />
-      </a>
-    </div>
+    <UiSectionHeader eyebrow="Photos" title="Instagram">
+      <template #action>
+        <a
+          :href="profileUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-1 mb-0.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
+        >
+          Follow @ravygo
+          <Icon name="mdi:arrow-right" size="14" aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5" />
+        </a>
+      </template>
+    </UiSectionHeader>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-0">
       <InstagramCard

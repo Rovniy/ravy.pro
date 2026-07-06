@@ -417,8 +417,8 @@ watch(
         class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
       >
         <div class="flex items-center gap-2">
-          <span class="font-spacemono text-xs text-sky-500">0{{ i + 1 }}</span>
-          <Icon :name="s.icon" class="w-5 h-5 text-sky-500" />
+          <span class="font-spacemono text-xs text-accent-500">0{{ i + 1 }}</span>
+          <Icon :name="s.icon" class="w-5 h-5 text-accent-500" />
         </div>
         <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
           {{ s.title }}
@@ -455,7 +455,7 @@ watch(
           type="button"
           :disabled="isRunning"
           class="w-full rounded-lg border-2 border-dashed p-4 sm:p-5 text-left transition-colors disabled:opacity-60"
-          :class="isDragging ? 'border-sky-500 bg-sky-50/60 dark:bg-sky-900/20' : 'border-slate-300 dark:border-slate-700 hover:border-sky-400'"
+          :class="isDragging ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20' : 'border-slate-300 dark:border-slate-700 hover:border-accent-400'"
           @click="openFilePicker"
           @drop="onDrop"
           @dragover="onDragOver"
@@ -526,7 +526,7 @@ watch(
           rows="12"
           placeholder="Paste your contract text here..."
           :disabled="isRunning"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-[16px] focus:outline-none focus:ring-2 focus:ring-sky-500/60"
+          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-[16px] focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
       </label>
 
@@ -543,7 +543,7 @@ watch(
         <button
           v-if="teaser || fullResult"
           type="button"
-          class="text-xs font-spacemono text-slate-400 hover:text-sky-500 transition-colors"
+          class="text-xs font-spacemono text-slate-400 hover:text-accent-500 transition-colors"
           @click="restart"
         >
           ↺ Start over
@@ -560,7 +560,7 @@ watch(
           <span>{{ teaser.progress }}%</span>
         </div>
         <div class="h-2 rounded bg-slate-200 dark:bg-slate-800 overflow-hidden">
-          <div class="h-full bg-sky-500 transition-all duration-500" :style="{ width: `${teaser.progress}%` }" />
+          <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${teaser.progress}%` }" />
         </div>
       </div>
     </div>

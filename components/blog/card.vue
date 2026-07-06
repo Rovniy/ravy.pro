@@ -2,17 +2,19 @@
 import { daysSince, formatBlogDate, tagColorClass } from '~/utils/helper'
 
 interface Props {
-  path: string
-  title: string
-  description: string
-  image: string
-  alt: string
-  ogImage: string
-  tags: Array<string>
-  published: boolean
+  path?: string
+  title?: string
+  description?: string
+  image?: string
+  alt?: string
+  ogImage?: string
+  tags?: Array<string>
+  published?: boolean
   trending?: boolean
-  createdAt: string
+  createdAt?: string
   lastUpdated?: string
+  /** Horizontal list-row layout (image left, content right); default is a vertical grid card. */
+  horizontal?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   trending: false,
   createdAt: '',
   lastUpdated: '',
+  horizontal: false,
 })
 
 const displayDate = computed(() => formatBlogDate(props.createdAt))
@@ -41,30 +44,41 @@ const isUpdated = computed(() => {
   const gapDays = (updated - created) / 86_400_000
   return gapDays >= 7 && daysSince(props.lastUpdated) <= 30
 })
-const primaryTag = computed(() => props.tags[0])
-const restTags = computed(() => props.tags.slice(1))
+const primaryTag = computed(() => props.tags?.[0])
+const restTags = computed(() => props.tags?.slice(1) ?? [])
 </script>
 
 <template>
-  <article class="group relative border border-slate-200 dark:border-slate-800 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl bg-white dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 transition-all duration-300 hover:-translate-y-1.5 hover:border-sky-300 dark:hover:border-sky-700/60 flex flex-col focus-within:ring-2 focus-within:ring-sky-400">
+  <article
+    class="group relative border border-slate-200/80 dark:border-white/10 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl hover:shadow-slate-900/10 dark:hover:shadow-accent-500/10 bg-white dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent-300 dark:hover:border-accent-500/40 focus-within:ring-2 focus-within:ring-accent-400"
+    :class="horizontal ? 'grid grid-cols-1 sm:grid-cols-10' : 'flex flex-col'"
+  >
     <NuxtLink
       :to="path"
       :aria-label="title"
       class="absolute inset-0 z-1 focus:outline-none"
     />
 
-    <div class="relative overflow-hidden">
+    <div class="relative overflow-hidden" :class="horizontal ? 'sm:col-span-3' : ''">
       <NuxtImg
         loading="lazy"
-        class="h-48 w-full object-cover object-center group-hover:scale-105 group-hover:brightness-105 transition-all duration-500"
-        width="400"
-        height="192"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+        class="w-full object-cover object-center transition-all duration-500"
+        :class="horizontal
+          ? 'h-48 sm:h-full group-hover:scale-[1.04]'
+          : 'h-48 group-hover:scale-105 group-hover:brightness-105'"
+        :width="horizontal ? 289 : 400"
+        :height="horizontal ? 184 : 192"
+        :sizes="horizontal
+          ? '(max-width: 640px) 100vw, 289px'
+          : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px'"
         densities="x1 x2"
         :src="image"
         :alt="alt"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent pointer-events-none" />
+      <div
+        class="absolute inset-0 pointer-events-none bg-gradient-to-t"
+        :class="horizontal ? 'from-black/45 via-black/0 to-black/0' : 'from-black/55 via-black/10 to-transparent'"
+      />
 
       <div v-if="trending || isNew || isUpdated" class="absolute top-3 left-3 flex flex-wrap gap-1.5">
         <span v-if="trending" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/95 text-white shadow-sm backdrop-blur">
@@ -75,7 +89,7 @@ const restTags = computed(() => props.tags.slice(1))
           <Icon name="mdi:star-four-points" size="12" aria-hidden="true" />
           New
         </span>
-        <span v-if="isUpdated" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-500/95 text-white shadow-sm backdrop-blur">
+        <span v-if="isUpdated" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-accent-600/95 text-white shadow-sm backdrop-blur">
           <Icon name="mdi:update" size="12" aria-hidden="true" />
           Updated
         </span>
@@ -89,12 +103,15 @@ const restTags = computed(() => props.tags.slice(1))
       </span>
     </div>
 
-    <div class="p-5 flex flex-col gap-2.5 flex-1">
-      <h2 class="text-lg font-bold leading-snug tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors line-clamp-2">
+    <div class="flex flex-col gap-2.5" :class="horizontal ? 'sm:col-span-7 p-6' : 'p-5 flex-1'">
+      <h2
+        class="font-bold leading-snug tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors line-clamp-2"
+        :class="horizontal ? 'text-lg sm:text-xl' : 'text-lg'"
+      >
         {{ title }}
       </h2>
 
-      <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-2 flex-1">
+      <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-2" :class="horizontal ? '' : 'flex-1'">
         {{ description }}
       </p>
 
@@ -111,11 +128,11 @@ const restTags = computed(() => props.tags.slice(1))
       </div>
 
       <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-slate-100 dark:border-slate-800/80">
-        <div class="flex items-center gap-1.5 font-spacemono text-[11px] text-slate-400 dark:text-slate-500">
+        <div class="flex items-center gap-1.5 font-spacemono text-xs text-slate-500 dark:text-slate-400">
           <Icon name="mdi:calendar-outline" size="14" aria-hidden="true" />
           <span>{{ displayDate }}</span>
         </div>
-        <div class="inline-flex items-center gap-1 text-[11px] font-spacemono uppercase tracking-wider text-sky-600 dark:text-sky-400 group-hover:underline">
+        <div class="inline-flex items-center gap-1 text-[11px] font-spacemono uppercase tracking-wider text-accent-600 dark:text-accent-400 group-hover:underline">
           Read More
           <LogoArrow />
         </div>

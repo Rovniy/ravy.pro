@@ -7,7 +7,11 @@ const route = useRoute()
 const router = useRouter()
 
 const { data } = await useAsyncData('home', () =>
-  queryCollection('content').where('path', 'LIKE', '/blogs/%').order('createdAt', 'DESC').all())
+  queryCollection('content')
+    .where('path', 'LIKE', '/blogs/%')
+    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
+    .order('createdAt', 'DESC')
+    .all())
 
 const elementPerPage = 5
 const searchTest = ref('')
@@ -131,7 +135,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <main class="container max-w-5xl mx-auto text-slate-600">
+  <main class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300">
     <ArchiveHero />
 
     <div class="px-6 mt-2 mb-8">
@@ -142,7 +146,7 @@ defineOgImage('Blog', {
           placeholder="Search by title, description, or tag…"
           aria-label="Search posts by title, description, or tag"
           type="text"
-          class="block w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 dark:placeholder-slate-500 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-400/40 focus:border-sky-400 transition-all"
+          class="block w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 dark:placeholder-slate-500 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 transition-all"
         >
       </div>
 
@@ -152,8 +156,8 @@ defineOgImage('Blog', {
           :aria-pressed="!activeTag"
           class="rounded-full px-3 py-1 text-sm border transition-colors hover:cursor-pointer"
           :class="!activeTag
-            ? 'border-sky-500 bg-sky-500 text-white'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-sky-400 hover:text-sky-500'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500'"
           @click="activeTag = ''"
         >
           All
@@ -165,8 +169,8 @@ defineOgImage('Blog', {
           :aria-pressed="activeTag === t.tag"
           class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm border transition-colors hover:cursor-pointer"
           :class="activeTag === t.tag
-            ? 'border-sky-500 bg-sky-500 text-white'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-sky-400 hover:text-sky-500'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500'"
           @click="toggleTag(t.tag)"
         >
           {{ t.tag }}
@@ -177,7 +181,8 @@ defineOgImage('Blog', {
 
     <div v-auto-animate class="flex flex-col gap-4 px-6 mb-8">
       <template v-for="post in paginatedData" :key="post.title">
-        <ArchiveCard
+        <BlogCard
+          horizontal
           :path="post.path"
           :title="post.title"
           :created-at="post.createdAt"
@@ -192,8 +197,9 @@ defineOgImage('Blog', {
         />
       </template>
 
-      <ArchiveCard
+      <BlogCard
         v-if="paginatedData.length <= 0"
+        horizontal
         title="No Post Found"
         image="/not-found.png"
       />
@@ -204,7 +210,7 @@ defineOgImage('Blog', {
         :disabled="pageNumber <= 1"
         type="button"
         aria-label="Previous page"
-        class="w-9 h-9 flex items-center justify-center rounded-full border dark:border-slate-700 disabled:opacity-30 hover:border-sky-400 hover:text-sky-500 transition-all"
+        class="w-11 h-11 flex items-center justify-center rounded-full border dark:border-slate-700 disabled:opacity-30 hover:border-accent-400 hover:text-accent-500 transition-all"
         @click="onPreviousPageClick"
       >
         <Icon name="mdi:chevron-left" size="20" aria-hidden="true" />
@@ -216,7 +222,7 @@ defineOgImage('Blog', {
         :disabled="pageNumber >= totalPage"
         type="button"
         aria-label="Next page"
-        class="w-9 h-9 flex items-center justify-center rounded-full border dark:border-slate-700 disabled:opacity-30 hover:border-sky-400 hover:text-sky-500 transition-all"
+        class="w-11 h-11 flex items-center justify-center rounded-full border dark:border-slate-700 disabled:opacity-30 hover:border-accent-400 hover:text-accent-500 transition-all"
         @click="onNextPageClick"
       >
         <Icon name="mdi:chevron-right" size="20" aria-hidden="true" />

@@ -110,15 +110,15 @@ async function copy(card: PackCard) {
     <!-- Community phrasing tips -->
     <section
       v-if="result.communityPhrasingNotes.length"
-      class="rounded-xl border border-sky-200 dark:border-sky-900/60 bg-sky-50/60 dark:bg-sky-950/20 p-5"
+      class="rounded-xl border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-5"
     >
       <h3 class="flex items-center gap-2 font-semibold text-slate-900 dark:text-slate-100">
-        <Icon name="mdi:lightbulb-on-outline" class="w-5 h-5 text-sky-500" />
+        <Icon name="mdi:lightbulb-on-outline" class="w-5 h-5 text-accent-500" />
         Wording tips to avoid backlash
       </h3>
       <ul class="mt-3 space-y-2">
         <li v-for="(tip, i) in result.communityPhrasingNotes" :key="i" class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
-          <Icon name="mdi:circle-small" class="w-5 h-5 shrink-0 -ml-1 text-sky-500" />
+          <Icon name="mdi:circle-small" class="w-5 h-5 shrink-0 -ml-1 text-accent-500" />
           <span>{{ tip }}</span>
         </li>
       </ul>

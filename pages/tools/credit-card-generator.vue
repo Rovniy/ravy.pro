@@ -148,8 +148,8 @@ generate()
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-6">
-      <h1 class="text-3xl font-bold tracking-tight">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
         Credit Card Number Generator & Validator
       </h1>
       <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -299,7 +299,7 @@ generate()
               inputmode="numeric"
               autocomplete="off"
               placeholder="4111 1111 1111 1111"
-              class="w-full rounded-md border bg-white dark:bg-slate-900 px-3 py-2 font-mono tracking-wide focus:outline-none focus:ring-2 focus:ring-sky-500/60" :class="[
+              class="w-full rounded-md border bg-white dark:bg-slate-900 px-3 py-2 font-mono tracking-wide focus:outline-none focus:ring-2 focus:ring-accent-500/60" :class="[
                 validatorStateClass,
               ]"
             >
@@ -325,7 +325,7 @@ generate()
               <span class="font-medium">
                 {{ validation.luhnValid && validation.lengthValid ? 'Looks valid' : 'Invalid' }}
               </span>
-              <span v-if="validation.brandLabel" class="ml-auto inline-flex items-center gap-1 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300 px-2 py-0.5 text-xs font-medium">
+              <span v-if="validation.brandLabel" class="ml-auto inline-flex items-center gap-1 rounded-full bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300 px-2 py-0.5 text-xs font-medium">
                 <Icon name="mdi:credit-card-outline" size="14" />
                 {{ validation.brandLabel }}
               </span>
@@ -394,7 +394,7 @@ generate()
       </h3>
       <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
         The
-        <a href="https://en.wikipedia.org/wiki/Luhn_algorithm" class="underline hover:text-sky-600">Luhn algorithm</a>
+        <a href="https://en.wikipedia.org/wiki/Luhn_algorithm" class="underline hover:text-accent-600">Luhn algorithm</a>
         is a simple checksum that most payment forms use to catch typos before a card is submitted. A
         valid number ends in a correct check digit derived from the others. This tool computes that
         digit for every generated number and follows each brand's real prefix and length rules, so your

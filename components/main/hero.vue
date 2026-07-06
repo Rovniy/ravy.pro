@@ -15,7 +15,10 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <section class="hero-section relative overflow-hidden">
+  <!-- Pulled up under the fixed glass header (the layout adds pt-[--header-h]),
+       so the hero glow/grid backdrop fills the strip behind the translucent pill
+       instead of leaving a flat seam there. The matching padding keeps content put. -->
+  <section class="hero-section relative overflow-hidden -mt-[var(--header-h)] pt-[var(--header-h)]">
     <div class="hero-bg-grid" aria-hidden="true" />
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 py-20 md:py-28 lg:py-32 min-h-[calc(100vh-var(--header-h))] flex items-center">
@@ -25,14 +28,14 @@ const { trackCta } = useAnalytics()
             {{ hero.greeting }}
           </p>
 
-          <h1 class="hero-step delay-1 hero-h1 font-bold leading-[1.05] tracking-tight text-6xl md:text-7xl lg:text-8xl mb-6 bg-gradient-to-r from-sky-400 to-violet-500 bg-clip-text">
+          <h1 class="hero-step delay-1 hero-h1 font-bold leading-[1.05] tracking-tight text-6xl md:text-7xl lg:text-8xl mb-6 bg-gradient-to-r from-accent-600 to-emerald-600 dark:from-accent-400 dark:to-emerald-400 bg-clip-text">
             {{ hero.name }}
           </h1>
 
           <p class="hero-step delay-2 font-spacemono text-sm md:text-base mb-8 flex flex-wrap items-center gap-x-2.5 gap-y-1">
             <template v-for="(role, i) in hero.roles" :key="role">
               <span class="text-slate-700 dark:text-slate-300">{{ role }}</span>
-              <span v-if="i < hero.roles.length - 1" class="text-sky-500 dark:text-sky-400" aria-hidden="true">·</span>
+              <span v-if="i < hero.roles.length - 1" class="text-accent-500 dark:text-accent-400" aria-hidden="true">·</span>
             </template>
           </p>
 
@@ -43,7 +46,7 @@ const { trackCta } = useAnalytics()
           <div class="hero-step delay-4 flex flex-wrap gap-4 mb-10">
             <NuxtLink
               :to="hero.ctaPrimary.href"
-              class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-white font-semibold text-base bg-sky-500 hover:bg-sky-400 shadow-lg shadow-sky-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
+              class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base text-white bg-accent-600 hover:bg-accent-700 dark:text-slate-950 dark:bg-accent-400 dark:hover:bg-accent-300 shadow-lg shadow-accent-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
               @click="trackCta('hero_primary', 'hero')"
             >
               {{ hero.ctaPrimary.label }}
@@ -52,7 +55,7 @@ const { trackCta } = useAnalytics()
 
             <NuxtLink
               :to="hero.ctaSecondary.href"
-              class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 hover:border-sky-500/40 transition-colors duration-300"
+              class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-400 hover:border-accent-500/40 transition-colors duration-300"
               @click="trackCta('hero_secondary', 'hero')"
             >
               {{ hero.ctaSecondary.label }}
@@ -68,14 +71,14 @@ const { trackCta } = useAnalytics()
               {{ hero.status }}
             </span>
 
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-1">
               <NuxtLink
                 v-for="item in socialNetworks"
                 :key="item.name"
                 :to="item.href"
                 target="_blank"
                 :aria-label="item.name"
-                class="w-9 h-9 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+                class="w-11 h-11 -my-1 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
               >
                 <Icon :name="item.icon" size="15" aria-hidden="true" />
               </NuxtLink>
@@ -92,7 +95,7 @@ const { trackCta } = useAnalytics()
             class="rounded-2xl ring-1 ring-slate-200 dark:ring-slate-800 shadow-xl shadow-slate-900/5 dark:shadow-black/30"
             sizes="(max-width: 640px) 312px, (max-width: 1024px) 312px, 512px"
             densities="x1 x2"
-            loading="lazy"
+            loading="eager"
             fetchpriority="high"
           />
         </div>
@@ -105,8 +108,8 @@ const { trackCta } = useAnalytics()
 .hero-section {
   position: relative;
   isolation: isolate;
-  background: radial-gradient(ellipse at top left, rgba(56, 189, 248, 0.07), transparent 50%),
-              radial-gradient(ellipse at bottom right, rgba(168, 85, 247, 0.07), transparent 55%);
+  background: radial-gradient(ellipse at top left, rgba(45, 212, 191, 0.09), transparent 50%),
+              radial-gradient(ellipse at bottom right, rgba(52, 211, 153, 0.08), transparent 55%);
 }
 
 /* Faint engineering grid — the only ambient backdrop. */

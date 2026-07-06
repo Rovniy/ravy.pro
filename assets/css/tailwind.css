@@ -77,6 +77,25 @@
   --font-spacemono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+/*
+ * Brand accent — semantic alias so the accent hue is swappable in one place.
+ * Every component uses `accent-*` classes; only this block knows the hue is teal.
+ * `inline` resolves the referenced values at build time.
+ */
+@theme inline {
+  --color-accent-50: var(--color-teal-50);
+  --color-accent-100: var(--color-teal-100);
+  --color-accent-200: var(--color-teal-200);
+  --color-accent-300: var(--color-teal-300);
+  --color-accent-400: var(--color-teal-400);
+  --color-accent-500: var(--color-teal-500);
+  --color-accent-600: var(--color-teal-600);
+  --color-accent-700: var(--color-teal-700);
+  --color-accent-800: var(--color-teal-800);
+  --color-accent-900: var(--color-teal-900);
+  --color-accent-950: var(--color-teal-950);
+}
+
 :root {
   --header-h: 4.5rem;
 }
@@ -87,14 +106,14 @@
   }
 
   ::selection {
-    background-color: var(--color-sky-400);
+    background-color: var(--color-accent-400);
     color: #fff;
   }
 
   /* Visible focus ring on every interactive element. Tailwind 4 doesn't
      ship one by default; without it Lighthouse a11y flags keyboard nav. */
   :focus-visible {
-    outline: 2px solid var(--color-sky-500);
+    outline: 2px solid var(--color-accent-500);
     outline-offset: 2px;
   }
 }
@@ -120,19 +139,19 @@
 @layer components {
   /* Links — the one accent, underlined with breathing room. */
   .prose a {
-    color: var(--color-sky-600);
+    color: var(--color-accent-600);
     text-decoration-line: underline;
-    text-decoration-color: color-mix(in oklab, var(--color-sky-600) 35%, transparent);
+    text-decoration-color: color-mix(in oklab, var(--color-accent-600) 35%, transparent);
     text-underline-offset: 3px;
     font-weight: 500;
     transition: color 0.15s, text-decoration-color 0.15s;
   }
   .prose a:hover {
-    color: var(--color-sky-500);
-    text-decoration-color: var(--color-sky-500);
+    color: var(--color-accent-500);
+    text-decoration-color: var(--color-accent-500);
   }
-  .dark .prose a { color: var(--color-sky-400); }
-  .dark .prose a:hover { color: var(--color-sky-300); }
+  .dark .prose a { color: var(--color-accent-400); }
+  .dark .prose a:hover { color: var(--color-accent-300); }
 
   /* Headings — tighter, heavier, and clear of the sticky header on anchor jump. */
   .prose :is(h1, h2, h3, h4) {
@@ -149,15 +168,15 @@
   }
   .dark .prose > p:first-of-type { color: var(--color-slate-300); }
 
-  /* Blockquote — slate rule accented with sky, no decorative quote glyphs. */
+  /* Blockquote — slate rule accented with the brand accent, no decorative quote glyphs. */
   .prose blockquote {
-    border-left-color: var(--color-sky-400);
+    border-left-color: var(--color-accent-400);
     font-style: normal;
     font-weight: 400;
     color: var(--color-slate-600);
   }
   .dark .prose blockquote {
-    border-left-color: var(--color-sky-500);
+    border-left-color: var(--color-accent-500);
     color: var(--color-slate-300);
   }
   .prose blockquote p:first-of-type::before,

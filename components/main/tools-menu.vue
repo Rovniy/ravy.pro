@@ -32,7 +32,7 @@ const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCom
   <div ref="menuRef" class="relative">
     <button
       type="button"
-      class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-sky-600 dark:hover:text-sky-400 hover:cursor-pointer"
+      class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
       :aria-expanded="isOpen"
       aria-haspopup="menu"
       @click="toggle"
@@ -59,9 +59,9 @@ const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCom
           :key="item.path"
           :to="item.path"
           role="menuitem"
-          class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400 flex items-center gap-3"
+          class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3"
         >
-          <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-sky-600 dark:hover:text-sky-400" />
+          <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400" />
           {{ item.name }}
         </NuxtLink>
       </div>
@@ -77,7 +77,7 @@ const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCom
 }
 
 .services-trigger:focus-visible {
-  @apply outline-2 outline-offset-4 outline-sky-500;
+  @apply outline-2 outline-offset-4 outline-accent-500;
 }
 
 .services-item:focus {
@@ -85,10 +85,10 @@ const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCom
 }
 
 .services-item:focus-visible {
-  @apply bg-slate-200 dark:bg-slate-800 text-sky-600 dark:text-sky-400;
+  @apply bg-slate-200 dark:bg-slate-800 text-accent-600 dark:text-accent-400;
 }
 
 .services-item.router-link-active {
-  @apply text-sky-600 dark:text-sky-400 bg-slate-100 dark:bg-slate-900;
+  @apply text-accent-600 dark:text-accent-400 bg-slate-100 dark:bg-slate-900;
 }
 </style>

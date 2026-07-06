@@ -48,7 +48,7 @@ function onToggleAds(granted: boolean) {
       <div class="mx-auto max-w-4xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg shadow-2xl shadow-black/20">
         <div class="p-5 sm:p-6">
           <div class="flex items-start gap-3">
-            <Icon name="mdi:cookie-outline" size="24" aria-hidden="true" class="shrink-0 text-sky-500 mt-0.5" />
+            <Icon name="mdi:cookie-outline" size="24" aria-hidden="true" class="shrink-0 text-accent-500 mt-0.5" />
             <div class="flex-1 min-w-0">
               <h2 id="cookie-banner-title" class="text-base font-semibold text-slate-900 dark:text-slate-100">
                 We use cookies
@@ -56,7 +56,7 @@ function onToggleAds(granted: boolean) {
               <p class="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 We use strictly-necessary cookies to make this site work, and — only with your consent — analytics and advertising cookies via Google Tag Manager.
                 See our
-                <NuxtLink to="/docs/privacy-policy" class="text-sky-600 dark:text-sky-400 underline underline-offset-2 hover:no-underline">
+                <NuxtLink to="/docs/privacy-policy" class="text-accent-600 dark:text-accent-400 underline underline-offset-2 hover:no-underline">
                   Privacy Policy
                 </NuxtLink>
                 for details.
@@ -70,7 +70,7 @@ function onToggleAds(granted: boolean) {
                 type="checkbox"
                 checked
                 disabled
-                class="mt-1 rounded text-sky-500 disabled:opacity-50"
+                class="mt-1 rounded text-accent-500 disabled:opacity-50"
               >
               <span>
                 <span class="font-medium text-slate-900 dark:text-slate-100">Strictly necessary</span>
@@ -82,7 +82,7 @@ function onToggleAds(granted: boolean) {
               <input
                 type="checkbox"
                 :checked="state.analytics_storage === 'granted'"
-                class="mt-1 rounded text-sky-500"
+                class="mt-1 rounded text-accent-500"
                 @change="(e) => setPending('analytics_storage', (e.target as HTMLInputElement).checked)"
               >
               <span>
@@ -95,7 +95,7 @@ function onToggleAds(granted: boolean) {
               <input
                 type="checkbox"
                 :checked="state.ad_storage === 'granted'"
-                class="mt-1 rounded text-sky-500"
+                class="mt-1 rounded text-accent-500"
                 @change="(e) => onToggleAds((e.target as HTMLInputElement).checked)"
               >
               <span>
@@ -108,7 +108,7 @@ function onToggleAds(granted: boolean) {
               <input
                 type="checkbox"
                 :checked="state.personalization_storage === 'granted'"
-                class="mt-1 rounded text-sky-500"
+                class="mt-1 rounded text-accent-500"
                 @change="(e) => setPending('personalization_storage', (e.target as HTMLInputElement).checked)"
               >
               <span>
@@ -122,7 +122,7 @@ function onToggleAds(granted: boolean) {
             <button
               v-if="!expanded"
               type="button"
-              class="text-sm font-medium px-4 py-2.5 rounded-full text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+              class="text-sm font-medium px-4 py-2.5 rounded-full text-slate-600 dark:text-slate-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
               @click="expanded = true"
             >
               Customize
@@ -145,7 +145,7 @@ function onToggleAds(granted: boolean) {
             </button>
             <button
               type="button"
-              class="text-sm font-semibold px-5 py-2.5 rounded-full text-white bg-sky-500 hover:bg-sky-400 shadow-lg shadow-sky-500/30 transition-colors"
+              class="text-sm font-semibold px-5 py-2.5 rounded-full text-white bg-accent-600 hover:bg-accent-700 dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 shadow-lg shadow-accent-500/30 transition-colors"
               @click="onAccept"
             >
               Accept all

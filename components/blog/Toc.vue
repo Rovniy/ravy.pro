@@ -43,7 +43,7 @@ const activeId = computed(() => {
               :to="`#${link.id}`"
               class="flex items-center text-xs py-1 pl-2 border-l-2 transition-all duration-200"
               :class="activeId === link.id
-                ? 'border-sky-500 text-sky-500 dark:text-sky-400 font-semibold'
+                ? 'border-accent-500 text-accent-500 dark:text-accent-400 font-semibold'
                 : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'"
             >
               {{ link.text }}
@@ -56,7 +56,7 @@ const activeId = computed(() => {
                 :to="`#${child.id}`"
                 class="flex items-center text-xs py-1 pl-5 border-l-2 transition-all duration-200"
                 :class="activeId === child.id
-                  ? 'border-sky-500 text-sky-500 dark:text-sky-400 font-semibold'
+                  ? 'border-accent-500 text-accent-500 dark:text-accent-400 font-semibold'
                   : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'"
               >
                 {{ child.text }}

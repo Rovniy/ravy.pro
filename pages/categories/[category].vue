@@ -18,6 +18,7 @@ const { data } = await useAsyncData(`category-data-${category.value}`, () => {
   return queryCollection('content')
     .where('path', 'LIKE', '/blogs/%')
     .where('tags', 'LIKE', `%"${category.value}"%`)
+    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
     .order('createdAt', 'DESC')
     .all()
 })

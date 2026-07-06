@@ -19,7 +19,7 @@ import { footerData, navbarData, socialNetworks } from '~/data'
         :to="item.href"
         target="_blank"
         :aria-label="item.name"
-        class="w-9 h-9 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+        class="w-9 h-9 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
       >
         <Icon :name="item.icon" size="16" aria-hidden="true" />
       </NuxtLink>
