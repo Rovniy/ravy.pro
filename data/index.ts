@@ -44,7 +44,7 @@ export const publicServices: { name: string, path: string, icon: string, blurb?:
 
 export const footerData = {
   author: baseData.me.name,
-  aboutAuthor: 'Engineering leader, founder, and software developer building web platforms, game systems, and automation tools. 13 years of shipped work — currently at Gaijin.net.',
+  aboutAuthor: 'Engineering manager, founder, and software developer building web platforms, game systems, real-time services, and automation tools. 15 years of shipped work — currently at Gaijin.net.',
   authorTitle: 'Get in Touch',
   authorInterest: 'Building an MVP, shipping a game feature, or automating a team workflow? Open source or paid — let\'s talk.',
   aboutTheSite: 'Personal blog of Andrei Rovnyi — notes on engineering, game tech, automation, and the craft of shipping software.',
@@ -183,17 +183,17 @@ export const categoriesPage = {
 export const aboutPage = {
   content: {
     title: baseData.me.name,
-    description: 'Software Developer · Engineering Leader · Founder',
-    aboutMe: 'I\'m a software developer and engineering leader with 13+ years of experience building web platforms, game-related systems, internal tools, and digital products. I work at the intersection of engineering, product thinking, automation, and creativity — turning rough ideas into systems people can actually use.',
+    description: 'Software Developer · Engineering Manager · Founder',
+    aboutMe: 'I\'m a software developer, engineering manager, and founder with 15 years of experience building web platforms, game systems, real-time services, and digital products. Currently an Engineering Manager at Gaijin Entertainment and founder of the game studio XPLOIT — turning rough ideas into systems people can actually use.',
   },
   meta: {
-    title: 'About Andrei Rovnyi — Software Developer, Engineering Leader, Founder',
-    description: 'Andrei Rovnyi is a software developer, engineering leader, and founder with 13+ years of experience building web products, game systems, automation tools, and digital platforms.',
+    title: 'About Andrei Rovnyi — Software Developer, Engineering Manager, Founder',
+    description: 'Andrei Rovnyi is a software developer, engineering manager, and founder with 15 years of experience — from World of Tanks and War Thunder Mobile to his own game studio XPLOIT, real-time platforms, and AI-powered tools.',
   },
   og: {
     headline: 'About',
     title: navbarData.homeTitle,
-    description: 'Software developer, engineering leader, and founder with 13+ years building web products, game systems, automation tools, and digital platforms.',
+    description: 'Software developer, engineering manager, and founder with 15 years building web products, game systems, real-time platforms, and AI-powered tools.',
     link: '/open_graph/og_image_default.png',
   },
 }
@@ -201,9 +201,9 @@ export const aboutPage = {
 export const seoData = {
   theme: 'Gamedev',
   author: baseData.me.name,
-  description: 'Andrei Rovnyi — software developer and engineering leader with 13 years building web platforms, game systems, and automation tools.',
+  description: 'Andrei Rovnyi — software developer and engineering manager with 15 years building web platforms, game systems, and automation tools.',
   ogTitle: 'Personal blog by Andrei Rovnyi',
-  twitterDescription: 'Andrei Rovnyi — software developer and engineering leader with 13 years building web platforms, game systems, and automation tools.',
+  twitterDescription: 'Andrei Rovnyi — software developer and engineering manager with 15 years building web platforms, game systems, and automation tools.',
   image: `${baseData.site.url}/og-image.webp`,
   mySite: baseData.site.url,
   twitterHandle: '@xploitravy',
