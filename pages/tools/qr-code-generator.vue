@@ -181,13 +181,16 @@ function download() {
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
-        Free QR Code Generator
-      </h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-        Generate a styled QR code, optionally with a center image, and download as PNG.
-      </p>
+    <header class="mb-8 flex items-start justify-between gap-x-6">
+      <div class="min-w-0 flex-1">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+          Free QR Code Generator
+        </h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Generate a styled QR code, optionally with a center image, and download as PNG.
+        </p>
+      </div>
+      <ToolRatingWidget />
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">

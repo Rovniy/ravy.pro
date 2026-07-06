@@ -15,6 +15,7 @@ export const EVENTS = {
   TOOL_ACTION: 'tool_action',
   TOOL_DOWNLOAD: 'tool_download',
   TOOL_ERROR: 'tool_error',
+  TOOL_RATE: 'tool_rate',
 
   // Blog
   BLOG_VIEW: 'blog_view',
@@ -47,14 +48,17 @@ export type AnalyticsEvent = (typeof EVENTS)[keyof typeof EVENTS]
 
 // Stable tool identifiers used as the `tool_id` param across every tool event.
 // Keep these short and decoupled from the URL slug so funnels stay stable even
-// if a route changes.
-export type ToolId
-  = | 'qr-code'
-    | 'credit-card'
-    | 'jwt-decoder'
-    | 'image-converter'
-    | 'steam-ai-disclosure'
-    | 'contract-scanner'
+// if a route changes. Runtime array so server routes can validate incoming ids.
+export const TOOL_IDS = [
+  'qr-code',
+  'credit-card',
+  'jwt-decoder',
+  'image-converter',
+  'steam-ai-disclosure',
+  'contract-scanner',
+] as const
+
+export type ToolId = (typeof TOOL_IDS)[number]
 
 // Maps a tool page path (e.g. '/tools/qr-code-generator') to its ToolId.
 // Used by the auto `tool_view` hook in useToolPageSchema(). Returns null for

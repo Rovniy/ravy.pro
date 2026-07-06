@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { homePage, navbarData, publicServices } from '~/data'
+import { toolIdFromPath } from '~/data/analytics'
 
 const siteUrl = 'https://ravy.pro'
 const title = homePage.meta.title
@@ -41,6 +42,14 @@ defineOgImage('Blog', {
 })
 
 const { trackCta } = useAnalytics()
+
+const { ratings, load: loadRatings } = useToolRatings()
+onMounted(loadRatings)
+
+function ratingFor(path: string) {
+  const toolId = toolIdFromPath(path)
+  return toolId ? ratings.value?.[toolId] ?? null : null
+}
 </script>
 
 <template>
@@ -64,6 +73,7 @@ const { trackCta } = useAnalytics()
             <p class="mt-4 font-semibold text-slate-900 dark:text-slate-100">
               {{ service.name }}
             </p>
+            <ToolRatingBadge :summary="ratingFor(service.path)" class="mt-1" />
             <p class="mt-1 grow text-sm leading-relaxed text-slate-500 dark:text-slate-400">
               {{ service.blurb }}
             </p>

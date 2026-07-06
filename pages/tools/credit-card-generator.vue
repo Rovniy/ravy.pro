@@ -45,7 +45,7 @@ const faqItems = [
 
 useToolPageSchema({
   path: '/tools/credit-card-generator',
-  title: 'Free Credit Card Number Generator & Validator',
+  title: 'Free Credit Card Number Generator',
   description: 'Generate Luhn-valid test credit card numbers for QA and sandbox payments, or validate a card number to detect its brand and check format. Test data only.',
   ogImage: '/open_graph/og_image_default.png',
   appDescription: 'Online credit card number generator and Luhn validator for QA and sandbox testing.',
@@ -148,13 +148,16 @@ generate()
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
-        Credit Card Number Generator & Validator
-      </h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-        Generate Luhn-valid test card numbers for QA and sandbox payments, or validate a card number to detect its brand.
-      </p>
+    <header class="mb-8 flex items-start justify-between gap-x-6">
+      <div class="min-w-0 flex-1">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+          Credit Card Number Generator
+        </h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Generate Luhn-valid test card numbers for QA and sandbox payments, or validate a card number to detect its brand.
+        </p>
+      </div>
+      <ToolRatingWidget />
     </header>
 
     <div class="mb-8 rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 px-4 py-3 text-sm flex gap-3 items-start">

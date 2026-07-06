@@ -389,20 +389,23 @@ watch(
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
     <!-- Hero -->
-    <header class="max-w-3xl">
-      <span class="eyebrow">Contracts · creator & brand deals</span>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
-        Spot the red flags before you sign
-      </h1>
-      <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-        Paste an influencer or brand contract and get a free risk check in seconds — overall risk, jurisdiction,
-        and how many traps it hides. Unlock the full clause-by-clause report when you need the details.
-      </p>
-      <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-        <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Not legal advice</span>
-        <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free risk check, no account</span>
-        <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Full report {{ priceLabel }}</span>
-      </p>
+    <header class="flex items-start justify-between gap-x-6">
+      <div class="min-w-0 max-w-3xl">
+        <span class="eyebrow">Contracts · creator & brand deals</span>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+          Spot the red flags before you sign
+        </h1>
+        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          Paste an influencer or brand contract and get a free risk check in seconds — overall risk, jurisdiction,
+          and how many traps it hides. Unlock the full clause-by-clause report when you need the details.
+        </p>
+        <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Not legal advice</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free risk check, no account</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Full report {{ priceLabel }}</span>
+        </p>
+      </div>
+      <ToolRatingWidget />
     </header>
 
     <div v-if="checkoutCancelled" class="mt-6 rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">

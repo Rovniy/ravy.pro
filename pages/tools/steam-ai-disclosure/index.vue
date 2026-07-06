@@ -118,20 +118,23 @@ async function startCheckout() {
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
     <!-- Hero -->
-    <header class="max-w-3xl">
-      <span class="eyebrow">Steam · AI content disclosure</span>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
-        Get your Steam AI disclosure right in 10 minutes
-      </h1>
-      <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
-        Valve now reviews — and can delist — games over a wrong AI disclosure. Answer a few plain-language
-        questions and get exactly what to put in the Steamworks form, plus a dated paper trail.
-      </p>
-      <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-        <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Not legal advice</span>
-        <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Matches Valve policy v{{ RULESET_VERSION }}</span>
-        <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free verdict, no account</span>
-      </p>
+    <header class="flex items-start justify-between gap-x-6">
+      <div class="min-w-0 max-w-3xl">
+        <span class="eyebrow">Steam · AI content disclosure</span>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+          Get your Steam AI disclosure right in 10 minutes
+        </h1>
+        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+          Valve now reviews — and can delist — games over a wrong AI disclosure. Answer a few plain-language
+          questions and get exactly what to put in the Steamworks form, plus a dated paper trail.
+        </p>
+        <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Not legal advice</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Matches Valve policy v{{ RULESET_VERSION }}</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free verdict, no account</span>
+        </p>
+      </div>
+      <ToolRatingWidget />
     </header>
 
     <!-- Intro: how it works + CTA -->

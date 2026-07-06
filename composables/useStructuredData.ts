@@ -1,4 +1,5 @@
 import { useAnalytics } from '~/composables/useAnalytics'
+import { useToolRatings } from '~/composables/useToolRating'
 import { baseData, footerData, seoData, socialNetworks } from '~/data'
 import { EVENTS, toolIdFromPath } from '~/data/analytics'
 
@@ -241,10 +242,13 @@ function itemListNode(opts: ItemListOpts) {
   }
 }
 
-function injectGraph(graph: unknown[]) {
-  const json = JSON.stringify({
+// Accepts a plain array (static graph) or a getter — the getter form makes
+// useHead reactive, so the JSON-LD updates when async data (e.g. tool
+// ratings) arrives on the client.
+function injectGraph(graph: unknown[] | (() => unknown[])) {
+  const build = () => JSON.stringify({
     '@context': 'https://schema.org',
-    '@graph': graph,
+    '@graph': typeof graph === 'function' ? graph() : graph,
   }).replace(/</g, '\\u003c')
 
   useHead({
@@ -252,7 +256,7 @@ function injectGraph(graph: unknown[]) {
       {
         key: 'schema-graph',
         type: 'application/ld+json',
-        innerHTML: json,
+        innerHTML: typeof graph === 'function' ? build : build(),
         tagDuplicateStrategy: 'replace',
       },
     ],
@@ -491,22 +495,15 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
     { name: opts.title, url },
   ])
 
-  const graph: unknown[] = [
-    websiteNode(),
-    organizationNode(),
-    personNode(),
-    webPageNode({
-      url,
-      name: opts.title,
-      description: opts.description,
-      type: 'WebPage',
-      breadcrumbId: crumb['@id'],
-      image: opts.ogImage || '/og-image.webp',
-      datePublished: opts.datePublished,
-      dateModified: opts.dateModified,
-      primaryEntityId: `${url}#app`,
-    }),
-    {
+  const toolId = toolIdFromPath(opts.path)
+  const { ratings } = useToolRatings()
+
+  // The SoftwareApplication node is built lazily so aggregateRating appears
+  // once the async ratings fetch (triggered by the page's rating widget)
+  // lands — the graph getter below re-runs on that state change.
+  const appNode = () => {
+    const summary = toolId ? ratings.value?.[toolId] : null
+    return {
       '@type': 'SoftwareApplication',
       '@id': `${url}#app`,
       'name': opts.appName || opts.title,
@@ -533,12 +530,24 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
               },
             }
           : {}),
-    },
-    crumb,
-  ]
+      ...(summary && summary.count > 0
+        ? {
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              'ratingValue': summary.average,
+              'ratingCount': summary.count,
+              'bestRating': 5,
+              'worstRating': 1,
+            },
+          }
+        : {}),
+    }
+  }
+
+  const tail: unknown[] = []
 
   if (opts.faq?.length) {
-    graph.push({
+    tail.push({
       '@type': 'FAQPage',
       '@id': `${url}#faq`,
       'mainEntity': opts.faq.map(item => ({
@@ -553,7 +562,7 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
   }
 
   if (opts.howTo?.steps.length) {
-    graph.push({
+    tail.push({
       '@type': 'HowTo',
       '@id': `${url}#howto`,
       'name': opts.howTo.name,
@@ -567,11 +576,28 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
     })
   }
 
-  injectGraph(graph)
+  injectGraph(() => [
+    websiteNode(),
+    organizationNode(),
+    personNode(),
+    webPageNode({
+      url,
+      name: opts.title,
+      description: opts.description,
+      type: 'WebPage',
+      breadcrumbId: crumb['@id'],
+      image: opts.ogImage || '/og-image.webp',
+      datePublished: opts.datePublished,
+      dateModified: opts.dateModified,
+      primaryEntityId: `${url}#app`,
+    }),
+    appNode(),
+    crumb,
+    ...tail,
+  ])
 
   // Funnel entry: every tool page calls this helper, so all tools emit a
   // `tool_view` automatically. Client-only via onMounted.
-  const toolId = toolIdFromPath(opts.path)
   if (toolId) {
     onMounted(() => {
       useAnalytics().track(EVENTS.TOOL_VIEW, { tool_id: toolId })

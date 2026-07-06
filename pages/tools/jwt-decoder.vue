@@ -263,13 +263,16 @@ function stringify(value: unknown): string {
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-8">
-      <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
-        JWT Decoder &amp; Verifier
-      </h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-        Decode a JSON Web Token, read its claims, and verify its signature.
-      </p>
+    <header class="mb-8 flex items-start justify-between gap-x-6">
+      <div class="min-w-0 flex-1">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+          JWT Decoder &amp; Verifier
+        </h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Decode a JSON Web Token, read its claims, and verify its signature.
+        </p>
+      </div>
+      <ToolRatingWidget />
     </header>
 
     <!-- Privacy banner -->
