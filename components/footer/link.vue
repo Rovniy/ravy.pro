@@ -4,7 +4,6 @@ const links: { to: string, text: string }[] = [
   { to: '/blogs', text: 'Blogs' },
   { to: '/categories', text: 'Categories' },
   { to: '/about', text: 'About Me' },
-  { to: '/tools/qr-code-generator', text: 'QR Code Generator' },
 ]
 </script>
 
