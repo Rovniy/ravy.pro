@@ -75,6 +75,10 @@
 @theme {
   --font-spacegrotesk: "Space Grotesk", sans-serif;
   --font-spacemono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Signature easing — a long expo tail that makes motion feel engineered
+     rather than default. Use for reveals, hovers, and any element entrance. */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /*
@@ -103,6 +107,16 @@
 @layer base {
   body {
     line-height: 1.75;
+  }
+
+  /* Typographic micro-polish: headlines never orphan a single word onto the
+     last line, body text avoids awkward rag. Progressive enhancement — older
+     engines simply ignore both. */
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
 
   ::selection {
@@ -240,4 +254,53 @@
     color: var(--color-slate-500);
   }
   .dark .eyebrow { color: var(--color-slate-400); }
+}
+
+/*
+ * Scroll reveal — driven by the `v-reveal` directive (plugins/fx.ts). The
+ * directive adds `.reveal` only on the client after checking reduced-motion,
+ * so SSR/no-JS users always see content. `--reveal-delay` staggers grids.
+ */
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.8s var(--ease-expo),
+      transform 0.8s var(--ease-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Cursor spotlight — driven by the `v-spotlight` directive (plugins/fx.ts),
+ * which feeds --spot-x/--spot-y on mousemove. A soft accent-tinted radial
+ * highlight follows the pointer across the card surface. Overlay is
+ * pointer-events: none so card links/buttons are unaffected.
+ */
+@layer components {
+  .spotlight {
+    position: relative;
+  }
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      340px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in oklab, var(--color-accent-400) 14%, transparent),
+      transparent 70%
+    );
+  }
+  .spotlight:hover::after {
+    opacity: 1;
+  }
 }

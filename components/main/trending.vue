@@ -40,8 +40,9 @@ useHead({
     <UiSectionHeader eyebrow="Popular" title="Trending Posts" />
 
     <div class="flex flex-col gap-4">
-      <template v-for="post in formattedData" :key="post.title">
+      <template v-for="(post, i) in formattedData" :key="post.title">
         <BlogCard
+          v-reveal="i * 90"
           horizontal
           :path="post.path"
           :title="post.title"

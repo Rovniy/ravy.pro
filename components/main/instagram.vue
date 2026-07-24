@@ -41,8 +41,9 @@ const photos = computed(() => {
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-0">
       <InstagramCard
-        v-for="photo in photos"
+        v-for="(photo, i) in photos"
         :key="photo.id"
+        v-reveal="(i % 4) * 70"
         :image="photo.image"
         :alt="photo.alt"
         :caption="photo.caption"

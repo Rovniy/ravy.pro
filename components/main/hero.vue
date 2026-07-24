@@ -20,6 +20,8 @@ const { trackCta } = useAnalytics()
        instead of leaving a flat seam there. The matching padding keeps content put. -->
   <section class="hero-section relative overflow-hidden -mt-[var(--header-h)] pt-[var(--header-h)]">
     <div class="hero-bg-grid" aria-hidden="true" />
+    <div class="hero-blob hero-blob-a" aria-hidden="true" />
+    <div class="hero-blob hero-blob-b" aria-hidden="true" />
 
     <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 py-20 md:py-28 lg:py-32 min-h-[calc(100vh-var(--header-h))] flex items-center">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
@@ -49,6 +51,7 @@ const { trackCta } = useAnalytics()
               class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base text-white bg-accent-600 hover:bg-accent-700 dark:text-slate-950 dark:bg-accent-400 dark:hover:bg-accent-300 shadow-lg shadow-accent-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
               @click="trackCta('hero_primary', 'hero')"
             >
+              <span class="cta-shine" aria-hidden="true" />
               {{ hero.ctaPrimary.label }}
               <Icon name="mdi:arrow-right" size="20" aria-hidden="true" class="group-hover:translate-x-1 transition-transform" />
             </NuxtLink>
@@ -87,17 +90,20 @@ const { trackCta } = useAnalytics()
         </div>
 
         <div class="lg:col-span-5 hidden md:flex justify-center items-center relative h-[312px] lg:h-[312px] xl:h-[512px]">
-          <NuxtImg
-            src="/photos/a_rovnyi_lumy.webp"
-            alt="Andrei Rovnyi"
-            height="512"
-            width="512"
-            class="rounded-2xl ring-1 ring-slate-200 dark:ring-slate-800 shadow-xl shadow-slate-900/5 dark:shadow-black/30"
-            sizes="(max-width: 640px) 312px, (max-width: 1024px) 312px, 512px"
-            densities="x1 x2"
-            loading="eager"
-            fetchpriority="high"
-          />
+          <div class="group relative">
+            <div class="hero-photo-glow" aria-hidden="true" />
+            <NuxtImg
+              src="/photos/a_rovnyi_lumy.webp"
+              alt="Andrei Rovnyi"
+              height="512"
+              width="512"
+              class="relative rounded-2xl ring-1 ring-slate-200 dark:ring-slate-800 shadow-xl shadow-slate-900/5 dark:shadow-black/30 transition-transform duration-500 motion-safe:group-hover:scale-[1.015] motion-safe:group-hover:-rotate-1"
+              sizes="(max-width: 640px) 312px, (max-width: 1024px) 312px, 512px"
+              densities="x1 x2"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -130,6 +136,88 @@ const { trackCta } = useAnalytics()
   background-image:
     linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+}
+
+/* Ambient light — two slow-drifting accent blobs behind the grid. Transform-only
+   animation (composited, no repaint); the blur is static so it rasterizes once. */
+.hero-blob {
+  position: absolute;
+  width: 30rem;
+  height: 30rem;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+.hero-blob-a {
+  top: -8rem;
+  left: -7rem;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.16), transparent 65%);
+  animation: hero-blob-a 26s ease-in-out infinite alternate;
+}
+.hero-blob-b {
+  bottom: -9rem;
+  right: -6rem;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.14), transparent 65%);
+  animation: hero-blob-b 32s ease-in-out infinite alternate;
+}
+:global(.dark) .hero-blob-a {
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.22), transparent 65%);
+}
+:global(.dark) .hero-blob-b {
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.18), transparent 65%);
+}
+@keyframes hero-blob-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(4rem, 3rem, 0) scale(1.18); }
+}
+@keyframes hero-blob-b {
+  from { transform: translate3d(0, 0, 0) scale(1.12); }
+  to   { transform: translate3d(-4.5rem, -3rem, 0) scale(0.94); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob { animation: none; }
+}
+
+/* Portrait backlight — soft dual-hue glow that intensifies slightly on hover. */
+.hero-photo-glow {
+  position: absolute;
+  inset: -1.75rem;
+  border-radius: 2.5rem;
+  background:
+    radial-gradient(55% 55% at 28% 22%, rgba(45, 212, 191, 0.28), transparent 72%),
+    radial-gradient(55% 55% at 74% 82%, rgba(52, 211, 153, 0.24), transparent 72%);
+  filter: blur(28px);
+  opacity: 0.75;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.group:hover .hero-photo-glow {
+  opacity: 1;
+}
+
+/* Shine sweep across the primary CTA. The transition lives only on the hover
+   state, so the highlight sweeps once and resets instantly on mouseleave. */
+.cta-primary {
+  position: relative;
+  overflow: hidden;
+}
+.cta-shine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: translateX(-160%) skewX(-18deg);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cta-primary:hover .cta-shine {
+    transition: transform 0.8s var(--ease-expo);
+    transform: translateX(360%) skewX(-18deg);
+  }
 }
 
 /* SSR default: visible. The LCP element (the H1) must paint with the initial

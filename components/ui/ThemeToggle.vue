@@ -16,7 +16,7 @@ function toggleTheme() {
       type="button"
       :aria-label="colorMode.value === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
       :title="colorMode.value === 'dark' ? 'Light theme' : 'Dark theme'"
-      class="hover:text-accent-600 dark:hover:text-accent-400 transition-colors hover:cursor-pointer"
+      class="group hover:text-accent-600 dark:hover:text-accent-400 transition-colors hover:cursor-pointer"
       v-bind="$attrs"
       @click="toggleTheme"
     >
@@ -24,6 +24,7 @@ function toggleTheme() {
         :name="colorMode.value === 'dark' ? 'mdi:weather-sunny' : 'mdi:weather-night'"
         :size="String(props.iconSize)"
         aria-hidden="true"
+        class="transition-transform duration-300 ease-expo motion-safe:group-hover:rotate-[24deg] motion-safe:group-hover:scale-110"
       />
     </button>
     <template #fallback>

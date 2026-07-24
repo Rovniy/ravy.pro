@@ -106,8 +106,8 @@ async function onSignOut() {
     >
       <ul class="flex items-baseline space-x-5">
         <li class="text-base lg:text-2xl font-bold">
-          <NuxtLink to="/" class="nav-link inline-flex items-center gap-2.5" @click="navClick('home')">
-            <span class="w-2 h-2 rounded-full bg-gradient-to-br from-accent-400 to-emerald-500 shadow-[0_0_8px] shadow-accent-400/60" aria-hidden="true" />
+          <NuxtLink to="/" class="nav-link nav-brand inline-flex items-center gap-2.5" @click="navClick('home')">
+            <span class="logo-dot w-2 h-2 rounded-full bg-gradient-to-br from-accent-400 to-emerald-500 shadow-[0_0_8px] shadow-accent-400/60" aria-hidden="true" />
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
@@ -274,7 +274,7 @@ async function onSignOut() {
 @reference "../../assets/css/tailwind.css";
 
 .nav-link {
-  @apply rounded-sm transition-colors;
+  @apply relative rounded-sm transition-colors;
 }
 
 .nav-link:focus {
@@ -289,7 +289,52 @@ async function onSignOut() {
   @apply text-accent-600 dark:text-accent-400;
 }
 
-.nav-link.router-link-exact-active {
-  @apply underline underline-offset-4 decoration-2;
+/* Animated gradient underline — grows from the left on hover, stays on the
+   exact-active link. The brand link opts out (a logo doesn't carry nav state). */
+.nav-link:not(.nav-brand)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--color-accent-500), var(--color-emerald-400));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-expo);
+}
+@media (hover: hover) {
+  .nav-link:not(.nav-brand):hover::after {
+    transform: scaleX(1);
+  }
+}
+.nav-link:not(.nav-brand).router-link-exact-active::after {
+  transform: scaleX(1);
+}
+
+/* In the mobile sheet links are full-width block rows — a full-width bar reads
+   as a divider, so shrink the underline to a short accent tick instead. */
+#mobile-nav .nav-link::after {
+  width: 2.25rem;
+  bottom: 0.45rem;
+}
+
+/* The brand dot breathes — a slow glow pulse that signals "live" without
+   demanding attention. */
+@media (prefers-reduced-motion: no-preference) {
+  .logo-dot {
+    animation: logo-breathe 4s ease-in-out infinite;
+  }
+}
+@keyframes logo-breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px color-mix(in oklab, var(--color-accent-400) 60%, transparent);
+  }
+  50% {
+    transform: scale(1.25);
+    box-shadow: 0 0 14px color-mix(in oklab, var(--color-accent-400) 90%, transparent);
+  }
 }
 </style>

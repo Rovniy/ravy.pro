@@ -50,6 +50,7 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
 
 <template>
   <article
+    v-spotlight
     class="group relative border border-slate-200/80 dark:border-white/10 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl hover:shadow-slate-900/10 dark:hover:shadow-accent-500/10 bg-white dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent-300 dark:hover:border-accent-500/40 focus-within:ring-2 focus-within:ring-accent-400"
     :class="horizontal ? 'grid grid-cols-1 sm:grid-cols-10' : 'flex flex-col'"
   >

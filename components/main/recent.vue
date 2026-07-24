@@ -39,8 +39,9 @@ useHead({
     <UiSectionHeader eyebrow="Writing" title="Recent Posts" to="/blogs" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <template v-for="post in formattedData" :key="post.title">
+      <template v-for="(post, i) in formattedData" :key="post.title">
         <BlogCard
+          v-reveal="(i % 3) * 90"
           :path="post.path || ''"
           :title="post.title"
           :created-at="post.createdAt"

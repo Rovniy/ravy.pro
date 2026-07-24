@@ -59,13 +59,15 @@ function ratingFor(path: string) {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <NuxtLink
-            v-for="service in publicServices"
+            v-for="(service, i) in publicServices"
             :key="service.path"
+            v-spotlight
+            v-reveal="(i % 3) * 90"
             :to="service.path"
             class="group flex flex-col rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-400 dark:hover:border-accent-500/60 hover:shadow-lg hover:shadow-accent-500/10"
             @click="trackCta(service.path, 'home_tools')"
           >
-            <span class="grid place-items-center w-10 h-10 rounded-lg bg-accent-50 text-accent-600 ring-1 ring-accent-100 dark:bg-accent-950/50 dark:text-accent-400 dark:ring-accent-900/60">
+            <span class="grid place-items-center w-10 h-10 rounded-lg bg-accent-50 text-accent-600 ring-1 ring-accent-100 dark:bg-accent-950/50 dark:text-accent-400 dark:ring-accent-900/60 transition-transform duration-300 ease-expo motion-safe:group-hover:scale-110 motion-safe:group-hover:-rotate-3">
               <Icon :name="service.icon || 'mdi:tools'" class="w-5 h-5" aria-hidden="true" />
             </span>
             <p class="mt-4 font-semibold text-slate-900 dark:text-slate-100">
@@ -82,6 +84,7 @@ function ratingFor(path: string) {
           </NuxtLink>
 
           <a
+            v-reveal="(publicServices.length % 3) * 90"
             :href="suggestToolUrl"
             target="_blank"
             rel="noopener noreferrer"

@@ -146,18 +146,35 @@ defineOgImage('Blog', {
           placeholder="Search by title, description, or tag…"
           aria-label="Search posts by title, description, or tag"
           type="text"
-          class="block w-full pl-9 pr-4 py-2.5 bg-white dark:bg-slate-900 dark:placeholder-slate-500 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 transition-all"
+          class="block w-full pl-9 pr-11 py-2.5 bg-white/80 dark:bg-slate-900/70 backdrop-blur dark:placeholder-slate-500 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 focus:shadow-lg focus:shadow-accent-500/10 transition-all"
         >
+        <button
+          v-if="searchTest"
+          type="button"
+          aria-label="Clear search"
+          class="absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 rounded-full text-slate-400 hover:text-accent-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors hover:cursor-pointer"
+          @click="searchTest = ''"
+        >
+          <Icon name="mdi:close" size="16" aria-hidden="true" />
+        </button>
       </div>
+
+      <p
+        v-if="searchTest.trim() || activeTag"
+        class="mt-2.5 font-spacemono text-xs text-slate-500 dark:text-slate-400"
+        aria-live="polite"
+      >
+        {{ searchData.length }} {{ searchData.length === 1 ? 'post' : 'posts' }} found
+      </p>
 
       <div v-if="allTags.length" class="mt-3 flex flex-wrap gap-2">
         <button
           type="button"
           :aria-pressed="!activeTag"
-          class="rounded-full px-3 py-1 text-sm border transition-colors hover:cursor-pointer"
+          class="rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="!activeTag
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
+            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
           @click="activeTag = ''"
         >
           All
@@ -167,10 +184,10 @@ defineOgImage('Blog', {
           :key="t.tag"
           type="button"
           :aria-pressed="activeTag === t.tag"
-          class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm border transition-colors hover:cursor-pointer"
+          class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="activeTag === t.tag
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
+            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
           @click="toggleTag(t.tag)"
         >
           {{ t.tag }}
@@ -210,7 +227,7 @@ defineOgImage('Blog', {
         :disabled="pageNumber <= 1"
         type="button"
         aria-label="Previous page"
-        class="w-11 h-11 flex items-center justify-center rounded-full border dark:border-slate-700 disabled:opacity-30 hover:border-accent-400 hover:text-accent-500 transition-all"
+        class="w-11 h-11 flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 enabled:hover:shadow-md enabled:hover:shadow-accent-500/10 transition-all"
         @click="onPreviousPageClick"
       >
         <Icon name="mdi:chevron-left" size="20" aria-hidden="true" />
@@ -222,7 +239,7 @@ defineOgImage('Blog', {
         :disabled="pageNumber >= totalPage"
         type="button"
         aria-label="Next page"
-        class="w-11 h-11 flex items-center justify-center rounded-full border dark:border-slate-700 disabled:opacity-30 hover:border-accent-400 hover:text-accent-500 transition-all"
+        class="w-11 h-11 flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 enabled:hover:shadow-md enabled:hover:shadow-accent-500/10 transition-all"
         @click="onNextPageClick"
       >
         <Icon name="mdi:chevron-right" size="20" aria-hidden="true" />

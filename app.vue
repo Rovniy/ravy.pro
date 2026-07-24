@@ -11,7 +11,10 @@ useHead({
 
 <template>
   <div class="bg-slate-100 dark:text-slate-300   dark:bg-slate-950">
-    <NuxtLoadingIndicator />
+    <NuxtLoadingIndicator
+      :height="3"
+      color="linear-gradient(90deg, var(--color-accent-400), var(--color-emerald-400), var(--color-accent-400))"
+    />
 
     <NuxtLayout>
       <NuxtPage />
