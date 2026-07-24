@@ -1,5 +1,6 @@
 ---
 title: Terms of Use
+description: The terms governing use of ravy.pro and its tools and services, operated by XPLOIT FZE, including user obligations, liability, and governing law.
 createdAt: 2025-06-15T11:30:45.154Z
 lastUpdated: 2026-05-11T00:00:00.000Z
 ---

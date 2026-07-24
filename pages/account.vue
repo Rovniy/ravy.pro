@@ -62,7 +62,7 @@ function selectTab(key: string) {
 </script>
 
 <template>
-  <main class="px-6 py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
       Account
     </h1>
@@ -96,5 +96,5 @@ function selectTab(key: string) {
         <AccountAccessAuditLog v-else-if="activeTab === 'audit' && isAdmin" />
       </div>
     </div>
-  </main>
+  </div>
 </template>

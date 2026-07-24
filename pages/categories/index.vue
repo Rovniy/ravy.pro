@@ -53,7 +53,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <main class="container max-w-5xl mx-auto text-slate-600">
+  <div class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300">
     <CategoryHero />
 
     <div class="flex flex-wrap px-6 mt-12 gap-3">
@@ -64,5 +64,5 @@ defineOgImage('Blog', {
         :count="topic[1]"
       />
     </div>
-  </main>
+  </div>
 </template>

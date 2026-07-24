@@ -1,8 +1,13 @@
 import { Feed } from 'feed'
 import { baseData, homePage, navbarData } from '~/data'
+import { minimarkToHtml } from '../utils/minimark-html'
 
 export default defineEventHandler(async (event) => {
-  setHeader(event, 'content-type', 'text/xml')
+  setHeader(event, 'content-type', 'application/rss+xml; charset=utf-8')
+  // The feed only changes when a post is published/edited — let the CDN
+  // serve it and refresh in the background instead of hitting the DB on
+  // every poll from feed readers.
+  setHeader(event, 'cache-control', 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400')
 
   const docs = await queryCollection(event, 'content')
     .where('path', 'LIKE', '/blogs/%')
@@ -26,13 +31,15 @@ export default defineEventHandler(async (event) => {
   })
 
   docs.forEach((doc) => {
+    const html = minimarkToHtml(doc.body, baseData.site.url)
     feed.addItem({
       title: `${baseData.me.name} | ${doc.title}`,
       id: baseData.site.url + doc.path,
       link: baseData.site.url + doc.path,
       description: doc.description,
-      content: doc.description,
+      content: html || doc.description,
       date: doc.createdAt ? new Date(doc.createdAt) : new Date(),
+      category: (doc.tags ?? []).map((tag: string) => ({ name: tag })),
     })
   })
 

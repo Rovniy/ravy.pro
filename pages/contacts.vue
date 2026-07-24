@@ -58,7 +58,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <main class="text-slate-600 dark:text-slate-300">
+  <div class="text-slate-600 dark:text-slate-300">
     <div class="container max-w-md mx-auto px-6 py-14">
       <div class="flex flex-col items-center text-center">
         <NuxtImg
@@ -137,5 +137,5 @@ defineOgImage('Blog', {
         </li>
       </ul>
     </div>
-  </main>
+  </div>
 </template>

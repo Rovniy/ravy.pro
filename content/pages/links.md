@@ -1,5 +1,6 @@
 ---
 title: Internal links
+description: Internal and external links for Andrei Rovnyi's projects — music, GitHub repositories, Tiny Boo resources, and third-party services.
 createdAt: 2025-05-05T22:00:00.000Z
 lastUpdated: 2025-06-14T15:13:10.380Z
 ---

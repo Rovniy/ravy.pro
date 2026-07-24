@@ -25,7 +25,7 @@ function toggle() {
   isOpen.value = !isOpen.value
 }
 
-const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCompare(b.name)))
+const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.localeCompare(b.name)))
 </script>
 
 <template>
@@ -34,7 +34,7 @@ const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCom
       type="button"
       class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
       :aria-expanded="isOpen"
-      aria-haspopup="menu"
+      aria-controls="tools-menu-list"
       @click="toggle"
     >
       Tools
@@ -49,16 +49,20 @@ const sortedList = computed(() => publicServices.sort((a, b) => a.name.localeCom
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-1"
     >
+      <!--
+        Deliberately NOT role="menu": ARIA menus promise arrow-key roving
+        focus, which a plain list of links doesn't (and needn't) implement.
+        A disclosure pattern (aria-expanded + regular links) is correct here.
+      -->
       <div
         v-if="isOpen"
-        role="menu"
+        id="tools-menu-list"
         class="absolute right-0 top-full mt-2 w-70 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
           v-for="item in sortedList"
           :key="item.path"
           :to="item.path"
-          role="menuitem"
           class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3"
         >
           <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400" />

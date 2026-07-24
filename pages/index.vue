@@ -10,22 +10,20 @@ const suggestToolUrl = `https://t.me/xploitravy?text=${suggestToolText}`
 
 useHead({
   title,
-  link: [
-    { rel: 'canonical', href: `${siteUrl}/` },
-  ],
+  // The home title already contains the site name — don't let the global
+  // '%s - Andrei Rovnyi' template append it a second time.
+  titleTemplate: '%s',
   meta: [
     { name: 'description', content: description },
     { name: 'robots', content: 'index, follow' },
-    { name: 'keywords', content: 'Andrei Rovnyi, engineering blog, web tools, QR code generator, software development' },
     { property: 'og:title', content: title },
     { property: 'og:description', content: description },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: `${siteUrl}/` },
-    { property: 'og:image', content: `${siteUrl}/open_graph/og_image_default.png` },
+    // og:image / twitter:image come from defineOgImage('Blog', …) below.
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: `${siteUrl}/open_graph/og_image_default.png` },
   ],
 })
 
@@ -53,7 +51,7 @@ function ratingFor(path: string) {
 </script>
 
 <template>
-  <main class="text-slate-600 dark:text-slate-300">
+  <div class="text-slate-600 dark:text-slate-300">
     <MainHero />
     <div class="container max-w-5xl mx-auto">
       <section class="py-14 px-6">
@@ -106,5 +104,5 @@ function ratingFor(path: string) {
       <LazyMainInstagram />
       <LazyMainTrending />
     </div>
-  </main>
+  </div>
 </template>

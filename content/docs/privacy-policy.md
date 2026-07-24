@@ -1,5 +1,6 @@
 ---
 title: Privacy Policy
+description: How XPLOIT FZE collects, uses, and protects personal data on ravy.pro, including your rights under GDPR, CCPA/CPRA, and UAE data protection law.
 createdAt: 2025-06-15T11:34:57.692Z
 lastUpdated: 2026-05-11T00:00:00.000Z
 ---

@@ -9,7 +9,7 @@ lastUpdated: 2026-07-06T12:00:00.000Z
 
 **Software Developer · Engineering Manager · Founder**
 
-![](/photos/a_rovnyi_deep.webp)
+![Andrei Rovnyi](/photos/a_rovnyi_deep.webp){width=1086 height=1448}
 
 I'm a software developer, engineering manager, and founder with 15 years of experience building web platforms, game systems, real-time services, and digital products. Today I lead web development as an **Engineering Manager at [Gaijin Entertainment](https://gaijin.net/)** and run **[XPLOIT](https://xploit.games)**, my own independent game studio. This site is where that work lives in public — part portfolio, part blog, part technical notebook.
 

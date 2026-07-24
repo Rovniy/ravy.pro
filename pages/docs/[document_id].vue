@@ -14,7 +14,7 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: articles.value.title || 'no-description available',
+      content: articles.value.description || articles.value.title || 'no-description available',
     },
   ],
 })
@@ -32,7 +32,7 @@ useGenericPageSchema({
 defineOgImage('Blog', {
   headline: 'Documentation',
   title: articles.value.title || 'no-title available',
-  description: articles.value.title || 'no-title available',
+  description: articles.value.description || articles.value.title || 'no-title available',
   link: homePage.og.link,
   url: homePage.og.link,
 })

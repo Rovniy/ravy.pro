@@ -35,6 +35,14 @@ const SECURITY_HEADERS = {
   'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
 }
 
+// Cache policy for prerendered HTML: browsers always revalidate, the CDN
+// keeps a copy for 10 minutes and refreshes it in the background for a day.
+// Firebase App Hosting purges its CDN by cache-tag on rollout, so a deploy
+// still invalidates these immediately.
+const CONTENT_CACHE_HEADERS = {
+  'Cache-Control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=86400',
+}
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -213,9 +221,17 @@ export default defineNuxtConfig({
       '/**': {
         headers: SECURITY_HEADERS,
       },
-      '/blogs/**': { prerender: true },
-      '/categories/**': { prerender: true },
-      '/docs/**': { prerender: true },
+      // Prerendered HTML: let the CDN serve it (s-maxage) and refresh in the
+      // background instead of forwarding every page view to the origin.
+      // Browsers still revalidate (max-age=0) so a deploy shows up quickly.
+      '/': { headers: CONTENT_CACHE_HEADERS },
+      '/blogs': { headers: CONTENT_CACHE_HEADERS },
+      '/about': { headers: CONTENT_CACHE_HEADERS },
+      '/links': { headers: CONTENT_CACHE_HEADERS },
+      '/contacts': { headers: CONTENT_CACHE_HEADERS },
+      '/blogs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/categories/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/docs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       // Auth-gated / dynamic routes stay SSR.
       '/shortify': { ssr: true, prerender: false },
       '/account': { ssr: true, prerender: false },
@@ -287,6 +303,7 @@ export default defineNuxtConfig({
       '/author/xploitravy/',
       '/tag/customization/',
       '/account',
+      '/admin',
       '/shortify',
       '/s/',
     ],
@@ -294,6 +311,11 @@ export default defineNuxtConfig({
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
+    // Auto-discovery scrapes <img> from prerendered HTML and re-escapes the
+    // already-escaped `&amp;` in /_ipx/ srcset URLs, producing broken
+    // `&amp;amp;` image locs. Post images are provided explicitly by the
+    // custom source above, so discovery adds nothing but the bug.
+    discoverImages: false,
     // Gated / private / per-user routes must stay out of the sitemap even though
     // some of them are prerendered (the module auto-includes prerendered routes).
     exclude: [

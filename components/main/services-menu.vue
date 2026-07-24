@@ -34,7 +34,7 @@ function toggle() {
       type="button"
       class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
       :aria-expanded="isOpen"
-      aria-haspopup="menu"
+      aria-controls="services-menu-list"
       @click="toggle"
     >
       Services
@@ -49,16 +49,16 @@ function toggle() {
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 -translate-y-1"
     >
+      <!-- Disclosure pattern, not role="menu" — see tools-menu.vue. -->
       <div
         v-if="isOpen"
-        role="menu"
+        id="services-menu-list"
         class="absolute right-0 top-full mt-2 w-60 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
       >
         <NuxtLink
           v-for="item in accessibleServices"
           :key="item.path"
           :to="item.path"
-          role="menuitem"
           class="services-item flex items-center gap-2 px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400"
         >
           <Icon :name="item.icon" size="18" aria-hidden="true" />
@@ -67,7 +67,6 @@ function toggle() {
         <NuxtLink
           v-if="isAdmin"
           to="/account?tab=access"
-          role="menuitem"
           class="services-item flex items-center gap-2 mt-1 pt-2 border-t border-slate-200 dark:border-slate-800 px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400"
         >
           <Icon name="mdi:account-key-outline" size="18" aria-hidden="true" />

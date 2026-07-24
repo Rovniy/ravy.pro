@@ -174,12 +174,12 @@ function blogPostingNode(post: BlogPostingInput) {
     'url': post.url,
     'headline': post.title,
     'description': post.description,
+    // No width/height: post OG images vary in size and wrong declared
+    // dimensions are worse for rich results than none at all.
     'image': {
       '@type': 'ImageObject',
       'url': imgUrl,
       'caption': post.alt || post.description,
-      'width': seoData.ogImageWidth,
-      'height': seoData.ogImageHeight,
     },
     'datePublished': pub,
     'dateModified': mod,

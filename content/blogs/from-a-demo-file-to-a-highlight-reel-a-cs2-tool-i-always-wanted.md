@@ -12,8 +12,6 @@ createdAt: 2026-06-12T07:03:27.402Z
 lastUpdated: 2026-06-12T07:08:10.038Z
 ---
 
-# From a Demo File to a Highlight Reel: A CS2 Tool I Always Wanted
-
 Before I was an engineer, I was a Counter-Strike player. I played in XPLOIT Team around 15, competed in ASUS, MSI Beat in Russia, WCG and WESGG, and my proudest result was 2st place in WCG Russia. The game stuck with me long after the team days ended. I still queue up CS2 matches in the evening, and I still catch myself rewatching rounds in my head on the way to work.
 
 Here is the thing every CS player knows. You play a great match. There was that one round — a 4K, or a clutch you had no business winning — and you want to watch it again, or show it to your teammates. What you actually have is a demo file: a 40-minute recording where your moment is buried somewhere around minute 23. So you open the demo, scrub through it at 8x speed, miss the round, scrub back, finally find it, then record your screen with OBS while it plays. I have done this dance more times than I want to admit.

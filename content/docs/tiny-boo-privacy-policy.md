@@ -1,10 +1,11 @@
 ---
-title: 'Tiny Boo:Homecoming / Privacy Policy'
+title: 'Tiny Boo: Homecoming / Privacy Policy'
+description: 'Privacy policy for the Tiny Boo: Homecoming mobile game — what data XPLOIT collects, how it is used, and your rights as a player.'
 createdAt: 2025-05-05T22:00:00.000Z
 lastUpdated: 2025-06-15T11:54:15.820Z
 ---
 
-# Tiny Boo:Homecoming / Privacy Policy
+# Tiny Boo: Homecoming / Privacy Policy
 
 Last update: 17 October 2024
 

@@ -3,6 +3,8 @@ import type { BlogPost } from '@/types/blog'
 import Image from '~/components/content/Image.vue'
 import { blogsPage, navbarData, seoData } from '~/data'
 import { EVENTS } from '~/data/analytics'
+import { countWords, readingTimeMinutes } from '~/utils/count-words'
+import { formatBlogDate } from '~/utils/helper'
 
 const { path } = useRoute()
 
@@ -26,16 +28,25 @@ const { data: surround } = await useAsyncData(`blog-surround-${path}`, async () 
   }
 })
 
-function countWords(node: any): number {
-  if (node.type === 'text')
-    return node.value?.split(/\s+/).filter(Boolean).length ?? 0
-  if (Array.isArray(node.children))
-    return node.children.reduce((s: number, c: any) => s + countWords(c), 0)
-  return 0
-}
+// Topically related posts (shared tag), newest first — chronological
+// prev/next alone doesn't surface the rest of a series.
+const { data: related } = await useAsyncData(`blog-related-${path}`, async () => {
+  const tags = articles.value?.tags ?? []
+  if (!tags.length)
+    return []
+  const all = await queryCollection('content')
+    .where('path', 'LIKE', '/blogs/%')
+    .where('published', '=', true)
+    .order('createdAt', 'DESC')
+    .select('path', 'title', 'description', 'image', 'alt', 'tags', 'createdAt')
+    .all()
+  return all
+    .filter(post => post.path !== path && (post.tags ?? []).some((tag: string) => tags.includes(tag)))
+    .slice(0, 3)
+})
 
 const wordCount = computed(() => countWords(articles.value?.body ?? {}))
-const readingTime = computed(() => Math.max(1, Math.ceil(wordCount.value / 200)))
+const readingTime = computed(() => readingTimeMinutes(wordCount.value))
 
 onMounted(() => {
   useAnalytics().track(EVENTS.BLOG_VIEW, {
@@ -56,7 +67,7 @@ const data = computed<BlogPost>(() => {
     tags: articles.value?.tags || [],
     published: articles.value?.published || false,
     theme: articles.value?.theme || seoData.theme,
-    createdAt: new Date(articles.value?.createdAt).toLocaleDateString('en-US', { timeZone: 'UTC' }),
+    createdAt: formatBlogDate(articles.value?.createdAt),
     lastUpdated: articles.value?.lastUpdated || new Date().toISOString(),
     locale: articles.value?.locale || seoData.locale,
   }
@@ -67,8 +78,8 @@ useHead({
   meta: [
     { name: 'description', content: data.value.description },
     { property: 'article:author', content: seoData.author },
-    { property: 'article:published_time', content: data.value?.createdAt || new Date().toISOString() },
-    { property: 'article:modified_time', content: data.value?.lastUpdated || data.value?.createdAt || new Date().toISOString() },
+    { property: 'article:published_time', content: articles.value?.createdAt || new Date().toISOString() },
+    { property: 'article:modified_time', content: articles.value?.lastUpdated || articles.value?.createdAt || new Date().toISOString() },
     { property: 'article:section', content: data.value.tags?.at(0) },
     { property: 'article:tag', content: data.value.theme },
     { property: 'og:site_name', content: navbarData.homeTitle },
@@ -76,17 +87,14 @@ useHead({
     { property: 'og:url', content: `${seoData.mySite}${path}` },
     { property: 'og:title', content: data.value.title },
     { property: 'og:description', content: data.value.description },
-    { property: 'og:image', content: `${seoData.mySite}${data.value.ogImage || data.value.image}` },
-    { property: 'og:image:alt', content: data.value.description },
-    { property: 'og:image:width', content: seoData.ogImageWidth },
-    { property: 'og:image:height', content: seoData.ogImageHeight },
+    // og:image / twitter:image (with correct 1200×630 dimensions) are
+    // injected by nuxt-og-image from the defineOgImage('Blog', …) call below.
     { property: 'og:locale', content: data.value.locale },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:site', content: seoData.twitterHandle },
     { name: 'twitter:url', content: `${seoData.mySite}${path}` },
     { name: 'twitter:title', content: data.value.title },
     { name: 'twitter:description', content: data.value.description },
-    { name: 'twitter:image', content: `${seoData.mySite}${data.value.ogImage || data.value.image}` },
   ],
   link: [
     {
@@ -175,6 +183,26 @@ defineOgImage('Blog', {
           aria-label="Share with {network}"
         />
       </div>
+
+      <section v-if="related?.length" class="col-span-12 mt-10 pt-6 border-t border-slate-200 dark:border-slate-800">
+        <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+          Related posts
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <BlogCard
+            v-for="post in related"
+            :key="post.path"
+            :path="post.path"
+            :title="post.title"
+            :description="post.description"
+            :image="post.image"
+            :alt="post.alt || post.title"
+            :tags="post.tags"
+            :created-at="post.createdAt"
+            :published="true"
+          />
+        </div>
+      </section>
 
       <nav v-if="surround?.prev || surround?.next" class="col-span-12 mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-4">
         <NuxtLink

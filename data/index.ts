@@ -26,6 +26,23 @@ export const BlogPostTag = [
   'animation',
 ]
 
+// Unique per-tag copy for /categories/<tag> pages — a templated
+// "you will find all the X posts here" reads as thin/duplicate content
+// to search engines and to people.
+export const categoryDescriptions: Record<string, string> = {
+  'ai': 'Posts on putting AI to work: agents, AI-assisted coding, music generation, and building products around language models.',
+  'dev': 'Software engineering notes — web platforms, JavaScript, tooling, and lessons from shipping real projects.',
+  'diva-rogue': 'Diva Rogue — an AI-assisted music project: releases, process, and experiments.',
+  'games': 'Game development posts: design, engineering, releases, and the business side of making games.',
+  'idled': 'IDLED Survival — devlog and engine internals of an idle survival mobile game.',
+  'music': 'Making music with AI tools — from first experiments to released tracks.',
+  'policy': 'Privacy policies, platform rules, and compliance notes for apps and games.',
+  'tabs-broadcast': 'Tabs Broadcast — a tiny JavaScript library for messaging between browser tabs.',
+  'tiny-boo': 'Tiny Boo: Homecoming — devlogs, art, level design, and the animated series built on the same character.',
+  'zynthar': 'Zynthar — an AI-assisted metal music project: releases and behind-the-scenes.',
+  'animation': 'Making an animated series with AI tools — pipeline, episodes, and lessons learned.',
+}
+
 export const navbarData = {
   homeTitle: baseData.me.name,
 }
@@ -349,7 +366,7 @@ export const seoData = {
 
 export const siteMetaData = [
   { name: 'description', content: seoData.description },
-  { property: 'og:site_name', content: seoData.mySite },
+  { property: 'og:site_name', content: seoData.author },
   { property: 'og:type', content: 'website' },
   { property: 'og:url', content: seoData.mySite },
   { property: 'og:title', content: seoData.ogTitle },

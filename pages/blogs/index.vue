@@ -135,7 +135,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <main class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300">
+  <div class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300">
     <ArchiveHero />
 
     <div class="px-6 mt-2 mb-8">
@@ -228,5 +228,5 @@ defineOgImage('Blog', {
         <Icon name="mdi:chevron-right" size="20" aria-hidden="true" />
       </button>
     </div>
-  </main>
+  </div>
 </template>

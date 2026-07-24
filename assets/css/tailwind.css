@@ -119,8 +119,9 @@
 }
 
 /* Kill page/layout transitions on mobile and for reduced-motion users.
-   The 0.4s blur transition adds measurable INP regression on slow phones
-   and costs LCP on first navigation. Desktop keeps the brand touch. */
+   The 0.15s blur transition (app.vue) adds measurable INP regression on
+   slow phones and costs LCP on first navigation. Desktop keeps the brand
+   touch. */
 @media (max-width: 768px), (prefers-reduced-motion: reduce) {
   .page-enter-active, .page-leave-active,
   .layout-enter-active, .layout-leave-active {

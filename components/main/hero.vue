@@ -65,7 +65,7 @@ const { trackCta } = useAnalytics()
           <div class="hero-step delay-5 flex flex-wrap items-center gap-5">
             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-spacemono uppercase tracking-wider border border-emerald-500/20">
               <span class="relative flex h-2 w-2">
-                <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping motion-reduce:animate-none" />
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               {{ hero.status }}

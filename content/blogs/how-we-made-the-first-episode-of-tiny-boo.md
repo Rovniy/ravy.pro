@@ -31,7 +31,7 @@ We had good reference points to lean on: Pingu, Larva, Shaun the Sheep, La Linea
 
 ## Who Boo is
 
-![Tiny Boo emotions](/blog-content/how-we-made-the-first-episode-of-tiny-boo/tiny-boo-emotions.webp "Tiny Boo Model Sheet")
+![Tiny Boo emotions](/blog-content/how-we-made-the-first-episode-of-tiny-boo/tiny-boo-emotions.webp "Tiny Boo Model Sheet"){width=5016 height=3762}
 
 Boo is a tiny forest spirit shaped like a closed flower bud. The body is teardrop-shaped, made of folded leaves with visible veins, and the leaves on top of his head curl into a little spiral tuft that works as a mood antenna: it springs up when he's happy and droops when he's tired. Big leaf-shaped ears, green on the outside and soft pink within. Small dark eyes with bright highlights. No nose at all — and it turns out he doesn't need one; the face reads perfectly fine without it.
 

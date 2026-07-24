@@ -32,6 +32,41 @@ function toggleMobile() {
   isMobileOpen.value = !isMobileOpen.value
 }
 
+// Focus management for the mobile menu: move focus into the menu when it
+// opens, keep Tab cycling inside it, and hand focus back to the toggle
+// button when it closes — otherwise keyboard users are left stranded
+// behind an overlay they can't see.
+const mobileNavRef = ref<HTMLElement | null>(null)
+const mobileToggleRef = ref<HTMLElement | null>(null)
+
+watch(isMobileOpen, async (open) => {
+  if (open) {
+    await nextTick()
+    mobileNavRef.value?.querySelector<HTMLElement>('a, button')?.focus()
+  }
+  else if (mobileNavRef.value?.contains(document.activeElement)) {
+    mobileToggleRef.value?.focus()
+  }
+})
+
+function onMobileNavKeydown(e: KeyboardEvent) {
+  if (e.key !== 'Tab')
+    return
+  const focusables = mobileNavRef.value?.querySelectorAll<HTMLElement>('a, button')
+  if (!focusables?.length)
+    return
+  const first = focusables[0]!
+  const last = focusables[focusables.length - 1]!
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault()
+    last.focus()
+  }
+  else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault()
+    first.focus()
+  }
+}
+
 const { track } = useAnalytics()
 function navClick(item: string, location: 'header' | 'mobile' = 'header') {
   track('nav_click', { nav_item: item, location })
@@ -117,6 +152,7 @@ async function onSignOut() {
               class="inline-flex items-center gap-1.5 hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer text-sm lg:text-base font-medium"
               @click="onSignIn"
             >
+              <span class="hidden lg:inline">Sign in</span>
               <Icon name="mdi:login" size="22" aria-hidden="true" class="lg:hidden" />
             </button>
             <span
@@ -154,6 +190,7 @@ async function onSignOut() {
         </li>
         <li class="lg:hidden">
           <button
+            ref="mobileToggleRef"
             type="button"
             class="inline-flex items-center justify-center w-11 h-11 -my-1 -mr-3 hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
             :aria-expanded="isMobileOpen"
@@ -178,8 +215,10 @@ async function onSignOut() {
       <nav
         v-if="isMobileOpen"
         id="mobile-nav"
+        ref="mobileNavRef"
         class="lg:hidden absolute left-4 right-4 sm:left-6 sm:right-6 top-full mt-2 rounded-2xl overflow-hidden bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-xl shadow-slate-950/10 dark:shadow-black/30"
         aria-label="Mobile navigation"
+        @keydown="onMobileNavKeydown"
       >
         <ul class="px-6 py-3 flex flex-col text-base font-semibold max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain">
           <li>

@@ -37,7 +37,7 @@ export function formatBlogDate(iso?: string): string {
   const d = new Date(iso)
   if (Number.isNaN(d.getTime()))
     return 'no-date'
-  return d.toLocaleDateString('en-US', { timeZone: 'UTC' })
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
 }
 
 export function daysSince(iso?: string): number {

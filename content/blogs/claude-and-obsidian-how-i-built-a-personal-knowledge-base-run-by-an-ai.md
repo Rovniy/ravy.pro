@@ -1,6 +1,6 @@
 ---
 title: 'Claude and Obsidian: How I Built a Personal Knowledge Base Run by an AI'
-description: 'I keep my personal knowledge base in Obsidian and put an AI agent, Claude Code, on top of it. The agent lives inside the notes folder, knows my rules from a single config file, and handles the routine: sorting the inbox, running projects, building finance snapshots, syncing the calendar, producing an animated series, and writing up travel notes. Below is how it works technically, real cases, and a from-scratch setup guide with code.'
+description: 'I keep my knowledge base in Obsidian and put a Claude Code agent on top: it lives in the notes folder, knows my rules, and handles the routine for me.'
 image: /blog-cover/claude_and_obsidian_how_i_built_a_personal_knowledge_base_run_by_an_ai.webp
 ogImage: /blog-opengraph/claude-and-obsidian_-how-i-built-a-personal-knowledge-base-run-by-an-ai.png
 tags:

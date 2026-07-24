@@ -20,7 +20,7 @@ const { data, status, error } = await useAsyncData(`scan-share-${shareId}`, () =
 </script>
 
 <template>
-  <main class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
     <header class="mb-4">
       <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
         Shared Scan Report
@@ -39,5 +39,5 @@ const { data, status, error } = await useAsyncData(`scan-share-${shareId}`, () =
       </p>
     </div>
     <ContractScanResultPanel v-else :result="data.result" />
-  </main>
+  </div>
 </template>

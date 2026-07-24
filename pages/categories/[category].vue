@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { makeFirstCharUpper } from '@/utils/helper'
-import { categoriesPage, seoData } from '~/data'
+import { categoriesPage, categoryDescriptions, seoData } from '~/data'
 
 const route = useRoute()
 
@@ -43,12 +43,16 @@ const formattedData = computed(() => {
   })
 })
 
+const categoryDescription = computed(() =>
+  categoryDescriptions[category.value]
+  || `Posts tagged "${category.value}" by ${seoData.author}.`)
+
 useHead({
   title: category.value,
   meta: [
     {
       name: 'description',
-      content: `You will find all the ${category.value} related post here`,
+      content: categoryDescription.value,
     },
   ],
 })
@@ -56,7 +60,7 @@ useHead({
 useCategoryPageSchema({
   url: `${seoData.mySite}/categories/${category.value}`,
   category: makeFirstCharUpper(category.value),
-  description: `You will find all the ${category.value} related post here`,
+  description: categoryDescription.value,
   posts: (formattedData.value || []).map(p => ({
     path: p.path,
     title: p.title,
@@ -69,13 +73,13 @@ useCategoryPageSchema({
 defineOgImage('Blog', {
   headline: categoriesPage.og.headline,
   title: category.value,
-  description: `You will find all the ${category.value} related post here`,
+  description: categoryDescription.value,
   link: categoriesPage.og.image,
 })
 </script>
 
 <template>
-  <main class="container max-w-5xl mx-auto text-slate-600 px-4">
+  <div class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300 px-4">
     <CategoryTopic />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-14">
@@ -97,5 +101,5 @@ defineOgImage('Blog', {
 
       <BlogEmpty v-if="data?.length === 0" />
     </div>
-  </main>
+  </div>
 </template>
