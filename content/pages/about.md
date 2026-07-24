@@ -15,7 +15,7 @@ I'm a software developer, engineering manager, and founder with 15 years of expe
 
 <div class="not-prose flex flex-wrap gap-3 my-8">
   <a href="https://ravy.pro/misc/andrei_rovnyi_cv.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-sky-400/30 transition-all">View my CV</a>
-  <a href="mailto:contact@ravy.pro" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">Contact me</a>
+  <a href="/contacts" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">Contact me</a>
   <a href="/blogs" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">Read my blog</a>
 </div>
 
@@ -218,6 +218,6 @@ If you have an idea, a product, a technical mess, or a project that needs a stro
 Want to build something, discuss a project, or just exchange ideas? Feel free to reach out.
 
 <div class="not-prose flex flex-wrap gap-3 my-6">
-  <a href="mailto:contact@ravy.pro" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-sky-400/30 transition-all">Contact me</a>
+  <a href="/contacts" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-sky-400/30 transition-all">Contact me</a>
   <a href="https://ravy.pro/misc/andrei_rovnyi_cv.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">View CV</a>
 </div>

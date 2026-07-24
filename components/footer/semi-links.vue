@@ -3,6 +3,7 @@ const links = [
   { to: '/docs/privacy-policy', text: 'Privacy Policy' },
   { to: '/docs/terms-of-use', text: 'Terms of Use' },
   { to: '/links', text: 'Links' },
+  { to: '/contacts', text: 'Contacts' },
 ]
 </script>
 

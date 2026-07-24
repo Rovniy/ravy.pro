@@ -49,4 +49,11 @@ useHead({
   grid-template-rows: 1fr auto;
   min-height: 100vh;
 }
+
+/* Grid items refuse to shrink below their content's min-content width by
+   default, so one long unbreakable string anywhere on a page widens <main>
+   past the viewport and causes horizontal scroll on mobile. */
+.gd-container > * {
+  min-width: 0;
+}
 </style>

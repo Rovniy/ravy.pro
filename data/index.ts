@@ -166,6 +166,140 @@ export const socialNetworks = [
   },
 ]
 
+// Contacts page (/contacts) business-card links. Items with `href` render as
+// links; items without `href` render as copy-to-clipboard rows (for networks
+// like WeChat that have no profile URLs). Entries whose `handle` or `href`
+// still contain 'TODO' are hidden on the page until filled in.
+// `brand` is the network's brand color (drives the card accent);
+// `brandGradient` overrides the icon chip background for gradient logos.
+export interface ContactLink {
+  name: string
+  icon: string
+  handle: string
+  href?: string
+  method: string
+  brand: string
+  brandGradient?: string
+}
+
+export const contactLinks: ContactLink[] = [
+  {
+    name: 'LinkedIn',
+    icon: 'fa:linkedin',
+    handle: 'in/Rovniy',
+    href: 'https://www.linkedin.com/in/Rovniy/',
+    method: 'linkedin',
+    brand: '#0A66C2',
+  },
+  {
+    name: 'Instagram',
+    icon: 'fa:instagram',
+    handle: '@ravygo',
+    href: 'https://www.instagram.com/ravygo',
+    method: 'instagram',
+    brand: '#D62976',
+    brandGradient: 'linear-gradient(45deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5)',
+  },
+  {
+    name: 'Email',
+    icon: 'mdi:mail-outline',
+    handle: baseData.me.email,
+    href: `mailto:${baseData.me.email}`,
+    method: 'email',
+    brand: '#EA4335',
+  },
+  {
+    name: 'Telegram',
+    icon: 'fa:telegram',
+    handle: '@xploitravy',
+    href: 'https://t.me/xploitravy',
+    method: 'telegram',
+    brand: '#26A5E4',
+  },
+  {
+    name: 'WhatsApp',
+    icon: 'bi:whatsapp',
+    handle: '+971585503210',
+    href: 'https://wa.me/971585503210',
+    method: 'whatsapp',
+    brand: '#25D366',
+  },
+  {
+    name: 'Zalo',
+    icon: 'simple-icons:zalo',
+    handle: '84888189407',
+    href: 'https://zalo.me/84888189407',
+    method: 'zalo',
+    brand: '#0068FF',
+  },
+  {
+    name: 'WeChat',
+    icon: 'bi:wechat',
+    handle: 'xploitravy',
+    method: 'wechat',
+    brand: '#07C160',
+  },
+  {
+    name: 'Discord',
+    icon: 'bi:discord',
+    handle: '273147095337140227',
+    href: 'https://discordapp.com/users/273147095337140227/',
+    method: 'discord',
+    brand: '#5865F2',
+  },
+  {
+    name: 'Steam',
+    icon: 'fa:steam',
+    handle: 'TODO',
+    href: 'https://steamcommunity.com/id/xploit-gaming/',
+    method: 'steam',
+    brand: '#66C0F4',
+    brandGradient: 'linear-gradient(135deg, #66C0F4, #1B2838)',
+  },
+  {
+    name: 'YouTube',
+    icon: 'fa:youtube-play',
+    handle: 'TODO',
+    href: 'https://www.youtube.com/@xploit-games',
+    method: 'youtube',
+    brand: '#FF0000',
+  },
+  {
+    name: 'GitHub',
+    icon: 'fa:github',
+    handle: '@Rovniy',
+    href: 'https://github.com/Rovniy',
+    method: 'github',
+    brand: '#24292F',
+    brandGradient: 'linear-gradient(135deg, #57606A, #24292F)',
+  },
+  {
+    name: 'X (Twitter)',
+    icon: 'fa:twitter',
+    handle: '@xploitravy',
+    href: 'https://x.com/xploitravy',
+    method: 'twitter',
+    brand: '#1D9BF0',
+  },
+]
+
+export const contactsPage = {
+  content: {
+    title: baseData.me.name,
+    description: 'Software Developer · Engineering Manager · Founder',
+  },
+  meta: {
+    title: 'Contacts — Andrei Rovnyi',
+    description: 'All the ways to reach Andrei Rovnyi: LinkedIn, Telegram, Instagram, email, and other social networks and messengers.',
+  },
+  og: {
+    headline: 'Contacts',
+    title: navbarData.homeTitle,
+    description: 'All the ways to reach Andrei Rovnyi — social networks, messengers, and email.',
+    link: '/open_graph/og_image_default.png',
+  },
+}
+
 export const categoriesPage = {
   content: {},
   meta: {

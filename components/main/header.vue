@@ -187,18 +187,13 @@ async function onSignOut() {
               Blogs
             </NuxtLink>
           </li>
-          <li v-if="isAuthed">
-            <NuxtLink to="/account" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('account', 'mobile')">
-              Account
-            </NuxtLink>
-          </li>
-          <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            Tools
-          </li>
           <li>
             <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about', 'mobile')">
               About me
             </NuxtLink>
+          </li>
+          <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            Tools
           </li>
           <li v-for="item in publicServices" :key="item.path">
             <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick(item.path, 'mobile')">
@@ -222,6 +217,14 @@ async function onSignOut() {
               </li>
             </template>
           </ClientOnly>
+          <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            Personal
+          </li>
+          <li v-if="isAuthed">
+            <NuxtLink to="/account" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('account', 'mobile')">
+              Account
+            </NuxtLink>
+          </li>
         </ul>
       </nav>
     </Transition>
