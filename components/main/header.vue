@@ -181,7 +181,7 @@ async function onSignOut() {
         class="lg:hidden absolute left-4 right-4 sm:left-6 sm:right-6 top-full mt-2 rounded-2xl overflow-hidden bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-xl shadow-slate-950/10 dark:shadow-black/30"
         aria-label="Mobile navigation"
       >
-        <ul class="px-6 py-3 flex flex-col text-base font-semibold">
+        <ul class="px-6 py-3 flex flex-col text-base font-semibold max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain">
           <li>
             <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs', 'mobile')">
               Blogs
