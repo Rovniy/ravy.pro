@@ -50,13 +50,46 @@ export const navbarData = {
 // Access-gated tools live in `data/services.ts` (GATED_TOOLS) and are surfaced
 // per-user via the access-grant system, not listed here.
 
-export const publicServices: { name: string, path: string, icon: string, blurb?: string }[] = [
-  { name: 'Steam AI Disclosure', path: '/tools/steam-ai-disclosure', icon: 'mdi:steam', blurb: 'Fill Steam\'s AI content disclosure correctly.' },
+export interface PublicService {
+  name: string
+  path: string
+  icon: string
+  blurb?: string
+  /** Flagship product — rendered as a large card on the homepage instead of a compact utility row. */
+  featured?: boolean
+  /** Audience chip on featured cards ("For game devs"). */
+  tag?: string
+  /** Action-oriented CTA verb on featured cards; compact rows use an arrow only. */
+  action?: string
+  /** Mono meta line with the pricing/format facts ("Free check · $10 full report"). */
+  meta?: string
+}
+
+export const publicServices: PublicService[] = [
+  {
+    name: 'Steam AI Disclosure',
+    path: '/tools/steam-ai-disclosure',
+    icon: 'mdi:steam',
+    blurb: 'Answer a short guided wizard about how your game uses AI and get Steam\'s AI content disclosure filled correctly.',
+    featured: true,
+    tag: 'For game devs',
+    action: 'Start check',
+    meta: 'Free check · paid disclosure pack',
+  },
+  {
+    name: 'Contract Red-Flag Scanner',
+    path: '/tools/contract-red-flag-scanner',
+    icon: 'mdi:shield-search',
+    blurb: 'Upload an influencer or brand contract and spot risky clauses — exclusivity traps, payment terms, usage rights — before you sign.',
+    featured: true,
+    tag: 'For creators',
+    action: 'Scan a contract',
+    meta: 'Free risk check · $10 full report',
+  },
   { name: 'QR Code Generator', path: '/tools/qr-code-generator', icon: 'mdi:qrcode', blurb: 'Styled QR codes with a logo, export as PNG.' },
   { name: 'Credit Card Generator', path: '/tools/credit-card-generator', icon: 'mdi:credit-card-outline', blurb: 'Luhn-valid test card numbers for QA.' },
   { name: 'JWT Decoder', path: '/tools/jwt-decoder', icon: 'mdi:shield-key-outline', blurb: 'Decode and verify JWTs in your browser.' },
   { name: 'Image Converter', path: '/tools/image-converter', icon: 'mdi:image-sync-outline', blurb: 'Convert PNG, JPEG and WebP locally.' },
-  { name: 'Contract Red-Flag Scanner', path: '/tools/contract-red-flag-scanner', icon: 'mdi:shield-search', blurb: 'Spot risky clauses in influencer/brand contracts — free risk check, $10 for the full report.' },
 ]
 
 export const footerData = {
