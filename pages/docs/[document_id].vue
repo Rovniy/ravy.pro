@@ -34,7 +34,6 @@ defineOgImage('Blog', {
   title: articles.value.title || 'no-title available',
   description: articles.value.description || articles.value.title || 'no-title available',
   link: homePage.og.link,
-  url: homePage.og.link,
 })
 </script>
 

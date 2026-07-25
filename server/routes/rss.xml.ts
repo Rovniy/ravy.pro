@@ -1,3 +1,6 @@
+// Explicit import: the auto-imported `queryCollection` resolves to the app-side
+// 1-arg composable in the IDE's type context; the server variant takes (event, collection).
+import { queryCollection } from '@nuxt/content/server'
 import { Feed } from 'feed'
 import { baseData, homePage, navbarData } from '~/data'
 import { minimarkToHtml } from '../utils/minimark-html'

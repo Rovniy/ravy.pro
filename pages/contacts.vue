@@ -53,7 +53,6 @@ defineOgImage('Blog', {
   title: contactsPage.og.title,
   description: contactsPage.og.description,
   link: contactsPage.og.link,
-  url: contactsPage.og.link,
 })
 </script>
 
@@ -62,7 +61,7 @@ defineOgImage('Blog', {
     <div class="container max-w-md mx-auto px-6 py-14">
       <div class="flex flex-col items-center text-center">
         <NuxtImg
-          src="/andrei_rovnyi.webp"
+          src="/photos/a_rovnyi_small.webp"
           :alt="baseData.me.name"
           width="96"
           height="96"

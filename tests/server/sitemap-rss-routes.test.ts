@@ -1,20 +1,33 @@
 import { describe, expect, it, vi } from 'vitest'
 
+// The routes import `queryCollection` explicitly from '@nuxt/content/server'
+// (the auto-import's type context resolves to the 1-arg app composable), so
+// the module is mocked here — importing the real one pulls in the Nitro-only
+// '#content/manifest' alias, which doesn't exist in the vitest environment.
+const mocks = vi.hoisted(() => ({
+  rows: [] as Record<string, unknown>[],
+}))
+
+vi.mock('@nuxt/content/server', () => ({
+  queryCollection: () => ({
+    where: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    order: vi.fn().mockReturnThis(),
+    all: vi.fn(async () => mocks.rows),
+  }),
+}))
+
 describe('sitemap and rss routes', () => {
   it('sitemap includes tools and categories', async () => {
-    vi.stubGlobal('queryCollection', () => ({
-      where: vi.fn().mockReturnThis(),
-      select: vi.fn().mockReturnThis(),
-      all: vi.fn(async () => ([
-        {
-          path: '/blogs/a',
-          title: 'A',
-          description: 'D',
-          tags: ['nuxt'],
-          createdAt: '2026-01-01',
-        },
-      ])),
-    }))
+    mocks.rows = [
+      {
+        path: '/blogs/a',
+        title: 'A',
+        description: 'D',
+        tags: ['nuxt'],
+        createdAt: '2026-01-01',
+      },
+    ]
     const { default: handler } = await import('~~/server/api/__sitemap__/urls')
     const urls = await handler({} as never)
     const locs = urls.map((x: { loc: string }) => x.loc)
@@ -28,18 +41,14 @@ describe('sitemap and rss routes', () => {
   it('rss route returns xml', async () => {
     const setHeaderMock = vi.fn()
     vi.stubGlobal('setHeader', setHeaderMock)
-    vi.stubGlobal('queryCollection', () => ({
-      where: vi.fn().mockReturnThis(),
-      order: vi.fn().mockReturnThis(),
-      all: vi.fn(async () => ([
-        {
-          path: '/blogs/a',
-          title: 'A',
-          description: 'Desc',
-          createdAt: '2026-01-01',
-        },
-      ])),
-    }))
+    mocks.rows = [
+      {
+        path: '/blogs/a',
+        title: 'A',
+        description: 'Desc',
+        createdAt: '2026-01-01',
+      },
+    ]
     const { default: handler } = await import('~~/server/routes/rss.xml')
     const xml = await handler({} as never)
     expect(setHeaderMock).toHaveBeenCalled()

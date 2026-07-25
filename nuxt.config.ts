@@ -1,4 +1,7 @@
 import { createRequire } from 'node:module'
+// Explicit import: Nuxt 4's split tsconfig (project references) leaves the
+// `defineNuxtConfig` global unresolved in some IDE type contexts.
+import { defineNuxtConfig } from 'nuxt/config'
 import { navbarData, seoData } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
 

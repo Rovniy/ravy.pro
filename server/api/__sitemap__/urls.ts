@@ -1,7 +1,9 @@
+// Explicit import: the auto-imported `queryCollection` resolves to the app-side
+// 1-arg composable in the IDE's type context; the server variant takes (event, collection).
+import { queryCollection } from '@nuxt/content/server'
 import { publicServices, seoData } from '~/data'
 
 export default defineEventHandler(async (event) => {
-  // @ts-expect-error — Nitro auto-import types only declare the 1-arg overload; event is required at runtime
   const posts = await queryCollection(event, 'content')
     .where('path', 'LIKE', '/blogs/%')
     .where('published', '=', true)
