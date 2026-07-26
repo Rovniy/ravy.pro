@@ -18,7 +18,7 @@ useHead({
   ],
 })
 
-const { state, isAuthed, signIn, signOut } = useAuth()
+const { state, isAuthed, signIn } = useAuth()
 const { hasTool } = useAccess()
 const canUse = computed(() => hasTool('shortify'))
 const { listLinks, createLink } = useShortify()
@@ -178,9 +178,11 @@ if (import.meta.client) {
       <p class="text-sm text-red-700/80 dark:text-red-300/80 mb-4">
         Your account <strong>{{ state.user?.email }}</strong> is not authorized to use this service.
       </p>
-      <button type="button" class="text-sm underline hover:cursor-pointer" @click="signOut">
-        Sign out
-      </button>
+      <!-- Signing out happens on /account, so the escape hatch points there
+           rather than stranding someone on a page they can't use. -->
+      <NuxtLink to="/account" class="text-sm underline hover:no-underline">
+        Sign out from your account settings
+      </NuxtLink>
     </div>
 
     <!-- Admin -->

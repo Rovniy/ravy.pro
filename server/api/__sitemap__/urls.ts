@@ -2,6 +2,7 @@
 // 1-arg composable in the IDE's type context; the server variant takes (event, collection).
 import { queryCollection } from '@nuxt/content/server'
 import { publicServices, seoData } from '~/data'
+import { OFFERING_PAGE_PATHS } from '~/data/offerings'
 
 export default defineEventHandler(async (event) => {
   const posts = await queryCollection(event, 'content')
@@ -20,6 +21,14 @@ export default defineEventHandler(async (event) => {
   // tools live in GATED_TOOLS (data/services.ts) and are intentionally excluded.
   for (const tool of publicServices) {
     urls.push({ loc: tool.path })
+  }
+
+  // Commercial offerings: the index, plus any offering with its own landing
+  // page. Derived from OFFERING_PAGE_PATHS, so promoting an offering to a full
+  // page needs no edit here.
+  urls.push({ loc: '/services' })
+  for (const path of OFFERING_PAGE_PATHS) {
+    urls.push({ loc: path })
   }
 
   const tagSet = new Set<string>()

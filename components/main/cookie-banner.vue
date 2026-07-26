@@ -43,9 +43,13 @@ function onToggleAds(granted: boolean) {
       role="dialog"
       aria-modal="false"
       aria-labelledby="cookie-banner-title"
-      class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 sm:px-6 sm:pb-6"
+      class="fixed inset-x-0 bottom-0 z-50 px-4 pb-4 sm:px-6 sm:pb-6 pointer-events-none"
     >
-      <div class="mx-auto max-w-4xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg shadow-2xl shadow-black/20">
+      <!-- The wrapper spans the full width but the card is centred at max-w-4xl,
+           so without pointer-events-none the invisible remainder swallows clicks
+           on whatever sits in that bottom strip (footer links, the theme
+           switch). Only the card itself should be interactive. -->
+      <div class="pointer-events-auto mx-auto max-w-4xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg shadow-2xl shadow-black/20">
         <div class="p-5 sm:p-6">
           <div class="flex items-start gap-3">
             <Icon name="mdi:cookie-outline" size="24" aria-hidden="true" class="shrink-0 text-accent-500 mt-0.5" />

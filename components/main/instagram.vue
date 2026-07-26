@@ -3,17 +3,20 @@ import { socialNetworks } from '~/data'
 
 const profileUrl = socialNetworks.find(s => s.name === 'Instagram')?.href || 'https://www.instagram.com/ravygo'
 
+// `published` belongs in the WHERE, not in a post-fetch filter: applied after
+// `.limit(8)` an unpublished photo would still consume one of the eight slots and
+// the 12-cell bento would stop closing.
 const { data } = await useAsyncData('instagram-recent', () =>
   queryCollection('content')
     .where('path', 'LIKE', '/instagram/%')
-    .select('path', 'image', 'alt', 'caption', 'published', 'postedAt')
+    .where('published', '=', true)
+    .select('path', 'image', 'alt', 'caption', 'postedAt')
     .order('postedAt', 'DESC')
     .limit(8)
     .all())
 
 const photos = computed(() => {
   return (data.value || [])
-    .filter(item => item.published)
     .map(item => ({
       id: item.path,
       image: item.image || '/not-found.png',

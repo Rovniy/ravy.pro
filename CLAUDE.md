@@ -41,7 +41,7 @@ Standard Nuxt file-based routing in `/pages/`. Key non-obvious routes:
 
 ### Tools
 
-Interactive client-side utilities live in `/pages/tools/`. They are registered in `/data/index.ts` (`publicServices` for public tools, `adminServices` for gated ones) and emit structured data via the `useToolPageSchema()` composable (`/composables/useStructuredData.ts`), which sets SEO meta, JSON-LD `SoftwareApplication`/FAQ schema, and the OG image.
+Interactive client-side utilities live in `/pages/tools/`. They are registered in `/data/index.ts` as `publicServices`; access-gated tools live separately in `/data/services.ts` as `GATED_TOOLS`. Tools emit structured data via the `useToolPageSchema()` composable (`/composables/useStructuredData.ts`), which sets SEO meta, JSON-LD `SoftwareApplication`/FAQ schema, and the OG image.
 
 - **QR Code Generator** (`/tools/qr-code-generator`, public): builds styled QR codes with `qr-code-styling`. Customizable size, margin, dot/corner styles, colors, and a center logo image; renders to canvas and downloads as PNG. Prefills from a `?data=` query param.
 - **Credit Card Generator** (`/tools/credit-card-generator`, public): generates Luhn-valid **test** card numbers and validates/detects brands. Core logic is in `/utils/credit-card.ts` (`generateCard`, `validateCardNumber`, `getBrandSpec`, `BRAND_SPECS`), unit-tested in `/tests/unit/credit-card.util.test.ts`. Supports Visa, MasterCard, Amex, Discover, JCB, Diners Club, UnionPay, plus optional custom BIN prefixes. Numbers are fake test data — not real cards.
@@ -60,6 +60,23 @@ Where things live:
 - UI: `<ToolRatingWidget>` (tool page header; async, skeleton while loading, hides on error) and `<ToolRatingBadge :summary>` (compact star badge on homepage cards)
 
 **Rule when adding a new tool — ratings are automatic once the tool id exists.** Register the id once in `data/analytics.ts` (add to `TOOL_IDS` and map the route in `toolIdFromPath()` — the same registration every tool already needs for analytics). That alone makes `GET /api/ratings` seed and serve the tool, puts the rating badge on its homepage card (via `publicServices` + `toolIdFromPath`), and adds `aggregateRating` to its JSON-LD through `useToolPageSchema()`. The only markup step: drop `<ToolRatingWidget />` into the page header (no props — it resolves the tool id from the route; wrap the header as `flex items-start justify-between gap-x-6` with the text in a `min-w-0 flex-1` div, copy any existing tool page). Votes emit the `tool_rate` analytics event automatically.
+
+### Services
+
+Paid, human-delivered offerings live under `/pages/services/`. Three registries exist and must not be confused:
+
+| Registry | File | What it is |
+|---|---|---|
+| `publicServices` | `data/index.ts` | Self-serve **tools**. Drives the Tools dropdown, the homepage grid, and rating badges. |
+| `GATED_TOOLS` | `data/services.ts` | Per-user access-granted tools. Rendered inside the **Tools** dropdown below a divider with a "private" chip, client-side only, so non-grantees never see them. There is no separate nav item for them, and no "Manage access" link — admins use `/account` → Access tab. |
+| `OFFERINGS` | `data/offerings.ts` | Commercial **offerings** shown on `/services`. |
+
+- `/services` (`pages/services/index.vue`) lists every offering. An offering's `cta` is either `{ kind: 'page', path }` (full landing page, rendered as the wide card) or `{ kind: 'inquiry' }` (links to `/services?service=<id>#inquiry`, which preselects the form).
+- **Promoting an offering to a full page:** flip `cta.kind` to `'page'` in `data/offerings.ts`, add the page file, and add it to `nitro.prerender.routes` + `routeRules`. The sitemap and prerender list read `OFFERING_PAGE_PATHS`, so neither needs editing.
+- **Mentorship & job placement** (`/services/mentorship`) is the one full page. Copy lives in `data/mentorship.ts`; the seven-section payment terms are markdown at `content/docs/mentorship-terms.md`, served by the existing `/docs/**` route so they stay Tina-editable. Copy invariants are enforced by `tests/unit/offerings.test.ts` — pricing reads currency-free wherever it leads, ₽ appears only in the labelled example and the case cards, and the section counts the JSON-LD advertises are asserted.
+- **Schema:** `useServicePageSchema()` and `useServicesIndexSchema()` in `/composables/useStructuredData.ts` emit `Service` + `Offer` (no `price` — see the comment on `serviceNode`) plus `FAQPage`/`HowTo`. **Never add `aggregateRating` or `Review` to a service** — there is no rating source and the cases are anonymised.
+- **Lead capture:** `POST /api/services/inquiry` → Resend, via `sendServiceInquiryEmail()` in `server/utils/email.ts` (the one send helper there that is *not* best-effort — it throws so the route can return a 502 the sender sees). Validation is shared between the form and the route by `utils/inquiry.ts`. A filled `company` honeypot returns **200 with nothing sent**, so a bot can't tell it was caught. Rate limit: 3/hour per IP on the `service-inquiry` bucket.
+- **Analytics:** `service_view` fires from `useServicePageSchema` when `serviceId` is passed; `service_inquiry` fires on a successful submit with `{ service, location }`.
 
 ### Analytics
 

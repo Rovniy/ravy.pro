@@ -43,7 +43,12 @@
       "PowerShell(npm run *)",
       "PowerShell(npx nuxi typecheck 2>&1 | Select-Object -First 80)",
       "Bash(npm audit *)",
-      "Bash(grep -E \"google-credentials|serviceAccount|\\\\.env\\(\\\\.|$\\)\")"
+      "Bash(grep -E \"google-credentials|serviceAccount|\\\\.env\\(\\\\.|$\\)\")",
+      "Read(//c/Users/OS/AppData/Local/Temp/claude/**)",
+      "Bash(curl -sL --max-time 45 -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\" https://start-v-it.ru)",
+      "Bash(python *)",
+      "Bash(PYTHONIOENCODING=utf-8 python *)",
+      "Bash(curl *)"
     ]
   }
 }

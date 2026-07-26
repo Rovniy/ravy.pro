@@ -7,6 +7,8 @@ const title = homePage.meta.title
 const description = homePage.meta.description
 const suggestToolText = encodeURIComponent('Hi Andrei! I want to suggest a new tool for your public Tools page:')
 const suggestToolUrl = `https://t.me/xploitravy?text=${suggestToolText}`
+// Telegram fallback on the closing CTA, for people who'd rather not use a form.
+const suggestServiceText = encodeURIComponent('Hi Andrei! I\'d like to talk about working together. Here\'s what I need:')
 
 useHead({
   title,
@@ -58,7 +60,18 @@ function ratingFor(path: string) {
 <template>
   <div class="text-slate-600 dark:text-slate-300">
     <MainHero />
+
+    <!--
+      Services lead the page: they are the commercial offer, so they sit directly
+      under the hero and outside the container as a full-bleed band. Tools follow
+      the writing further down — they're free self-serve utilities, valuable but
+      not what the page is for.
+    -->
+    <MainServices />
+
     <div class="container max-w-5xl mx-auto">
+      <LazyMainRecent />
+
       <section class="py-14 px-6">
         <UiSectionHeader eyebrow="Utilities" title="Tools" />
 
@@ -161,9 +174,26 @@ function ratingFor(path: string) {
           </span>
         </a>
       </section>
-      <LazyMainRecent />
+
+      <!--
+        The page's one closing ask, placed before Instagram so it isn't stranded
+        behind a wall of photos. Distinct `location` from the Services band so the
+        two can be compared — if this strip converts nothing, cut it.
+      -->
+      <section class="pt-4 pb-14 px-6">
+        <ServiceCtaBlock
+          label="Something to build, review, or ship?"
+          note="Tell me what you need and I'll reply within 24 hours — mentorship, consulting, or engineering help for your team."
+          anchor="/services#inquiry"
+          icon="mdi:arrow-right"
+          :telegram-href="`https://t.me/xploitravy?text=${suggestServiceText}`"
+          location="home_closing"
+        />
+      </section>
+
+      <!-- Personality, not a section: every link here leaves the site, so it
+           sits after the ask as a sign-off. -->
       <LazyMainInstagram />
-      <LazyMainTrending />
     </div>
   </div>
 </template>

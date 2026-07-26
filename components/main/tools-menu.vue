@@ -2,7 +2,14 @@
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAccess } from '~/composables/useAccess'
 import { publicServices } from '~/data'
+
+// Access-granted tools live in this same menu rather than a separate nav item:
+// there is normally at most one of them, and a whole top-level dropdown for a
+// single private link was more chrome than it earned. They render below a
+// divider with a "private" chip so it stays obvious they aren't public.
+const { accessibleServices } = useAccess()
 
 const isOpen = ref(false)
 const menuRef = ref<HTMLElement | null>(null)
@@ -68,6 +75,24 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
           <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400" />
           {{ item.name }}
         </NuxtLink>
+
+        <!-- Resolved client-side from the user's access grants, so only the
+             people who have them ever see these rows. -->
+        <ClientOnly>
+          <NuxtLink
+            v-for="(item, i) in accessibleServices"
+            :key="item.path"
+            :to="item.path"
+            class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3"
+            :class="i === 0 ? 'mt-1 pt-2.5 border-t border-slate-200 dark:border-slate-800' : ''"
+          >
+            <Icon :name="item.icon" size="1.4em" aria-hidden="true" />
+            <span class="flex-1">{{ item.name }}</span>
+            <span class="font-spacemono text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              private
+            </span>
+          </NuxtLink>
+        </ClientOnly>
       </div>
     </Transition>
   </div>

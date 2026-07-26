@@ -1,7 +1,8 @@
 // Single source of truth for access-gated tools. Adding a new gated tool here
-// makes it appear automatically in the admin access manager (checkboxes), in the
-// header "Services" menu (for users who have it), and it just needs a matching
-// `requireToolAccess(event, key)` guard on its API + an in-page access check.
+// makes it appear automatically in the admin access manager (checkboxes) and in
+// the header "Tools" menu for users who have it (below a divider, tagged
+// "private"); it just needs a matching `requireToolAccess(event, key)` guard on
+// its API + an in-page access check.
 
 export interface GatedTool {
   key: string

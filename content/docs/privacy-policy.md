@@ -49,7 +49,7 @@ For any privacy-related inquiry — including access, correction, deletion, or a
 ## 2. Information We Collect
 
 ### 2.1 Information you provide
-- **Contact form / email**: name, email address, and the content of your message.
+- **Contact form / email**: name, email address or messenger handle, the service you are asking about, and the content of your message.
 - **Authentication (admin tools only)**: when you sign in to administrative features (e.g., Shortify), we receive your Google account email, display name, profile picture URL, and a unique user ID (UID) issued by Firebase Authentication.
 
 ### 2.2 Information collected automatically

@@ -2,12 +2,12 @@
 import { onClickOutside, useEventListener } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import { useAccess } from '~/composables/useAccess'
-import { useAuth } from '~/composables/useAuth'
 import { navbarData, publicServices } from '~/data'
 
 const { y } = useWindowScroll()
-const { state, isAuthed, signIn, signOut } = useAuth()
-const { accessibleServices, isAdmin } = useAccess()
+// Auth lives entirely in <MainAuthButton>; the header only needs access grants
+// to decide whether to list private tools.
+const { accessibleServices } = useAccess()
 
 const scrolled = computed(() => y.value > 20)
 
@@ -71,26 +71,6 @@ const { track } = useAnalytics()
 function navClick(item: string, location: 'header' | 'mobile' = 'header') {
   track('nav_click', { nav_item: item, location })
 }
-
-const userInitial = computed(() => {
-  const email = state.value.user?.email ?? ''
-  return email ? email?.at(0)?.toUpperCase() : '?'
-})
-
-async function onSignIn() {
-  try {
-    await signIn()
-    track('login', { method: 'firebase' })
-  }
-  catch (e) {
-    console.error('Sign-in failed', e)
-  }
-}
-
-async function onSignOut() {
-  track('logout', { method: 'firebase' })
-  await signOut()
-}
 </script>
 
 <template>
@@ -119,74 +99,23 @@ async function onSignOut() {
             Blogs
           </NuxtLink>
         </li>
-        <li v-if="isAuthed" class="hidden lg:block">
-          <NuxtLink to="/account" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('account')">
-            Account
-          </NuxtLink>
-        </li>
         <li class="hidden lg:block">
           <MainToolsMenu />
         </li>
-        <li class="hidden lg:block" title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about')">
-            About me
+        <li class="hidden lg:block">
+          <NuxtLink to="/services" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('services')">
+            Services
           </NuxtLink>
         </li>
-        <ClientOnly>
-          <li v-if="accessibleServices.length" class="hidden lg:block">
-            <MainServicesMenu />
-          </li>
-        </ClientOnly>
-        <li class="flex items-center">
-          <UiThemeToggle
-            icon-size="20"
-            class="inline-flex items-center justify-center w-11 h-11 -my-2"
-          />
+        <li class="hidden lg:block" title="About Me">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about')">
+            About
+          </NuxtLink>
         </li>
-        <li class="flex items-center gap-2">
-          <ClientOnly>
-            <button
-              v-if="state.ready && !isAuthed"
-              type="button"
-              title="Sign in"
-              class="inline-flex items-center gap-1.5 hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer text-sm lg:text-base font-medium"
-              @click="onSignIn"
-            >
-              <span class="hidden lg:inline">Sign in</span>
-              <Icon name="mdi:login" size="22" aria-hidden="true" class="lg:hidden" />
-            </button>
-            <span
-              v-else-if="state.ready && isAuthed"
-              class="inline-flex items-center gap-2"
-            >
-              <span
-                v-if="state.user?.photoURL"
-                :title="state.user.email ?? ''"
-                class="inline-block w-6 h-6 rounded-full overflow-hidden bg-slate-300 dark:bg-slate-700"
-              >
-                <img :src="state.user.photoURL" alt="avatar" class="w-full h-full object-cover">
-              </span>
-              <span
-                v-else
-                :title="state.user?.email ?? ''"
-                class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-300 dark:bg-slate-700 text-xs font-bold uppercase"
-              >
-                {{ userInitial }}
-              </span>
-              <button
-                type="button"
-                title="Sign out"
-                class="hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer text-sm lg:text-base font-medium flex items-center gap-2"
-                @click="onSignOut"
-              >
-                <span class="hidden lg:inline">Sign out</span>
-                <Icon name="mdi:logout" size="18" aria-hidden="true" class="lg:hidden" />
-              </button>
-            </span>
-            <template #fallback>
-              <Icon name="svg-spinners:180-ring" size="18" aria-hidden="true" />
-            </template>
-          </ClientOnly>
+        <!-- Theme switching lives in the floating control at the bottom-left
+             (layouts/default.vue) so the header carries navigation only. -->
+        <li class="flex items-center">
+          <MainAuthButton />
         </li>
         <li class="lg:hidden">
           <button
@@ -227,6 +156,11 @@ async function onSignOut() {
             </NuxtLink>
           </li>
           <li>
+            <NuxtLink to="/services" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('services', 'mobile')">
+              Services
+            </NuxtLink>
+          </li>
+          <li>
             <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about', 'mobile')">
               About me
             </NuxtLink>
@@ -239,31 +173,19 @@ async function onSignOut() {
               {{ item.name }}
             </NuxtLink>
           </li>
+          <!-- Access-granted tools sit in the same Tools group, resolved
+               client-side so only the people who have them see the rows.
+               Access management itself lives on /account (Access tab). -->
           <ClientOnly>
-            <template v-if="accessibleServices.length">
-              <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Services
-              </li>
-              <li v-for="item in accessibleServices" :key="item.path">
-                <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400">
-                  {{ item.name }}
-                </NuxtLink>
-              </li>
-              <li v-if="isAdmin">
-                <NuxtLink to="/account?tab=access" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400">
-                  Manage access
-                </NuxtLink>
-              </li>
-            </template>
+            <li v-for="item in accessibleServices" :key="item.path">
+              <NuxtLink :to="item.path" class="nav-link flex items-center gap-2 py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick(item.path, 'mobile')">
+                {{ item.name }}
+                <span class="font-spacemono text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">private</span>
+              </NuxtLink>
+            </li>
           </ClientOnly>
-          <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
-            Personal
-          </li>
-          <li v-if="isAuthed">
-            <NuxtLink to="/account" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('account', 'mobile')">
-              Account
-            </NuxtLink>
-          </li>
+          <!-- No Account row here: the avatar in the bar above is the single
+               entry point into the account, on mobile as well as desktop. -->
         </ul>
       </nav>
     </Transition>

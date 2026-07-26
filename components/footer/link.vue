@@ -2,6 +2,7 @@
 const links: { to: string, text: string }[] = [
   { to: '/', text: 'Home' },
   { to: '/blogs', text: 'Blogs' },
+  { to: '/services', text: 'Services' },
   { to: '/categories', text: 'Categories' },
   { to: '/about', text: 'About Me' },
 ]

@@ -41,8 +41,18 @@ const { trackCta } = useAnalytics()
             </template>
           </p>
 
-          <p class="hero-step delay-3 max-w-xl text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-10">
+          <p class="hero-step delay-3 max-w-xl text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
             {{ hero.tagline }}
+          </p>
+
+          <!-- Evidence directly before the ask. Shares delay-3 with the tagline
+               so the entrance sequence needs no renumbering — the two read as one
+               text layer anyway. -->
+          <p class="hero-step delay-3 max-w-xl font-spacemono text-xs md:text-sm text-slate-500 dark:text-slate-400 mb-10 flex flex-wrap items-center gap-x-2 gap-y-1">
+            <template v-for="(fact, i) in hero.proof" :key="fact">
+              <span>{{ fact }}</span>
+              <span v-if="i < hero.proof.length - 1" class="text-accent-500/70 dark:text-accent-400/70" aria-hidden="true">·</span>
+            </template>
           </p>
 
           <div class="hero-step delay-4 flex flex-wrap gap-4 mb-10">

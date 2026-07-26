@@ -38,6 +38,15 @@ describe('sitemap and rss routes', () => {
     expect(locs).toContain('/categories/nuxt')
   })
 
+  it('sitemap includes the services index and every offering with its own page', async () => {
+    mocks.rows = []
+    const { default: handler } = await import('~~/server/api/__sitemap__/urls')
+    const urls = await handler({} as never)
+    const locs = urls.map((x: { loc: string }) => x.loc)
+    expect(locs).toContain('/services')
+    expect(locs).toContain('/services/mentorship')
+  })
+
   it('rss route returns xml', async () => {
     const setHeaderMock = vi.fn()
     vi.stubGlobal('setHeader', setHeaderMock)

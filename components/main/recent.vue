@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { homePage } from '~/data'
-
+// No useHead here: pages/index.vue owns the page title and description. A
+// section component writing them is how the home page ended up with two
+// components setting the same title.
 const { data } = await useAsyncData('recent-post', () =>
   queryCollection('content')
     .where('path', 'LIKE', '/blogs/%')
@@ -26,11 +27,6 @@ const formattedData = computed(() => {
       trending: articles.trending || false,
     }
   })
-})
-
-useHead({
-  title: homePage.meta.title,
-  meta: [{ name: 'description', content: homePage.meta.description }],
 })
 </script>
 

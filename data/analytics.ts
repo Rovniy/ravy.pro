@@ -35,6 +35,12 @@ export const EVENTS = {
   LOGIN: 'login',
   LOGOUT: 'logout',
 
+  // Services funnel (/services, /services/*). `service_view` mirrors
+  // `tool_view` so the view→inquiry rate survives a slug change;
+  // `service_inquiry` is the conversion and carries { service, location }.
+  SERVICE_VIEW: 'service_view',
+  SERVICE_INQUIRY: 'service_inquiry',
+
   // Paid funnels (Steam AI disclosure, Contract scanner)
   SCAN_START: 'scan_start',
   SCAN_SUBMIT: 'scan_submit',

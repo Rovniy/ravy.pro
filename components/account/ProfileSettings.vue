@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useAuth } from '~/composables/useAuth'
 import { useAuthedFetch } from '~/composables/useAuthedFetch'
 
-const { state, signOut } = useAuth()
+// Identity and sign-out both live in the /account page header, not per-tab.
 const { authedFetch } = useAuthedFetch()
 
 const language = ref<'en' | 'ru'>('en')
@@ -50,12 +49,8 @@ onMounted(load)
 </script>
 
 <template>
+  <!-- The signed-in email is shown once, in the page header above the tabs. -->
   <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 space-y-5">
-    <div>
-      <span class="block text-sm text-slate-500 dark:text-slate-400">Signed in as</span>
-      <span class="font-medium text-slate-900 dark:text-slate-100">{{ state.user?.email }}</span>
-    </div>
-
     <div>
       <label class="block mb-1 text-sm font-medium text-slate-900 dark:text-slate-100">Response language</label>
       <select
@@ -84,9 +79,6 @@ onMounted(load)
       >
         <Icon :name="saving ? 'svg-spinners:180-ring' : 'mdi:content-save-outline'" size="16" />
         {{ saving ? 'Saving…' : 'Save settings' }}
-      </button>
-      <button type="button" class="text-sm underline hover:cursor-pointer" @click="signOut">
-        Sign out
       </button>
     </div>
 

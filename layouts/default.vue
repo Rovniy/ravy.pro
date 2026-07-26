@@ -46,6 +46,25 @@ useHead({
 
     <LazyMainFooter />
 
+    <!--
+      Floating theme switch, bottom-left. Out of the header so navigation is the
+      only thing there, but present on every page. `z-40` keeps it under the
+      cookie banner (z-50) — on a first visit the banner simply covers it, and
+      once consent is decided the banner never returns.
+      The ClientOnly fallback inside UiThemeToggle renders the same circle during
+      SSR, so nothing shifts when colour mode resolves on the client.
+    -->
+    <!--
+      On mobile the circle shrinks to 32px and tucks closer to the corner, but the
+      `after:-inset-1.5` pseudo-element keeps the tappable area at 44px — the
+      control gets visually smaller without becoming harder to hit, which is the
+      opposite trade-off to simply scaling it down.
+    -->
+    <UiThemeToggle
+      icon-size="18"
+      class="theme-fab fixed bottom-3 left-3 sm:bottom-6 sm:left-6 z-40 print:hidden inline-flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full border border-slate-200/70 dark:border-white/10 bg-white/70 dark:bg-slate-950/70 sm:bg-white/80 sm:dark:bg-slate-950/80 backdrop-blur-xl shadow-md sm:shadow-lg shadow-slate-950/5 dark:shadow-black/20 hover:border-accent-400 dark:hover:border-accent-500/60 after:content-[''] after:absolute after:-inset-1.5 sm:after:hidden"
+    />
+
     <ClientOnly>
       <LazyMainCookieBanner />
     </ClientOnly>
@@ -64,5 +83,24 @@ useHead({
    past the viewport and causes horizontal scroll on mobile. */
 .gd-container > * {
   min-width: 0;
+}
+</style>
+
+<!--
+  Unscoped on purpose: UiThemeToggle sets `inheritAttrs: false` and re-binds
+  $attrs onto its button, so the scoped-style data attribute never reaches it and
+  a `:deep()` rule can't match. `.theme-fab` exists on exactly one element, so a
+  global selector is safe here. Same pattern as the unscoped blocks in
+  components/main/header.vue and tools-menu.vue.
+-->
+<style>
+/* The icon size is a prop that lands as an inline font-size, so it can't be made
+   responsive from the template — hence !important to beat it. Only mobile is
+   overridden: the prop still carries the desktop size, so if this rule ever
+   stops applying, desktop is untouched and only mobile grows back. */
+@media (max-width: 639px) {
+  .theme-fab .iconify {
+    font-size: 16px !important;
+  }
 }
 </style>

@@ -119,22 +119,30 @@ export const page404 = {
 }
 
 export const homePage = {
-  content: {
-    title: 'Welcome to my personal blog!',
-    description: 'Notes on engineering, game development, automation, and the craft of building digital products that ship.',
-  },
   hero: {
     greeting: 'Welcome! I\'m',
     name: baseData.me.name,
     roles: ['Software Developer', 'Engineering Leader', 'Founder', 'Game Systems Architect'],
     tagline: 'I build production-ready web platforms, game systems, automation tools, and AI-assisted workflows — from early product ideas to shipped systems used by real people.',
-    ctaPrimary: { label: 'Read the Blog', href: '/blogs' },
+    // Evidence, not another claim. Everything here is already stated on /about.
+    // Deliberately NOT the numbers from data/mentorship.ts (`50+ placed`,
+    // `~10 wks median`) — those are mentorship-specific and would be false as
+    // general facts about the work.
+    // Kept short on purpose: five items wrapped to four mono lines at 375px,
+    // which reads as a paragraph rather than a row of facts. The full history
+    // is on /about, which the secondary CTA points at.
+    proof: ['15+ years in production', 'Gaijin', 'Wargaming', 'VKontakte'],
+    // Primary points at the commercial offer: it's what the page leads with.
+    // Secondary keeps /about — it's the recruiter's next click and the only
+    // route to the experience and shipped work. The blog has the nav and its
+    // own section below.
+    ctaPrimary: { label: 'Work with me', href: '/services' },
     ctaSecondary: { label: 'About me', href: '/about' },
     status: 'Open to new projects',
   },
   meta: {
-    title: 'Andrei Rovnyi — Blog, Tools, and Engineering Notes',
-    description: 'Personal site of Andrei Rovnyi: engineering blog, public tools like QR Code Generator, and software delivery insights from real projects.',
+    title: 'Andrei Rovnyi — Mentorship, Consulting & Engineering Help',
+    description: 'Work with Andrei Rovnyi: one-on-one IT mentorship paid after you are hired, product and engineering consulting, and part-time engineering help for your team. Plus an engineering blog and free developer tools.',
   },
   og: {
     headline: 'Greetings 👋',
@@ -175,6 +183,42 @@ export const linksPage = {
     title: 'Links',
     description: 'Curated resources for software development, game engines, AI tools, and learning platforms.',
     link: '/open_graph/pages/links.png',
+  },
+}
+
+// Commercial offerings live in `OFFERINGS` (data/offerings.ts); long-form
+// landing copy lives in its own module (data/mentorship.ts). Only nav + SEO
+// copy belongs here, same as every other page blob in this file.
+export const servicesPage = {
+  content: {
+    eyebrow: 'Working together',
+    title: 'Services',
+    lede: 'Ways to work with me directly — all of them starting with a conversation rather than a checkout. I do this alongside a full-time engineering job, so I take on a small number of things at a time, and say no to the rest quickly.',
+    facts: ['Reply within 24 h', 'Telegram or email', 'Remote, any time zone'],
+    pickNote: 'Not sure which one? Describe the situation below and I\'ll tell you which of these it is — or that it\'s none of them.',
+  },
+  meta: {
+    title: 'Services',
+    description: 'Work directly with Andrei Rovnyi: one-on-one IT mentorship paid only after you are hired, product and engineering consulting, and part-time engineering support for your team.',
+  },
+  og: {
+    headline: 'Services',
+    title: 'Working together',
+    description: 'IT mentorship paid after you are hired, product and engineering consulting, and part-time engineering support for teams.',
+    link: '/open_graph/og_image_default.png',
+  },
+}
+
+export const mentorshipPage = {
+  meta: {
+    title: 'Mentorship & Job Placement in IT',
+    description: 'One-on-one mentorship to your first IT job offer: a personal plan, weekly calls, mock interviews, and referrals. Nothing upfront — you pay 20% of your gross salary for six months after you start work, and nothing at all if you never get an offer.',
+  },
+  og: {
+    headline: 'Mentorship',
+    title: 'Until you have an offer',
+    description: '0 upfront. 20% of your gross salary for six months after you start work. No offer, no payment.',
+    link: '/open_graph/og_image_default.png',
   },
 }
 

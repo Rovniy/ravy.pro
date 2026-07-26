@@ -54,6 +54,8 @@ function personNode() {
       'TypeScript',
       'Node.js',
       'Game Development',
+      'Technical Mentorship',
+      'Technical Hiring and Interviewing',
     ],
     'sameAs': socialNetworks
       .filter(s => /^https?:\/\//.test(s.href))
@@ -102,6 +104,126 @@ function breadcrumbNode(items: Array<{ name: string, url: string }>) {
       'name': it.name,
       'item': it.url,
     })),
+  }
+}
+
+// Shared SEO head for standalone landing pages (tools, services). Extracted so
+// the tool and service composables can't drift on canonical/OG/Twitter tags.
+function pageHead(opts: {
+  url: string
+  title: string
+  description: string
+  image: string
+  robots?: string
+}) {
+  useHead({
+    title: opts.title,
+    link: [
+      { rel: 'canonical', href: opts.url },
+    ],
+    meta: [
+      { name: 'description', content: opts.description },
+      { name: 'robots', content: opts.robots || 'index, follow' },
+      { property: 'og:title', content: opts.title },
+      { property: 'og:description', content: opts.description },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: opts.url },
+      { property: 'og:image', content: opts.image },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: opts.title },
+      { name: 'twitter:description', content: opts.description },
+      { name: 'twitter:image', content: opts.image },
+    ],
+  })
+}
+
+function faqPageNode(url: string, items: Array<{ question: string, answer: string }>) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${url}#faq`,
+    'mainEntity': items.map(item => ({
+      '@type': 'Question',
+      'name': item.question,
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': item.answer,
+      },
+    })),
+  }
+}
+
+function howToNode(url: string, opts: {
+  name: string
+  description?: string
+  steps: Array<{ name: string, text: string }>
+}) {
+  return {
+    '@type': 'HowTo',
+    '@id': `${url}#howto`,
+    'name': opts.name,
+    ...(opts.description ? { description: opts.description } : {}),
+    'step': opts.steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      'position': i + 1,
+      'name': s.name,
+      'text': s.text,
+    })),
+  }
+}
+
+// A paid, human-delivered offering.
+//
+// `Service`, not `ProfessionalService`: the latter is a LocalBusiness subtype and
+// invites address/opening-hours/geo expectations that don't apply to remote
+// one-on-one work, so emitting it without an address is a weaker claim.
+//
+// The Offer deliberately carries a `description` and NO `price`/`priceCurrency`.
+// `price: '0'` is true of the upfront cost but Google would render "Free", which
+// misrepresents an income-share arrangement. This forgoes price rich results on
+// purpose rather than shipping a misleading number.
+//
+// Do NOT add `aggregateRating` or `Review` here. There is no rating source for
+// services (the tool ratings come from real Firestore counters), the case studies
+// are anonymised and unverifiable, and self-serving review markup on a commercial
+// page is a manual-action risk for the whole domain.
+function serviceNode(opts: {
+  url: string
+  name: string
+  serviceType: string
+  description: string
+  areaServed?: string[]
+  availableLanguage?: string[]
+  audience?: string
+  offerDescription?: string
+}) {
+  return {
+    '@type': 'Service',
+    '@id': `${opts.url}#service`,
+    'name': opts.name,
+    'serviceType': opts.serviceType,
+    'description': opts.description,
+    'url': opts.url,
+    'provider': { '@id': ID.person },
+    'brand': { '@id': ID.organization },
+    ...(opts.areaServed?.length
+      ? { areaServed: opts.areaServed.map(name => ({ '@type': 'Country', name })) }
+      : {}),
+    ...(opts.availableLanguage?.length
+      ? { availableLanguage: opts.availableLanguage.map(name => ({ '@type': 'Language', name })) }
+      : {}),
+    ...(opts.audience
+      ? { audience: { '@type': 'Audience', 'audienceType': opts.audience } }
+      : {}),
+    ...(opts.offerDescription
+      ? {
+          offers: {
+            '@type': 'Offer',
+            'description': opts.offerDescription,
+            'availability': 'https://schema.org/InStock',
+            'url': opts.url,
+          },
+        }
+      : {}),
   }
 }
 
@@ -462,31 +584,142 @@ export function useGenericPageSchema(opts: {
   ])
 }
 
+// The /services index. Sets no head — the page uses a plain useHead, same as
+// /contacts. `ItemList` rather than `OfferCatalog`: the latter expects priced
+// Offers, and two of the three offerings have no published price.
+export function useServicesIndexSchema(opts: {
+  description: string
+  items: Array<{ path: string, name: string }>
+}) {
+  const url = `${SITE}/services`
+  const crumb = breadcrumbNode([
+    { name: 'Home', url: `${SITE}/` },
+    { name: 'Services', url },
+  ])
+  injectGraph([
+    websiteNode(),
+    organizationNode(),
+    personNode(),
+    webPageNode({
+      url,
+      name: 'Services',
+      description: opts.description,
+      type: 'CollectionPage',
+      breadcrumbId: crumb['@id'],
+    }),
+    itemListNode({
+      id: `${url}#list`,
+      name: 'Services',
+      items: opts.items.map(i => ({ url: absUrl(i.path), name: i.name })),
+    }),
+    crumb,
+  ])
+}
+
+export interface ServicePageSchemaOpts {
+  path: string
+  title: string
+  description: string
+  ogImage?: string
+  robots?: string
+  /** Service node. */
+  serviceName: string
+  serviceType: string
+  serviceDescription?: string
+  areaServed?: string[]
+  availableLanguage?: string[]
+  audience?: string
+  offerDescription?: string
+  /** The program steps, emitted as HowTo. */
+  program?: { name: string, description?: string, steps: Array<{ name: string, text: string }> }
+  faq?: Array<{ question: string, answer: string }>
+  datePublished?: string
+  dateModified?: string
+  /** An OfferingId — fires `service_view` on mount, mirroring tool_view. */
+  serviceId?: string
+}
+
+// Rule for new service pages: use this instead of a custom useHead block, and
+// don't route them through useToolPageSchema — a service is not a
+// SoftwareApplication and has no rating source.
+export function useServicePageSchema(opts: ServicePageSchemaOpts) {
+  const url = absUrl(opts.path)
+
+  pageHead({
+    url,
+    title: opts.title,
+    description: opts.description,
+    image: opts.ogImage ? absUrl(opts.ogImage) : absUrl('/og-image.webp'),
+    robots: opts.robots,
+  })
+
+  const crumb = breadcrumbNode([
+    { name: 'Home', url: `${SITE}/` },
+    { name: 'Services', url: `${SITE}/services` },
+    { name: opts.title, url },
+  ])
+
+  const tail: unknown[] = []
+
+  if (opts.faq?.length)
+    tail.push(faqPageNode(url, opts.faq))
+
+  // HowTo for the program steps, not a second ItemList — emitting both for the
+  // same six steps is duplicate modelling.
+  if (opts.program?.steps.length)
+    tail.push(howToNode(url, opts.program))
+
+  // Plain array, not a getter: nothing here resolves asynchronously.
+  injectGraph([
+    websiteNode(),
+    organizationNode(),
+    personNode(),
+    webPageNode({
+      url,
+      name: opts.title,
+      description: opts.description,
+      type: 'WebPage',
+      breadcrumbId: crumb['@id'],
+      image: opts.ogImage || '/og-image.webp',
+      datePublished: opts.datePublished,
+      dateModified: opts.dateModified,
+      primaryEntityId: `${url}#service`,
+    }),
+    serviceNode({
+      url,
+      name: opts.serviceName,
+      serviceType: opts.serviceType,
+      description: opts.serviceDescription || opts.description,
+      areaServed: opts.areaServed,
+      availableLanguage: opts.availableLanguage,
+      audience: opts.audience,
+      offerDescription: opts.offerDescription,
+    }),
+    crumb,
+    ...tail,
+  ])
+
+  // Funnel entry, mirroring the tool_view hook below. Client-only via onMounted.
+  if (opts.serviceId) {
+    const serviceId = opts.serviceId
+    onMounted(() => {
+      useAnalytics().track(EVENTS.SERVICE_VIEW, { service: serviceId })
+    })
+  }
+}
+
 // Rule for new tool pages:
 // use this helper instead of custom useHead blocks to keep metadata/schema
 // formatting consistent with existing pages in this codebase.
 export function useToolPageSchema(opts: ToolPageSchemaOpts) {
   const url = absUrl(opts.path)
-  const image = opts.ogImage ? absUrl(opts.ogImage) : absUrl('/og-image.webp')
 
-  useHead({
+  pageHead({
+    url,
     title: opts.title,
-    link: [
-      { rel: 'canonical', href: url },
-    ],
-    meta: [
-      { name: 'description', content: opts.description },
-      { name: 'robots', content: opts.robots || 'index, follow' },
-      { property: 'og:title', content: opts.title },
-      { property: 'og:description', content: opts.description },
-      { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: url },
-      { property: 'og:image', content: image },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: opts.title },
-      { name: 'twitter:description', content: opts.description },
-      { name: 'twitter:image', content: image },
-    ],
+    description: opts.description,
+    image: opts.ogImage ? absUrl(opts.ogImage) : absUrl('/og-image.webp'),
+    robots: opts.robots,
   })
 
   const crumb = breadcrumbNode([
@@ -546,35 +779,11 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
 
   const tail: unknown[] = []
 
-  if (opts.faq?.length) {
-    tail.push({
-      '@type': 'FAQPage',
-      '@id': `${url}#faq`,
-      'mainEntity': opts.faq.map(item => ({
-        '@type': 'Question',
-        'name': item.question,
-        'acceptedAnswer': {
-          '@type': 'Answer',
-          'text': item.answer,
-        },
-      })),
-    })
-  }
+  if (opts.faq?.length)
+    tail.push(faqPageNode(url, opts.faq))
 
-  if (opts.howTo?.steps.length) {
-    tail.push({
-      '@type': 'HowTo',
-      '@id': `${url}#howto`,
-      'name': opts.howTo.name,
-      ...(opts.howTo.description ? { description: opts.howTo.description } : {}),
-      'step': opts.howTo.steps.map((s, i) => ({
-        '@type': 'HowToStep',
-        'position': i + 1,
-        'name': s.name,
-        'text': s.text,
-      })),
-    })
-  }
+  if (opts.howTo?.steps.length)
+    tail.push(howToNode(url, opts.howTo))
 
   injectGraph(() => [
     websiteNode(),

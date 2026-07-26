@@ -23,10 +23,31 @@ useHead({
   ],
 })
 
-const { state, isAuthed, signIn } = useAuth()
+const { state, isAuthed, signIn, signOut } = useAuth()
 const { hasTool, isAdmin } = useAccess()
+const { track } = useAnalytics()
 const route = useRoute()
 const router = useRouter()
+
+// Signing out lives here rather than in the header: it's the one place the
+// action belongs, and it keeps the header's auth control to a single element.
+// Redirect home afterwards — this page is private, so lingering on it would
+// just swap the tabs for a sign-in prompt.
+const signingOut = ref(false)
+
+async function onSignOut() {
+  if (signingOut.value)
+    return
+  signingOut.value = true
+  try {
+    track('logout', { method: 'firebase' })
+    await signOut()
+    await router.push('/')
+  }
+  finally {
+    signingOut.value = false
+  }
+}
 
 const tabs = computed(() => {
   const list = [
@@ -63,9 +84,27 @@ function selectTab(key: string) {
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-      Account
-    </h1>
+    <div class="flex items-start justify-between gap-x-6">
+      <div class="min-w-0 flex-1">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          Account
+        </h1>
+        <p v-if="state.ready && isAuthed && state.user?.email" class="mt-1.5 font-spacemono text-xs text-slate-500 dark:text-slate-400 truncate">
+          {{ state.user.email }}
+        </p>
+      </div>
+
+      <button
+        v-if="state.ready && isAuthed"
+        type="button"
+        :disabled="signingOut"
+        class="shrink-0 inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 disabled:opacity-50 hover:cursor-pointer transition-colors"
+        @click="onSignOut"
+      >
+        <Icon :name="signingOut ? 'svg-spinners:180-ring' : 'mdi:logout'" size="16" aria-hidden="true" />
+        {{ signingOut ? 'Signing out…' : 'Sign out' }}
+      </button>
+    </div>
 
     <div v-if="!state.ready" class="mt-6 text-slate-500">
       Loading…

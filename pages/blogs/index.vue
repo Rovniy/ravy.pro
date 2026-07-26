@@ -21,6 +21,14 @@ const activeTag = computed({
   set: (val: string) => router.push({ query: { ...route.query, tag: val || undefined, page: undefined } }),
 })
 
+// "Popular" used to be a Trending Posts block on the home page, where it
+// duplicated Recent Posts. It belongs here: this is where someone is already
+// choosing what to read. Backed by the manual `trending` frontmatter flag.
+const onlyPopular = computed({
+  get: () => route.query.popular === '1',
+  set: (val: boolean) => router.push({ query: { ...route.query, popular: val ? '1' : undefined, page: undefined } }),
+})
+
 const { track } = useAnalytics()
 
 function toggleTag(tag: string) {
@@ -28,6 +36,13 @@ function toggleTag(tag: string) {
   activeTag.value = next
   if (next)
     track(EVENTS.BLOG_FILTER, { tag: next })
+}
+
+function togglePopular() {
+  const next = !onlyPopular.value
+  onlyPopular.value = next
+  if (next)
+    track(EVENTS.BLOG_FILTER, { tag: 'popular' })
 }
 
 const pageNumber = computed({
@@ -91,7 +106,10 @@ const searchData = computed(() => {
       || post.description.toLocaleLowerCase().includes(q)
       || post.tags.some(t => t.toLocaleLowerCase().includes(q))
     const matchesTag = !tag || post.tags.includes(tag)
-    return matchesQuery && matchesTag
+    // `post.published` is checked here on purpose: this page's query doesn't
+    // filter it, so a bare `trending` test would newly surface drafts.
+    const matchesPopular = !onlyPopular.value || (post.trending && post.published)
+    return matchesQuery && matchesTag && matchesPopular
   })
 })
 
@@ -160,7 +178,7 @@ defineOgImage('Blog', {
       </div>
 
       <p
-        v-if="searchTest.trim() || activeTag"
+        v-if="searchTest.trim() || activeTag || onlyPopular"
         class="mt-2.5 font-spacemono text-xs text-slate-500 dark:text-slate-400"
         aria-live="polite"
       >
@@ -168,16 +186,29 @@ defineOgImage('Blog', {
       </p>
 
       <div v-if="allTags.length" class="mt-3 flex flex-wrap gap-2">
+        <!-- "All" means all, so it clears the popular filter too. -->
         <button
           type="button"
-          :aria-pressed="!activeTag"
+          :aria-pressed="!activeTag && !onlyPopular"
           class="rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
-          :class="!activeTag
+          :class="!activeTag && !onlyPopular
             ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
             : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
-          @click="activeTag = ''"
+          @click="router.push({ query: { ...route.query, tag: undefined, popular: undefined, page: undefined } })"
         >
           All
+        </button>
+        <button
+          type="button"
+          :aria-pressed="onlyPopular"
+          class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
+          :class="onlyPopular
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
+            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+          @click="togglePopular"
+        >
+          <Icon name="mdi:fire" size="14" aria-hidden="true" />
+          Popular
         </button>
         <button
           v-for="t in allTags"

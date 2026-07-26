@@ -212,6 +212,8 @@ export default defineNuxtConfig({
         '/categories',
         '/about',
         '/links',
+        '/services',
+        '/services/mentorship',
         '/tools/qr-code-generator',
         '/tools/contract-red-flag-scanner',
         '/tools/credit-card-generator',
@@ -232,6 +234,9 @@ export default defineNuxtConfig({
       '/about': { headers: CONTENT_CACHE_HEADERS },
       '/links': { headers: CONTENT_CACHE_HEADERS },
       '/contacts': { headers: CONTENT_CACHE_HEADERS },
+      '/services': { prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/services/mentorship': { prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/api/services/**': { prerender: false },
       '/blogs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/categories/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/docs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
@@ -360,11 +365,25 @@ export default defineNuxtConfig({
         'mdi:account-key-outline',
         'mdi:content-copy',
         'mdi:history',
+        // Auth control + /account sign-out (the latter is a ternary binding).
+        'mdi:login',
+        'mdi:logout',
         // Home "Tools" cards (per-tool icons bound dynamically).
         'mdi:qrcode',
         'mdi:credit-card-outline',
         'mdi:shield-key-outline',
         'mdi:image-sync-outline',
+        // Services (/services, /services/mentorship) — bound dynamically via
+        // OFFERINGS[].icon; the rest are literal but sit outside the scanner's
+        // reach in the inquiry form's conditional branches.
+        'mdi:account-star-outline',
+        'mdi:compass-outline',
+        'mdi:account-group-outline',
+        'mdi:arrow-down',
+        'mdi:check',
+        'mdi:check-circle-outline',
+        'mdi:send-outline',
+        'mdi:open-in-new',
         // Contacts page (/contacts) — icons bound dynamically via contactLinks.
         'mdi:mail-outline',
         'bi:whatsapp',
