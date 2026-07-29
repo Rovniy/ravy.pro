@@ -7,6 +7,8 @@ const props = defineProps<{
   priceLabel: string
   loading?: boolean
   error?: string
+  // Admin: the pack is unlocked without payment, so the offer drops the price.
+  free?: boolean
 }>()
 
 defineEmits<{ (e: 'unlock'): void }>()
@@ -40,12 +42,14 @@ const previewCards = computed(() => {
     <div class="grid grid-cols-1 md:grid-cols-2">
       <!-- Offer -->
       <div class="p-6 sm:p-7 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
-        <span class="eyebrow">Unlock your disclosure pack</span>
+        <span class="eyebrow">{{ free ? 'Admin access · no payment' : 'Unlock your disclosure pack' }}</span>
         <h3 class="mt-2 text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Ship the form with confidence
         </h3>
         <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
-          Your verdict above is free. Unlock the ready-to-paste texts and the defensible paper trail.
+          {{ free
+            ? 'You’re signed in as the admin — generate the full pack for free, no checkout.'
+            : 'Your verdict above is free. Unlock the ready-to-paste texts and the defensible paper trail.' }}
         </p>
 
         <ul class="mt-5 space-y-2.5">
@@ -62,10 +66,15 @@ const previewCards = computed(() => {
           @click="$emit('unlock')"
         >
           <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:lock-open-variant'" class="w-5 h-5" />
-          {{ loading ? 'Opening secure checkout…' : `Unlock for ${priceLabel}` }}
+          <template v-if="free">
+            {{ loading ? 'Generating your pack…' : 'Generate my pack — free' }}
+          </template>
+          <template v-else>
+            {{ loading ? 'Opening secure checkout…' : `Unlock for ${priceLabel}` }}
+          </template>
         </button>
         <p class="mt-2.5 text-center text-xs font-spacemono text-slate-400">
-          One-time · per game · secure Stripe checkout
+          {{ free ? 'Admin · free · no charge' : 'One-time · per game · secure Stripe checkout' }}
         </p>
         <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400 text-center">
           {{ error }}
@@ -87,7 +96,7 @@ const previewCards = computed(() => {
         <div class="absolute inset-0 grid place-items-center">
           <span class="flex items-center gap-1.5 rounded-full bg-slate-900/80 dark:bg-white/90 text-white dark:text-slate-900 px-3 py-1 text-xs font-spacemono">
             <Icon name="mdi:lock" class="w-3.5 h-3.5" />
-            Unlocks after checkout
+            {{ free ? 'Unlocks instantly' : 'Unlocks after checkout' }}
           </span>
         </div>
       </div>

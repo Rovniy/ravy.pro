@@ -1,14 +1,18 @@
 import { createError, getRequestURL, readBody } from 'h3'
 import { seoData } from '~~/data'
-import { getOptionalUser } from '~~/server/utils/access'
+import { getOptionalUser, isAdminEmail } from '~~/server/utils/access'
 import { assertRateLimit, clientIdentity } from '~~/server/utils/rate-limit'
-import { steamAuditCollection } from '~~/server/utils/steam-audit'
+import { compAndGenerate, steamAuditCollection } from '~~/server/utils/steam-audit'
+import { signAccessToken } from '~~/server/utils/steam-audit-token'
 import { getStripe } from '~~/server/utils/stripe'
 import { classifyAudit, normalizeAnswers } from '~~/utils/steam-ai-ruleset'
 
 // Creates the audit record (awaiting_payment) and a Stripe Checkout Session.
 // The classification is recomputed server-side from the submitted answers —
 // the client-sent verdict is never trusted.
+//
+// The signed-in admin skips Stripe entirely: the audit is comped and generation
+// starts immediately, and the response points straight at the result page.
 export default defineEventHandler(async (event) => {
   // Public endpoint: throttle by IP to prevent Stripe-session / Firestore spam.
   await assertRateLimit({ bucket: 'steam-checkout', identity: clientIdentity(event), limit: 10, windowMs: 60 * 60 * 1000 })
@@ -18,8 +22,13 @@ export default defineEventHandler(async (event) => {
   const classification = classifyAudit(answers)
   const gameName = typeof body?.gameName === 'string' ? body.gameName.trim().slice(0, 120) : ''
 
+  // Link the audit to the buyer when signed in, so it appears in their account
+  // history. Anonymous purchases stay accessible via the emailed link.
+  const owner = await getOptionalUser(event)
+  const isAdmin = !!owner && isAdminEmail(event, owner.email)
+
   const config = useRuntimeConfig(event)
-  if (!config.stripeSecretKey || !config.stripePriceId)
+  if (!isAdmin && (!config.stripeSecretKey || !config.stripePriceId))
     throw createError({ statusCode: 500, statusMessage: 'Payments are not configured' })
 
   const now = new Date().toISOString()
@@ -37,15 +46,28 @@ export default defineEventHandler(async (event) => {
   if (gameName)
     doc.gameName = gameName
 
-  // Link the audit to the buyer when signed in, so it appears in their account
-  // history. Anonymous purchases stay accessible via the emailed link.
-  const owner = await getOptionalUser(event)
   if (owner) {
     doc.ownerUid = owner.uid
     doc.ownerEmail = owner.email
   }
 
   await docRef.set(doc)
+
+  // Admin: unlock for free and start generating right away. The result page is
+  // reached with a signed token, exactly like a paid run.
+  if (isAdmin) {
+    await compAndGenerate(docRef.id, owner?.email, {
+      openaiApiKey: config.openaiApiKey,
+      resendApiKey: config.resendApiKey,
+      tokenSecret: config.steamAuditTokenSecret,
+    })
+    const token = await signAccessToken(docRef.id, config.steamAuditTokenSecret)
+    return {
+      id: docRef.id,
+      url: `/tools/steam-ai-disclosure/result/${docRef.id}?t=${token}`,
+      free: true,
+    }
+  }
 
   // In prod the request arrives on the internal Cloud Run host, so deriving the
   // origin from the request would send Stripe to the locked-down run.app URL

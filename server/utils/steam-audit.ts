@@ -7,6 +7,7 @@ import type {
 } from '~~/types/steam-audit'
 import { getQuery } from 'h3'
 import { seoData } from '~~/data'
+import { getOptionalUser, isAdminEmail } from './access'
 import { sendResultEmail } from './email'
 import { getDb } from './firebase-admin'
 import { reportServerError, reportServerEvent } from './report-error'
@@ -228,14 +229,14 @@ export async function processSteamAuditGeneration(
   }
 }
 
-// Called from the Stripe webhook. Idempotent: only the first transition out of
-// `awaiting_payment` triggers generation. Returns quickly — generation + email
-// run fire-and-forget so the webhook can ack Stripe fast.
-export async function markPaidAndGenerate(
+// Moves an audit out of `awaiting_payment` and kicks off generation. Idempotent:
+// only the first transition triggers work. Returns quickly — generation + email
+// run fire-and-forget so the Stripe webhook can ack fast.
+async function unlockAndGenerate(
   id: string,
   email: string | undefined,
-  sessionId: string,
   config: GenerationConfig,
+  extra: Record<string, unknown>,
 ): Promise<void> {
   const ref = steamAuditCollection().doc(id)
   const snap = await ref.get()
@@ -247,11 +248,10 @@ export async function markPaidAndGenerate(
 
   const patch: Record<string, unknown> = {
     status: 'paid',
-    stripeSessionId: sessionId,
     paidAt: nowIso(),
     progress: 10,
-    step: 'Payment received',
     updatedAt: nowIso(),
+    ...extra,
   }
   if (email)
     patch.customerEmail = email.toLowerCase()
@@ -259,6 +259,33 @@ export async function markPaidAndGenerate(
 
   void runGenerationThenEmail(id, config).catch((err) => {
     reportServerError(err, { kind: 'steam-generation' })
+  })
+}
+
+// Called from the Stripe webhook (the source of truth for payment).
+export async function markPaidAndGenerate(
+  id: string,
+  email: string | undefined,
+  sessionId: string,
+  config: GenerationConfig,
+): Promise<void> {
+  await unlockAndGenerate(id, email, config, {
+    stripeSessionId: sessionId,
+    step: 'Payment received',
+  })
+}
+
+// Complimentary unlock — no Stripe session, no charge. Used for the signed-in
+// admin, who runs the tool for free. `comped: true` keeps the record honest so
+// free runs are never mistaken for revenue.
+export async function compAndGenerate(
+  id: string,
+  email: string | undefined,
+  config: GenerationConfig,
+): Promise<void> {
+  await unlockAndGenerate(id, email, config, {
+    comped: true,
+    step: 'Admin access — no payment required',
   })
 }
 
@@ -291,8 +318,14 @@ export async function getAuditRecord(id: string): Promise<SteamAuditRecord | nul
   return snap.data() as SteamAuditRecord
 }
 
-// Shared authorisation for the result + retry endpoints: a valid signed token
-// (?t=) OR a Stripe checkout session_id that paid for this exact audit.
+// Shared authorisation for the result + retry endpoints. Grants access when:
+//  - a valid signed token (?t=) names this audit (only minted post-unlock), OR
+//  - a Stripe checkout session_id paid for this exact audit, OR
+//  - the caller is the signed-in admin (always free), OR
+//  - the caller owns this audit AND it is already unlocked (paid or comped).
+//
+// Ownership alone does NOT grant access — otherwise any signed-in user could read
+// their own pack for free and the paywall would be moot.
 export async function authorizeAuditAccess(event: H3Event, id: string): Promise<boolean> {
   const config = useRuntimeConfig(event)
   const query = getQuery(event)
@@ -311,6 +344,15 @@ export async function authorizeAuditAccess(event: H3Event, id: string): Promise<
     catch {
       // invalid session — not authorized
     }
+  }
+
+  const user = await getOptionalUser(event)
+  if (user) {
+    if (isAdminEmail(event, user.email))
+      return true
+    const record = await getAuditRecord(id)
+    if (record && record.status !== 'awaiting_payment' && record.ownerUid && record.ownerUid === user.uid)
+      return true
   }
 
   return false

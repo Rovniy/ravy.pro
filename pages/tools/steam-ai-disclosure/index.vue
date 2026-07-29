@@ -8,7 +8,7 @@ import { classifyAudit, RULESET_VERSION } from '~/utils/steam-ai-ruleset'
 definePageMeta({ layout: 'default' })
 
 const config = useRuntimeConfig()
-const { getIdToken } = useAuth()
+const { getIdToken, isAdmin } = useAuth()
 
 const PUBLISHED = '2026-06-23'
 const UPDATED = '2026-06-26'
@@ -78,7 +78,9 @@ function onComplete(result: SteamAuditAnswers) {
   stage.value = 'verdict'
   track(EVENTS.SCAN_SUBMIT, { tool_id: TOOL_ID })
   track(EVENTS.SCAN_RESULT, { tool_id: TOOL_ID })
-  track(EVENTS.PAYWALL_VIEW, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
+  // The admin never faces the paywall — keep their free runs out of the funnel.
+  if (!isAdmin.value)
+    track(EVENTS.PAYWALL_VIEW, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
   if (import.meta.client)
     window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -94,19 +96,24 @@ async function startCheckout() {
     return
   checkoutLoading.value = true
   checkoutError.value = ''
-  track(EVENTS.BEGIN_CHECKOUT, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
+  if (!isAdmin.value)
+    track(EVENTS.BEGIN_CHECKOUT, { tool_id: TOOL_ID, value: Number(priceUsd.value), currency: 'USD' })
   try {
     // Attach the Firebase token when signed in so the audit is linked to the
     // account (shows up in /account history). Anonymous checkout still works.
     const token = await getIdToken().catch(() => null)
-    const res = await $fetch<{ url: string }>('/api/steam-audit/checkout', {
+    const res = await $fetch<{ url: string, free?: boolean }>('/api/steam-audit/checkout', {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       body: { answers: answers.value, gameName: gameName.value.trim() || undefined },
     })
     if (!res?.url)
       throw new Error('Checkout could not be created')
-    window.location.href = res.url
+    // The admin path returns an internal result URL (no Stripe hop) — route to it.
+    if (res.free)
+      await navigateTo(res.url)
+    else
+      window.location.href = res.url
   }
   catch (e: unknown) {
     checkoutError.value = e instanceof Error ? e.message : 'Failed to open checkout. Please try again.'
@@ -204,6 +211,7 @@ async function startCheckout() {
         :price-label="priceLabel"
         :loading="checkoutLoading"
         :error="checkoutError"
+        :free="isAdmin"
         @unlock="startCheckout"
       />
     </div>

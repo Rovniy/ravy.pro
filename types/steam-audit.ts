@@ -57,6 +57,8 @@ export interface SteamAuditRecord {
   ownerUid?: string
   ownerEmail?: string
   stripeSessionId?: string
+  // Unlocked without payment (admin run) — never counts as revenue.
+  comped?: boolean
   shareId?: string
   error?: string
   createdAt: string

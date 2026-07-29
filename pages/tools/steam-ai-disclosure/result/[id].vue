@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SteamAuditPublicRecord } from '~/types/steam-audit'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({ layout: 'default' })
 
@@ -11,6 +12,7 @@ useHead({
 
 const config = useRuntimeConfig()
 const route = useRoute()
+const { getIdToken, state: authState } = useAuth()
 const id = computed(() => String(route.params.id || ''))
 
 const priceUsd = computed(() => {
@@ -53,6 +55,35 @@ function buildQuery(): Record<string, string> {
   return q
 }
 
+// Sent alongside the query so a signed-in admin (free access) or the audit's
+// owner can open their pack from a link that carries no token.
+async function authHeaders(): Promise<Record<string, string> | undefined> {
+  const token = await getIdToken().catch(() => null)
+  return token ? { Authorization: `Bearer ${token}` } : undefined
+}
+
+// Firebase resolves the session asynchronously; on a token-less URL the Bearer
+// header is the only way in, so give auth a moment to settle before asking.
+function waitForAuth(timeoutMs = 3000): Promise<void> {
+  if (authState.value.ready)
+    return Promise.resolve()
+  return new Promise((resolve) => {
+    let timer: ReturnType<typeof setTimeout> | null = null
+    const stop = watch(() => authState.value.ready, (ready) => {
+      if (!ready)
+        return
+      if (timer)
+        clearTimeout(timer)
+      stop()
+      resolve()
+    })
+    timer = setTimeout(() => {
+      stop()
+      resolve()
+    }, timeoutMs)
+  })
+}
+
 function stopPolling() {
   if (timer) {
     clearInterval(timer)
@@ -75,6 +106,7 @@ async function fetchState() {
   try {
     const res = await $fetch<{ record: SteamAuditPublicRecord, token: string }>(`/api/steam-audit/${id.value}`, {
       query: buildQuery(),
+      headers: await authHeaders(),
     })
     record.value = res.record
     token.value = res.token
@@ -115,7 +147,11 @@ async function retry() {
     return
   retrying.value = true
   try {
-    await $fetch(`/api/steam-audit/${id.value}/retry`, { method: 'POST', query: buildQuery() })
+    await $fetch(`/api/steam-audit/${id.value}/retry`, {
+      method: 'POST',
+      query: buildQuery(),
+      headers: await authHeaders(),
+    })
     pollCount.value = 0
     if (record.value)
       record.value = { ...record.value, status: 'processing', step: 'Retrying…', progress: 20 }
@@ -151,7 +187,11 @@ watch(isError, (failed) => {
   }
 })
 
-onMounted(() => {
+onMounted(async () => {
+  // No token in the URL → the Bearer header is the only way in (admin or owner),
+  // so let Firebase settle before the first request.
+  if (!route.query.t && !route.query.session_id)
+    await waitForAuth()
   void fetchState()
   startPolling()
 })
