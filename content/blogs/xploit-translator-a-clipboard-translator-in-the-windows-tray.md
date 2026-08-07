@@ -19,6 +19,8 @@ XPLOIT Translator is a tray widget for Windows. You copy anything, press Ctrl+Al
 
 It is Tauri 2: a Rust backend with a Vue 3 webview. Almost everything interesting sits on the Rust side, which is the short version of this whole post.
 
+<iframe width="720" height="405" src="https://www.youtube.com/embed/YXh629Osrf8?si=gIaL6Q-S3VO94i0F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Why an overlay and not a taskbar control
 
 My first idea was a small field in the taskbar itself. That is not possible on Windows 11. The Windows 10 toolbars and deskbands are gone with no public replacement, so anything living in the taskbar today is a shell hack I do not want to ship.
