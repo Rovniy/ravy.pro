@@ -220,6 +220,7 @@ export default defineNuxtConfig({
         '/tools/jwt-decoder',
         '/tools/image-converter',
         '/tools/steam-ai-disclosure',
+        '/tools/xploit-translator',
       ],
     },
     routeRules: {
@@ -253,6 +254,10 @@ export default defineNuxtConfig({
       '/tools/image-converter': { ssr: true, prerender: true },
       '/tools/steam-ai-disclosure': { ssr: true, prerender: true },
       '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
+      '/tools/xploit-translator': { ssr: true, prerender: true },
+      // The release lookup must stay live — prerendering it would freeze the
+      // version the download card shows at build time.
+      '/api/xploit-translator/**': { prerender: false },
       '/api/steam-audit/**': { prerender: false },
       '/s/**': { prerender: false },
       // Static asset cache hints. Firebase App Hosting CDN honours these
@@ -373,6 +378,7 @@ export default defineNuxtConfig({
         'mdi:credit-card-outline',
         'mdi:shield-key-outline',
         'mdi:image-sync-outline',
+        'mdi:translate',
         // Services (/services, /services/mentorship) — bound dynamically via
         // OFFERINGS[].icon; the rest are literal but sit outside the scanner's
         // reach in the inquiry form's conditional branches.

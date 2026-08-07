@@ -62,6 +62,7 @@ export const TOOL_IDS = [
   'image-converter',
   'steam-ai-disclosure',
   'contract-scanner',
+  'xploit-translator',
 ] as const
 
 export type ToolId = (typeof TOOL_IDS)[number]
@@ -70,7 +71,9 @@ export type ToolId = (typeof TOOL_IDS)[number]
 // Used by the auto `tool_view` hook in useToolPageSchema(). Returns null for
 // non-tool / unknown paths so callers can skip emitting.
 export function toolIdFromPath(path: string): ToolId | null {
-  const p = path.split('?')[0].replace(/\/+$/, '')
+  const p = path?.split('?')?.at(0)?.replace(/\/+$/, '')
+  if (!p)
+    return null
   if (p.includes('/tools/qr-code-generator'))
     return 'qr-code'
   if (p.includes('/tools/credit-card-generator'))
@@ -83,5 +86,7 @@ export function toolIdFromPath(path: string): ToolId | null {
     return 'steam-ai-disclosure'
   if (p.includes('/tools/contract-red-flag-scanner'))
     return 'contract-scanner'
+  if (p.includes('/tools/xploit-translator'))
+    return 'xploit-translator'
   return null
 }

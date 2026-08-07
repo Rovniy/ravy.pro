@@ -1,3 +1,5 @@
+import type { MaybeRefOrGetter } from 'vue'
+import { toValue } from 'vue'
 import { useAnalytics } from '~/composables/useAnalytics'
 import { useToolRatings } from '~/composables/useToolRating'
 import { baseData, footerData, seoData, socialNetworks } from '~/data'
@@ -341,6 +343,15 @@ interface ToolPageSchemaOpts {
   appName?: string
   appDescription?: string
   appIsFree?: boolean
+  /** Defaults to 'Web'. Set it for tools that are a download rather than a page. */
+  appOperatingSystem?: string
+  /** Where the binary comes from — only meaningful for downloadable apps. */
+  appDownloadUrl?: string
+  /**
+   * Ref/getter tolerated: the app node is rebuilt reactively, so a version
+   * resolved by a client-side fetch still lands in the graph.
+   */
+  appSoftwareVersion?: MaybeRefOrGetter<string | undefined>
   offer?: { price: string, currency?: string }
   datePublished?: string
   dateModified?: string
@@ -736,14 +747,17 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
   // lands — the graph getter below re-runs on that state change.
   const appNode = () => {
     const summary = toolId ? ratings.value?.[toolId] : null
+    const version = toValue(opts.appSoftwareVersion)
     return {
       '@type': 'SoftwareApplication',
       '@id': `${url}#app`,
       'name': opts.appName || opts.title,
       'applicationCategory': opts.appCategory || 'UtilitiesApplication',
-      'operatingSystem': 'Web',
+      'operatingSystem': opts.appOperatingSystem || 'Web',
       'url': url,
       'description': opts.appDescription || opts.description,
+      ...(version ? { softwareVersion: version } : {}),
+      ...(opts.appDownloadUrl ? { downloadUrl: opts.appDownloadUrl } : {}),
       ...(opts.offer
         ? {
             offers: {
