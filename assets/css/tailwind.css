@@ -230,6 +230,24 @@
   .prose tbody tr { border-bottom-color: var(--color-slate-200); }
   .dark .prose tbody tr { border-bottom-color: var(--color-slate-800); }
 
+  /*
+   * Embeds. Markdown posts carry hand-written <iframe>s (YouTube), and those
+   * come with width/height attributes baked in — `width="720"` blows straight
+   * past a 375px column and gives the whole page a horizontal scrollbar. The
+   * attributes are only presentational hints, so CSS wins: every prose embed
+   * is the column width at 16:9. A non-video embed that needs another shape
+   * can override with an inline `style="aspect-ratio: …"`.
+   */
+  .prose iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 0.75rem;
+  }
+
   /* Divider + images. */
   .prose hr { border-color: var(--color-slate-200); }
   .dark .prose hr { border-color: var(--color-slate-800); }

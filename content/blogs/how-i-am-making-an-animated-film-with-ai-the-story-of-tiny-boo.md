@@ -14,7 +14,7 @@ lastUpdated: 2026-06-10T07:59:56.270Z
 
 ## YouTube video
 
-<iframe width="100%" height="100%" class="aspect-video" src="https://www.youtube.com/embed/vb_KBaEMviA?si=ghgyvvoCXNR6WR5C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/vb_KBaEMviA?si=ghgyvvoCXNR6WR5C" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 I had wanted to make something of my own — something warm — for a long time. I already had a game, *Tiny Boo: Homecoming*, about a tiny creature named Boo trying to find his way home through the great big, magical world of Lumia. And at some point it clicked: what if I brought this world to life not only in a game, but in an animated film? Launch a YouTube channel where Boo lives out small stories — and make it not with a studio of twenty people, but together with an AI.
 

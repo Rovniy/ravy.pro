@@ -19,7 +19,7 @@ XPLOIT Translator is a tray widget for Windows. You copy anything, press Ctrl+Al
 
 It is Tauri 2: a Rust backend with a Vue 3 webview. Almost everything interesting sits on the Rust side, which is the short version of this whole post.
 
-<iframe width="720" height="405" src="https://www.youtube.com/embed/YXh629Osrf8?si=gIaL6Q-S3VO94i0F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/YXh629Osrf8?si=gIaL6Q-S3VO94i0F" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Why an overlay and not a taskbar control
 

@@ -291,7 +291,16 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     <section class="mt-14">
       <span class="eyebrow">Workshop</span>
       <div class="mt-4">
-        <iframe width="976" height="500" src="https://www.youtube.com/embed/YXh629Osrf8?si=gIaL6Q-S3VO94i0F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
+        <!-- No width/height attributes: a fixed pixel width overflows the
+             viewport on phones. The 16:9 box scales with the column instead. -->
+        <iframe
+          class="block w-full aspect-video rounded-xl border-0"
+          src="https://www.youtube.com/embed/YXh629Osrf8?si=gIaL6Q-S3VO94i0F"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        />
       </div>
     </section>
 
