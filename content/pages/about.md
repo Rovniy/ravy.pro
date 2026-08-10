@@ -45,22 +45,22 @@ I'm a software developer, engineering manager, and founder with 15 years of expe
 <div class="not-prose my-6 space-y-6 border-l-2 border-zinc-200 dark:border-zinc-800 pl-6">
   <div>
     <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2023 — now</p>
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Engineering Manager — <a href="https://gaijin.net/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Gaijin Entertainment</a></h3>
+    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">Engineering Manager — <a href="https://gaijin.net/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Gaijin Entertainment</a></p>
     <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Led UI development of <a href="https://wtmobile.com/" target="_blank" rel="noopener" class="underline decoration-zinc-400/40 hover:text-sky-500">War Thunder Mobile</a> from development through worldwide launch, plus the web services around the game. Work in the ecosystems of <em>War Thunder</em>, <em>Crossout</em>, <em>Active Matter</em>, and <em>Star Wrath</em>.</p>
   </div>
   <div>
     <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2020 — 2022</p>
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">CTO &amp; Founder — <a href="https://elopub.com" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">ELOPUB</a></h3>
+    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">CTO &amp; Founder — <a href="https://elopub.com" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">ELOPUB</a></p>
     <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Built an esports platform for fully automated CS:GO tournaments from scratch into a $10M-valued company with investors from three countries. Led a team of 40+ across development, design, QA, and marketing; ran zero-downtime CI/CD at 10,000+ RPS peaks.</p>
   </div>
   <div>
     <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2019 — 2021</p>
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Team Lead / Lead Frontend Engineer — <a href="https://wargaming.net/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Wargaming</a>, <em>World of Tanks</em></h3>
+    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">Team Lead / Lead Frontend Engineer — <a href="https://wargaming.net/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Wargaming</a>, <em>World of Tanks</em></p>
     <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Managed 35+ engineers across four teams. Drove the game's migration to the Coherent Gameface UI engine and built its component library; shipped major features including Frontline, Marathons, Tank Football, and the WoT 10th Anniversary.</p>
   </div>
   <div>
     <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2018 — 2019</p>
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">Lead Frontend Engineer — <a href="https://www.eu-startups.com/directory/play2live/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Play2Live</a></h3>
+    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">Lead Frontend Engineer — <a href="https://www.eu-startups.com/directory/play2live/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Play2Live</a></p>
     <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Built the frontend of a streaming platform designed for hundreds of thousands of concurrent viewers: an RTC video player, live chat, and 50+ interactive widgets, served in SSR mode at tens of thousands of RPS.</p>
   </div>
   <div>

@@ -33,9 +33,18 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const displayDate = computed(() => formatBlogDate(props.createdAt))
-const isNew = computed(() => daysSince(props.createdAt) <= 30)
+
+// The New/Updated badges are relative to *now*, and every page that renders this
+// card is prerendered — so the build-time answer gets frozen into the static HTML
+// and drifts as posts age past the 30-day line. Vue then reports "Hydration
+// completed but contains mismatches" on the client. Gate both on `mounted` so the
+// server output is deterministic (no freshness badges) and the client computes the
+// truthful answer right after hydration. `trending` is a prop, so it stays in SSR.
+const mounted = useMounted()
+
+const isNew = computed(() => mounted.value && daysSince(props.createdAt) <= 30)
 const isUpdated = computed(() => {
-  if (!props.lastUpdated || !props.createdAt)
+  if (!mounted.value || !props.lastUpdated || !props.createdAt)
     return false
   const created = new Date(props.createdAt).getTime()
   const updated = new Date(props.lastUpdated).getTime()
