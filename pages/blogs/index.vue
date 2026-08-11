@@ -1,17 +1,15 @@
 <script lang="ts" setup>
+import type { BlogPostMeta } from '~/utils/blog-post'
 import { vAutoAnimate } from '@formkit/auto-animate/vue'
 import { blogsPage } from '~/data'
 import { EVENTS } from '~/data/analytics'
+import { toCardData } from '~/utils/blog-post'
 
 const route = useRoute()
 const router = useRouter()
 
-const { data } = await useAsyncData('home', () =>
-  queryCollection('content')
-    .where('path', 'LIKE', '/blogs/%')
-    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
-    .order('createdAt', 'DESC')
-    .all())
+const { data } = await useAsyncData('blog-post-list', () =>
+  $fetch<BlogPostMeta[]>('/api/blog/posts'))
 
 const elementPerPage = 5
 const searchTest = ref('')
@@ -67,23 +65,7 @@ watch(searchTest, (value) => {
   }, 800)
 })
 
-const formattedData = computed(() => {
-  return data.value?.map((articles) => {
-    return {
-      path: articles.path,
-      title: articles?.title || 'no-title available',
-      description: articles?.description || 'no-description available',
-      image: articles?.image || '/not-found.png',
-      alt: articles?.alt || articles?.description || 'no alter data available',
-      ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      createdAt: articles?.createdAt || '',
-      lastUpdated: articles?.lastUpdated || '',
-      tags: articles?.tags || [],
-      published: articles?.published || false,
-      trending: articles?.trending || false,
-    }
-  }) || []
-})
+const formattedData = computed(() => (data.value ?? []).map(toCardData))
 
 // All tags across posts, most-used first, with a count for each chip.
 const allTags = computed(() => {
@@ -106,8 +88,9 @@ const searchData = computed(() => {
       || post.description.toLocaleLowerCase().includes(q)
       || post.tags.some(t => t.toLocaleLowerCase().includes(q))
     const matchesTag = !tag || post.tags.includes(tag)
-    // `post.published` is checked here on purpose: this page's query doesn't
-    // filter it, so a bare `trending` test would newly surface drafts.
+    // `/api/blog/posts` already returns published posts only. The `published`
+    // test stays as a second lock on the one filter that would surface a draft
+    // if that ever regressed.
     const matchesPopular = !onlyPopular.value || (post.trending && post.published)
     return matchesQuery && matchesTag && matchesPopular
   })

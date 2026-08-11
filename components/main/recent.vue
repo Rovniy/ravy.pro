@@ -1,33 +1,14 @@
 <script lang="ts" setup>
+import type { BlogPostMeta } from '~/utils/blog-post'
+import { toCardData } from '~/utils/blog-post'
+
 // No useHead here: pages/index.vue owns the page title and description. A
 // section component writing them is how the home page ended up with two
 // components setting the same title.
-const { data } = await useAsyncData('recent-post', () =>
-  queryCollection('content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
-    .order('createdAt', 'DESC')
-    .limit(3)
-    .all())
+const { data } = await useAsyncData('blog-post-list', () =>
+  $fetch<BlogPostMeta[]>('/api/blog/posts'))
 
-const formattedData = computed(() => {
-  return data.value?.map((articles) => {
-    return {
-      path: articles.path,
-      title: articles.title || 'no-title available',
-      description: articles.description || 'no-description available',
-      image: articles.image || '/not-found.png',
-      alt: articles?.alt || articles?.description || 'no alter data available',
-      ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      createdAt: articles.createdAt || '',
-      lastUpdated: articles.lastUpdated || '',
-      tags: articles.tags || [],
-      published: articles.published || false,
-      trending: articles.trending || false,
-    }
-  })
-})
+const formattedData = computed(() => (data.value ?? []).slice(0, 3).map(toCardData))
 </script>
 
 <template>

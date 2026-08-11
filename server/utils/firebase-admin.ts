@@ -7,7 +7,7 @@ import { getFirestore } from 'firebase-admin/firestore'
 
 let cachedApp: App | null = null
 
-function getAdminApp(): App {
+export function getAdminApp(): App {
   if (cachedApp)
     return cachedApp
   const existing = getApps()[0]

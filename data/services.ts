@@ -17,6 +17,7 @@ export interface GatedTool {
 // get the full report for free via their `isAdmin` flag.
 export const GATED_TOOLS: GatedTool[] = [
   { key: 'shortify', name: 'Shortify', path: '/shortify', icon: 'mdi:link-variant' },
+  { key: 'studio', name: 'Studio', path: '/studio', icon: 'mdi:note-edit-outline' },
 ]
 
 export const GATED_TOOL_KEYS: string[] = GATED_TOOLS.map(t => t.key)

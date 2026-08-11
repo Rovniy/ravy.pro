@@ -125,6 +125,8 @@ function selectTab(key: string) {
     </div>
 
     <div v-else class="mt-6">
+      <AccountGrantedTools />
+
       <AccountTabs :tabs="tabs" :model-value="activeTab" @update:model-value="selectTab" />
 
       <div class="mt-6">

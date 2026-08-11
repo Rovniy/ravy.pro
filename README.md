@@ -79,52 +79,43 @@ Local development does not require a `.env` file for the public site. All site-w
 
 ## Content Management
 
-Content is stored as markdown files with YAML frontmatter in the `/content` directory:
+There are two content stores, split by how often the content changes.
+
+**Blog posts live in Firestore** and are written at [`/studio`](https://ravy.pro/studio) — no rebuild, no repo checkout, works from a phone. Everything else is still markdown with YAML frontmatter under `/content`:
 
 ```
 content/
-  blogs/     # Blog posts
   docs/      # Documentation pages (Privacy Policy, Terms of Use, etc.)
-  pages/     # Static pages (About)
+  instagram/ # Photo entries
+  pages/     # Static pages (About, Links)
 ```
 
 ### Adding a Blog Post
 
-**Option A — TinaCMS (recommended):**
-1. Run `npm run tina`
-2. Open http://localhost:3000/admin
-3. Navigate to Blog / Posts → New Post
-4. Fill in the fields and publish
+1. Sign in and open `/studio` (requires the `studio` grant — admins have it implicitly; others are granted at `/account` → Access)
+2. **New post** → title, description, tags, cover image, body
+3. **Show preview** renders through the same pipeline the published page uses
+4. Tick **Published** and **Save** — it is live within a minute
 
-**Option B — manually:**
-Create a file in `content/blogs/` with this frontmatter:
-
-```md
----
-title: 'Post Title'
-description: 'Short description'
-image: /blog-cover/filename.webp
-ogImage: /blog-opengraph/filename.png
-tags:
-  - dev
-createdAt: 2025-01-01T12:00:00.000Z
-lastUpdated: 2025-01-01T12:00:00.000Z
-published: true
-trending: false
----
-
-Content here...
-```
+Drafts are saved with **Published** off and are invisible to everyone else: the public API 404s them.
 
 ### Tags
 
-Available tags are defined as an enum in `tina/config.ts` (exported as `BlogPostTag` from `data/index.ts`). Add new tags there before using them in posts.
+Available tags are the `BlogPostTag` enum in `data/index.ts`. Add a tag there — and a display name in `categoryNames` — before using it. (`tina/config.ts` no longer defines blog collections.)
 
 ### Images
 
-Place blog images in:
-- `/public/blog-cover/` — card thumbnails (recommended: 800×500 WebP)
-- `/public/blog-opengraph/` — OG images (recommended: 1200×630 PNG)
+Post images are uploaded from `/studio` straight into **Cloud Storage** and served from this origin at `/media/blog/**`. The panel converts them to WebP and downscales to 1600px in the browser before uploading, so nothing needs preparing by hand.
+
+Nothing image-related belongs in `/public` any more. The old `/public/blog-cover`, `/public/blog-content` and `/public/blog-opengraph` folders were imported into Storage; their URLs now 301 to the new locations.
+
+### Editing docs and pages
+
+1. Run `npm run tina`
+2. Open http://localhost:3000/admin
+3. Pick Documents or Pages
+
+Or edit the markdown in `/content` directly.
 
 ---
 

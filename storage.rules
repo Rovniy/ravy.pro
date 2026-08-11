@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Deny-all, exactly like firestore.rules. Nothing reaches this bucket from a
+// browser: uploads go through POST /api/blog/admin/media and reads through
+// /media/blog/**, both of which use the Admin SDK and bypass these rules.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { defineConfig } from 'tinacms'
-import { BlogPostTag } from '~/data'
 
 export default defineConfig({
   build: {
@@ -15,111 +14,6 @@ export default defineConfig({
   },
   schema: {
     collections: [
-      {
-        name: 'blogs',
-        label: 'Blog / Posts',
-        path: 'content/blogs',
-        ui: {
-          filename: {
-            readonly: false,
-            slugify: (values: Record<string, any>) => `${values?.title?.toLowerCase().replace(/ /g, '-')}`,
-          },
-          beforeSubmit: async ({ form, values }) => {
-            if (form.crudType === 'create') {
-              return {
-                ...values,
-                createdAt: new Date().toISOString(),
-                lastUpdated: new Date().toISOString(),
-              }
-            }
-            else {
-              return {
-                ...values,
-                lastUpdated: new Date().toISOString(),
-              }
-            }
-          },
-        },
-        fields: [
-          {
-            type: 'string',
-            name: 'title',
-            label: 'Title',
-            isTitle: true,
-            required: true,
-            description: 'The title of the blog post',
-          },
-          {
-            type: 'string',
-            name: 'description',
-            label: 'Description',
-            required: true,
-            description: 'The description of the blog post',
-          },
-          {
-            type: 'image',
-            name: 'image',
-            label: 'Cover',
-            required: true,
-            description: 'The cover of the blog post',
-          },
-          {
-            type: 'image',
-            name: 'ogImage',
-            label: 'OpenGraph image',
-            required: true,
-            description: 'The OpenGraph image of the blog post',
-          },
-          {
-            type: 'string',
-            name: 'tags',
-            label: 'Tags',
-            required: true,
-            list: true,
-            options: BlogPostTag.map(i => ({ value: i, label: `#${i}` })),
-            description: 'The tags of the blog post',
-          },
-          {
-            type: 'boolean',
-            name: 'published',
-            label: 'Is published',
-            description: 'The published status of the blog post',
-          },
-          {
-            type: 'boolean',
-            name: 'trending',
-            label: 'Is trendings',
-            description: 'The trending status of the blog post',
-          },
-          {
-            // Declared here as well as in content.config.ts: Tina writes back
-            // only the fields it knows about, so a post edited in the CMS would
-            // silently lose `noindex: true` and re-enter the index.
-            type: 'boolean',
-            name: 'noindex',
-            label: 'Hide from search engines',
-            description: 'Leave off to index normally. Turn on to keep the post readable and linked but out of Google, the sitemap and llms.txt — use it for posts too short to compete.',
-          },
-          {
-            type: 'rich-text',
-            name: 'body',
-            label: 'Body',
-            isBody: true,
-          },
-          {
-            type: 'datetime',
-            name: 'createdAt',
-            label: 'Created At',
-            description: 'The created at of the page',
-          },
-          {
-            type: 'datetime',
-            name: 'lastUpdated',
-            label: 'Last Updated At',
-            description: 'The created at of the page',
-          },
-        ],
-      },
       {
         label: 'Documents',
         name: 'docs',

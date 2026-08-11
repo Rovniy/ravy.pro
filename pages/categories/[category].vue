@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import type { BlogPostMeta } from '~/utils/blog-post'
 import { makeFirstCharUpper } from '@/utils/helper'
 import { categoriesPage, categoryDescriptions, categoryNames, seoData } from '~/data'
+import { toCardData } from '~/utils/blog-post'
 
 const route = useRoute()
 
@@ -14,34 +16,20 @@ const category = computed(() => {
   return strName
 })
 
-const { data } = await useAsyncData(`category-data-${category.value}`, () => {
-  return queryCollection('content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('tags', 'LIKE', `%"${category.value}"%`)
-    .select('path', 'title', 'description', 'image', 'ogImage', 'alt', 'tags', 'createdAt', 'lastUpdated', 'published', 'trending')
-    .order('createdAt', 'DESC')
-    .all()
-})
-if (!data?.value?.length)
+// The whole list, then filtered by tag in JS. The previous
+// `where('tags', 'LIKE', '%"tag"%')` was a substring match against the
+// serialised array, so a tag that is a prefix of another would have matched
+// both; and there is no per-tag query left to make now that the index is a
+// single document.
+const { data } = await useAsyncData('blog-post-list', () =>
+  $fetch<BlogPostMeta[]>('/api/blog/posts'))
+
+const posts = computed(() => (data.value ?? []).filter(p => p.tags.includes(category.value)))
+
+if (!posts.value.length)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
-const formattedData = computed(() => {
-  return data.value?.map((articles) => {
-    return {
-      path: articles.path,
-      title: articles?.title || 'no-title available',
-      description: articles?.description || 'no-description available',
-      image: articles?.image || '/not-found.png',
-      alt: articles?.alt || articles?.description || 'no alter data available',
-      ogImage: articles?.ogImage || articles?.image || '/not-found.png',
-      createdAt: articles?.createdAt || '',
-      lastUpdated: articles?.lastUpdated || '',
-      tags: articles?.tags || [],
-      published: articles?.published || false,
-      trending: articles?.trending || false,
-    }
-  })
-})
+const formattedData = computed(() => posts.value.map(toCardData))
 
 const categoryDescription = computed(() =>
   categoryDescriptions[category.value]
@@ -105,7 +93,7 @@ defineOgImage('Blog', {
         :trending="post.trending"
       />
 
-      <BlogEmpty v-if="data?.length === 0" />
+      <BlogEmpty v-if="!formattedData.length" />
     </div>
   </div>
 </template>

@@ -16,5 +16,12 @@ env:
     value: 0.0.0.0
     availability:
       - RUNTIME
+  # Cloud Storage bucket for blog post images uploaded from /studio. Not a
+  # secret — the bucket itself stays private, every read goes through
+  # /media/blog/**.
+  - variable: NUXT_FIREBASE_STORAGE_BUCKET
+    value: xploit-games.firebasestorage.app
+    availability:
+      - RUNTIME
 
 runtime: nodejs

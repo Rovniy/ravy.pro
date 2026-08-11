@@ -1,4 +1,6 @@
+import { readdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
+import { fileURLToPath } from 'node:url'
 // Explicit import: Nuxt 4's split tsconfig (project references) leaves the
 // `defineNuxtConfig` global unresolved in some IDE type contexts.
 import { defineNuxtConfig } from 'nuxt/config'
@@ -20,6 +22,15 @@ const PDF_WORKER_INCLUDES = ['pdfjs-dist/legacy/build/pdf.worker.mjs', 'pdfjs-di
     }
   })
   .filter(Boolean)
+
+// The four legal/terms documents under content/docs are the only prerendered
+// pages that aren't named in `nitro.prerender.routes` by hand. They used to be
+// found by the link crawler, which is now off (see the comment on `crawlLinks`),
+// so they are enumerated here instead. @nuxt/content derives `/docs/<name>`
+// from the filename, which is already the slug for every one of these.
+const DOCS_ROUTES = readdirSync(fileURLToPath(new URL('./content/docs', import.meta.url)))
+  .filter(name => name.endsWith('.md'))
+  .map(name => `/docs/${name.replace(/\.md$/, '')}`)
 
 // CSP is set per-route by `server/plugins/csp.ts`, which hashes every inline
 // <script> in the actually-rendered HTML — including Nuxt's payload, JSON-LD,
@@ -46,6 +57,15 @@ const CONTENT_CACHE_HEADERS = {
   'Cache-Control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=86400',
 }
 
+// Blog posts live in Firestore and are published from /studio without a
+// rebuild, so their pages are rendered per request rather than prerendered.
+// App Hosting has no on-demand CDN purge, which makes s-maxage the only lever
+// on publish-to-visible latency — 60s is that latency, and the long
+// stale-while-revalidate keeps the origin off the critical path meanwhile.
+const LIVE_CONTENT_CACHE_HEADERS = {
+  'Cache-Control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=600',
+}
+
 // Paths no crawler should follow: auth-gated, admin, per-user, or dead legacy
 // URLs. Declared once because robots.txt groups do NOT inherit — a named
 // user-agent group gets only its own rules, so this list has to be repeated into
@@ -59,6 +79,7 @@ const PRIVATE_PATHS = [
   '/account',
   '/admin',
   '/shortify',
+  '/studio',
   '/s/',
 ]
 
@@ -210,6 +231,9 @@ export default defineNuxtConfig({
     // Contract Red-Flag Scanner — public paid tool (own Stripe Price + token secret).
     contractScanPriceId: '',
     contractScanTokenSecret: '',
+    // Cloud Storage bucket holding blog post images uploaded from /studio.
+    // Empty falls back to `<project>.firebasestorage.app`.
+    firebaseStorageBucket: '',
     public: {
       adminEmail: '',
       steamAudit: {
@@ -245,13 +269,16 @@ export default defineNuxtConfig({
       traceInclude: PDF_WORKER_INCLUDES,
     },
     prerender: {
-      crawlLinks: true,
+      // Off deliberately. @nuxtjs/sitemap prerenders /sitemap.xml whenever the
+      // crawler is enabled alongside any prerender route, and a static
+      // sitemap.xml in .output/public shadows the runtime route — which would
+      // freeze the post list at build time and quietly undo the whole point of
+      // publishing from /studio. Every prerendered page is named below instead.
+      crawlLinks: false,
       failOnError: false,
       routes: [
-        '/',
-        '/blogs',
-        '/categories',
         '/about',
+        '/contacts',
         '/links',
         '/services',
         '/services/mentorship',
@@ -263,6 +290,7 @@ export default defineNuxtConfig({
         '/tools/image-converter',
         '/tools/steam-ai-disclosure',
         '/tools/xploit-translator',
+        ...DOCS_ROUTES,
       ],
     },
     routeRules: {
@@ -272,19 +300,33 @@ export default defineNuxtConfig({
       // Prerendered HTML: let the CDN serve it (s-maxage) and refresh in the
       // background instead of forwarding every page view to the origin.
       // Browsers still revalidate (max-age=0) so a deploy shows up quickly.
-      '/': { headers: CONTENT_CACHE_HEADERS },
-      '/blogs': { headers: CONTENT_CACHE_HEADERS },
+      // The home page carries "Recent Posts", so it moves with the blog: a
+      // prerendered copy would freeze the newest three at deploy time.
+      '/': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
+      '/blogs': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
       '/about': { headers: CONTENT_CACHE_HEADERS },
       '/links': { headers: CONTENT_CACHE_HEADERS },
       '/contacts': { headers: CONTENT_CACHE_HEADERS },
       // `/categories/**` does not match the bare index, so it needs its own
-      // entry — without it this prerendered page went to origin on every hit.
-      '/categories': { headers: CONTENT_CACHE_HEADERS },
+      // entry — without it this page went to origin on every hit.
+      '/categories': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
       '/services': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/services/mentorship': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/api/services/**': { prerender: false },
-      '/blogs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
-      '/categories/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/blogs/**': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
+      '/categories/**': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
+      // The blog API is the source those pages render from; prerendering it
+      // would bake the post list into the build.
+      '/api/blog/**': { prerender: false },
+      // Image upload from the studio. The panel converts to WebP client-side
+      // first, so this ceiling is for the pathological case.
+      '/api/blog/admin/media': { prerender: false, maxBodySize: '10mb' },
+      // Post images proxied out of Cloud Storage. Object names carry a nanoid
+      // and are never reused, so the year-long immutable cache is accurate.
+      '/media/**': { ssr: true, prerender: false, headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/studio': { ssr: true, prerender: false },
+      '/studio/**': { ssr: true, prerender: false },
+      '/rss.xml': { prerender: false },
       '/docs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       // Auth-gated / dynamic routes stay SSR.
       '/shortify': { ssr: true, prerender: false },
@@ -318,23 +360,27 @@ export default defineNuxtConfig({
       // ever want that, today both are the same. `immutable` tells browsers
       // never to revalidate — safe for content-addressed (`/_nuxt/`) and for
       // hand-managed image folders where filenames change when content
-      // changes. `/blog-content` is shorter (30 days) because images there
-      // are sometimes overwritten in place when posts get re-edited.
+      // changes.
       '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/_ipx/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/fonts/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
-      '/blog-cover/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
-      '/blog-content/**': { headers: { 'Cache-Control': 'public, max-age=2592000' } },
-      '/blog-opengraph/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      // No longer asset folders: the blog images live in Cloud Storage and these
+      // three prefixes are now 301s to `/media/blog/**`
+      // (server/routes/blog-*/[...path].get.ts). A day, not a year — an
+      // immutable redirect would be permanent in every browser cache.
+      '/blog-cover/**': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' } },
+      '/blog-content/**': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' } },
+      '/blog-opengraph/**': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' } },
       '/open_graph/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/misc/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       // Hand-managed image folders that were left out of the list above, so the
       // CDN had no policy for them at all. Same reasoning as `/blog-cover`.
       '/photos/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/instagram/**': { headers: { 'Cache-Control': 'public, max-age=2592000' } },
-      // Machine-readable descriptors: short cache so an edit shows up the same day.
-      '/llms.txt': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' } },
-      '/llms-full.txt': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' } },
+      // Machine-readable descriptors: short cache so an edit shows up the same
+      // day. Never prerendered — both read the live post list from Firestore.
+      '/llms.txt': { prerender: false, headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' } },
+      '/llms-full.txt': { prerender: false, headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' } },
       '/favicon.ico': { headers: { 'Cache-Control': 'public, max-age=604800' } },
       '/apple-touch-icon.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
       '/android-chrome-192x192.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
@@ -411,6 +457,8 @@ export default defineNuxtConfig({
     exclude: [
       '/tools/contract-red-flag-scanner/result/**',
       '/shortify',
+      '/studio',
+      '/studio/**',
       '/account',
       '/scan-share/**',
       '/tools/steam-ai-disclosure/result/**',
@@ -441,6 +489,7 @@ export default defineNuxtConfig({
         'mdi:weather-night',
         // Dynamically-bound icons (registry / tabs / code copy) the scanner can't see.
         'mdi:link-variant',
+        'mdi:note-edit-outline',
         'mdi:shield-search',
         'mdi:account-outline',
         'mdi:steam',

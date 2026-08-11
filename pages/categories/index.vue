@@ -1,13 +1,10 @@
 <script lang="ts" setup>
+import type { BlogPostMeta } from '~/utils/blog-post'
 import { makeFirstCharUpper } from '@/utils/helper'
 import { blogsPage, categoriesPage, seoData } from '~/data'
 
-const { data } = await useAsyncData('all-blog-post-for-category', () =>
-  queryCollection('content')
-    .where('path', 'LIKE', '/blogs/%')
-    .select('path', 'tags', 'published')
-    .order('createdAt', 'DESC')
-    .all())
+const { data } = await useAsyncData('blog-post-list', () =>
+  $fetch<BlogPostMeta[]>('/api/blog/posts'))
 
 const allTags = new Map()
 

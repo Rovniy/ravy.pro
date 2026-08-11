@@ -1,9 +1,6 @@
-// Explicit import: the auto-imported `queryCollection` resolves to the app-side
-// 1-arg composable in the IDE's type context; the server variant takes (event, collection).
-import { queryCollection } from '@nuxt/content/server'
 import { baseData } from '~/data'
-import { abs, llmsHeader } from '../utils/llms'
-import { minimarkToMarkdown } from '../utils/minimark-markdown'
+import { getPost, listMeta } from '../utils/blog-store'
+import { abs, absolutizeMarkdown, llmsHeader } from '../utils/llms'
 
 /**
  * /llms-full.txt — every post's full text as one Markdown document.
@@ -13,35 +10,36 @@ import { minimarkToMarkdown } from '../utils/minimark-markdown'
  * the undocumented `_payload.json` files. This is the same text, once, in the
  * format a model reads most cheaply.
  *
+ * Since posts are stored as markdown, this route serves the stored source
+ * directly — no AST round-trip, which is what `minimarkToMarkdown` used to do.
+ *
  * Posts marked `noindex` are excluded, matching /llms.txt and the sitemap.
  */
 export default defineEventHandler(async (event) => {
   setHeader(event, 'content-type', 'text/plain; charset=utf-8')
   setHeader(event, 'cache-control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400')
 
-  const posts = await queryCollection(event, 'content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .order('createdAt', 'DESC')
-    .all()
+  const index = (await listMeta({ publishedOnly: true })).filter(post => !post.noindex)
+
+  // One document read per post. The route is CDN-cached for an hour and hit by
+  // crawlers rather than readers, so the cost is a handful of reads a day.
+  const posts = await Promise.all(index.map(meta => getPost(meta.slug)))
 
   const sections = posts
-    .filter(post => !post.noindex)
+    .filter((post): post is NonNullable<typeof post> => !!post)
     .map((post) => {
       const meta = [
         `URL: ${abs(post.path)}`,
         post.createdAt ? `Published: ${String(post.createdAt).slice(0, 10)}` : null,
-        (post.tags ?? []).length ? `Tags: ${(post.tags ?? []).join(', ')}` : null,
+        post.tags.length ? `Tags: ${post.tags.join(', ')}` : null,
         `Author: ${baseData.me.name}`,
       ].filter(Boolean).join(' · ')
-
-      const body = minimarkToMarkdown(post.body, baseData.site.url)
 
       return [
         `# ${post.title}`,
         meta,
         post.description ? `> ${post.description}` : null,
-        body,
+        absolutizeMarkdown(post.markdown.trim()),
       ].filter(Boolean).join('\n\n')
     })
 

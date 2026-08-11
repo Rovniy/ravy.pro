@@ -1,6 +1,7 @@
 // Explicit import: the auto-imported `queryCollection` resolves to the app-side
 // 1-arg composable in the IDE's type context; the server variant takes (event, collection).
 import { queryCollection } from '@nuxt/content/server'
+import { listMeta } from '../utils/blog-store'
 import {
   abs,
   llmsHeader,
@@ -17,8 +18,8 @@ import {
  * The previous version was a static file in public/. It passed the format check
  * but listed none of the 31 posts and had to be edited by hand every time a tool
  * or service was added. Everything here comes from the same registries the site
- * renders from (`publicServices`, `OFFERINGS`) and from the content DB, so it
- * cannot drift.
+ * renders from (`publicServices`, `OFFERINGS`), from the blog index in Firestore
+ * and from the content DB (docs), so it cannot drift.
  *
  * Posts marked `noindex` are excluded for the same reason they are excluded from
  * the sitemap: they are too thin to be worth an agent's context budget.
@@ -27,12 +28,7 @@ export default defineEventHandler(async (event) => {
   setHeader(event, 'content-type', 'text/plain; charset=utf-8')
   setHeader(event, 'cache-control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400')
 
-  const posts = await queryCollection(event, 'content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .order('createdAt', 'DESC')
-    .select('path', 'title', 'description', 'createdAt', 'tags', 'noindex')
-    .all()
+  const posts = await listMeta({ publishedOnly: true })
 
   const docs = await queryCollection(event, 'content')
     .where('path', 'LIKE', '/docs/%')

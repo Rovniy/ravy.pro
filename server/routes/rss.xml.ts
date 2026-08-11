@@ -1,9 +1,8 @@
-// Explicit import: the auto-imported `queryCollection` resolves to the app-side
-// 1-arg composable in the IDE's type context; the server variant takes (event, collection).
-import { queryCollection } from '@nuxt/content/server'
 import { Feed } from 'feed'
 import { baseData, homePage, navbarData } from '~/data'
-import { minimarkToHtml } from '../utils/minimark-html'
+import { renderMarkdown } from '../utils/blog-render'
+import { getPost, listMeta } from '../utils/blog-store'
+import { mdcToHtml } from '../utils/mdc-html'
 
 export default defineEventHandler(async (event) => {
   setHeader(event, 'content-type', 'application/rss+xml; charset=utf-8')
@@ -12,11 +11,9 @@ export default defineEventHandler(async (event) => {
   // every poll from feed readers.
   setHeader(event, 'cache-control', 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400')
 
-  const docs = await queryCollection(event, 'content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .order('createdAt', 'DESC')
-    .all()
+  const index = await listMeta({ publishedOnly: true })
+  const docs = (await Promise.all(index.map(meta => getPost(meta.slug))))
+    .filter((post): post is NonNullable<typeof post> => !!post)
 
   const feed = new Feed({
     title: navbarData.homeTitle,
@@ -33,8 +30,9 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  docs.forEach((doc) => {
-    const html = minimarkToHtml(doc.body, baseData.site.url)
+  for (const doc of docs) {
+    const body = await renderMarkdown(doc.markdown)
+    const html = mdcToHtml(body, baseData.site.url)
     feed.addItem({
       title: `${baseData.me.name} | ${doc.title}`,
       id: baseData.site.url + doc.path,
@@ -42,9 +40,9 @@ export default defineEventHandler(async (event) => {
       description: doc.description,
       content: html || doc.description,
       date: doc.createdAt ? new Date(doc.createdAt) : new Date(),
-      category: (doc.tags ?? []).map((tag: string) => ({ name: tag })),
+      category: doc.tags.map(tag => ({ name: tag })),
     })
-  })
+  }
 
   return feed.rss2()
 })

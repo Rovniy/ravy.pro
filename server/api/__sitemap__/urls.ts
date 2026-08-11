@@ -1,15 +1,12 @@
 // Explicit import: the auto-imported `queryCollection` resolves to the app-side
 // 1-arg composable in the IDE's type context; the server variant takes (event, collection).
 import { queryCollection } from '@nuxt/content/server'
+import { listMeta } from '~~/server/utils/blog-store'
 import { publicServices, seoData } from '~/data'
 import { OFFERING_PAGE_PATHS } from '~/data/offerings'
 
 export default defineEventHandler(async (event) => {
-  const posts = await queryCollection(event, 'content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .select('path', 'lastUpdated', 'createdAt', 'tags', 'image', 'ogImage', 'title', 'description', 'noindex')
-    .all()
+  const posts = await listMeta({ publishedOnly: true })
 
   const docs = await queryCollection(event, 'content')
     .where('path', 'LIKE', '/docs/%')
@@ -25,6 +22,13 @@ export default defineEventHandler(async (event) => {
   // The tools hub. Listed explicitly rather than relying on prerender
   // auto-discovery so it can't quietly fall out of the sitemap.
   urls.push({ loc: '/tools' })
+
+  // The sitemap module auto-includes prerendered routes, which is how these
+  // three used to get in. They render per request now that the post list is
+  // live, so without this the home page would drop out of the sitemap.
+  urls.push({ loc: '/' })
+  urls.push({ loc: '/blogs' })
+  urls.push({ loc: '/categories' })
 
   // Public tools come from the single source of truth (data/index.ts). Gated
   // tools live in GATED_TOOLS (data/services.ts) and are intentionally excluded.

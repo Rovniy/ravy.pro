@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run tina          # Dev server with TinaCMS visual editor (preferred for content work)
+npm run tina          # Dev server with TinaCMS visual editor (docs/pages only — posts live at /studio)
 npm run dev           # Dev server without TinaCMS
 npm run build         # Production build
 npm run generate      # Static site generation
@@ -23,11 +23,41 @@ npm run test:coverage # Vitest with coverage report
 
 ### Content Pipeline
 
-Content lives in `/content/` as markdown files with frontmatter. TinaCMS (`/tina/config.ts`) defines three collections — `blogs`, `docs`, and `pages` — each with typed schemas and `beforeSubmit` hooks that auto-set `createdAt`/`lastUpdated` timestamps and generate slugs from titles.
+There are **two** content sources, and which one applies depends on the kind of content:
 
-- Edit content visually: `npm run tina` → admin UI at `/admin/`
-- Edit content directly: modify markdown in `/content/blogs/`, `/content/docs/`, `/content/pages/`
-- Blog tags are an enum defined in `tina/config.ts` — add new tags there before using them in posts
+| Content | Source | Edited via |
+|---|---|---|
+| **Blog posts** | Firestore (`blog_posts` + `blog_index`) | `/studio` — live, no rebuild |
+| Docs, pages, instagram | markdown in `/content/` via @nuxt/content | TinaCMS (`npm run tina` → `/admin/`) or the files |
+
+Blog tags are an enum: `BlogPostTag` in `data/index.ts`. Add a tag there (and a display name in `categoryNames`) before using it.
+
+#### Blog posts (Firestore)
+
+Posts moved out of `content/blogs/*.md` so they can be written and published from a phone. The whole read path:
+
+- **Data model.** `blog_posts/{slug}` holds one post including its raw `markdown`; `blog_index/current` is a single document holding every post's metadata *without* the body. The index exists purely for read cost — the list is needed by `/blogs`, every category page, the home page, RSS, the sitemap and both llms routes, and reading 30+ documents per cache miss would burn the Firestore free-tier quota. `server/utils/blog-store.ts` memoises it for 60s and **serves the stale copy if Firestore fails**, rather than 500ing the blog. `rebuildIndex()` (also exposed as `POST /api/blog/admin/reindex` and a button in the studio) repairs any drift.
+- **`path` is stored, never re-derived.** The migrated posts keep the exact URLs @nuxt/content generated, and `normalizeRecord` copies `path` from the existing record on every edit, so changing a slug cannot repoint a published post.
+- **Rendering.** `server/utils/blog-render.ts` parses markdown at request time with `parseMarkdown` from `@nuxtjs/mdc/runtime` (installed as a dependency of @nuxt/content, whose module generates the `#mdc-imports` plugin set — so remark-mdc, remark-emoji and the lazy Shiki/dracula highlighter all apply exactly as they did at build time). The result feeds the existing `<ContentRenderer>` unchanged: it only converts `value.body` from minimark when `body.type === 'minimark'` and otherwise passes the tree straight to `MDCRenderer`. The toc is nested onto `body` because `components/blog/toc.vue` reads `articles.body.toc.links`.
+- **Pure helpers** live in `utils/blog-post.ts` (slug rules, `normalizeRecord`, `recordFromDoc`, `toCardData`) and `utils/blog-embeds.ts`, both unit-tested. `toCardData` is the single copy of the card defaulting the three list views used to duplicate.
+- **Embed rules are enforced at save time.** `findEmbedProblems()` rejects an `<iframe>` with width/height attributes, a fixed inline width, or no `title` — the same invariants a repo-scanning test used to enforce, moved to where posts are now authored.
+- **Routes.** Public: `GET /api/blog/posts` (published metadata) and `GET /api/blog/post/[slug]` (metadata + rendered body; drafts 404, raw markdown never sent). Admin, all behind `requireToolAccess(event, 'studio')`: `admin/posts`, `admin/post/[slug]`, `admin/post` (PUT), `admin/post/[slug]` (DELETE), `admin/preview`, `admin/reindex`, `admin/media`, and the dev-only `admin/migrate`.
+
+**Consequence for prerendering.** `/`, `/blogs`, `/blogs/**`, `/categories`, `/categories/**` are SSR with `s-maxage=60, stale-while-revalidate=600`, since App Hosting has no on-demand CDN purge — 60s *is* the publish-to-visible latency. `nitro.prerender.crawlLinks` is **off**: @nuxtjs/sitemap prerenders `/sitemap.xml` whenever the crawler runs alongside any prerender route, and a static `sitemap.xml` in `.output/public` shadows the runtime route and would freeze the post list at build time. Every prerendered page is therefore named in `nitro.prerender.routes`, with the docs enumerated from `content/docs` by `DOCS_ROUTES`. `/`, `/blogs` and `/categories` are listed explicitly in `server/api/__sitemap__/urls.ts` because they used to reach the sitemap through prerender auto-discovery.
+
+#### The studio (`/studio`)
+
+Gated exactly like `/shortify`: the `studio` key in `GATED_TOOLS` (`data/services.ts`) puts it in the Tools dropdown for grantees and in `/account` → Access, and every route re-checks server-side. `<AccountGrantedTools>` also links it (and every other granted tool) at the top of `/account`, driven by `accessibleServices` — so granting a new gated tool needs no edit there either. `components/studio/Gate.vue` renders the sign-in / access-denied states, and only mounts its slot when access is granted, so the editor never fires a request it would get a 403 for.
+
+The editor is a markdown textarea with a live preview that goes through the **same** `renderMarkdown` and the same `prose` classes as the real post page. Images are converted to WebP and downscaled to 1600px **in the browser** before upload (`useBlogStudio` → `toUploadBlob`), then POSTed to `/api/blog/admin/media`, which writes to Cloud Storage at `blog/<slug>/<nanoid>.<ext>`.
+
+**Images are served same-origin** by `server/routes/media/blog/[...path].get.ts` at `/media/blog/**`, not from `storage.googleapis.com`. That is deliberate: it keeps `/_ipx/` transforms working, needs no extra host in the CSP (`server/plugins/csp.ts`), lets satori fetch them while rendering OG cards, and leaves `storage.rules` deny-all like `firestore.rules`. Object names are never reused — a nanoid for a new upload, a content hash for an imported file — so the year-long `immutable` cache header is accurate. The bucket comes from `runtimeConfig.firebaseStorageBucket` (`NUXT_FIREBASE_STORAGE_BUCKET` in `apphosting.yaml`).
+
+Uploads accept images only (`ALLOWED_IMAGE_TYPES`). The serving map is wider (`svg`, `pdf`) purely because the imported archive carried a Google Play badge and a presentation; both are sent under `Content-Security-Policy: default-src 'none'; sandbox` plus `nosniff`, since a same-origin SVG is otherwise a script.
+
+**Nothing image-related lives in `/public` any more.** `public/blog-cover`, `public/blog-content` and `public/blog-opengraph` were imported into Storage by the dev-only `POST /api/blog/admin/migrate-media` (a button in the studio), which uploads every file, rewrites `image` / `ogImage` / the markdown, and records each old URL in `blog_media/redirects`. Those three prefixes are now Nitro routes (`server/routes/blog-*/[...path].get.ts`) that **301 to `/media/blog/**`** — the old paths are indexed by Google Images, appear as `<image:loc>` in the sitemap, and one of them (a presentation PDF) is linked from `/links`, so dropping them would have 404'd all of that. The importer is idempotent: a path already in the map is skipped, and object names are content-hashed.
+
+The import deliberately does **not** bump `lastUpdated` — a URL rewrite is not a revision, and 30 posts all claiming to be edited the same minute is a bad signal. That is also why `renderMarkdown` caches on the markdown string itself rather than on `slug + lastUpdated`: a metadata-preserving edit would leave such a key identical while the body changed underneath it.
 
 ### Data & Configuration
 
@@ -36,7 +66,9 @@ Site-wide metadata (nav links, social networks, SEO defaults) lives in `/data/in
 ### Routing & Pages
 
 Standard Nuxt file-based routing in `/pages/`. Key non-obvious routes:
-- `/rss.xml` — generated by Nitro server route at `/server/routes/rss.xml.ts`
+- `/rss.xml` — generated by Nitro server route at `/server/routes/rss.xml.ts`; post bodies are rendered from markdown by `renderMarkdown` and serialised by `mdcToHtml` (`server/utils/mdc-html.ts`)
+- `/media/blog/**` — post images proxied out of Cloud Storage (see Content Pipeline)
+- `/studio`, `/studio/[slug]` — the blog panel; gated, `noindex`, excluded from the sitemap and listed in `PRIVATE_PATHS`
 - Legacy URL redirects handled in `/middleware/old-url-redirects.global.ts`
 
 ### Tools

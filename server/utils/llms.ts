@@ -13,6 +13,17 @@ export function abs(path: string): string {
   return path.startsWith('http') ? path : `${SITE}${path}`
 }
 
+/**
+ * Rewrites root-relative markdown link and image targets to absolute URLs.
+ *
+ * /llms-full.txt is read far away from this origin, where `](/tools/x)` resolves
+ * against whatever host the reader happens to be on. The old minimark renderer
+ * did this while walking the AST; serving stored markdown means doing it here.
+ */
+export function absolutizeMarkdown(markdown: string): string {
+  return markdown.replace(/(!?\[[^\]]*\]\()(\/[^)\s]*)/g, (_match, prefix, path) => `${prefix}${SITE}${path}`)
+}
+
 /** H1 + blockquote summary + the free-form section, per the llmstxt.org shape. */
 export function llmsHeader(): string {
   return `# ${baseData.me.name} / Ravy.pro

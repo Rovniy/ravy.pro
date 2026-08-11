@@ -1,45 +1,56 @@
 <script setup lang="ts">
 import type { BlogPost } from '@/types/blog'
+import type { BlogPostMeta } from '~/utils/blog-post'
 import { blogsPage, navbarData, seoData } from '~/data'
 import { EVENTS } from '~/data/analytics'
+import { slugFromPath } from '~/utils/blog-post'
 import { countWords, readingTimeMinutes } from '~/utils/count-words'
 
+interface BlogPostResponse extends BlogPostMeta {
+  body: Record<string, unknown>
+}
+
 const { path } = useRoute()
+const slug = slugFromPath(path)
 
 const { data: articles, error } = await useAsyncData(`blog-post-${path}`, () =>
-  queryCollection('content').where('path', '=', path).first())
+  $fetch<BlogPostResponse>(`/api/blog/post/${slug}`))
 
-if (error.value || !articles?.value)
-  throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
+// A backend failure must not be reported as a 404: these URLs are indexed, and
+// telling Google 32 real posts are gone because Firestore blinked is far worse
+// than a 503 it will retry.
+if (error.value || !articles?.value) {
+  const status = (error.value as { statusCode?: number } | null)?.statusCode
+  throw status === 404 || !error.value
+    ? createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
+    : createError({ statusCode: 503, statusMessage: 'Post temporarily unavailable', fatal: true })
+}
 
-const { data: surround } = await useAsyncData(`blog-surround-${path}`, async () => {
-  const all = await queryCollection('content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .order('createdAt', 'ASC')
-    .select('path', 'title')
-    .all()
-  const idx = all.findIndex(p => p.path === path)
+// One list fetch serves both the prev/next nav and the related posts. The key
+// is shared with the other pages that read it, so Nuxt dedupes it in the payload.
+const { data: allPosts } = await useAsyncData('blog-post-list', () =>
+  $fetch<BlogPostMeta[]>('/api/blog/posts'))
+
+const surround = computed(() => {
+  // The list arrives newest-first; prev/next read chronologically.
+  const chronological = [...(allPosts.value ?? [])].reverse()
+  const idx = chronological.findIndex(p => p.path === path)
+  if (idx < 0)
+    return { prev: null, next: null }
   return {
-    prev: idx > 0 ? all[idx - 1] : null,
-    next: idx < all.length - 1 ? all[idx + 1] : null,
+    prev: idx > 0 ? chronological[idx - 1] : null,
+    next: idx < chronological.length - 1 ? chronological[idx + 1] : null,
   }
 })
 
 // Topically related posts (shared tag), newest first — chronological
 // prev/next alone doesn't surface the rest of a series.
-const { data: related } = await useAsyncData(`blog-related-${path}`, async () => {
+const related = computed(() => {
   const tags = articles.value?.tags ?? []
   if (!tags.length)
     return []
-  const all = await queryCollection('content')
-    .where('path', 'LIKE', '/blogs/%')
-    .where('published', '=', true)
-    .order('createdAt', 'DESC')
-    .select('path', 'title', 'description', 'image', 'alt', 'tags', 'createdAt')
-    .all()
-  return all
-    .filter(post => post.path !== path && (post.tags ?? []).some((tag: string) => tags.includes(tag)))
+  return (allPosts.value ?? [])
+    .filter(post => post.path !== path && post.tags.some(tag => tags.includes(tag)))
     .slice(0, 3)
 })
 
