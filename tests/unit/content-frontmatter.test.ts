@@ -49,7 +49,7 @@ describe('blog frontmatter', () => {
   it('never has lastUpdated before createdAt', () => {
     const inverted = ALL
       .filter(p => p.fm.createdAt && p.fm.lastUpdated)
-      .filter(p => new Date(p.fm.lastUpdated).getTime() < new Date(p.fm.createdAt).getTime())
+      .filter(p => new Date(String(p.fm.lastUpdated)).getTime() < new Date(String(p.fm.createdAt)).getTime())
       .map(p => p.file)
     expect(inverted).toEqual([])
   })

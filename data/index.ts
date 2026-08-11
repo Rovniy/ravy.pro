@@ -24,6 +24,7 @@ export const BlogPostTag = [
   'tiny-boo',
   'zynthar',
   'animation',
+  'events',
 ]
 
 /**
@@ -48,6 +49,7 @@ export const categoryNames: Record<string, string> = {
   'tiny-boo': 'Tiny Boo',
   'zynthar': 'Zynthar',
   'animation': 'Animation',
+  'events': 'Events',
 }
 
 // Unique per-tag copy for /categories/<tag> pages — a templated
@@ -65,6 +67,7 @@ export const categoryDescriptions: Record<string, string> = {
   'tiny-boo': 'Tiny Boo: Homecoming — devlogs, art, level design, and the animated series built on the same character.',
   'zynthar': 'Zynthar — an AI-assisted metal music project: releases and behind-the-scenes.',
   'animation': 'Making an animated series with AI tools — pipeline, episodes, and lessons learned.',
+  'events': 'Offline events, exhibitions, conferences and meetings',
 }
 
 export const navbarData = {
