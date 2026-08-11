@@ -140,6 +140,7 @@ async function startCheckout() {
           <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Matches Valve policy v{{ RULESET_VERSION }}</span>
           <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free verdict, no account</span>
         </p>
+        <ToolStoryLink class="mt-3" />
       </div>
       <ToolRatingWidget />
     </header>

@@ -26,6 +26,17 @@ useHead({
       href: canonicalHref,
     },
   ],
+  // og:url/twitter:url are derived from the same canonical as the link above,
+  // for the same reason it lives here: one definition, every page. They used to
+  // come from a hardcoded string in `siteMetaData`, so /about, /blogs,
+  // /categories, /contacts, /links and every /docs page all advertised
+  // `og:url = https://ravy.pro` — sharing any of them pointed at the home page.
+  // Pages that set their own og:url (posts, tools, services) still win; unhead
+  // dedupes by property and the page-level entry is registered later.
+  meta: [
+    { property: 'og:url', content: canonicalHref },
+    { name: 'twitter:url', content: canonicalHref },
+  ],
 })
 </script>
 
@@ -44,7 +55,14 @@ useHead({
       <slot />
     </main>
 
-    <LazyMainFooter />
+    <!--
+      `hydrate-on-visible` is what actually defers this. The `Lazy` prefix alone
+      only makes it a dynamic import — without a hydration trigger the chunk is
+      still modulepreloaded and hydrated with everything else. The footer is
+      below the fold on every page, and it still renders server-side, so the
+      links stay in the HTML for crawlers either way.
+    -->
+    <LazyMainFooter hydrate-on-visible />
 
     <!--
       Floating theme switch, bottom-left. Out of the header so navigation is the

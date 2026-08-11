@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { makeFirstCharUpper } from '@/utils/helper'
-import { categoriesPage, categoryDescriptions, seoData } from '~/data'
+import { categoriesPage, categoryDescriptions, categoryNames, seoData } from '~/data'
 
 const route = useRoute()
 
@@ -47,8 +47,14 @@ const categoryDescription = computed(() =>
   categoryDescriptions[category.value]
   || `Posts tagged "${category.value}" by ${seoData.author}.`)
 
+// The raw slug is not a title — it shipped as `diva-rogue - Andrei Rovnyi` in
+// search results and every share. `makeFirstCharUpper` is the fallback for a tag
+// that hasn't been given a display name yet.
+const categoryLabel = computed(() =>
+  categoryNames[category.value] || makeFirstCharUpper(category.value))
+
 useHead({
-  title: category.value,
+  title: categoryLabel.value,
   meta: [
     {
       name: 'description',
@@ -59,7 +65,7 @@ useHead({
 
 useCategoryPageSchema({
   url: `${seoData.mySite}/categories/${category.value}`,
-  category: makeFirstCharUpper(category.value),
+  category: categoryLabel.value,
   description: categoryDescription.value,
   posts: (formattedData.value || []).map(p => ({
     path: p.path,
@@ -72,7 +78,7 @@ useCategoryPageSchema({
 // Generate OG Image
 defineOgImage('Blog', {
   headline: categoriesPage.og.headline,
-  title: category.value,
+  title: categoryLabel.value,
   description: categoryDescription.value,
   link: categoriesPage.og.image,
 })

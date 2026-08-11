@@ -70,7 +70,7 @@ function ratingFor(path: string) {
     <MainServices />
 
     <div class="container max-w-5xl mx-auto">
-      <LazyMainRecent />
+      <LazyMainRecent hydrate-on-visible />
 
       <section class="py-14 px-6">
         <UiSectionHeader eyebrow="Utilities" title="Tools" />
@@ -192,8 +192,10 @@ function ratingFor(path: string) {
       </section>
 
       <!-- Personality, not a section: every link here leaves the site, so it
-           sits after the ask as a sign-off. -->
-      <LazyMainInstagram />
+           sits after the ask as a sign-off. Hydration waits until it scrolls
+           into view — it's the last thing on the page and the heaviest in
+           images, so it has no business competing with the hero. -->
+      <LazyMainInstagram hydrate-on-visible />
     </div>
   </div>
 </template>

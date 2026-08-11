@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import type { BlogPost } from '@/types/blog'
-import Image from '~/components/content/Image.vue'
 import { blogsPage, navbarData, seoData } from '~/data'
 import { EVENTS } from '~/data/analytics'
 import { countWords, readingTimeMinutes } from '~/utils/count-words'
-import { formatBlogDate } from '~/utils/helper'
 
 const { path } = useRoute()
 
@@ -66,22 +64,56 @@ const data = computed<BlogPost>(() => {
     ogImage: articles.value?.ogImage || articles.value?.image || '/not-found.png',
     tags: articles.value?.tags || [],
     published: articles.value?.published || false,
-    theme: articles.value?.theme || seoData.theme,
-    createdAt: formatBlogDate(articles.value?.createdAt),
-    lastUpdated: articles.value?.lastUpdated || new Date().toISOString(),
+    // No `|| seoData.theme` fallback: a site-wide default here is what made every
+    // post advertise itself as 'Gamedev'. Absent means "use the tags".
+    theme: articles.value?.theme || '',
+    // Raw ISO, not pre-formatted: BlogHeader needs the machine-readable value
+    // for `<time datetime>` and does its own display formatting.
+    createdAt: articles.value?.createdAt || '',
+    // Falls back to createdAt, not to `now`: these pages are prerendered, so a
+    // `new Date()` here would freeze the build timestamp into
+    // `article:modified_time` and claim every post was edited at deploy time.
+    lastUpdated: articles.value?.lastUpdated || articles.value?.createdAt || '',
     locale: articles.value?.locale || seoData.locale,
   }
 })
 
+// `og:locale` is `ru_RU`-shaped; `<html lang>` wants the bare language subtag.
+const htmlLang = computed(() => data.value.locale.split(/[_-]/)[0].toLowerCase() || 'en')
+
+/**
+ * `article:tag` comes from the post's own tags, one tag per meta entry.
+ *
+ * It used to be a single value defaulting to `seoData.theme` ('Gamedev'), and
+ * since no post has ever set a `theme`, every article on the site claimed to be
+ * about game development — including a pure-JavaScript one. The tags are the
+ * real subject and they already drive the category hubs; `theme` stays supported
+ * as an explicit override for a post whose subject isn't its tags.
+ */
+const articleTags = computed(() => {
+  const explicit = articles.value?.theme
+  if (explicit)
+    return [explicit]
+  return data.value.tags?.length ? data.value.tags : []
+})
+
+// A post can opt out of indexing while staying readable and linked (see the
+// `noindex` field in content.config.ts). `follow` is deliberate — the links out
+// of it, especially to the category hubs, should still carry.
+const robots = computed(() =>
+  articles.value?.noindex ? 'noindex, follow' : 'index, follow')
+
 useHead({
   title: data.value.title || '',
+  htmlAttrs: { lang: htmlLang },
   meta: [
     { name: 'description', content: data.value.description },
+    { name: 'robots', content: robots },
     { property: 'article:author', content: seoData.author },
-    { property: 'article:published_time', content: articles.value?.createdAt || new Date().toISOString() },
-    { property: 'article:modified_time', content: articles.value?.lastUpdated || articles.value?.createdAt || new Date().toISOString() },
+    { property: 'article:published_time', content: articles.value?.createdAt || '' },
+    { property: 'article:modified_time', content: data.value.lastUpdated },
     { property: 'article:section', content: data.value.tags?.at(0) },
-    { property: 'article:tag', content: data.value.theme },
+    ...articleTags.value.map(tag => ({ property: 'article:tag', content: tag })),
     { property: 'og:site_name', content: navbarData.homeTitle },
     { property: 'og:type', content: 'article' },
     { property: 'og:url', content: `${seoData.mySite}${path}` },
@@ -117,8 +149,8 @@ useBlogPostSchema({
   image: data.value.image,
   ogImage: data.value.ogImage,
   alt: data.value.alt,
-  createdAt: articles.value?.createdAt || new Date().toISOString(),
-  lastUpdated: articles.value?.lastUpdated || articles.value?.createdAt,
+  createdAt: articles.value?.createdAt || '',
+  lastUpdated: data.value.lastUpdated,
   tags: data.value.tags,
   locale: data.value.locale,
   wordCount: wordCount.value,
@@ -148,12 +180,20 @@ defineOgImage('Blog', {
     <BlogReadingProgress :slug="path" />
 
     <div class="px-6 container max-w-5xl mx-auto sm:grid grid-cols-12 gap-x-12">
-      <div class="col-span-12 lg:col-span-9">
+      <!--
+        `<article>` around the post, not a bare div: without it the only
+        <article> elements on the page were the three related-post *cards*, so
+        the markup asserted the sidebar cards were articles and the post itself
+        was not. The JSON-LD said BlogPosting all along — this makes the HTML
+        agree with it.
+      -->
+      <article class="col-span-12 lg:col-span-9">
         <BlogHeader
           :title="data.title"
           :image="data.image"
           :alt="data.alt"
           :created-at="data.createdAt"
+          :last-updated="data.lastUpdated"
           :description="data.description"
           :tags="data.tags"
           :reading-time="readingTime"
@@ -162,13 +202,20 @@ defineOgImage('Blog', {
           class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg
           prose-h1:no-underline mx-auto prose-slate dark:prose-invert prose-img:rounded-lg prose-img:mx-auto prose-img:block"
         >
-          <ContentRenderer v-if="articles" :value="articles" :components="{ Image }">
+          <!--
+            No `:components` map here any more. It used to pass a local Image.vue
+            hoping to control in-article images, but ContentRenderer maps by
+            rendered tag name (`img`), so that component was never reached and
+            the images stayed eager and full-size. Sizing now lives where MDC
+            actually looks: components/content/ProseImg.vue.
+          -->
+          <ContentRenderer v-if="articles" :value="articles">
             <template #empty>
               <p>No content found.</p>
             </template>
           </ContentRenderer>
         </div>
-      </div>
+      </article>
 
       <BlogToc :articles="articles" />
 

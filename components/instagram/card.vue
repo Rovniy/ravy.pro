@@ -28,15 +28,24 @@ const indexLabel = computed(() => String(props.index + 1).padStart(2, '0'))
     class="group relative block aspect-square overflow-hidden rounded-2xl bg-slate-200 dark:bg-slate-900 ring-1 ring-slate-900/5 dark:ring-white/10 transition-all duration-300 hover:ring-accent-400/60 dark:hover:ring-accent-500/50 hover:shadow-xl hover:shadow-slate-900/10 dark:hover:shadow-accent-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
     :class="featured ? 'col-span-2 row-span-2' : ''"
   >
+    <!--
+      `sizes` must use @nuxt/image's `screenKey:size` syntax. Raw CSS media
+      queries look right but the module collapses them to the last bare value,
+      so a phone was downloading the 240px/500px desktop variant. `format="webp"`
+      is explicit because these are the only unoptimised JPEGs on the site
+      (Instagram CDN originals, ~1.2 MB) and the module-level `image.format`
+      option only feeds NuxtPicture, not NuxtImg.
+    -->
     <NuxtImg
       loading="lazy"
       class="absolute inset-0 h-full w-full object-cover object-center transition-all duration-500 ease-expo motion-safe:group-hover:scale-[1.06] group-hover:saturate-[1.15]"
       :width="featured ? 500 : 250"
       :height="featured ? 500 : 250"
       :sizes="featured
-        ? '(max-width: 640px) 100vw, (max-width: 1024px) 66vw, 500px'
-        : '(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px'"
+        ? 'sm:100vw md:66vw lg:500px'
+        : 'sm:50vw md:33vw lg:240px'"
       densities="x1 x2"
+      format="webp"
       :src="image"
       :alt="alt"
     />

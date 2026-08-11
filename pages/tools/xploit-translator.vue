@@ -209,6 +209,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
           <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Your own OpenAI key</span>
           <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Key stays in Windows Credential Manager</span>
         </p>
+        <ToolStoryLink class="mt-3" />
       </div>
       <ToolRatingWidget />
     </header>

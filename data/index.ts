@@ -26,6 +26,30 @@ export const BlogPostTag = [
   'animation',
 ]
 
+/**
+ * Display names for /categories/<tag>. The slug is not presentable: it went
+ * straight into `<title>` and the OG title, so the page for `diva-rogue` was
+ * titled "diva-rogue - Andrei Rovnyi" in search results and on every share.
+ * `makeFirstCharUpper` isn't enough either — it yields "Diva-rogue".
+ *
+ * Keyed by the same tags as `categoryDescriptions` below; a tag missing here
+ * falls back to `makeFirstCharUpper(tag)`, so adding a tag without a name is
+ * degraded but never broken.
+ */
+export const categoryNames: Record<string, string> = {
+  'ai': 'AI',
+  'dev': 'Development',
+  'diva-rogue': 'Diva Rogue',
+  'games': 'Games',
+  'idled': 'IDLED Survival',
+  'music': 'Music',
+  'policy': 'Policy',
+  'tabs-broadcast': 'Tabs Broadcast',
+  'tiny-boo': 'Tiny Boo',
+  'zynthar': 'Zynthar',
+  'animation': 'Animation',
+}
+
 // Unique per-tag copy for /categories/<tag> pages — a templated
 // "you will find all the X posts here" reads as thin/duplicate content
 // to search engines and to people.
@@ -63,6 +87,15 @@ export interface PublicService {
   action?: string
   /** Mono meta line with the pricing/format facts ("Free check · $10 full report"). */
   meta?: string
+  /**
+   * Path to the blog post about building this tool, when one exists.
+   *
+   * The two halves of each pair were previously unlinked in both directions —
+   * across all 31 posts there were four contextual internal links total, and no
+   * tool page pointed at its own write-up. Declaring the pair here means the
+   * hub and the tool page both get the link from one place.
+   */
+  story?: string
 }
 
 export const publicServices: PublicService[] = [
@@ -75,6 +108,7 @@ export const publicServices: PublicService[] = [
     tag: 'For game devs',
     action: 'Start check',
     meta: 'Free check · paid disclosure pack',
+    story: '/blogs/steam-ai-disclosure-micro-saas',
   },
   {
     name: 'Contract Red-Flag Scanner',
@@ -95,9 +129,10 @@ export const publicServices: PublicService[] = [
     tag: 'For Windows',
     action: 'Download',
     meta: 'Free app · your own OpenAI key',
+    story: '/blogs/xploit-translator-a-clipboard-translator-in-the-windows-tray',
   },
   { name: 'QR Code Generator', path: '/tools/qr-code-generator', icon: 'mdi:qrcode', blurb: 'Styled QR codes with a logo, export as PNG.' },
-  { name: 'Credit Card Generator', path: '/tools/credit-card-generator', icon: 'mdi:credit-card-outline', blurb: 'Luhn-valid test card numbers for QA.' },
+  { name: 'Credit Card Generator', path: '/tools/credit-card-generator', icon: 'mdi:credit-card-outline', blurb: 'Luhn-valid test card numbers for QA.', story: '/blogs/why-i-built-a-credit-card-generator-tool-for-developers' },
   { name: 'JWT Decoder', path: '/tools/jwt-decoder', icon: 'mdi:shield-key-outline', blurb: 'Decode and verify JWTs in your browser.' },
   { name: 'Image Converter', path: '/tools/image-converter', icon: 'mdi:image-sync-outline', blurb: 'Convert PNG, JPEG and WebP locally.' },
 ]
@@ -176,6 +211,31 @@ export const blogsPage = {
     title: 'Blogs',
     description: 'Articles on game development, full-stack engineering, mobile games, AI music, and automation by Andrei Rovnyi.',
     link: '/open_graph/og_blogs.png',
+  },
+}
+
+/**
+ * Copy for the /tools hub.
+ *
+ * The page exists for three reasons: every tool page's breadcrumb named `/tools`
+ * as its parent while that URL returned 404; the tools had no landing page of
+ * their own (only the home-page grid and a JS-rendered nav dropdown); and it is
+ * the natural place to link each tool to the post about building it.
+ */
+export const toolsPage = {
+  content: {
+    title: 'Tools',
+    description: 'Free developer utilities that run in your browser — nothing to install, and for the client-side ones nothing leaves your device.',
+  },
+  meta: {
+    title: 'Free Developer Tools',
+    description: 'Free browser-based developer tools by Andrei Rovnyi: JWT decoder and verifier, image converter with ICC colour management, QR code generator, Luhn-valid test card numbers, Steam AI disclosure, and a Windows clipboard translator.',
+  },
+  og: {
+    headline: 'Utilities',
+    title: 'Free Developer Tools',
+    description: 'JWT decoding, image conversion, QR codes, test card numbers, Steam AI disclosure, and a Windows clipboard translator.',
+    link: '/open_graph/og_image_default.png',
   },
 }
 
@@ -437,36 +497,53 @@ export const aboutPage = {
 }
 
 export const seoData = {
+  // Kept for reference only — nothing reads it any more. It used to be the
+  // `article:tag` fallback on every post, which meant a JavaScript article
+  // declared itself as game development. Post tags drive that now.
   theme: 'Gamedev',
   author: baseData.me.name,
   description: 'Andrei Rovnyi — software developer and engineering manager with 15 years building web platforms, game systems, and automation tools.',
-  ogTitle: 'Personal blog by Andrei Rovnyi',
+  // The site's name as an entity (`WebSite.name` in JSON-LD and `site.name` in
+  // nuxt.config), not a page title. "Personal blog" undersold a site whose home
+  // page leads with paid services and a tools hub.
+  ogTitle: 'Andrei Rovnyi — engineering blog, tools and services',
   twitterDescription: 'Andrei Rovnyi — software developer and engineering manager with 15 years building web platforms, game systems, and automation tools.',
   image: `${baseData.site.url}/og-image.webp`,
   mySite: baseData.site.url,
   twitterHandle: '@xploitravy',
   mailAddress: baseData.me.email,
   locale: 'en_US',
-  ogImageWidth: 1200,
-  ogImageHeight: 750,
+  // OG image dimensions are owned by `ogImage.defaults` in nuxt.config.ts — the
+  // module emits the tags itself, and a second source here is how the site ended
+  // up declaring three different heights.
 }
 
+/**
+ * Site-wide meta injected from app.vue on every route.
+ *
+ * Only genuinely page-invariant tags belong here. It used to also carry
+ * `og:url`, `og:title`, `og:description`, `twitter:url/title/description` and
+ * `og:image:alt` as hardcoded strings, which meant any page that set nothing but
+ * a description inherited the home page's identity: /about, /blogs, /categories,
+ * /contacts, /links and all four /docs pages shipped
+ * `og:url = https://ravy.pro` and `og:title = "Personal blog by Andrei Rovnyi"`.
+ * Sharing one of them showed the wrong title and linked to the wrong page.
+ *
+ * Those tags are now per-page:
+ *  - `og:url` / `twitter:url` come from the canonical in layouts/default.vue
+ *  - title/description/image come from `pageHead()` in useStructuredData.ts
+ *
+ * `og:image` stays as a last-resort fallback so a page that forgets to call
+ * `defineOgImage()` still shares with a picture rather than none. Image
+ * dimensions are deliberately absent — `nuxt-og-image` emits its own, and
+ * having a second source produced three conflicting heights (600/630/750).
+ */
 export const siteMetaData = [
-  { name: 'description', content: seoData.description },
   { property: 'og:site_name', content: seoData.author },
   { property: 'og:type', content: 'website' },
-  { property: 'og:url', content: seoData.mySite },
-  { property: 'og:title', content: seoData.ogTitle },
-  { property: 'og:description', content: seoData.description },
   { property: 'og:image', content: seoData.image },
-  { property: 'og:image:alt', content: seoData.description },
-  { property: 'og:image:width', content: seoData.ogImageWidth },
-  { property: 'og:image:height', content: seoData.ogImageHeight },
   { property: 'og:locale', content: seoData.locale },
   { name: 'twitter:card', content: 'summary_large_image' },
   { name: 'twitter:site', content: seoData.twitterHandle },
-  { name: 'twitter:url', content: seoData.mySite },
-  { name: 'twitter:title', content: seoData.ogTitle },
-  { name: 'twitter:description', content: seoData.twitterDescription },
   { name: 'twitter:image', content: seoData.image },
 ]

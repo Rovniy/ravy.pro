@@ -42,6 +42,12 @@ export function useToolRatings() {
   return { ratings, pending, load }
 }
 
+// The server-side half of this lives in plugins/tool-ratings.server.ts, which
+// fills the same `useState('tool-ratings')` before the server renders so the
+// rating reaches the JSON-LD in the prerendered HTML. `load()` above stays
+// client-only for the interactive widget; the payload means it usually finds the
+// state already populated and skips the request.
+
 // `toolId: null` (page not in TOOL_IDS) is a supported no-op: nothing loads,
 // nothing renders — so the widget can resolve the id from the route itself.
 export function useToolRating(toolId: ToolId | null) {

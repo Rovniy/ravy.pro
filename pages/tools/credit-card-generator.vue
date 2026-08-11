@@ -156,6 +156,7 @@ generate()
         <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Generate Luhn-valid test card numbers for QA and sandbox payments, or validate a card number to detect its brand.
         </p>
+        <ToolStoryLink class="mt-3" />
       </div>
       <ToolRatingWidget />
     </header>

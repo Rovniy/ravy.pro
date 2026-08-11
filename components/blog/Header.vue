@@ -1,22 +1,44 @@
 <script setup lang="ts">
+import { baseData } from '~/data'
+import { formatBlogDate, tagColorClass } from '~/utils/helper'
+
 interface Props {
   title: string
   image: string
   alt: string
   description: string
+  /** ISO timestamp. Rendered as `<time datetime>` — do not pass a formatted string. */
   createdAt: string
+  /** ISO timestamp. Shown only when it is meaningfully later than `createdAt`. */
+  lastUpdated?: string
   tags: Array<string>
   readingTime?: number
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   title: 'no-title',
   image: '#',
   alt: 'no-img',
   description: 'no description',
-  createdAt: 'no-date',
+  createdAt: '',
+  lastUpdated: '',
   tags: () => ([]),
   readingTime: undefined,
+})
+
+// Reporting "updated" on a same-day tidy-up is noise, and the legacy archive has
+// posts whose `lastUpdated` is minutes after `createdAt`. A week is the same
+// threshold BlogCard uses for its "Updated" badge, so the two agree.
+const UPDATE_THRESHOLD_DAYS = 7
+
+const showUpdated = computed(() => {
+  if (!props.lastUpdated || !props.createdAt)
+    return false
+  const created = new Date(props.createdAt).getTime()
+  const updated = new Date(props.lastUpdated).getTime()
+  if (Number.isNaN(created) || Number.isNaN(updated))
+    return false
+  return (updated - created) / 86_400_000 >= UPDATE_THRESHOLD_DAYS
 })
 </script>
 
@@ -43,10 +65,32 @@ withDefaults(defineProps<Props>(), {
 
     <div class="flex w-full justify-center text-xs md:text-base my-8">
       <div class="md:flex items-center text-black dark:text-slate-300 content-center gap-8 text-xs sm:text-sm">
+        <!--
+          Byline. The JSON-LD has always named an author, but nothing on the page
+          did — no visible name, no rel="author" — so a reader (or anything
+          parsing the HTML rather than the graph) had no attribution at all.
+        -->
+        <div class="flex items-center gap-1 font-spacemono">
+          <Icon name="mdi:account-outline" size="18" aria-hidden="true" />
+          <NuxtLink to="/about" rel="author" class="hover:text-accent-600 dark:hover:text-accent-400 transition-colors">
+            {{ baseData.me.name }}
+          </NuxtLink>
+        </div>
+
+        <!--
+          `<time datetime>` rather than a bare <p>. The date was rendering as
+          human text only ("Jun 4, 2025"), so the publication date existed in the
+          JSON-LD and the meta tags but nowhere in the document itself.
+        -->
         <div class="flex items-center gap-1 font-spacemono">
           <LogoDate />
 
-          <p>{{ createdAt }}</p>
+          <time :datetime="createdAt">{{ formatBlogDate(createdAt) }}</time>
+        </div>
+
+        <div v-if="showUpdated" class="flex items-center gap-1 font-spacemono text-slate-500 dark:text-slate-400">
+          <Icon name="mdi:update" size="18" aria-hidden="true" />
+          <span>Updated <time :datetime="lastUpdated">{{ formatBlogDate(lastUpdated) }}</time></span>
         </div>
 
         <div v-if="readingTime" class="flex items-center gap-1 font-spacemono">

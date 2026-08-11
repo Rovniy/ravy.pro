@@ -5,12 +5,36 @@ const props = defineProps<{ slug?: string }>()
 
 const { y } = useWindowScroll()
 
-const progress = computed(() => {
-  if (!import.meta.client)
-    return 0
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight
-  return scrollable > 0 ? Math.min(100, (y.value / scrollable) * 100) : 0
+// Scrollable height is cached instead of measured inside the computed. Reading
+// `scrollHeight`/`innerHeight` on every scroll tick and then writing the bar's
+// inline width (below) is a read-after-write — a forced synchronous layout on
+// every frame of every scroll, on every post. A ResizeObserver on the document
+// element keeps the cached value honest, including when lazy-loaded images
+// change the page height as the reader scrolls.
+const scrollable = ref(0)
+let observer: ResizeObserver | null = null
+
+function measure() {
+  scrollable.value = document.documentElement.scrollHeight - window.innerHeight
+}
+
+onMounted(() => {
+  measure()
+  if (typeof ResizeObserver !== 'undefined') {
+    observer = new ResizeObserver(measure)
+    observer.observe(document.documentElement)
+  }
 })
+
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  observer = null
+})
+
+useEventListener('resize', measure, { passive: true })
+
+const progress = computed(() =>
+  scrollable.value > 0 ? Math.min(100, (y.value / scrollable.value) * 100) : 0)
 
 // Fire each read-depth milestone once per page (25/50/75 → progress, 100 → complete).
 const { track } = useAnalytics()

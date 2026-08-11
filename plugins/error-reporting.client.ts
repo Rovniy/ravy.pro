@@ -8,12 +8,22 @@ export default defineNuxtPlugin((nuxtApp) => {
   const seen = new Set<string>()
   const MAX_DISTINCT = 200
   const MAX_PER_WINDOW = 10
+  const WINDOW_MS = 60_000
+  // The throttle window is derived from a timestamp rather than reset by a
+  // `setInterval`. The interval version armed a 60s timer on every page for the
+  // lifetime of the tab even when no error was ever reported — a wakeup a minute,
+  // forever, for nothing. This computes the same window lazily, only when an
+  // error actually arrives.
+  let windowStart = 0
   let sentInWindow = 0
-  setInterval(() => {
-    sentInWindow = 0
-  }, 60_000)
 
   function send(message: string, stack: string | undefined, source: string) {
+    const now = Date.now()
+    if (now - windowStart >= WINDOW_MS) {
+      windowStart = now
+      sentInWindow = 0
+    }
+
     const key = `${source}:${message}`.slice(0, 200)
     if (seen.has(key) || sentInWindow >= MAX_PER_WINDOW)
       return

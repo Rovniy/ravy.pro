@@ -46,6 +46,22 @@ const CONTENT_CACHE_HEADERS = {
   'Cache-Control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=86400',
 }
 
+// Paths no crawler should follow: auth-gated, admin, per-user, or dead legacy
+// URLs. Declared once because robots.txt groups do NOT inherit — a named
+// user-agent group gets only its own rules, so this list has to be repeated into
+// every group rather than sitting at the top level. It previously sat only at the
+// top level, which merged it into `*` and left the named AI groups with nothing.
+const PRIVATE_PATHS = [
+  '/projects/',
+  '/projects/altcover/',
+  '/author/xploitravy/',
+  '/tag/customization/',
+  '/account',
+  '/admin',
+  '/shortify',
+  '/s/',
+]
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -105,6 +121,15 @@ export default defineNuxtConfig({
         { rel: 'dns-prefetch', href: 'https://apis.google.com' },
         { rel: 'dns-prefetch', href: 'https://accounts.google.com' },
         { rel: 'dns-prefetch', href: 'https://checkout.stripe.com' },
+        // The feed existed but was undiscoverable — reachable only from one
+        // footer anchor, absent from robots.txt, and with no rel="alternate"
+        // anywhere. Feed readers and several AI crawlers look for exactly this.
+        {
+          rel: 'alternate',
+          type: 'application/rss+xml',
+          title: `${seoData.author} — Blog`,
+          href: `${seoData.mySite}/rss.xml`,
+        },
       ],
       script: [
         {
@@ -141,7 +166,15 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    height: 630,
+    // Dimensions belong under `defaults` — a bare `height` is not a module
+    // option, so it was silently ignored and every page advertised the module's
+    // default `og:image:height = 600` while the Satori template
+    // (components/OgImage/Blog.satori.vue) drew a 1200x630 canvas. Three
+    // different numbers were in play; this is the one that matches the render.
+    defaults: {
+      width: 1200,
+      height: 630,
+    },
     renderer: 'satori',
   },
 
@@ -152,7 +185,6 @@ export default defineNuxtConfig({
       type: 'Person',
     },
     twitter: seoData.twitterHandle,
-    autoLastmod: true,
   },
 
   socialShare: {
@@ -198,6 +230,15 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Pre-compress everything in .output/public at build time so the origin can
+    // serve .br/.gz instead of raw bytes. Measured before this was on: the CDN
+    // returned no `content-encoding` at all, so the homepage shipped 845 kB with
+    // encodedBodySize === decodedBodySize on every request. Brotli takes the
+    // critical path (HTML + entry CSS + main chunk) from 592 kB to 132 kB.
+    // Everything user-facing is prerendered, so this covers HTML and payloads
+    // too, not just assets.
+    compressPublicAssets: { gzip: true, brotli: true },
+
     // Force the pdfjs worker into the server trace so the deployed bundle can
     // resolve it at runtime (see PDF_WORKER_INCLUDES above).
     externals: {
@@ -214,6 +255,7 @@ export default defineNuxtConfig({
         '/links',
         '/services',
         '/services/mentorship',
+        '/tools',
         '/tools/qr-code-generator',
         '/tools/contract-red-flag-scanner',
         '/tools/credit-card-generator',
@@ -235,6 +277,9 @@ export default defineNuxtConfig({
       '/about': { headers: CONTENT_CACHE_HEADERS },
       '/links': { headers: CONTENT_CACHE_HEADERS },
       '/contacts': { headers: CONTENT_CACHE_HEADERS },
+      // `/categories/**` does not match the bare index, so it needs its own
+      // entry — without it this prerendered page went to origin on every hit.
+      '/categories': { headers: CONTENT_CACHE_HEADERS },
       '/services': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/services/mentorship': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/api/services/**': { prerender: false },
@@ -245,16 +290,24 @@ export default defineNuxtConfig({
       '/shortify': { ssr: true, prerender: false },
       '/account': { ssr: true, prerender: false },
       '/scan-share/**': { ssr: true, prerender: false },
-      '/qr-code': { redirect: '/tools/qr-code-generator' },
-      '/tools/qr-code-generator': { ssr: true, prerender: true },
-      '/tools/contract-red-flag-scanner': { ssr: true, prerender: true },
+      // A bare `redirect: '<path>'` is served by Nitro as a *temporary* redirect
+      // (307), which consolidates no link equity. The legacy-URL middleware sets
+      // 301 for this path but never runs — the routeRule fires first, at the
+      // server level — so the status code has to be explicit here.
+      '/qr-code': { redirect: { to: '/tools/qr-code-generator', statusCode: 301 } },
+      // Every tool page is prerendered, so each one also needs the content cache
+      // headers; without them they ship no `Cache-Control`, the CDN refuses to
+      // hold them, and every single view is forwarded to the origin.
+      '/tools': { headers: CONTENT_CACHE_HEADERS },
+      '/tools/qr-code-generator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/tools/contract-red-flag-scanner': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/tools/contract-red-flag-scanner/result/**': { ssr: true, prerender: false },
-      '/tools/credit-card-generator': { ssr: true, prerender: true },
-      '/tools/jwt-decoder': { ssr: true, prerender: true },
-      '/tools/image-converter': { ssr: true, prerender: true },
-      '/tools/steam-ai-disclosure': { ssr: true, prerender: true },
+      '/tools/credit-card-generator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/tools/jwt-decoder': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/tools/image-converter': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/tools/steam-ai-disclosure': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
-      '/tools/xploit-translator': { ssr: true, prerender: true },
+      '/tools/xploit-translator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       // The release lookup must stay live — prerendering it would freeze the
       // version the download card shows at build time.
       '/api/xploit-translator/**': { prerender: false },
@@ -275,6 +328,13 @@ export default defineNuxtConfig({
       '/blog-opengraph/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/open_graph/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/misc/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      // Hand-managed image folders that were left out of the list above, so the
+      // CDN had no policy for them at all. Same reasoning as `/blog-cover`.
+      '/photos/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/instagram/**': { headers: { 'Cache-Control': 'public, max-age=2592000' } },
+      // Machine-readable descriptors: short cache so an edit shows up the same day.
+      '/llms.txt': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' } },
+      '/llms-full.txt': { headers: { 'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' } },
       '/favicon.ico': { headers: { 'Cache-Control': 'public, max-age=604800' } },
       '/apple-touch-icon.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
       '/android-chrome-192x192.webp': { headers: { 'Cache-Control': 'public, max-age=604800' } },
@@ -292,38 +352,55 @@ export default defineNuxtConfig({
       {
         userAgent: '*',
         allow: '/',
+        disallow: PRIVATE_PATHS,
       },
       {
         userAgent: ['Yandex'],
         cleanParam: ['p', '_ym_debug'],
+        disallow: PRIVATE_PATHS,
       },
+      // AI crawlers are welcome on the content, but they were previously the ONLY
+      // agents allowed everywhere: robots.txt group matching is winner-take-all
+      // on the most specific user-agent, so a named group inherits nothing from
+      // `*`. GPTBot and friends had an empty disallow list and could crawl
+      // /account, /admin, /shortify and /s/ while every other bot was blocked.
+      // Each named group now carries the same private paths.
+      //
+      // Named rather than left to fall through `*`: the agents below are allowed
+      // deliberately, and saying so in the file is the difference between a
+      // decision and an accident. Anything not listed still matches `*`.
       {
-        userAgent: ['GPTBot'],
+        userAgent: [
+          'GPTBot',
+          'OAI-SearchBot',
+          'ChatGPT-User',
+          'ClaudeBot',
+          'Claude-User',
+          'Claude-SearchBot',
+          'anthropic-ai',
+          'PerplexityBot',
+          'Perplexity-User',
+          'Applebot-Extended',
+          'Google-Extended',
+          'meta-externalagent',
+          'Amazonbot',
+          'cohere-ai',
+        ],
         allow: ['/'],
+        disallow: PRIVATE_PATHS,
       },
-      {
-        userAgent: ['OAI-SearchBot'],
-        allow: ['/'],
-      },
-      {
-        userAgent: ['ChatGPT-User'],
-        allow: ['/'],
-      },
-    ],
-    disallow: [
-      '/projects/',
-      '/projects/altcover/',
-      '/author/xploitravy/',
-      '/tag/customization/',
-      '/account',
-      '/admin',
-      '/shortify',
-      '/s/',
     ],
   },
 
   sitemap: {
     sources: ['/api/__sitemap__/urls'],
+    // `autoLastmod` is a sitemap option, and it used to sit in the `site: {}`
+    // block above where the module never reads it — so it was silently ignored
+    // and 30 of 61 URLs shipped with no `lastmod` at all (every non-blog URL:
+    // the static pages, all 11 categories, all 4 docs, all 7 tools, both
+    // services). Blog posts carry a real `lastUpdated` from frontmatter via the
+    // custom source; this fills in the rest from the build.
+    autoLastmod: true,
     // Auto-discovery scrapes <img> from prerendered HTML and re-escapes the
     // already-escaped `&amp;` in /_ipx/ srcset URLs, producing broken
     // `&amp;amp;` image locs. Post images are provided explicitly by the

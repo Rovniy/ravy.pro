@@ -141,6 +141,7 @@ useHead({
 })
 
 useBlogIndexSchema({
+  title: blogsPage.meta.title,
   description: blogsPage.meta.description,
 })
 

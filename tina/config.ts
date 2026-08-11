@@ -92,6 +92,15 @@ export default defineConfig({
             description: 'The trending status of the blog post',
           },
           {
+            // Declared here as well as in content.config.ts: Tina writes back
+            // only the fields it knows about, so a post edited in the CMS would
+            // silently lose `noindex: true` and re-enter the index.
+            type: 'boolean',
+            name: 'noindex',
+            label: 'Hide from search engines',
+            description: 'Leave off to index normally. Turn on to keep the post readable and linked but out of Google, the sitemap and llms.txt — use it for posts too short to compete.',
+          },
+          {
             type: 'rich-text',
             name: 'body',
             label: 'Body',

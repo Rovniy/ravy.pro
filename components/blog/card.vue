@@ -70,6 +70,9 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
     />
 
     <div class="relative overflow-hidden" :class="horizontal ? 'sm:col-span-3' : ''">
+      <!-- `sizes` uses @nuxt/image's `screenKey:size` form. Raw CSS media
+           queries get collapsed by the module to the last bare value, which
+           made phones download the desktop-width variant. -->
       <NuxtImg
         loading="lazy"
         class="w-full object-cover object-center transition-all duration-500"
@@ -79,8 +82,8 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
         :width="horizontal ? 289 : 400"
         :height="horizontal ? 184 : 192"
         :sizes="horizontal
-          ? '(max-width: 640px) 100vw, 289px'
-          : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px'"
+          ? 'sm:100vw md:289px'
+          : 'sm:100vw md:50vw lg:400px'"
         densities="x1 x2"
         :src="image"
         :alt="alt"

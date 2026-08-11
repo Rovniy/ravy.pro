@@ -66,6 +66,17 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
         id="tools-menu-list"
         class="absolute right-0 top-full mt-2 w-70 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
       >
+        <!-- The hub, first. The dropdown trigger is a button (a disclosure, not
+             a link), so before this row the /tools page had no navigation link
+             anywhere on the site. -->
+        <NuxtLink
+          to="/tools"
+          class="services-item px-4 py-2 text-sm sm:text-base font-semibold hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3 mb-1 pb-2.5 border-b border-slate-200 dark:border-slate-800"
+        >
+          <Icon name="mdi:apps" size="1.4em" aria-hidden="true" />
+          All tools
+        </NuxtLink>
+
         <NuxtLink
           v-for="item in sortedList"
           :key="item.path"

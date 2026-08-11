@@ -19,11 +19,14 @@ useHead({
   ],
 })
 
+// No `Docs` breadcrumb parent: `/docs` has no page and returns 404, so the
+// trail was advertising a broken URL to Google on all four documents. These are
+// standalone legal pages — a hub for four of them would earn nothing — so the
+// trail is Home → document.
 useGenericPageSchema({
   url: `${seoData.mySite}${path}`,
   name: articles.value.title || 'Document',
   description: articles.value.description || articles.value.title || '',
-  parents: [{ name: 'Docs', url: `${seoData.mySite}/docs` }],
   datePublished: articles.value.createdAt,
   dateModified: articles.value.lastUpdated || articles.value.createdAt,
 })

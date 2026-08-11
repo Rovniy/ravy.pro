@@ -10,7 +10,10 @@ const SITE = seoData.mySite
 const ID = {
   website: `${SITE}/#website`,
   person: `${SITE}/#person`,
+  /** The studio he founded. */
   organization: `${SITE}/#organization`,
+  /** The company he works for — a different entity from the one he founded. */
+  employer: `${SITE}/#employer`,
   logo: `${SITE}/#logo`,
 }
 
@@ -33,6 +36,22 @@ function lang(): string {
   return (seoData.locale || 'en_US').replace('_', '-')
 }
 
+/**
+ * Profiles that belong in `Person.sameAs` but aren't in `socialNetworks`.
+ *
+ * `sameAs` is how a search engine or an LLM decides that this Andrei Rovnyi is
+ * the same entity as the one on GitHub, YouTube and npm. It was derived from
+ * `socialNetworks` alone — five URLs — while the site itself linked six more
+ * from /contacts and /about that never made it into the graph.
+ */
+const EXTRA_SAME_AS = [
+  'https://www.youtube.com/@xploit-games',
+  'https://steamcommunity.com/id/xploit-gaming/',
+  'https://www.npmjs.com/~ravy',
+  'https://xploit.games',
+  'https://habr.com/ru/users/xploitravy/',
+]
+
 function personNode() {
   return {
     '@type': 'Person',
@@ -41,12 +60,31 @@ function personNode() {
     'alternateName': baseData.me.nick,
     'url': `${SITE}/about`,
     'mainEntityOfPage': { '@id': `${SITE}/about#webpage` },
+    // The portrait, not the generic site OG card. `Person.image` is what a
+    // knowledge panel would show, and it was pointing at the share graphic.
     'image': {
       '@type': 'ImageObject',
-      'url': absUrl('/og-image.webp'),
+      'url': absUrl('/photos/a_rovnyi_deep.webp'),
     },
     'email': `mailto:${baseData.me.email}`,
-    'jobTitle': 'Software Engineer',
+    // Matches every other surface on the site. `Software Engineer` alone
+    // contradicted data/index.ts, the about-page title, and the hero roles — and
+    // it was the one machine-readable version.
+    'jobTitle': 'Engineering Manager',
+    'hasOccupation': [
+      {
+        '@type': 'Occupation',
+        'name': 'Engineering Manager',
+      },
+      {
+        '@type': 'Occupation',
+        'name': 'Software Developer',
+      },
+      {
+        '@type': 'Occupation',
+        'name': 'Founder',
+      },
+    ],
     'description': footerData.aboutAuthor,
     'knowsAbout': [
       'Software Engineering',
@@ -56,13 +94,26 @@ function personNode() {
       'TypeScript',
       'Node.js',
       'Game Development',
+      'Unity',
+      'Mobile Games',
+      'Real-Time Systems',
+      'WebRTC',
+      'AI-Assisted Development',
+      'Automation Workflows',
       'Technical Mentorship',
       'Technical Hiring and Interviewing',
     ],
-    'sameAs': socialNetworks
-      .filter(s => /^https?:\/\//.test(s.href))
-      .map(s => s.href),
-    'worksFor': { '@id': ID.organization },
+    'sameAs': [
+      ...socialNetworks
+        .filter(s => /^https?:\/\//.test(s.href))
+        .map(s => s.href),
+      ...EXTRA_SAME_AS,
+    ],
+    // `worksFor` is the employer; the studio is a separate claim via
+    // `Organization.founder`. Pointing `worksFor` at his own company made the
+    // graph silent about the current job, which only existed in prose.
+    'worksFor': { '@id': ID.employer },
+    'founder': { '@id': ID.organization },
   }
 }
 
@@ -71,14 +122,46 @@ function organizationNode() {
     '@type': 'Organization',
     '@id': ID.organization,
     'name': 'XPLOIT FZE',
+    'legalName': 'XPLOIT FZE',
     'url': SITE,
     'logo': {
       '@type': 'ImageObject',
       '@id': ID.logo,
       'url': absUrl('/og-image.webp'),
     },
+    'sameAs': [
+      'https://xploit.games',
+      'https://tinyboohomecoming.com',
+    ],
     'founder': { '@id': ID.person },
   }
+}
+
+/**
+ * The current employer, as its own entity rather than a string inside
+ * `Person.description`. The description hardcodes "currently at Gaijin.net",
+ * which is a fact that rots silently; this at least makes the claim structured
+ * and in one place.
+ */
+function employerNode() {
+  return {
+    '@type': 'Organization',
+    '@id': ID.employer,
+    'name': 'Gaijin Entertainment',
+    'url': 'https://gaijin.net/',
+  }
+}
+
+/**
+ * The four nodes that describe "who runs this site", present in every page's
+ * graph and referenced by `@id` from the page-specific nodes.
+ *
+ * Grouped into one helper because they are a set: `Person.worksFor` points at
+ * the employer node, so emitting the person without the employer would leave a
+ * dangling `@id` in every graph on the site.
+ */
+function identityNodes() {
+  return [websiteNode(), organizationNode(), employerNode(), personNode()]
 }
 
 function websiteNode() {
@@ -135,6 +218,39 @@ function pageHead(opts: {
       { name: 'twitter:title', content: opts.title },
       { name: 'twitter:description', content: opts.description },
       { name: 'twitter:image', content: opts.image },
+    ],
+  })
+}
+
+/**
+ * Per-page Open Graph / Twitter title+description.
+ *
+ * Emitted from the schema composables rather than added to each page, because
+ * every affected page already calls exactly one of them and already passes the
+ * name + description this needs. The previous arrangement — a hardcoded
+ * `og:title`/`og:description` in `siteMetaData` — meant a page that set only
+ * `name: description` silently inherited the home page's identity, and seven
+ * pages did exactly that. Deriving it here makes that failure impossible: you
+ * cannot register the schema without also registering the social tags.
+ *
+ * `og:url`/`twitter:url` are NOT set here — they come from the canonical in
+ * layouts/default.vue, which is the single source for "what page is this".
+ * `og:image` is only emitted when a page has a specific one; otherwise
+ * `defineOgImage()` or the site fallback in `siteMetaData` applies.
+ */
+function socialMeta(opts: { title: string, description: string, image?: string }) {
+  useHead({
+    meta: [
+      { property: 'og:title', content: opts.title },
+      { property: 'og:description', content: opts.description },
+      { name: 'twitter:title', content: opts.title },
+      { name: 'twitter:description', content: opts.description },
+      ...(opts.image
+        ? [
+            { property: 'og:image', content: opts.image },
+            { name: 'twitter:image', content: opts.image },
+          ]
+        : []),
     ],
   })
 }
@@ -239,6 +355,13 @@ interface WebPageOpts {
   datePublished?: string
   dateModified?: string
   primaryEntityId?: string
+  /**
+   * OG-style locale (`ru_RU`) for a page that isn't in the site's default
+   * language. Without it the WebPage node claimed `en-US` while the BlogPosting
+   * inside it claimed `ru-RU` — two nodes describing the same page disagreeing
+   * about its language.
+   */
+  locale?: string
 }
 
 function webPageNode(opts: WebPageOpts) {
@@ -250,7 +373,7 @@ function webPageNode(opts: WebPageOpts) {
     'description': opts.description,
     'isPartOf': { '@id': ID.website },
     'about': { '@id': ID.person },
-    'inLanguage': lang(),
+    'inLanguage': opts.locale ? opts.locale.replace('_', '-') : lang(),
   }
   if (opts.image) {
     node.primaryImageOfPage = {
@@ -401,9 +524,7 @@ function injectGraph(graph: unknown[] | (() => unknown[])) {
 export function useHomeSchema(opts: { name: string, description: string }) {
   const url = `${SITE}/`
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url,
       name: opts.name,
@@ -420,10 +541,9 @@ export function useAboutSchema(opts: { description: string }) {
     { name: 'Home', url: `${SITE}/` },
     { name: 'About', url },
   ])
+  socialMeta({ title: `About ${baseData.me.name}`, description: opts.description })
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url,
       name: `About ${baseData.me.name}`,
@@ -436,16 +556,15 @@ export function useAboutSchema(opts: { description: string }) {
   ])
 }
 
-export function useBlogIndexSchema(opts: { description: string }) {
+export function useBlogIndexSchema(opts: { description: string, title?: string }) {
   const url = `${SITE}/blogs`
   const crumb = breadcrumbNode([
     { name: 'Home', url: `${SITE}/` },
     { name: 'Blogs', url },
   ])
+  socialMeta({ title: opts.title || 'Blog', description: opts.description })
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     {
       '@type': 'Blog',
       '@id': `${url}#blog`,
@@ -475,9 +594,7 @@ export function useBlogPostSchema(post: BlogPostingInput) {
     { name: post.title, url: post.url },
   ])
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url: post.url,
       name: post.title,
@@ -488,6 +605,7 @@ export function useBlogPostSchema(post: BlogPostingInput) {
       datePublished: post.createdAt,
       dateModified: post.lastUpdated || post.createdAt,
       primaryEntityId: `${post.url}#article`,
+      locale: post.locale,
     }),
     blogPostingNode(post),
     crumb,
@@ -503,10 +621,9 @@ export function useCategoriesIndexSchema(opts: {
     { name: 'Home', url: `${SITE}/` },
     { name: 'Categories', url },
   ])
+  socialMeta({ title: 'Categories', description: opts.description })
   const graph: unknown[] = [
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url,
       name: 'Categories',
@@ -537,10 +654,9 @@ export function useCategoryPageSchema(opts: {
     { name: 'Categories', url: `${SITE}/categories` },
     { name: opts.category, url: opts.url },
   ])
+  socialMeta({ title: opts.category, description: opts.description })
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url: opts.url,
       name: opts.category,
@@ -577,10 +693,9 @@ export function useGenericPageSchema(opts: {
     { name: opts.name, url: opts.url },
   ]
   const crumb = breadcrumbNode(items)
+  socialMeta({ title: opts.name, description: opts.description, image: opts.image })
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url: opts.url,
       name: opts.name,
@@ -608,9 +723,7 @@ export function useServicesIndexSchema(opts: {
     { name: 'Services', url },
   ])
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url,
       name: 'Services',
@@ -621,6 +734,44 @@ export function useServicesIndexSchema(opts: {
     itemListNode({
       id: `${url}#list`,
       name: 'Services',
+      items: opts.items.map(i => ({ url: absUrl(i.path), name: i.name })),
+    }),
+    crumb,
+  ])
+}
+
+/**
+ * The /tools hub. Modelled on `useServicesIndexSchema` — `ItemList` of the tool
+ * pages, not a list of `SoftwareApplication` nodes: each tool page already
+ * declares its own app node with its own `@id`, and restating them here would
+ * put two descriptions of the same entity in two graphs.
+ *
+ * This page has to exist for another reason too: every tool page's breadcrumb
+ * has always named `/tools` as its parent, and that URL used to 404.
+ */
+export function useToolsIndexSchema(opts: {
+  title: string
+  description: string
+  items: Array<{ path: string, name: string, description?: string }>
+}) {
+  const url = `${SITE}/tools`
+  const crumb = breadcrumbNode([
+    { name: 'Home', url: `${SITE}/` },
+    { name: 'Tools', url },
+  ])
+  socialMeta({ title: opts.title, description: opts.description })
+  injectGraph([
+    ...identityNodes(),
+    webPageNode({
+      url,
+      name: 'Tools',
+      description: opts.description,
+      type: 'CollectionPage',
+      breadcrumbId: crumb['@id'],
+    }),
+    itemListNode({
+      id: `${url}#list`,
+      name: 'Tools',
       items: opts.items.map(i => ({ url: absUrl(i.path), name: i.name })),
     }),
     crumb,
@@ -682,9 +833,7 @@ export function useServicePageSchema(opts: ServicePageSchemaOpts) {
 
   // Plain array, not a getter: nothing here resolves asynchronously.
   injectGraph([
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url,
       name: opts.title,
@@ -740,11 +889,15 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
   ])
 
   const toolId = toolIdFromPath(opts.path)
+  // Shared rating state. It is populated *before the server renders* by
+  // plugins/tool-ratings.server.ts — that is what puts `aggregateRating` into the
+  // prerendered HTML, which is the only version crawlers and AI fetchers read.
+  // Loading it client-side (the previous arrangement) meant the node existed only
+  // after hydration and effectively never shipped.
   const { ratings } = useToolRatings()
 
-  // The SoftwareApplication node is built lazily so aggregateRating appears
-  // once the async ratings fetch (triggered by the page's rating widget)
-  // lands — the graph getter below re-runs on that state change.
+  // Still built lazily: the rating can also arrive or change client-side after a
+  // vote, and the graph getter below re-runs on that state change.
   const appNode = () => {
     const summary = toolId ? ratings.value?.[toolId] : null
     const version = toValue(opts.appSoftwareVersion)
@@ -800,9 +953,7 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
     tail.push(howToNode(url, opts.howTo))
 
   injectGraph(() => [
-    websiteNode(),
-    organizationNode(),
-    personNode(),
+    ...identityNodes(),
     webPageNode({
       url,
       name: opts.title,
