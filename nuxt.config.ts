@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 // Explicit import: Nuxt 4's split tsconfig (project references) leaves the
 // `defineNuxtConfig` global unresolved in some IDE type contexts.
 import { defineNuxtConfig } from 'nuxt/config'
-import { navbarData, seoData } from './data'
+import { baseData, navbarData, seoData } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
 
 // pdfjs-dist (used by the contract scanner's PDF text extraction + OCR) lazily
@@ -177,6 +177,25 @@ export default defineNuxtConfig({
   image: {
     quality: 70,
     format: ['avif', 'webp'],
+    // Post images live in Cloud Storage behind the `/media/blog/**` Nitro route,
+    // so they are not files under `public/` — and IPX resolves a root-relative
+    // id against the filesystem, which is why every `/_ipx/…/media/blog/…` URL
+    // came back 404 (and then tripped CSP, because the `onerror` attribute
+    // @nuxt/image puts on a server-rendered <img> only *runs* when the image
+    // fails).
+    //
+    // IPX picks its storage by whether the resolved id has a protocol, and it
+    // applies `alias` before that check. Aliasing the prefix to the absolute
+    // site URL therefore routes these ids to IPX's HTTP storage, which fetches
+    // them over HTTP like any remote image. `domains` is what creates that
+    // storage and allow-lists the host.
+    //
+    // The browser-facing URL does not change: the alias is resolved server-side,
+    // so markup and cached `/_ipx/**` paths stay exactly as they are.
+    domains: [new URL(baseData.site.url).host],
+    alias: {
+      '/media/blog': `${baseData.site.url}/media/blog`,
+    },
     screens: {
       sm: 320,
       md: 640,
