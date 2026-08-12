@@ -106,7 +106,7 @@ The best proof is running software. A few things you can try right now:
 
 * **[Tiny Boo: Homecoming](https://tinyboohomecoming.com)** — a cozy mobile adventure for iOS and Android, currently in development. The studio's flagship project.
 * **[IDLED Survival](/blogs/idled-survival)** — an idle survival RPG on Telegram, released in 2023. Your world keeps living while you sleep.
-* **Sky Ball: The Orion** — a minimalist space puzzle with slingshot physics and 160+ levels.
+* **[Sky Ball: The Orion](https://skyballtheorion.com/)** — a minimalist space puzzle with slingshot physics and 160+ levels.
 * **Egocentrism** — a nominee for the Game Development World Championship 2021 award.
 
 ### Open source & writing
