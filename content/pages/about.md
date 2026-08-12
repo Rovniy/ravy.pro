@@ -111,8 +111,8 @@ The best proof is running software. A few things you can try right now:
 
 ### Open source & writing
 
-* **[tabs-broadcast](https://www.npmjs.com/package/tabs-broadcast)** — an npm library for cross-tab communication ([how it works](/blogs/tabs-broadcast)).
-* [An article on Habr](https://habr.com/ru/post/415401) about building a library for high-load interfaces, written during the Play2Live days.
+* **[tabs-broadcast](https://www.npmjs.com/package/tabs-broadcast)** — an npm library for cross-tab communication ([how it works](/blogs/tabs-broadcast)). [An article on Habr](https://habr.com/ru/post/415401) about building a library for high-load interfaces, written during the Play2Live days.
+* **[Windows AI translater](https://github.com/Rovniy/windows-translater)** — is a tray widget for Windows. You copy anything, press Ctrl+Alt+T, and a small window rises above the taskbar with the translation already streaming in. ([how it works](/blogs/xploit-translator-a-clipboard-translator-in-the-windows-tray)).
 
 ## My Technical Stack
 
