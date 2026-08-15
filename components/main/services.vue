@@ -63,7 +63,9 @@ function linkFor(offering: typeof OFFERINGS[number]) {
         </NuxtLink>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
+      <!-- 2×2, not 3-across: with four offerings a three-column grid leaves a
+           lone card on the second row. -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
         <NuxtLink
           v-for="(offering, i) in OFFERINGS"
           :key="offering.id"

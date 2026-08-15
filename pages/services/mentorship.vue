@@ -75,7 +75,11 @@ defineOgImage('Blog', {
 
       <!-- Numbers. No cards, no icons — a row on the page background. The honesty
            caveat sits at the numbers rather than in fine print 2000px lower. -->
-      <section class="px-6 pb-14">
+      <!-- Section rhythm: every section carries bottom padding only (pb-16), so
+           the gap between any two sections is a constant 64px. Two-sided py-14
+           used to double up to 112px between most sections while the CTA and the
+           footer notes sat at 56px — the page breathed unevenly. -->
+      <section class="px-6 pb-16">
         <div class="border-t border-slate-200 dark:border-slate-800 pt-6">
           <dl class="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-6">
             <div v-for="(stat, i) in m.numbers.items" :key="stat.label" v-reveal="(i % 5) * 70">
@@ -95,7 +99,7 @@ defineOgImage('Blog', {
 
       <!-- Fit before program: someone arriving from an engineering blog asks
            "is this about me" before "what's the syllabus". -->
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.fit.eyebrow" :title="m.fit.title" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -130,7 +134,7 @@ defineOgImage('Blog', {
         </p>
       </section>
 
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.author.eyebrow" :title="m.author.title" />
 
         <div class="max-w-3xl space-y-4">
@@ -158,7 +162,7 @@ defineOgImage('Blog', {
         </NuxtLink>
       </section>
 
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.program.eyebrow" :title="m.program.title" />
         <p class="-mt-4 mb-8 max-w-2xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
           {{ m.program.lede }}
@@ -192,7 +196,7 @@ defineOgImage('Blog', {
 
       <!-- A checklist, not eight cards: this is the format a skeptic uses to
            price the offer mentally. -->
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.included.eyebrow" :title="m.included.title" />
 
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
@@ -210,7 +214,7 @@ defineOgImage('Blog', {
       <!-- The load-bearing block. `1.2×` is the important number: "20% for six
            months" reads as open-ended, "1.2 months of salary in total" is finite
            and comparable to a recruiter fee. -->
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.terms.eyebrow" :title="m.terms.title" />
         <p class="-mt-4 mb-8 max-w-3xl text-base leading-relaxed text-slate-600 dark:text-slate-400">
           {{ m.terms.lede }}
@@ -258,7 +262,7 @@ defineOgImage('Blog', {
 
       <!-- The single mid-page CTA, placed after the terms rather than after the
            program: people convert on the money model, not the syllabus. -->
-      <section class="pb-14 px-6">
+      <section class="pb-16 px-6">
         <ServiceCtaBlock
           :label="m.cta.label"
           :note="m.cta.note"
@@ -271,7 +275,7 @@ defineOgImage('Blog', {
 
       <!-- Cases after the terms: proof lands harder once the reader knows the
            incentive. No photos, no pull-quotes — these are anonymised. -->
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.cases.eyebrow" :title="m.cases.title" />
         <p class="-mt-4 mb-8 max-w-3xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
           {{ m.cases.lede }}
@@ -310,7 +314,7 @@ defineOgImage('Blog', {
         </p>
       </section>
 
-      <section id="apply" class="py-14 px-6 scroll-mt-28">
+      <section id="apply" class="pb-16 px-6 scroll-mt-28">
         <ServiceInquiryForm
           :heading="m.apply.heading"
           :lede="m.apply.lede"
@@ -321,7 +325,7 @@ defineOgImage('Blog', {
         />
       </section>
 
-      <section class="py-14 px-6">
+      <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="m.faq.eyebrow" :title="m.faq.title" />
 
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
@@ -343,7 +347,7 @@ defineOgImage('Blog', {
       <!-- Cross-link to the Russian original. Latin-only text on purpose: the
            self-hosted font subset has no Cyrillic block, so a Russian word here
            would fall back to a system font and show a visible seam. -->
-      <section class="pb-14 px-6">
+      <section class="pb-16 px-6">
         <div class="rounded-2xl border border-slate-200/80 dark:border-white/10 px-5 py-4">
           <p class="font-spacemono text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
             {{ m.origin.eyebrow }}
@@ -366,7 +370,7 @@ defineOgImage('Blog', {
 
       <!-- Real fine print, honestly formatted: not styled to be overlooked, not
            inflated into a warning box. -->
-      <section class="pb-14 px-6">
+      <section class="pb-16 px-6">
         <p class="border-t border-slate-200 dark:border-slate-800 pt-6 max-w-3xl text-xs leading-relaxed text-slate-500 dark:text-slate-400">
           {{ m.honestyNote }}
           <NuxtLink :to="m.terms.fullTerms.to" class="underline decoration-slate-400/50 hover:text-accent-600 dark:hover:text-accent-400">

@@ -84,6 +84,9 @@ describe('sitemap and rss routes', () => {
     const locs = urls.map((x: { loc: string }) => x.loc)
     expect(locs).toContain('/services')
     expect(locs).toContain('/services/mentorship')
+    // Promoted from inquiry-only via OFFERING_PAGE_PATHS — no sitemap edit
+    // needed, which is exactly what this asserts.
+    expect(locs).toContain('/services/fractional-cto')
   })
 
   it('rss route renders each post body to html', async () => {

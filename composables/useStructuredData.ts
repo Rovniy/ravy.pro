@@ -313,6 +313,11 @@ function serviceNode(opts: {
   availableLanguage?: string[]
   audience?: string
   offerDescription?: string
+  /**
+   * Priced packages, when the service has real fixed prices (unlike the
+   * income-share arrangement above). Takes precedence over `offerDescription`.
+   */
+  offers?: Array<{ name: string, price: string, currency?: string, description?: string }>
 }) {
   return {
     '@type': 'Service',
@@ -332,16 +337,28 @@ function serviceNode(opts: {
     ...(opts.audience
       ? { audience: { '@type': 'Audience', 'audienceType': opts.audience } }
       : {}),
-    ...(opts.offerDescription
+    ...(opts.offers?.length
       ? {
-          offers: {
+          offers: opts.offers.map(o => ({
             '@type': 'Offer',
-            'description': opts.offerDescription,
+            'name': o.name,
+            'price': o.price,
+            'priceCurrency': (o.currency || 'USD').toUpperCase(),
             'availability': 'https://schema.org/InStock',
             'url': opts.url,
-          },
+            ...(o.description ? { description: o.description } : {}),
+          })),
         }
-      : {}),
+      : opts.offerDescription
+        ? {
+            offers: {
+              '@type': 'Offer',
+              'description': opts.offerDescription,
+              'availability': 'https://schema.org/InStock',
+              'url': opts.url,
+            },
+          }
+        : {}),
   }
 }
 
@@ -792,6 +809,8 @@ export interface ServicePageSchemaOpts {
   availableLanguage?: string[]
   audience?: string
   offerDescription?: string
+  /** Priced packages — see the same field on `serviceNode`. */
+  offers?: Array<{ name: string, price: string, currency?: string, description?: string }>
   /** The program steps, emitted as HowTo. */
   program?: { name: string, description?: string, steps: Array<{ name: string, text: string }> }
   faq?: Array<{ question: string, answer: string }>
@@ -854,6 +873,7 @@ export function useServicePageSchema(opts: ServicePageSchemaOpts) {
       availableLanguage: opts.availableLanguage,
       audience: opts.audience,
       offerDescription: opts.offerDescription,
+      offers: opts.offers,
     }),
     crumb,
     ...tail,

@@ -300,6 +300,7 @@ export default defineNuxtConfig({
         '/contacts',
         '/links',
         '/services',
+        '/services/fractional-cto',
         '/services/mentorship',
         '/tools',
         '/tools/qr-code-generator',
@@ -330,6 +331,7 @@ export default defineNuxtConfig({
       // entry — without it this page went to origin on every hit.
       '/categories': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
       '/services': { prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/services/fractional-cto': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/services/mentorship': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/api/services/**': { prerender: false },
       '/blogs/**': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
@@ -528,6 +530,7 @@ export default defineNuxtConfig({
         // OFFERINGS[].icon; the rest are literal but sit outside the scanner's
         // reach in the inquiry form's conditional branches.
         'mdi:account-star-outline',
+        'mdi:account-tie-outline',
         'mdi:compass-outline',
         'mdi:account-group-outline',
         'mdi:arrow-down',

@@ -11,7 +11,7 @@
 // Long-form copy for an offering with its own landing page lives in its own
 // module (see data/mentorship.ts); this file is only the card-level registry.
 
-export const OFFERING_IDS = ['mentorship', 'consulting', 'team-support'] as const
+export const OFFERING_IDS = ['mentorship', 'fractional-cto', 'consulting', 'team-support'] as const
 
 export type OfferingId = (typeof OFFERING_IDS)[number]
 
@@ -68,6 +68,19 @@ export const OFFERINGS: Offering[] = [
     cta: { kind: 'page', path: '/services/mentorship' },
     inquiryLabel: 'Mentorship & job placement in IT',
     telegramText: 'Hi Andrei! I\'m interested in your IT mentorship program. Here\'s my situation:',
+  },
+  {
+    id: 'fractional-cto',
+    name: 'Fractional CTO for game studios',
+    icon: 'mdi:account-tie-outline',
+    tag: 'For game studios & high-load products',
+    blurb: 'Part-time engineering leadership: architecture, delivery process, and the team itself — from an engineer who has led 35+ people and kept platforms upright at 10,000+ RPS. A fixed-scope audit first, then a retainer. Two clients at a time, outside the UAE.',
+    tagline: 'Part-time engineering leadership for game studios and high-load products.',
+    meta: 'Audit $1,500 · Advisory $2,500/mo · Standard $5,000/mo',
+    action: 'Read the full page',
+    cta: { kind: 'page', path: '/services/fractional-cto' },
+    inquiryLabel: 'Fractional CTO / engineering leadership',
+    telegramText: 'Hi Andrei! I\'m interested in fractional engineering leadership. Here\'s the context:',
   },
   {
     id: 'consulting',

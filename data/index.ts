@@ -295,6 +295,19 @@ export const mentorshipPage = {
   },
 }
 
+export const fractionalCtoPage = {
+  meta: {
+    title: 'Fractional CTO & Engineering Leadership for Game Studios',
+    description: 'Part-time engineering leadership for game studios and high-load products. 15 years, 35+ engineers led, 10,000+ RPS. Fixed-scope audit from $1,500, retainers from $2,500/mo.',
+  },
+  og: {
+    headline: 'Fractional CTO',
+    title: 'Engineering leadership, part-time',
+    description: 'For game studios and high-load products. Fixed-scope audit $1,500 · Advisory $2,500/mo · Standard $5,000/mo.',
+    link: '/open_graph/og_image_default.png',
+  },
+}
+
 export const categoryPage = {
   title: 'Categories',
   description: 'Below, you\'ll find this category, which is generated from all the tags mentioned across various blog posts.',
