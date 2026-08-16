@@ -19,6 +19,9 @@ vi.mock('@nuxt/content/server', () => ({
     select: vi.fn().mockReturnThis(),
     order: vi.fn().mockReturnThis(),
     all: vi.fn(async () => mocks.docRows),
+    // The /now lastmod lookup — null is the "page missing" path, which the
+    // route must survive.
+    first: vi.fn(async () => null),
   }),
 }))
 
@@ -74,6 +77,7 @@ describe('sitemap and rss routes', () => {
     expect(locs).toContain('/')
     expect(locs).toContain('/blogs')
     expect(locs).toContain('/categories')
+    expect(locs).toContain('/now')
   })
 
   it('sitemap includes the services index and every offering with its own page', async () => {

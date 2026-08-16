@@ -299,6 +299,7 @@ export default defineNuxtConfig({
         '/about',
         '/contacts',
         '/links',
+        '/now',
         '/services',
         '/services/fractional-cto',
         '/services/mentorship',
@@ -325,6 +326,7 @@ export default defineNuxtConfig({
       '/': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
       '/blogs': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
       '/about': { headers: CONTENT_CACHE_HEADERS },
+      '/now': { headers: CONTENT_CACHE_HEADERS },
       '/links': { headers: CONTENT_CACHE_HEADERS },
       '/contacts': { headers: CONTENT_CACHE_HEADERS },
       // `/categories/**` does not match the bare index, so it needs its own

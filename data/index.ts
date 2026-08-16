@@ -295,6 +295,21 @@ export const mentorshipPage = {
   },
 }
 
+// Content for /now lives in content/pages/now.md (Tina-editable, like about);
+// only SEO copy belongs here, same as every other page blob in this file.
+export const nowPage = {
+  meta: {
+    title: 'Now — Andrei Rovnyi',
+    description: 'What Andrei Rovnyi is working on right now: web projects at Gaijin Entertainment, a co-op Steam rogue-like in Unity, the Tiny Boo Movie AI-animated series, a new Zynthar album — and current availability for fractional CTO work, consulting, and mentorship.',
+  },
+  og: {
+    headline: 'Now',
+    title: 'What I\'m doing now',
+    description: 'Current projects, focus, and availability — updated as things change.',
+    link: '/open_graph/og_image_default.png',
+  },
+}
+
 export const fractionalCtoPage = {
   meta: {
     title: 'Fractional CTO & Engineering Leadership for Game Studios',

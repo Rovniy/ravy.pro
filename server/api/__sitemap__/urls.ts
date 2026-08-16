@@ -45,6 +45,15 @@ export default defineEventHandler(async (event) => {
     })
   }
 
+  // /now lives in content/pages with a real `lastUpdated` in frontmatter —
+  // query it so the sitemap reflects the actual edit date (the freshness date
+  // is the whole point of a now page) rather than the build timestamp.
+  const nowDoc = await queryCollection(event, 'content')
+    .where('path', '=', '/pages/now')
+    .select('lastUpdated', 'createdAt')
+    .first()
+  urls.push({ loc: '/now', lastmod: nowDoc?.lastUpdated || nowDoc?.createdAt || undefined })
+
   // Commercial offerings: the index, plus any offering with its own landing
   // page. Derived from OFFERING_PAGE_PATHS, so promoting an offering to a full
   // page needs no edit here.
