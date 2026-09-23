@@ -218,7 +218,7 @@ defineOgImage('Blog', {
             hoping to control in-article images, but ContentRenderer maps by
             rendered tag name (`img`), so that component was never reached and
             the images stayed eager and full-size. Sizing now lives where MDC
-            actually looks: components/content/ProseImg.vue.
+            actually looks: components/content/ProseImg.global.vue.
           -->
           <ContentRenderer v-if="articles" :value="articles">
             <template #empty>
