@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '~': root,
       '~~': root,
+      '#mdc-highlighter': fileURLToPath(new URL('./tests/stubs/mdc-highlighter.ts', import.meta.url)),
     },
   },
   test: {
