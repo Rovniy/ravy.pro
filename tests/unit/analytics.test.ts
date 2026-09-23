@@ -14,6 +14,7 @@ describe('toolIdFromPath', () => {
     expect(toolIdFromPath('/tools/steam-ai-disclosure')).toBe('steam-ai-disclosure')
     expect(toolIdFromPath('/tools/contract-red-flag-scanner')).toBe('contract-scanner')
     expect(toolIdFromPath('/tools/xploit-translator')).toBe('xploit-translator')
+    expect(toolIdFromPath('/tools/xploit-game-ui')).toBe('xploit-game-ui')
   })
 
   it('ignores trailing slashes, query strings, and nested paths', () => {

@@ -311,6 +311,7 @@ export default defineNuxtConfig({
         '/tools/image-converter',
         '/tools/steam-ai-disclosure',
         '/tools/xploit-translator',
+        '/tools/xploit-game-ui',
         ...DOCS_ROUTES,
       ],
     },
@@ -373,6 +374,7 @@ export default defineNuxtConfig({
       '/tools/steam-ai-disclosure': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
       '/tools/xploit-translator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      '/tools/xploit-game-ui': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       // The release lookup must stay live — prerendering it would freeze the
       // version the download card shows at build time.
       '/api/xploit-translator/**': { prerender: false },
