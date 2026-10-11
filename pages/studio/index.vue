@@ -24,6 +24,7 @@ useHead({
     </header>
 
     <StudioGate>
+      <StudioClaudeConnect />
       <StudioPostList />
     </StudioGate>
   </div>

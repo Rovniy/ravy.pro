@@ -1,0 +1,158 @@
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { useAuthedFetch } from '~/composables/useAuthedFetch'
+
+/**
+ * OAuth consent screen for the MCP endpoint. claude.ai / Claude Code open this
+ * page with the standard authorization-request query; the person signs in with
+ * the site's Google login (via <StudioGate>, so only studio grantees get past
+ * it) and approves. The server validates the request first and the page only
+ * ever redirects to a redirect_uri the server has confirmed.
+ */
+
+definePageMeta({ layout: 'default' })
+
+useHead({
+  title: 'Connect to Claude',
+  meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+})
+
+const route = useRoute()
+const { authedFetch } = useAuthedFetch()
+
+function q(name: string): string {
+  const value = route.query[name]
+  return typeof value === 'string' ? value : ''
+}
+
+const request = {
+  client_id: q('client_id'),
+  redirect_uri: q('redirect_uri'),
+  response_type: q('response_type'),
+  code_challenge: q('code_challenge'),
+  code_challenge_method: q('code_challenge_method'),
+  state: q('state'),
+  scope: q('scope'),
+  resource: q('resource'),
+}
+
+interface ClientCheck {
+  ok: boolean
+  error?: string
+  redirectable?: boolean
+  clientName?: string
+  redirectHost?: string
+  issuer?: string
+}
+
+const check = ref<ClientCheck | null>(null)
+const busy = ref(false)
+const errorMsg = ref('')
+const done = ref(false)
+
+const fatal = computed(() => check.value && !check.value.ok && !check.value.redirectable)
+
+function redirectWith(params: Record<string, string>) {
+  const url = new URL(request.redirect_uri)
+  for (const [k, v] of Object.entries(params)) {
+    if (v)
+      url.searchParams.set(k, v)
+  }
+  done.value = true
+  window.location.assign(url.toString())
+}
+
+onMounted(async () => {
+  try {
+    const query = new URLSearchParams(Object.entries(request).filter(([, v]) => v)).toString()
+    check.value = await $fetch<ClientCheck>(`/api/oauth/client?${query}`)
+    // A malformed but correctly addressed request goes back to the client with
+    // the error, as the spec requires, rather than stranding the user here.
+    if (!check.value.ok && check.value.redirectable && check.value.error)
+      redirectWith({ error: check.value.error, state: request.state })
+  }
+  catch {
+    check.value = { ok: false, error: 'Could not validate the request. Try connecting again.' }
+  }
+})
+
+async function allow() {
+  busy.value = true
+  errorMsg.value = ''
+  try {
+    const res = await authedFetch<{ redirect: string }>('/api/oauth/authorize', {
+      method: 'POST',
+      body: JSON.stringify(request),
+    })
+    done.value = true
+    window.location.assign(res.redirect)
+  }
+  catch (e: unknown) {
+    errorMsg.value = e instanceof Error ? e.message : 'Authorization failed'
+    busy.value = false
+  }
+}
+
+function deny() {
+  redirectWith({ error: 'access_denied', state: request.state, iss: check.value?.issuer ?? '' })
+}
+</script>
+
+<template>
+  <div class="px-6 py-12 mx-auto w-full max-w-xl">
+    <h1 class="text-3xl font-bold tracking-tight mb-6">
+      Connect to Claude
+    </h1>
+
+    <div v-if="!check" class="text-slate-500">
+      Checking the request…
+    </div>
+
+    <div v-else-if="fatal" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
+      {{ check.error }}
+    </div>
+
+    <StudioGate v-else-if="check.ok">
+      <div class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
+        <p class="text-base mb-4">
+          <strong>{{ check.clientName }}</strong> wants to manage the blog on this site as you.
+        </p>
+        <ul class="text-sm text-slate-600 dark:text-slate-400 list-disc pl-5 space-y-1 mb-4">
+          <li>read every post, including drafts;</li>
+          <li>create and edit posts and upload images;</li>
+          <li>publish and unpublish posts — they go live within a minute.</li>
+        </ul>
+        <p class="text-xs text-slate-500 mb-6">
+          You will be returned to <span class="font-mono">{{ check.redirectHost }}</span>.
+          Only allow this if you just started connecting from there. You can disconnect it any time in Studio.
+        </p>
+
+        <div class="flex gap-3">
+          <button
+            type="button"
+            class="rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer disabled:opacity-50"
+            :disabled="busy || done"
+            @click="allow"
+          >
+            {{ busy || done ? 'Connecting…' : 'Allow' }}
+          </button>
+          <button
+            type="button"
+            class="rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:cursor-pointer disabled:opacity-50"
+            :disabled="busy || done"
+            @click="deny"
+          >
+            Deny
+          </button>
+        </div>
+        <p v-if="errorMsg" class="mt-3 text-sm text-red-600 dark:text-red-400">
+          {{ errorMsg }}
+        </p>
+      </div>
+    </StudioGate>
+
+    <div v-else class="text-slate-500">
+      Returning to the app…
+    </div>
+  </div>
+</template>

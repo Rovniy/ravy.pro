@@ -81,6 +81,8 @@ const PRIVATE_PATHS = [
   '/shortify',
   '/studio',
   '/s/',
+  '/oauth/',
+  '/mcp',
 ]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -350,6 +352,12 @@ export default defineNuxtConfig({
       '/media/**': { ssr: true, prerender: false, headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/studio': { ssr: true, prerender: false },
       '/studio/**': { ssr: true, prerender: false },
+      // MCP endpoint for Claude plus the OAuth server that guards it. All
+      // per-request and authenticated; nothing here may be prerendered or cached.
+      '/mcp': { prerender: false },
+      '/oauth/**': { ssr: true, prerender: false, headers: { 'Cache-Control': 'no-store' } },
+      '/api/oauth/**': { prerender: false },
+      '/.well-known/**': { prerender: false },
       '/rss.xml': { prerender: false },
       '/docs/**': { prerender: true, headers: CONTENT_CACHE_HEADERS },
       // Auth-gated / dynamic routes stay SSR.
@@ -484,6 +492,8 @@ export default defineNuxtConfig({
       '/shortify',
       '/studio',
       '/studio/**',
+      '/oauth/**',
+      '/mcp',
       '/account',
       '/scan-share/**',
       '/tools/steam-ai-disclosure/result/**',
@@ -521,6 +531,7 @@ export default defineNuxtConfig({
         'mdi:account-key-outline',
         'mdi:content-copy',
         'mdi:history',
+        'mdi:connection',
         // Auth control + /account sign-out (the latter is a ternary binding).
         'mdi:login',
         'mdi:logout',

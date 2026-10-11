@@ -48,6 +48,14 @@ export async function requireToolAccess(event: H3Event, toolKey: string): Promis
   return user
 }
 
+// The same decision for a caller identified some other way than a Firebase ID
+// token — the MCP endpoint, whose OAuth tokens carry the email they were issued
+// to. Re-checked on every call, so revoking the grant revokes the tokens too.
+export async function hasToolAccess(event: H3Event, email: string, toolKey: string): Promise<boolean> {
+  const admin = isAdminEmail(event, email)
+  return decideToolAccess(admin, admin ? [] : await getGrantedTools(event, email), toolKey)
+}
+
 // Soft auth: returns the user if a valid Bearer token is present, else null.
 // Used to optionally attach an owner to anonymous-capable flows (Steam checkout).
 export async function getOptionalUser(event: H3Event): Promise<AuthedUser | null> {

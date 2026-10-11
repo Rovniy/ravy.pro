@@ -56,6 +56,9 @@ const tabs = computed(() => {
   ]
   if (hasTool('contract-scanner'))
     list.push({ key: 'scans', label: 'Red-Flag Scanner', icon: 'mdi:shield-search' })
+  // The MCP endpoint is gated by the studio grant, so the guide is too.
+  if (hasTool('studio'))
+    list.push({ key: 'mcp', label: 'MCP', icon: 'mdi:connection' })
   if (isAdmin.value) {
     list.push({ key: 'access', label: 'Access', icon: 'mdi:account-key-outline' })
     list.push({ key: 'audit', label: 'Audit log', icon: 'mdi:history' })
@@ -133,6 +136,7 @@ function selectTab(key: string) {
         <AccountProfileSettings v-if="activeTab === 'profile'" />
         <AccountSteamHistory v-else-if="activeTab === 'steam'" />
         <AccountScanHistory v-else-if="activeTab === 'scans' && hasTool('contract-scanner')" />
+        <AccountMcpConnect v-else-if="activeTab === 'mcp' && hasTool('studio')" />
         <AccountAccessManager v-else-if="activeTab === 'access' && isAdmin" />
         <AccountAccessAuditLog v-else-if="activeTab === 'audit' && isAdmin" />
       </div>
