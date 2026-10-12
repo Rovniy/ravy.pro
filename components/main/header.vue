@@ -117,6 +117,12 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
             About
           </NuxtLink>
         </li>
+        <li class="hidden md:block">
+          <CommandTrigger variant="header" />
+        </li>
+        <li class="md:hidden">
+          <CommandTrigger variant="icon" />
+        </li>
         <!-- Theme switching lives in the floating control at the bottom-left
              (layouts/default.vue) so the header carries navigation only. -->
         <li class="flex items-center">

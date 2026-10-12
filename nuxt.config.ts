@@ -8,6 +8,7 @@ import { baseData, navbarData, seoData } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
 import { PROJECT_PAGE_PATHS } from './data/project-routes'
 import { PLATFORM_META } from './data/projects'
+import { commandIcons } from './utils/command-index'
 
 // pdfjs-dist (used by the contract scanner's PDF text extraction + OCR) lazily
 // imports its worker via a runtime-computed path, so Nitro's tracer never bundles
@@ -572,6 +573,8 @@ export default defineNuxtConfig({
         // Store and streaming buttons on /games/** and /music/** — bound
         // dynamically through PLATFORM_META; the open-source cards on /projects.
         ...new Set(Object.values(PLATFORM_META).map(p => p.icon)),
+        // Every icon the ⌘K palette can show is bound dynamically from its index.
+        ...commandIcons(),
         'mdi:unity',
         'mdi:tab',
       ],

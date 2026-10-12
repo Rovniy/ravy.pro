@@ -197,6 +197,9 @@ export const homePage = {
     // own section below.
     ctaPrimary: { label: 'Work with me', href: '/services' },
     ctaSecondary: { label: 'About me', href: '/about' },
+    // Chips under the hero search field; each opens the ⌘K palette pre-filled.
+    // tests/unit/command-index.test.ts checks every one finds something.
+    searchSuggestions: ['tiny boo', 'jwt', 'unity', 'mentorship'],
     status: 'Open to new projects',
   },
   meta: {

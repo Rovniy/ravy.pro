@@ -54,6 +54,14 @@ export const EVENTS = {
   PRESS_KIT_DOWNLOAD: 'press_kit_download',
   PRESS_COPY: 'press_copy',
 
+  // ⌘K command palette. `command_palette_open` carries { source } (shortcut,
+  // header, hero, mobile); `command_palette_action` is a picked result with
+  // { item_type, item_id, action, position, query_length, scope }. A picked
+  // result after typing also sends the GA4 standard `search` ({ search_term }).
+  PALETTE_OPEN: 'command_palette_open',
+  PALETTE_ACTION: 'command_palette_action',
+  SEARCH: 'search',
+
   // Paid funnels (Steam AI disclosure, Contract scanner)
   SCAN_START: 'scan_start',
   SCAN_SUBMIT: 'scan_submit',

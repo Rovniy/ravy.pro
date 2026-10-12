@@ -55,7 +55,7 @@ const { trackCta } = useAnalytics()
             </template>
           </p>
 
-          <div class="hero-step delay-4 flex flex-wrap gap-4 mb-10">
+          <div class="hero-step delay-4 flex flex-wrap gap-4 mb-6">
             <NuxtLink
               :to="hero.ctaPrimary.href"
               class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base text-white bg-accent-600 hover:bg-accent-700 dark:text-slate-950 dark:bg-accent-400 dark:hover:bg-accent-300 shadow-lg shadow-accent-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
@@ -74,6 +74,10 @@ const { trackCta } = useAnalytics()
               {{ hero.ctaSecondary.label }}
             </NuxtLink>
           </div>
+
+          <!-- The whole site behind one field: opens the ⌘K palette, and each
+               chip opens it pre-filled. Shares delay-4 with the CTAs. -->
+          <CommandTrigger variant="hero" :suggestions="hero.searchSuggestions" class="hero-step delay-4 mb-10" />
 
           <div class="hero-step delay-5 flex flex-wrap items-center gap-5">
             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-spacemono uppercase tracking-wider border border-emerald-500/20">

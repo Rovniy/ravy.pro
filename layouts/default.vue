@@ -2,6 +2,7 @@
 import { seoData } from '~/data'
 
 const route = useRoute()
+const { requested: paletteRequested } = useCommandPalette()
 
 // Canonical URL covers every page from one place. Strip the trailing slash
 // from the configured site URL and the leading-only-on-root from path so
@@ -82,6 +83,11 @@ useHead({
       icon-size="18"
       class="theme-fab fixed bottom-3 left-3 sm:bottom-6 sm:left-6 z-40 print:hidden inline-flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full border border-slate-200/70 dark:border-white/10 bg-white/70 dark:bg-slate-950/70 sm:bg-white/80 sm:dark:bg-slate-950/80 backdrop-blur-xl shadow-md sm:shadow-lg shadow-slate-950/5 dark:shadow-black/20 hover:border-accent-400 dark:hover:border-accent-500/60 after:content-[''] after:absolute after:-inset-1.5 sm:after:hidden"
     />
+
+    <!-- The ⌘K palette: not in the initial bundle, mounted on first open. -->
+    <ClientOnly>
+      <LazyCommandPalette v-if="paletteRequested" />
+    </ClientOnly>
 
     <ClientOnly>
       <LazyMainCookieBanner />

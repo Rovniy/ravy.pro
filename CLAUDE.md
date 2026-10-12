@@ -79,6 +79,16 @@ Standard Nuxt file-based routing in `/pages/`. Key non-obvious routes:
 - `/studio`, `/studio/[slug]` — the blog panel; gated, `noindex`, excluded from the sitemap and listed in `PRIVATE_PATHS`
 - Legacy URL redirects handled in `/middleware/old-url-redirects.global.ts`
 
+### Command palette (⌘K)
+
+One dialog searches posts, tools, games, albums, pages, services and socials, and runs quick actions (write, copy email, switch theme, copy page link, subscribe). Opened by ⌘K / Ctrl+K anywhere, `/` outside text fields (`plugins/command-palette.client.ts`, matched on `e.code` so a Russian layout works), the Search pill in the header, the magnifier in the mobile bar, and the search field plus suggestion chips in the home hero (`homePage.hero.searchSuggestions`).
+
+- **Index:** `utils/command-index.ts` builds it from the registries (`publicServices`, `GAMES`, `MUSIC_PROJECTS`, `OFFERINGS`, socials…), so a new game, album or tool shows up with no palette edit. Posts come from `GET /api/blog/posts` on first open. Each item has up to three `actions`: the first runs on Enter, the second on ⌘/Ctrl+Enter, all are buttons on the active row. `navigate` goes through the router; same-origin files (`/rss.xml`, the CV) must be `external`, or the router 404s them.
+- **Search:** `utils/command-search.ts`, pure, no dependency. Exact → prefix → word start → substring → keyword → fuzzy; every token must match; a query that finds nothing is retried on the other keyboard layout ("ешт? ищщ" → "tiny boo"). Russian synonyms go in `keywords`.
+- **Component:** `components/command/Palette.vue` is a WAI-ARIA combobox in a native `<dialog>`, mounted only after the first open (`useCommandPalette().requested`, `layouts/default.vue`), with the chunk prefetched on idle. Recents live in localStorage. Tab cycles the scope chips; a leading `>` limits results to actions.
+- **Icons:** item icons are bound at runtime, so `commandIcons()` is spread into `icon.clientBundle.icons`. `tests/unit/command-index.test.ts` fails if one is missing, an internal action points at a page that doesn't exist, or a hero chip finds nothing.
+- **Analytics:** `command_palette_open` ({ source }), `command_palette_action` ({ item_type, item_id, action, position, query_length, scope }), and the GA4 standard `search` when a result is picked after typing.
+
 ### Tools
 
 Interactive client-side utilities live in `/pages/tools/`. They are registered in `/data/index.ts` as `publicServices`; access-gated tools live separately in `/data/services.ts` as `GATED_TOOLS`. Tools emit structured data via the `useToolPageSchema()` composable (`/composables/useStructuredData.ts`), which sets SEO meta, JSON-LD `SoftwareApplication`/FAQ schema, and the OG image. One entry (XPLOIT Translator) is a *documentation/download* page for an external desktop app rather than a browser utility — `useToolPageSchema()` takes `appOperatingSystem` / `appDownloadUrl` / `appSoftwareVersion` for that case (the last accepts a ref or getter, since the app node is rebuilt reactively).
@@ -143,7 +153,7 @@ Event tracking flows **app → `window.dataLayer` → GTM (`GTM-57T2XCRL`) → G
 - **API:** `useAnalytics()` (`composables/useAnalytics.ts`) — SSR-safe `track(event, params)` plus helpers `trackTool`, `trackDownload`, `trackToolError`, `trackOutbound`, `trackCta`, `trackPurchase`. Unit-tested in `tests/unit/analytics.test.ts`.
 - **Auto-capture:** outbound link clicks (external host, `mailto:`, `tel:`) fire `outbound_click` via a delegated listener in `plugins/analytics.client.ts` — no per-link code needed. Every tool page fires `tool_view` automatically because `useToolPageSchema()` emits it on mount.
 
-Event taxonomy: `tool_view`, `tool_action` (`tool_id`+`action`), `tool_download`, `tool_error`; `blog_view`, `blog_read_progress` (25/50/75), `blog_complete`, `blog_filter`, `blog_search`; `outbound_click`, `nav_click`, `cta_click`; `newsletter_subscribe`, `contact_click`, `login`/`logout`; and the paid funnel `scan_start` → `scan_submit` → `scan_result` → `paywall_view` → `begin_checkout` → `purchase` (purchase fires on the result pages when a Stripe `session_id` is present).
+Event taxonomy: `tool_view`, `tool_action` (`tool_id`+`action`), `tool_download`, `tool_error`; `blog_view`, `blog_read_progress` (25/50/75), `blog_complete`, `blog_filter`, `blog_search`; `outbound_click`, `nav_click`, `cta_click`; `command_palette_open`, `command_palette_action`, `search`; `newsletter_subscribe`, `contact_click`, `login`/`logout`; and the paid funnel `scan_start` → `scan_submit` → `scan_result` → `paywall_view` → `begin_checkout` → `purchase` (purchase fires on the result pages when a Stripe `session_id` is present).
 
 **Rule when adding features:** add any new event name to `EVENTS` in `data/analytics.ts` first (the `track()` type enforces this), then emit via `useAnalytics()`. New tools get `tool_view` free via `useToolPageSchema` — also wire `tool_action`/`tool_download` for their key actions. New paid flows use `begin_checkout` + `purchase`. New outbound links need no code (auto-tracked).
 
