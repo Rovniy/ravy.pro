@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url'
 import { defineNuxtConfig } from 'nuxt/config'
 import { baseData, navbarData, seoData } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
+import { PROJECT_PAGE_PATHS } from './data/project-routes'
+import { PLATFORM_META } from './data/projects'
 
 // pdfjs-dist (used by the contract scanner's PDF text extraction + OCR) lazily
 // imports its worker via a runtime-computed path, so Nitro's tracer never bundles
@@ -315,6 +317,9 @@ export default defineNuxtConfig({
         '/tools/xploit-translator',
         '/tools/xploit-game-ui',
         ...DOCS_ROUTES,
+        // /projects, /games/**, /music/**, /animation/** — derived from the
+        // registries in data/, so a new game or album needs no edit here.
+        ...PROJECT_PAGE_PATHS,
       ],
     },
     routeRules: {
@@ -383,6 +388,9 @@ export default defineNuxtConfig({
       '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
       '/tools/xploit-translator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/tools/xploit-game-ui': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      // Creative-work pages. Static registry data, so prerendered and CDN-cached
+      // like /services; the "devlog" lists on them load client-side.
+      ...Object.fromEntries(PROJECT_PAGE_PATHS.map(path => [path, { prerender: true, headers: CONTENT_CACHE_HEADERS }])),
       // The release lookup must stay live — prerendering it would freeze the
       // version the download card shows at build time.
       '/api/xploit-translator/**': { prerender: false },
@@ -561,6 +569,11 @@ export default defineNuxtConfig({
         'bi:discord',
         'fa:steam',
         'fa:youtube-play',
+        // Store and streaming buttons on /games/** and /music/** — bound
+        // dynamically through PLATFORM_META; the open-source cards on /projects.
+        ...new Set(Object.values(PLATFORM_META).map(p => p.icon)),
+        'mdi:unity',
+        'mdi:tab',
       ],
       sizeLimitKb: 128,
     },

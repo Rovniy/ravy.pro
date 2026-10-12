@@ -175,6 +175,10 @@ function ratingFor(path: string) {
         </a>
       </section>
 
+      <!-- Games, music and animation: the creative side, after the tools and
+           before the closing ask. -->
+      <LazyMainProjects hydrate-on-visible />
+
       <!--
         The page's one closing ask, placed before Instagram so it isn't stranded
         behind a wall of photos. Distinct `location` from the Services band so the

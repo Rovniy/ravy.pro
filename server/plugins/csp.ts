@@ -38,6 +38,8 @@ function buildCsp(scriptHashes: string[]): string {
   // Firebase Auth opens an iframe on `<project>.firebaseapp.com/__/auth/iframe`
   // for OAuth flow, and `accounts.google.com` for the Google consent screen.
   // GTM frames itself in some configurations.
+  // open.spotify.com and youtube-nocookie.com are the click-to-load players on
+  // /music/** and /games/** (components/ui/EmbedFacade.vue).
   return [
     `default-src 'self'`,
     `script-src ${scriptSrc}`,
@@ -45,7 +47,7 @@ function buildCsp(scriptHashes: string[]): string {
     `img-src 'self' data: blob: https:`,
     `font-src 'self' data:`,
     `connect-src 'self' https: wss:`,
-    `frame-src https://www.googletagmanager.com https://*.firebaseapp.com https://accounts.google.com https://*.youtube.com`,
+    `frame-src https://www.googletagmanager.com https://*.firebaseapp.com https://accounts.google.com https://*.youtube.com https://www.youtube-nocookie.com https://open.spotify.com https://store.steampowered.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,

@@ -1,9 +1,13 @@
 import type { MaybeRefOrGetter } from 'vue'
+import type { Episode } from '~/data/animation'
+import type { Game } from '~/data/games'
+import type { MusicProject } from '~/data/music'
 import { toValue } from 'vue'
 import { useAnalytics } from '~/composables/useAnalytics'
 import { useToolRatings } from '~/composables/useToolRating'
 import { baseData, footerData, seoData, socialNetworks } from '~/data'
 import { EVENTS, toolIdFromPath } from '~/data/analytics'
+import { gameNode, musicGroupNode, seriesNode } from '~/utils/project-schema'
 
 const SITE = seoData.mySite
 
@@ -96,10 +100,13 @@ function personNode() {
       'Game Development',
       'Unity',
       'Mobile Games',
+      'Game Design',
       'Real-Time Systems',
       'WebRTC',
       'AI-Assisted Development',
       'Automation Workflows',
+      'AI Music Production',
+      'AI-Generated Animation',
       'Technical Mentorship',
       'Technical Hiring and Interviewing',
     ],
@@ -131,7 +138,7 @@ function organizationNode() {
     },
     'sameAs': [
       'https://xploit.games',
-      'https://tinyboohomecoming.com',
+      'https://tiny.boo',
     ],
     'founder': { '@id': ID.person },
   }
@@ -997,4 +1004,150 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
       useAnalytics().track(EVENTS.TOOL_VIEW, { tool_id: toolId })
     })
   }
+}
+
+// ─── Creative work: /projects, /games, /music, /animation ───────────────────
+
+const PROJECTS_CRUMB = { name: 'Projects', url: `${SITE}/projects` }
+
+const SCHEMA_REFS = { site: SITE, personId: ID.person, organizationId: ID.organization }
+
+/**
+ * Hub pages: /projects, /games, /music. `ItemList` of the child pages, the same
+ * shape as `useToolsIndexSchema`; each child page declares its own entity.
+ */
+export function useProjectHubSchema(opts: {
+  path: string
+  name: string
+  title: string
+  description: string
+  image?: string
+  items: Array<{ path: string, name: string }>
+}) {
+  const url = absUrl(opts.path)
+  const crumbs = [{ name: 'Home', url: `${SITE}/` }]
+  if (opts.path !== '/projects')
+    crumbs.push(PROJECTS_CRUMB)
+  crumbs.push({ name: opts.name, url })
+  const crumb = breadcrumbNode(crumbs)
+
+  pageHead({
+    url,
+    title: opts.title,
+    description: opts.description,
+    image: absUrl(opts.image || '/og-image.webp'),
+  })
+  injectGraph([
+    ...identityNodes(),
+    webPageNode({
+      url,
+      name: opts.name,
+      description: opts.description,
+      type: 'CollectionPage',
+      breadcrumbId: crumb['@id'],
+    }),
+    itemListNode({
+      id: `${url}#list`,
+      name: opts.name,
+      items: opts.items.map(i => ({ url: absUrl(i.path), name: i.name })),
+    }),
+    crumb,
+  ])
+}
+
+/**
+ * Shared shape of a single project page: head, breadcrumb under its hub,
+ * WebPage whose main entity is `entity`, and a `project_view` on mount.
+ */
+function projectPage(opts: {
+  path: string
+  title: string
+  description: string
+  image: string
+  hub: { name: string, path: string }
+  entity: { '@id': string } & Record<string, unknown>
+  projectId: string
+  kind: 'game' | 'music' | 'animation'
+}) {
+  const url = absUrl(opts.path)
+  pageHead({ url, title: opts.title, description: opts.description, image: absUrl(opts.image) })
+  const crumbs = [{ name: 'Home', url: `${SITE}/` }, PROJECTS_CRUMB]
+  if (opts.hub.path !== '/projects')
+    crumbs.push({ name: opts.hub.name, url: absUrl(opts.hub.path) })
+  crumbs.push({ name: opts.title, url })
+  const crumb = breadcrumbNode(crumbs)
+  injectGraph([
+    ...identityNodes(),
+    webPageNode({
+      url,
+      name: opts.title,
+      description: opts.description,
+      type: 'WebPage',
+      breadcrumbId: crumb['@id'],
+      image: opts.image,
+      primaryEntityId: opts.entity['@id'],
+    }),
+    opts.entity,
+    crumb,
+  ])
+  onMounted(() => {
+    useAnalytics().track(EVENTS.PROJECT_VIEW, { project: opts.projectId, kind: opts.kind })
+  })
+}
+
+export function useGamePageSchema(game: Game) {
+  const path = `/games/${game.slug}`
+  projectPage({
+    path,
+    title: game.title,
+    description: `${game.tagline} ${game.description}`,
+    image: game.cover.src,
+    hub: { name: 'Games', path: '/games' },
+    entity: gameNode(game, absUrl(path), SCHEMA_REFS),
+    projectId: game.slug,
+    kind: 'game',
+  })
+}
+
+export function useMusicPageSchema(project: MusicProject) {
+  const path = `/music/${project.slug}`
+  projectPage({
+    path,
+    title: `${project.name}: ${project.tagline.replace(/\.$/, '')}`,
+    description: `${project.tagline} ${project.aiDisclosure}`,
+    image: project.hero.src,
+    hub: { name: 'Music', path: '/music' },
+    entity: musicGroupNode(project, absUrl(path), SCHEMA_REFS),
+    projectId: project.slug,
+    kind: 'music',
+  })
+}
+
+export function useSeriesPageSchema(series: {
+  slug: string
+  path: string
+  title: string
+  tagline: string
+  description: string
+  hero: { src: string }
+  channelUrl: string
+  episodes: Episode[]
+}) {
+  projectPage({
+    path: series.path,
+    title: series.title,
+    description: series.description,
+    image: series.hero.src,
+    hub: { name: 'Projects', path: '/projects' },
+    entity: seriesNode({
+      url: absUrl(series.path),
+      name: series.title,
+      description: series.description,
+      image: series.hero.src,
+      channelUrl: series.channelUrl,
+      episodes: series.episodes,
+    }, SCHEMA_REFS),
+    projectId: series.slug,
+    kind: 'animation',
+  })
 }

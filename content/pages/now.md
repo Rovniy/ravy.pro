@@ -2,21 +2,22 @@
 description: 'What Andrei Rovnyi is working on right now: current projects, focus, and availability for consulting, fractional CTO work, and mentorship.'
 title: What I'm doing now
 createdAt: 2026-08-16T00:00:00.000Z
-lastUpdated: 2026-08-16T00:00:00.000Z
+lastUpdated: 2026-10-12T00:00:00.000Z
 ---
 
 # What I'm doing now
 
-**Updated August 2026 · This page changes when my focus does, roughly monthly.**
+**Updated October 2026 · This page changes when my focus does, roughly monthly.**
 
 This is a [now page](https://nownownow.com/about) — a public answer to "so what are you up to these days?". Unlike the [about page](/about), which is the record, this is the snapshot.
 
 ## Working on
 
 * **Web projects at [Gaijin Entertainment](https://gaijin.net/)** — working in the web development team, building the web projects around the company's games. This is the day job, and it owns my working hours.
-* **A co-op rogue-like for Steam** — a new game in active development, built in Unity.
-* **Tiny Boo Movie** — an AI-animated YouTube series. Writing, directing, and the production pipeline are all in-house; the shorts keep a weekly cadence alongside full episodes.
-* **Music as [Zynthar](https://zynthar.rocks)** — writing the next album. Planned release: August 2026.
+* **[Hold my Helmet](/games/hold-my-helmet)** — a co-op gladiator game for Steam, built in Unity with Mirror networking. Five weeks in: [the first devlog](/blogs/atd-devlog-five-weeks-into-the-arena).
+* **[TCG: FANTASY Card Collection](/games/tcg-fantasy-card-collection)** — a relaxing card-collecting game, coming soon to Steam.
+* **[Tiny Boo Movie](/animation/tiny-boo)** — an AI-animated YouTube series. Writing, directing, and the production pipeline are all in-house; the shorts keep a weekly cadence alongside full episodes.
+* **Music as [Zynthar](/music/zynthar)** — the fifth album, *Bedtime Stories*, came out in October 2026.
 
 ## Reading & thinking about
 

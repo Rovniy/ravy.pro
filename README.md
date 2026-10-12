@@ -107,7 +107,22 @@ Available tags are the `BlogPostTag` enum in `data/index.ts`. Add a tag there â€
 
 Post images are uploaded from `/studio` straight into **Cloud Storage** and served from this origin at `/media/blog/**`. The panel converts them to WebP and downscales to 1600px in the browser before uploading, so nothing needs preparing by hand.
 
-Nothing image-related belongs in `/public` any more. The old `/public/blog-cover`, `/public/blog-content` and `/public/blog-opengraph` folders were imported into Storage; their URLs now 301 to the new locations.
+No blog image belongs in `/public` any more. The old `/public/blog-cover`, `/public/blog-content` and `/public/blog-opengraph` folders were imported into Storage; their URLs now 301 to the new locations.
+
+### Games, music and animation
+
+These are typed registries in `data/`, not markdown: `data/games.ts`, `data/music.ts` and `data/animation.ts`. Add a game, album or episode there and its page, the `/projects` hub, the sitemap, `/llms.txt` and the prerender list all pick it up.
+
+Their images are committed with the repo, unlike blog images:
+
+```
+public/
+  games/<slug>/cover.webp          # 16:9 cover for the card and the page hero
+  games/<slug>/screenshot-N.webp   # gallery, in the order listed in data/games.ts
+  music/covers/<artist>/<album>.webp
+```
+
+Convert to WebP and keep the long side at 1600px or less. `npm test` fails if a listed screenshot or album cover is missing from `public/`.
 
 ### Editing docs and pages
 
