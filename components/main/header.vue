@@ -103,6 +103,11 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           <MainToolsMenu />
         </li>
         <li class="hidden lg:block">
+          <NuxtLink to="/projects" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('projects')">
+            Projects
+          </NuxtLink>
+        </li>
+        <li class="hidden lg:block">
           <NuxtLink to="/services" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('services')">
             Services
           </NuxtLink>
@@ -153,6 +158,11 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           <li>
             <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs', 'mobile')">
               Blogs
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/projects" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('projects', 'mobile')">
+              Projects
             </NuxtLink>
           </li>
           <li>

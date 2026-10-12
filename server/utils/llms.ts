@@ -5,7 +5,11 @@
 // it listed none of the 31 posts, omitted two of the four docs, and drifted from
 // `publicServices` / `OFFERINGS` every time a tool or service was added.
 import { baseData, publicServices, seoData, toolsPage } from '~/data'
+import { TINY_BOO_MOVIE } from '~/data/animation'
+import { gamePath, GAMES } from '~/data/games'
+import { MUSIC_PROJECTS, musicPath } from '~/data/music'
 import { OFFERINGS } from '~/data/offerings'
+import { STATUS_LABEL } from '~/data/projects'
 
 const SITE = baseData.site.url
 
@@ -46,6 +50,7 @@ export function llmsMainPages(): string {
 - [Tools](${abs('/tools')}): ${toolsPage.og.description}
 - [Categories](${abs('/categories')}): posts grouped by topic.
 - [Services](${abs('/services')}): paid, human-delivered offerings — mentorship, consulting, and part-time engineering help.
+- [Projects](${abs('/projects')}): games, music and animation, with store and streaming links.
 - [Links](${abs('/links')}): profiles, projects, and music releases in one place.
 - [Contacts](${abs('/contacts')}): ways to get in touch.`
 }
@@ -70,14 +75,18 @@ export function llmsServices(): string {
   return `## Services\n\n${rows.join('\n')}\n- [Mentorship payment terms](${abs('/docs/mentorship-terms')}): the full payment agreement for the mentorship program.`
 }
 
+/** Games, music and animation, from the registries in data/. */
 export function llmsProjects(): string {
+  const games = GAMES.map(g => `- [${g.title}](${abs(gamePath(g))}): ${g.tagline} ${STATUS_LABEL[g.status]}.`)
+  const music = MUSIC_PROJECTS.map(p => `- [${p.name}](${abs(musicPath(p))}): ${p.tagline} An AI music project written and produced by Andrei.`)
   return `## Projects
 
-- [XPLOIT](https://xploit.games): independent game studio — games, digital products, and experimental tools.
-- [Tiny Boo: Homecoming](https://tinyboohomecoming.com): cozy mobile adventure for iOS and Android, in development.
-- [tabs-broadcast](https://www.npmjs.com/package/tabs-broadcast): npm library for communication between browser tabs.
-- [Zynthar](https://zynthar.rocks): AI-assisted music project.
-- [Diva Rogue](https://divarogue.com): AI-assisted music project.`
+- [All projects](${abs('/projects')}): games, music and animation in one place.
+- [XPLOIT](https://xploit.games): the independent game studio Andrei founded; every game below is made there.
+${games.join('\n')}
+${music.join('\n')}
+- [${TINY_BOO_MOVIE.title}](${abs(TINY_BOO_MOVIE.path)}): ${TINY_BOO_MOVIE.tagline} An AI-animated YouTube series set in the world of Tiny Boo: Homecoming.
+- [tabs-broadcast](https://www.npmjs.com/package/tabs-broadcast): npm library for communication between browser tabs.`
 }
 
 export function llmsOptional(docPaths: Array<{ path: string, title: string }>): string {

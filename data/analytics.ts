@@ -41,6 +41,15 @@ export const EVENTS = {
   SERVICE_VIEW: 'service_view',
   SERVICE_INQUIRY: 'service_inquiry',
 
+  // Creative work (/games, /music, /animation). `project_view` mirrors
+  // `tool_view` and carries { project, kind }; `store_click` is the conversion
+  // ({ project, store }); the two play events fire when a click-to-load player
+  // is started ({ project, item }).
+  PROJECT_VIEW: 'project_view',
+  STORE_CLICK: 'store_click',
+  MUSIC_PLAY: 'music_play',
+  VIDEO_PLAY: 'video_play',
+
   // Paid funnels (Steam AI disclosure, Contract scanner)
   SCAN_START: 'scan_start',
   SCAN_SUBMIT: 'scan_submit',

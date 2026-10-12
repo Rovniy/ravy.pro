@@ -4,6 +4,7 @@ import { queryCollection } from '@nuxt/content/server'
 import { listMeta } from '~~/server/utils/blog-store'
 import { publicServices, seoData } from '~/data'
 import { OFFERING_PAGE_PATHS } from '~/data/offerings'
+import { projectSitemapEntries } from '~/data/project-routes'
 
 export default defineEventHandler(async (event) => {
   const posts = await listMeta({ publishedOnly: true })
@@ -60,6 +61,14 @@ export default defineEventHandler(async (event) => {
   urls.push({ loc: '/services' })
   for (const path of OFFERING_PAGE_PATHS) {
     urls.push({ loc: path })
+  }
+
+  // Games, music and animation, from the registries in data/.
+  for (const row of projectSitemapEntries()) {
+    urls.push({
+      loc: row.loc,
+      ...(row.image && { images: [{ loc: `${seoData.mySite}${row.image.path}`, title: row.image.title }] }),
+    })
   }
 
   const tagSet = new Set<string>()

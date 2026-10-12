@@ -2,6 +2,7 @@
 import type { BlogPostMeta } from '~/utils/blog-post'
 import { makeFirstCharUpper } from '@/utils/helper'
 import { categoriesPage, categoryDescriptions, categoryNames, seoData } from '~/data'
+import { TAG_PROJECT_LINKS } from '~/data/project-routes'
 import { toCardData } from '~/utils/blog-post'
 
 const route = useRoute()
@@ -30,6 +31,8 @@ if (!posts.value.length)
   throw createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
 
 const formattedData = computed(() => posts.value.map(toCardData))
+
+const projectLink = computed(() => TAG_PROJECT_LINKS[category.value])
 
 const categoryDescription = computed(() =>
   categoryDescriptions[category.value]
@@ -75,6 +78,15 @@ defineOgImage('Blog', {
 <template>
   <div class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300 px-4">
     <CategoryTopic />
+
+    <NuxtLink
+      v-if="projectLink"
+      :to="projectLink.path"
+      class="group -mt-2 mb-8 flex items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 py-4 transition hover:border-accent-400 dark:hover:border-accent-600"
+    >
+      <span class="font-semibold text-slate-900 dark:text-slate-100">{{ projectLink.label }}</span>
+      <Icon name="mdi:arrow-right" class="w-4 h-4 text-accent-500 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+    </NuxtLink>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-14">
       <BlogCard

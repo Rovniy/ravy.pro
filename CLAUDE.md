@@ -103,6 +103,17 @@ Where things live:
 
 **Rule when adding a new tool — ratings are automatic once the tool id exists.** Register the id once in `data/analytics.ts` (add to `TOOL_IDS` and map the route in `toolIdFromPath()` — the same registration every tool already needs for analytics). That alone makes `GET /api/ratings` seed and serve the tool, puts the rating badge on its homepage card (via `publicServices` + `toolIdFromPath`), and adds `aggregateRating` to its JSON-LD through `useToolPageSchema()`. The only markup step: drop `<ToolRatingWidget />` into the page header (no props — it resolves the tool id from the route; wrap the header as `flex items-start justify-between gap-x-6` with the text in a `min-w-0 flex-1` div, copy any existing tool page). Votes emit the `tool_rate` analytics event automatically.
 
+### Projects (games, music, animation)
+
+Creative work lives in typed registries, not in `content/`: `data/games.ts` (`GAMES`), `data/music.ts` (`MUSIC_PROJECTS`), `data/animation.ts` (`TINY_BOO_MOVIE`), with shared platform/status helpers in `data/projects.ts`. Pages: `/projects` (hub), `/games`, `/games/[slug]`, `/music`, `/music/[slug]`, `/animation/tiny-boo`, plus a home-page section (`components/main/projects.vue`).
+
+- **Routes are derived.** `PROJECT_PAGE_PATHS` (`data/project-routes.ts`) feeds `nitro.prerender.routes`, `routeRules` and the sitemap (`projectSitemapEntries()`), so adding a game or album needs no config edit. `TAG_PROJECT_LINKS` puts a project link on the matching `/categories/<tag>` page.
+- **Embeds are click-to-load.** `<UiEmbedFacade>` shows a poster and swaps in the YouTube (`youtube-nocookie.com`) or Spotify iframe on click, firing `video_play` / `music_play`. Both hosts are in `frame-src` in `server/plugins/csp.ts`. Store and streaming clicks fire `store_click`; page views fire `project_view`.
+- **Platform icons are bound dynamically**, so every `PLATFORM_META` icon is spread into `icon.clientBundle.icons` in `nuxt.config.ts`.
+- **Schema** comes from the pure builders in `utils/project-schema.ts` (`VideoGame` + `MobileApplication`, `MusicGroup`, `CreativeWorkSeries`) via `useGamePageSchema` / `useMusicPageSchema` / `useSeriesPageSchema`. **Never add `aggregateRating` or `Review`** — there is no rating source; tool ratings are seeded.
+- **Music is presented openly as AI work.** `aiDisclosure` is required on every `MusicProject` and rendered on its page; Zynthar's members and Diva Rogue are fictional characters, and the schema says so.
+- An unreleased game has no `releaseDate`; an in-development one gets no `offers`. Invariants are in `tests/unit/projects.test.ts`.
+
 ### Services
 
 Paid, human-delivered offerings live under `/pages/services/`. Three registries exist and must not be confused:
