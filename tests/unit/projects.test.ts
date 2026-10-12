@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import config from '~~/nuxt.config'
 import { TINY_BOO_MOVIE } from '~/data/animation'
@@ -52,6 +52,25 @@ describe('music registry', () => {
       expect(p.spotifyArtistId, p.slug).toMatch(SPOTIFY_ID_RX)
       for (const r of p.releases.filter(r => r.spotifyAlbumId))
         expect(r.spotifyAlbumId, `${p.slug}/${r.title}`).toMatch(SPOTIFY_ID_RX)
+    }
+  })
+})
+
+describe('album covers', () => {
+  // Covers are kept with the site, never hotlinked from another host.
+  it('serves every cover from this site', () => {
+    for (const p of MUSIC_PROJECTS) {
+      for (const r of p.releases)
+        expect(r.cover, `${p.slug}/${r.title}`).toMatch(/^\/(music\/covers|media\/blog)\//)
+    }
+  })
+
+  it('has a file in public/ for every repo cover', () => {
+    for (const p of MUSIC_PROJECTS) {
+      for (const r of p.releases.filter(r => r.cover.startsWith('/music/covers/'))) {
+        const file = new URL(`../../public${r.cover}`, import.meta.url)
+        expect(existsSync(file), r.cover).toBe(true)
+      }
     }
   })
 })

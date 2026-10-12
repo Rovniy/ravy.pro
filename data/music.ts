@@ -8,8 +8,10 @@ import type { ExternalLink } from './projects'
 // divarogue.com is the character's lore; no stream counts or live-show claims
 // from that site belong here.
 //
-// Album covers are the published artwork, stored same-origin under
-// /media/blog/music-covers/. `spotifyAlbumId` turns on the embedded player for
+// Album covers live in the repo under public/music/covers/<artist>/, 600px
+// WebP made from the masters in Drive ("XPLOIT Music"). Releases whose master
+// isn't there yet still use a same-origin copy under /media/blog/music-covers/
+// (STORED_COVER) until the file is added. `spotifyAlbumId` turns on the embedded player for
 // that release; a release without one links out to the stores instead.
 // Release dates and track counts follow the store listings.
 
@@ -49,7 +51,9 @@ export interface MusicProject {
   blogTag: string
 }
 
-const COVER = (id: string) => `/media/blog/music-covers/${id}.webp`
+const COVER = (artist: string, slug: string) => `/music/covers/${artist}/${slug}.webp`
+const STORED_COVER = (id: string) => `/media/blog/music-covers/${id}.webp`
+const SPOTIFY_ALBUM = (id: string): ExternalLink => ({ kind: 'spotify', url: `https://open.spotify.com/album/${id}` })
 const APPLE_ALBUM = (id: string): ExternalLink => ({ kind: 'apple-music', url: `https://music.apple.com/us/album/${id}` })
 
 export const MUSIC_PROJECTS: MusicProject[] = [
@@ -80,7 +84,7 @@ export const MUSIC_PROJECTS: MusicProject[] = [
         title: 'Bedtime Stories',
         date: '2026-10-03',
         trackCount: 6,
-        cover: COVER('BCAJb1iJsSM6'),
+        cover: COVER('zynthar', 'bedtime-stories'),
         theme: 'The newest chapter of the story.',
         spotifyAlbumId: '088xzi1ncR3PGvllrDDFDi',
         links: [{ kind: 'spotify', url: 'https://open.spotify.com/album/088xzi1ncR3PGvllrDDFDi' }, APPLE_ALBUM('6819039287')],
@@ -89,7 +93,7 @@ export const MUSIC_PROJECTS: MusicProject[] = [
         title: 'A New Page of Life',
         date: '2025-05-15',
         trackCount: 10,
-        cover: COVER('XqF_nGICIj3d'),
+        cover: COVER('zynthar', 'a-new-page-of-life'),
         theme: 'From loss and uncertainty to rebirth, hope and inner strength.',
         spotifyAlbumId: '0u9dt1vcveLDIdDtzhAb6h',
         links: [{ kind: 'spotify', url: 'https://open.spotify.com/album/0u9dt1vcveLDIdDtzhAb6h' }, APPLE_ALBUM('1814783719')],
@@ -98,7 +102,7 @@ export const MUSIC_PROJECTS: MusicProject[] = [
         title: 'Emotive Resonance',
         date: '2025-01-25',
         trackCount: 10,
-        cover: COVER('ugaCMQIkeEHx'),
+        cover: COVER('zynthar', 'emotive-resonance'),
         theme: 'The whole range of feeling, from rage to joy.',
         links: [{ kind: 'apple-music', url: 'https://music.apple.com/us/album/emotive-resonance/1792793773' }],
       },
@@ -106,7 +110,7 @@ export const MUSIC_PROJECTS: MusicProject[] = [
         title: 'Shadows Within',
         date: '2025-01-16',
         trackCount: 10,
-        cover: COVER('gJ33_QWTQ9Nm'),
+        cover: COVER('zynthar', 'shadows-within'),
         theme: 'Creative crisis and facing your own shadow.',
         links: [{ kind: 'apple-music', url: 'https://music.apple.com/us/album/shadows-within/1791330257' }],
       },
@@ -114,7 +118,7 @@ export const MUSIC_PROJECTS: MusicProject[] = [
         title: 'Echoes of the Rift',
         date: '2024-12-30',
         trackCount: 10,
-        cover: COVER('Iof5kDMGz024'),
+        cover: COVER('zynthar', 'echoes-of-the-rift'),
         theme: 'The debut: personal struggle, broken bonds and the search for redemption.',
         links: [{ kind: 'apple-music', url: 'https://music.apple.com/us/album/echoes-of-the-rift/1788406787' }],
       },
@@ -154,7 +158,7 @@ export const MUSIC_PROJECTS: MusicProject[] = [
         title: 'House of Desire',
         date: '2026-05-01',
         trackCount: 10,
-        cover: COVER('R7d7wkKSAklQ'),
+        cover: STORED_COVER('R7d7wkKSAklQ'),
         theme: 'A woman enters a seductive world of desire, learns its rules and finds power in owning her role within it.',
         spotifyAlbumId: '1s7gFBTlixXAic8UPMV5WE',
         links: [
@@ -163,22 +167,22 @@ export const MUSIC_PROJECTS: MusicProject[] = [
           { kind: 'youtube-music', url: 'https://music.youtube.com/playlist?list=OLAK5uy_mBYAGXPouM6eo8-QRUfaKnoqUAee6ARXY' },
         ],
       },
-      { title: 'Soft Power Protocol', date: '2026-02-11', trackCount: 10, cover: COVER('Nucx3md3WZ3O'), links: [APPLE_ALBUM('1877078911')] },
-      { title: 'True Anyway', date: '2025-05-21', trackCount: 10, cover: COVER('ulHFhUTU0Iy3'), links: [APPLE_ALBUM('1816086218')] },
-      { title: 'Opaline Fever', date: '2025-05-14', trackCount: 10, cover: COVER('aYvJEBzP2LCq'), links: [APPLE_ALBUM('1814498319')] },
-      { title: 'Storms & Sisters', date: '2025-05-07', trackCount: 10, cover: COVER('35tkHwggwJZ7'), links: [APPLE_ALBUM('1813202868')] },
-      { title: 'Bloom Season', date: '2025-04-30', trackCount: 10, cover: COVER('JuVEcJX4FuQK'), links: [APPLE_ALBUM('1811722645')] },
-      { title: 'New Me', date: '2025-04-23', trackCount: 10, cover: COVER('0ihwhpFgGaAB'), links: [APPLE_ALBUM('1810253555')] },
-      { title: 'Bridges & Beats', date: '2025-04-16', trackCount: 10, cover: COVER('KAU2sqHmQV_i'), links: [APPLE_ALBUM('1808928322')] },
-      { title: 'Scars of Life', date: '2025-04-09', trackCount: 10, cover: COVER('M-0bfxnw8MSo'), links: [APPLE_ALBUM('1807575223')] },
-      { title: 'Raindrops Places', date: '2025-04-02', trackCount: 11, cover: COVER('UdmXU6Cy5Q3u'), links: [APPLE_ALBUM('1806192332')] },
-      { title: 'Concrete Roses', date: '2025-03-13', trackCount: 10, cover: COVER('ilXDYioGPYE0'), links: [APPLE_ALBUM('1802014617')] },
-      { title: 'Rebel Heart', date: '2025-03-03', trackCount: 10, cover: COVER('EqS3HiHcyFgx'), links: [APPLE_ALBUM('1800026403')] },
-      { title: 'No Queen, No Kingdom', date: '2025-02-19', trackCount: 10, cover: COVER('nm5GXv08_UA5'), links: [APPLE_ALBUM('1797946525')] },
-      { title: 'Alpha Femme', date: '2025-02-12', trackCount: 10, cover: COVER('ajdioYtH93UM'), links: [APPLE_ALBUM('1796642920')] },
-      { title: 'Savage Grace', date: '2025-02-05', trackCount: 10, cover: COVER('yiUFAg5_OSkP'), links: [APPLE_ALBUM('1795483196')] },
-      { title: 'Rogue Royalty', date: '2025-01-29', trackCount: 10, cover: COVER('Zp7bCml45gRV'), links: [APPLE_ALBUM('1793858064')] },
-      { title: 'Queen Without a Kingdom', date: '2025-01-22', trackCount: 10, cover: COVER('nYrbqb3-uV03'), links: [APPLE_ALBUM('1792196767')] },
+      { title: 'Soft Power Protocol', date: '2026-02-11', trackCount: 10, cover: STORED_COVER('Nucx3md3WZ3O'), spotifyAlbumId: '5A72VKnr6pexCkqw9YIvxc', links: [SPOTIFY_ALBUM('5A72VKnr6pexCkqw9YIvxc'), APPLE_ALBUM('1877078911')] },
+      { title: 'True Anyway', date: '2025-05-21', trackCount: 10, cover: STORED_COVER('ulHFhUTU0Iy3'), spotifyAlbumId: '205TXFXa3zHtwqVmrS9oBo', links: [SPOTIFY_ALBUM('205TXFXa3zHtwqVmrS9oBo'), APPLE_ALBUM('1816086218')] },
+      { title: 'Opaline Fever', date: '2025-05-14', trackCount: 10, cover: STORED_COVER('aYvJEBzP2LCq'), spotifyAlbumId: '4gAd80KOynwPuJiIXzgAcu', links: [SPOTIFY_ALBUM('4gAd80KOynwPuJiIXzgAcu'), APPLE_ALBUM('1814498319')] },
+      { title: 'Storms & Sisters', date: '2025-05-07', trackCount: 10, cover: STORED_COVER('35tkHwggwJZ7'), spotifyAlbumId: '7EVipmGPvvI0axcJaobCJo', links: [SPOTIFY_ALBUM('7EVipmGPvvI0axcJaobCJo'), APPLE_ALBUM('1813202868')] },
+      { title: 'Bloom Season', date: '2025-04-30', trackCount: 10, cover: STORED_COVER('JuVEcJX4FuQK'), spotifyAlbumId: '5dXLWTLnUv0Dy7y1g6eB8C', links: [SPOTIFY_ALBUM('5dXLWTLnUv0Dy7y1g6eB8C'), APPLE_ALBUM('1811722645')] },
+      { title: 'New Me', date: '2025-04-23', trackCount: 10, cover: STORED_COVER('0ihwhpFgGaAB'), spotifyAlbumId: '3kG7tetgT0ldOxwIXDbpNY', links: [SPOTIFY_ALBUM('3kG7tetgT0ldOxwIXDbpNY'), APPLE_ALBUM('1810253555')] },
+      { title: 'Bridges & Beats', date: '2025-04-16', trackCount: 10, cover: STORED_COVER('KAU2sqHmQV_i'), spotifyAlbumId: '5RAcDLmWI4ZkU2sFHX9kIM', links: [SPOTIFY_ALBUM('5RAcDLmWI4ZkU2sFHX9kIM'), APPLE_ALBUM('1808928322')] },
+      { title: 'Scars of Life', date: '2025-04-09', trackCount: 10, cover: STORED_COVER('M-0bfxnw8MSo'), spotifyAlbumId: '1VejATHCk9UpnDm9Hie8hx', links: [SPOTIFY_ALBUM('1VejATHCk9UpnDm9Hie8hx'), APPLE_ALBUM('1807575223')] },
+      { title: 'Raindrops Places', date: '2025-04-02', trackCount: 11, cover: STORED_COVER('UdmXU6Cy5Q3u'), spotifyAlbumId: '4IqCQx4ZbWK9nV9rlTIuWM', links: [SPOTIFY_ALBUM('4IqCQx4ZbWK9nV9rlTIuWM'), APPLE_ALBUM('1806192332')] },
+      { title: 'Concrete Roses', date: '2025-03-13', trackCount: 10, cover: COVER('diva-rogue', 'concrete-roses'), spotifyAlbumId: '4EtbNbUVpgiuQNkWbwARPN', links: [SPOTIFY_ALBUM('4EtbNbUVpgiuQNkWbwARPN'), APPLE_ALBUM('1802014617')] },
+      { title: 'Rebel Heart', date: '2025-03-03', trackCount: 10, cover: STORED_COVER('EqS3HiHcyFgx'), spotifyAlbumId: '5nR7OEqtFdu8jbYKvbQnjH', links: [SPOTIFY_ALBUM('5nR7OEqtFdu8jbYKvbQnjH'), APPLE_ALBUM('1800026403')] },
+      { title: 'No Queen, No Kingdom', date: '2025-02-19', trackCount: 10, cover: STORED_COVER('nm5GXv08_UA5'), spotifyAlbumId: '65IWfokvpjID0PBn4lpR6W', links: [SPOTIFY_ALBUM('65IWfokvpjID0PBn4lpR6W'), APPLE_ALBUM('1797946525')] },
+      { title: 'Alpha Femme', date: '2025-02-12', trackCount: 10, cover: COVER('diva-rogue', 'alpha-femme'), spotifyAlbumId: '5Fru0vsyabp9huKEQgyjpa', links: [SPOTIFY_ALBUM('5Fru0vsyabp9huKEQgyjpa'), APPLE_ALBUM('1796642920')] },
+      { title: 'Savage Grace', date: '2025-02-05', trackCount: 10, cover: COVER('diva-rogue', 'savage-grace'), spotifyAlbumId: '2BhxBfA6ZFWvOQDpWODoPb', links: [SPOTIFY_ALBUM('2BhxBfA6ZFWvOQDpWODoPb'), APPLE_ALBUM('1795483196')] },
+      { title: 'Rogue Royalty', date: '2025-01-29', trackCount: 10, cover: COVER('diva-rogue', 'rogue-royalty'), spotifyAlbumId: '6MOxfRgTDh5gY7XwVLUPpg', links: [SPOTIFY_ALBUM('6MOxfRgTDh5gY7XwVLUPpg'), APPLE_ALBUM('1793858064')] },
+      { title: 'Queen Without a Kingdom', date: '2025-01-22', trackCount: 10, cover: COVER('diva-rogue', 'queen-without-a-kingdom'), spotifyAlbumId: '6pRO4eAPKsiCAkDN78p7An', links: [SPOTIFY_ALBUM('6pRO4eAPKsiCAkDN78p7An'), APPLE_ALBUM('1792196767')] },
     ],
     platforms: [
       { kind: 'spotify', url: 'https://open.spotify.com/artist/2K6A8QQQ7b0xHeNmYpJj5f' },
