@@ -54,15 +54,28 @@ onMounted(() => {
 </script>
 
 <template>
+  <!--
+    Spotify picks its layout from the iframe's height: below 352px it falls
+    back to the compact one-row player and leaves the rest of the frame empty.
+    A border on the wrapper would eat those 2px, so the Spotify variant has
+    none, and once loaded it drops its own background so nothing shows past
+    the player's rounded corners. `color-scheme: normal` on the iframe matters
+    too: in dark mode the page's scheme differs from the embed's, and the
+    browser then paints an opaque white backdrop behind the whole frame.
+  -->
   <div
-    class="relative w-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-900"
-    :class="variant === 'video' ? 'aspect-video' : 'h-[352px]'"
+    class="relative w-full overflow-hidden rounded-xl"
+    :class="[
+      variant === 'video' ? 'aspect-video border border-slate-200 dark:border-slate-800' : 'h-[352px]',
+      active && variant === 'spotify' ? 'bg-transparent' : 'bg-slate-900',
+    ]"
   >
     <iframe
       v-if="active"
       :src="iframeSrc"
       :title="title"
-      class="absolute inset-0 w-full h-full border-0"
+      class="absolute inset-0 w-full h-full border-0 rounded-xl"
+      style="color-scheme: normal"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       allowfullscreen
       loading="lazy"
