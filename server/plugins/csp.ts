@@ -47,7 +47,7 @@ function buildCsp(scriptHashes: string[]): string {
     `img-src 'self' data: blob: https:`,
     `font-src 'self' data:`,
     `connect-src 'self' https: wss:`,
-    `frame-src https://www.googletagmanager.com https://*.firebaseapp.com https://accounts.google.com https://*.youtube.com https://www.youtube-nocookie.com https://open.spotify.com`,
+    `frame-src https://www.googletagmanager.com https://*.firebaseapp.com https://accounts.google.com https://*.youtube.com https://www.youtube-nocookie.com https://open.spotify.com https://store.steampowered.com`,
     `object-src 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,

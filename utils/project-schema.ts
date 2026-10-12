@@ -43,6 +43,9 @@ export function gameNode(game: Game, url: string, refs: SchemaRefs) {
     'description': game.description,
     'genre': game.genre,
     'image': abs(refs.site, game.cover.src),
+    ...(game.screenshots?.length
+      ? { screenshot: game.screenshots.map(s => abs(refs.site, s.src)) }
+      : {}),
     'gamePlatform': game.platforms,
     ...(mobile ? { operatingSystem: game.platforms.join(', '), applicationCategory: 'GameApplication' } : {}),
     'author': { '@id': refs.personId },
@@ -94,7 +97,7 @@ export function musicGroupNode(project: MusicProject, url: string, refs: SchemaR
       '@type': 'MusicAlbum',
       'name': r.title,
       'datePublished': r.date,
-      'image': r.cover,
+      'image': abs(refs.site, r.cover),
       'byArtist': { '@id': `${url}#artist` },
       ...(r.trackCount ? { numTracks: r.trackCount } : {}),
       ...(r.links.length ? { sameAs: r.links.map(l => l.url) } : {}),

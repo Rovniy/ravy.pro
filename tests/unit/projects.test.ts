@@ -28,6 +28,15 @@ describe('games registry', () => {
       expect(g.releaseDate, g.slug).toBeUndefined()
   })
 
+  it('has a file in public/ for every screenshot', () => {
+    for (const g of GAMES) {
+      for (const shot of g.screenshots ?? []) {
+        expect(shot.src, g.slug).toMatch(new RegExp(`^/games/${g.slug}/`))
+        expect(existsSync(new URL(`../../public${shot.src}`, import.meta.url)), shot.src).toBe(true)
+      }
+    }
+  })
+
   it('uses valid YouTube ids for trailers', () => {
     for (const g of GAMES.filter(g => g.trailerYoutubeId))
       expect(g.trailerYoutubeId, g.slug).toMatch(YOUTUBE_ID_RX)
@@ -104,8 +113,18 @@ describe('project routes', () => {
   })
 
   it('only puts same-origin images in the sitemap', () => {
-    for (const e of projectSitemapEntries().filter(e => e.image))
-      expect(e.image!.path.startsWith('/'), e.loc).toBe(true)
+    for (const e of projectSitemapEntries()) {
+      for (const image of e.images)
+        expect(image.path.startsWith('/'), e.loc).toBe(true)
+    }
+  })
+
+  it('lists game screenshots in the sitemap', () => {
+    for (const g of GAMES.filter(g => g.screenshots?.length)) {
+      const paths = projectSitemapEntries().find(e => e.loc === `/games/${g.slug}`)!.images.map(i => i.path)
+      for (const s of g.screenshots!)
+        expect(paths, g.slug).toContain(s.src)
+    }
   })
 
   it('points tag links at real project pages', () => {
@@ -143,6 +162,19 @@ describe('project schema', () => {
     const json = JSON.stringify(nodes)
     expect(json).not.toContain('aggregateRating')
     expect(json).not.toContain('"Review"')
+  })
+
+  // Search engines resolve schema.org URLs on their own, so a root-relative
+  // path there points nowhere.
+  it('emits absolute image URLs', () => {
+    const nodes = [
+      ...GAMES.map(g => gameNode(g, `${REFS.site}/games/${g.slug}`, REFS)),
+      ...MUSIC_PROJECTS.map(p => musicGroupNode(p, `${REFS.site}/music/${p.slug}`, REFS)),
+    ]
+    const images = JSON.stringify(nodes).match(/"(image|screenshot)":(\[[^\]]*\]|"[^"]*")/g) ?? []
+    expect(images.length).toBeGreaterThan(0)
+    for (const image of images)
+      expect(image, image).not.toMatch(/"\//)
   })
 
   it('does not offer an in-development game', () => {

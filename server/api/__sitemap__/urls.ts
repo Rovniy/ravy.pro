@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
   for (const row of projectSitemapEntries()) {
     urls.push({
       loc: row.loc,
-      ...(row.image && { images: [{ loc: `${seoData.mySite}${row.image.path}`, title: row.image.title }] }),
+      ...(row.images.length ? { images: row.images.map(i => ({ loc: `${seoData.mySite}${i.path}`, title: i.title })) } : {}),
     })
   }
 

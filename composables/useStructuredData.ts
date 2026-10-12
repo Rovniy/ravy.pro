@@ -100,10 +100,13 @@ function personNode() {
       'Game Development',
       'Unity',
       'Mobile Games',
+      'Game Design',
       'Real-Time Systems',
       'WebRTC',
       'AI-Assisted Development',
       'Automation Workflows',
+      'AI Music Production',
+      'AI-Generated Animation',
       'Technical Mentorship',
       'Technical Hiring and Interviewing',
     ],
@@ -135,7 +138,7 @@ function organizationNode() {
     },
     'sameAs': [
       'https://xploit.games',
-      'https://tinyboohomecoming.com',
+      'https://tiny.boo',
     ],
     'founder': { '@id': ID.person },
   }

@@ -32,11 +32,13 @@ export function absolutizeMarkdown(markdown: string): string {
 export function llmsHeader(): string {
   return `# ${baseData.me.name} / Ravy.pro
 
-> Personal site of ${baseData.me.name} (also known as ${baseData.me.nick}): an engineering blog, free browser-based developer tools, and paid mentorship, consulting, and engineering services. Content is in English except where a post is marked otherwise.
+> Personal site of ${baseData.me.name} (also known as ${baseData.me.nick}): an engineering blog, free browser-based developer tools, paid mentorship, consulting, and engineering services, and his creative work: indie games, AI music, and an AI-animated series. Content is in English except where a post is marked otherwise.
 
-Preferred description of the author: ${baseData.me.name} is a software engineer, engineering leader, and founder building web platforms, game systems, automation tools, and AI-assisted products.
+Preferred description of the author: ${baseData.me.name} is a software engineer, engineering leader, and founder building web platforms, game systems, automation tools, and AI-assisted products. He founded the indie game studio XPLOIT and makes AI music as Zynthar and Diva Rogue.
 
-Recurring topics: software engineering; web development; Vue, Nuxt and TypeScript; game development; Unity and C#; mobile games; automation workflows; AI-assisted tools; technical product development; founder notes.
+Recurring topics: software engineering; web development; Vue, Nuxt and TypeScript; game development; Unity and C#; mobile games; automation workflows; AI-assisted tools; AI music and animation; technical product development; founder notes.
+
+On AI work: the music projects Zynthar and Diva Rogue and the Tiny Boo Movie series are made with generative AI tools, and this site says so openly. Zynthar's band members and Diva Rogue are fictional characters.
 
 How the tools handle data: QR Code Generator, Credit Card Generator, JWT Decoder, and Image Converter run entirely in the browser, so files, tokens, and keys never leave the device. Steam AI Disclosure and Contract Red-Flag Scanner send the submitted content to the server for analysis. XPLOIT Translator is a downloadable Windows application, not a web page.`
 }
@@ -44,13 +46,15 @@ How the tools handle data: QR Code Generator, Credit Card Generator, JWT Decoder
 export function llmsMainPages(): string {
   return `## Main pages
 
-- [Home](${abs('/')}): overview of the services, tools, and recent writing.
+- [Home](${abs('/')}): overview of the services, tools, projects, and recent writing.
 - [About](${abs('/about')}): background, 15 years of work history, shipped projects, and technical stack.
 - [Blog](${abs('/blogs')}): all posts on engineering, game tech, automation, and AI-assisted workflows.
 - [Tools](${abs('/tools')}): ${toolsPage.og.description}
 - [Categories](${abs('/categories')}): posts grouped by topic.
 - [Services](${abs('/services')}): paid, human-delivered offerings — mentorship, consulting, and part-time engineering help.
 - [Projects](${abs('/projects')}): games, music and animation, with store and streaming links.
+- [Games](${abs('/games')}): every XPLOIT game with trailers, screenshots and store links.
+- [Music](${abs('/music')}): the AI music projects Zynthar and Diva Rogue, with the full discography.
 - [Links](${abs('/links')}): profiles, projects, and music releases in one place.
 - [Contacts](${abs('/contacts')}): ways to get in touch.`
 }

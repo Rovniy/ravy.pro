@@ -1,18 +1,39 @@
 ---
 title: Internal links
-description: Internal and external links for Andrei Rovnyi's projects — music, GitHub repositories, Tiny Boo resources, and third-party services.
+description: Internal and external links for Andrei Rovnyi's projects — games, AI music, the Tiny Boo Movie series, GitHub repositories, and app policies.
 createdAt: 2025-05-05T22:00:00.000Z
-lastUpdated: 2025-06-14T15:13:10.380Z
+lastUpdated: 2026-10-12T00:00:00.000Z
 ---
 
 # Internal links
 
 Internal and external documents for third-party services
 
+## Projects
+
+- [All projects](/projects) — games, music and animation in one place
+- [Games](/games)
+- [Music](/music)
+- [Tiny Boo Movie](/animation/tiny-boo) — the AI-animated series
+- [XPLOIT](https://xploit.games) — the game studio
+
+## Games
+
+- [Tiny Boo: Homecoming](/games/tiny-boo-homecoming)
+- [Sky Ball: The Orion](/games/sky-ball-the-orion)
+- [TCG: FANTASY Card Collection](/games/tcg-fantasy-card-collection)
+- [Hold my Helmet](/games/hold-my-helmet)
+- [IDLED Survival](/games/idled-survival)
+
 ## Music
 
-- [Zynthar](https://zynthar.rocks)
-- [Diva Rogue](https://divarogue.com)
+- [Zynthar](/music/zynthar) · [zynthar.rocks](https://zynthar.rocks) · [Spotify](https://open.spotify.com/artist/3z0vh8xXLIMiRxVUthV08h)
+- [Diva Rogue](/music/diva-rogue) · [divarogue.com](https://divarogue.com) · [Spotify](https://open.spotify.com/artist/2K6A8QQQ7b0xHeNmYpJj5f)
+
+## Tiny Boo Movie
+
+- [Episodes and making-of](/animation/tiny-boo)
+- [YouTube channel](https://www.youtube.com/@TinyBooLumia)
 
 ## GitHub
 
@@ -29,11 +50,12 @@ Internal and external documents for third-party services
 
 ## Tiny Boo: Homecoming
 
-- [Website landing](https://tinyboohomecoming.com/)
+- [Website landing](https://tiny.boo/)
+- [App Store](https://apps.apple.com/app/id6476441950)
 - [Google Play Market](https://play.google.com/store/apps/details?id=com.Ravy.TinyBooHomecoming)
 - [Privacy Policy](/docs/tiny-boo-privacy-policy)
 - [Account deletion](/blogs/account-deletion-for-tiny-boo)
-- [Marketion Presentation](https://ravy.pro/blog-content/10021-roadmap-for-creating-tiny-boo-homecoming/tiny_boo_presentation.pdf)
+- [Marketing Presentation](https://ravy.pro/blog-content/10021-roadmap-for-creating-tiny-boo-homecoming/tiny_boo_presentation.pdf)
 
 
 

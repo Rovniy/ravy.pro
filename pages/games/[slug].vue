@@ -68,6 +68,31 @@ const releaseLine = computed(() => game.releaseDate
       </div>
     </section>
 
+    <!-- Steam Store -->
+    <section v-if="game?.steam?.embed" class="mt-12">
+      <span class="eyebrow">Steam store</span>
+      <div class="mt-4">
+        <!-- The page is `color-scheme: dark`; Chrome paints an opaque white canvas behind
+             an iframe whose document is light-scheme. `normal` matches the widget, so the
+             strip below its box stays transparent. -->
+        <iframe
+          :src="game.steam.embed"
+          :title="`${game.title} on Steam`"
+          width="100%"
+          height="190"
+          loading="lazy"
+          class="block border-0"
+          style="color-scheme: normal"
+        />
+      </div>
+    </section>
+
+    <!-- Screenshots -->
+    <section v-if="game.screenshots?.length" class="mt-14">
+      <span class="eyebrow">Screenshots</span>
+      <ProjectGallery :images="game.screenshots" :title="game.title" />
+    </section>
+
     <!-- My role -->
     <section v-if="game.role.length" class="mt-14">
       <span class="eyebrow">What I built</span>

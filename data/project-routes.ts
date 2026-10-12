@@ -16,22 +16,36 @@ export const PROJECT_PAGE_PATHS: string[] = [
   ...ANIMATION_PAGE_PATHS,
 ]
 
+export interface SitemapImage { path: string, title: string }
+
 /**
- * Sitemap rows for the creative-work pages, each with its hero image when that
- * image is served from this site (`/media/...`). Hotlinked images from the
+ * Sitemap rows for the creative-work pages, with the images each page shows
+ * that are served from this site: the cover and screenshots of a game, the
+ * hero and album covers of a music project. Hotlinked images from the
  * projects' own sites and from YouTube are left out of `<image:image>`.
  */
-export function projectSitemapEntries(): Array<{ loc: string, image?: { path: string, title: string } }> {
-  const own = (src: string) => src.startsWith('/')
-  const rows: Array<{ loc: string, image?: { path: string, title: string } }> = [
-    { loc: PROJECTS_PATH },
-    { loc: GAMES_PATH },
-    ...GAMES.map(g => ({ loc: gamePath(g), image: own(g.cover.src) ? { path: g.cover.src, title: g.title } : undefined })),
-    { loc: MUSIC_PATH },
-    ...MUSIC_PROJECTS.map(p => ({ loc: musicPath(p), image: own(p.hero.src) ? { path: p.hero.src, title: p.name } : undefined })),
-    { loc: TINY_BOO_MOVIE.path, image: { path: TINY_BOO_MOVIE.hero.src, title: TINY_BOO_MOVIE.title } },
+export function projectSitemapEntries(): Array<{ loc: string, images: SitemapImage[] }> {
+  const own = (images: SitemapImage[]) => images.filter(i => i.path.startsWith('/'))
+  return [
+    { loc: PROJECTS_PATH, images: [] },
+    { loc: GAMES_PATH, images: [] },
+    ...GAMES.map(g => ({
+      loc: gamePath(g),
+      images: own([
+        { path: g.cover.src, title: g.title },
+        ...(g.screenshots ?? []).map(s => ({ path: s.src, title: `${g.title}: ${s.alt}` })),
+      ]),
+    })),
+    { loc: MUSIC_PATH, images: [] },
+    ...MUSIC_PROJECTS.map(p => ({
+      loc: musicPath(p),
+      images: own([
+        { path: p.hero.src, title: p.name },
+        ...p.releases.map(r => ({ path: r.cover, title: `${r.title} by ${p.name}` })),
+      ]),
+    })),
+    { loc: TINY_BOO_MOVIE.path, images: own([{ path: TINY_BOO_MOVIE.hero.src, title: TINY_BOO_MOVIE.title }]) },
   ]
-  return rows
 }
 
 /**

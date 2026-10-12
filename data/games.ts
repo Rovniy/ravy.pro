@@ -10,6 +10,19 @@ import type { ExternalLink, ProjectStatus } from './projects'
 // mechanics from the devlogs on this site. Leave a field out rather than guess:
 // an empty `role` hides the block, a missing `releaseDate` hides the date.
 
+export interface Screenshot {
+  /** Under public/games/<slug>/. */
+  src: string
+  alt: string
+  width: number
+  height: number
+}
+
+/** Files are named screenshot-1.webp, screenshot-2.webp, … in public/games/<slug>/, in this order. */
+function screenshots(slug: string, shots: [width: number, height: number, alt: string][]): Screenshot[] {
+  return shots.map(([width, height, alt], i) => ({ src: `/games/${slug}/screenshot-${i + 1}.webp`, alt, width, height }))
+}
+
 export interface Game {
   slug: string
   title: string
@@ -27,6 +40,8 @@ export interface Game {
   trailerYoutubeId?: string
   /** 16:9 image for the hub card and the page hero. */
   cover: { src: string, alt: string }
+  /** In-game screenshots, shown as a gallery under the trailer. */
+  screenshots?: Screenshot[]
   features: { title: string, text: string }[]
   /** What Andrei did on this game, as first-person sentences. */
   role: string[]
@@ -38,6 +53,9 @@ export interface Game {
   blogTag?: string
   blogPath?: string
   privacyPolicyPath?: string
+  steam?: {
+    embed?: string
+  }
 }
 
 export const GAMES: Game[] = [
@@ -51,12 +69,20 @@ export const GAMES: Game[] = [
     links: [
       { kind: 'app-store', url: 'https://apps.apple.com/app/id6476441950' },
       { kind: 'google-play', url: 'https://play.google.com/store/apps/details?id=com.Ravy.TinyBooHomecoming' },
-      { kind: 'website', url: 'https://tinyboohomecoming.com' },
+      { kind: 'website', url: 'https://tiny.boo' },
     ],
     cover: {
-      src: '/media/blog/tiny-boo-introduction/10001-tiny-boo-introduction-3c4a77ae25.webp',
-      alt: 'Tiny Boo, a small leaf-bud forest creature, in the magical forest of Lumia',
+      src: '/games/tiny-boo-homecoming/cover.webp',
+      alt: 'Tiny Boo: Homecoming logo over the magical forest of Lumia',
     },
+    screenshots: screenshots('tiny-boo-homecoming', [
+      [1600, 737, 'Boo beside a carnivorous plant on a rainy night in the forest'],
+      [1600, 737, 'Boo on a mossy platform under a giant fallen tree'],
+      [1600, 737, 'Boo by a glowing rune stone in a sunlit glade'],
+      [1600, 737, 'Boo gliding between floating islands of earth and roots'],
+      [1600, 1200, 'Boo gliding through a pink sunset forest in the rain'],
+      [1600, 1200, 'Boo leaping over a mossy rock in the green canopy'],
+    ]),
     features: [
       { title: 'A giant micro-world', text: 'Hand-crafted forest levels seen from the size of an acorn, full of secrets and gentle surprises.' },
       { title: 'Relaxed controls', text: 'Easy to learn, focused on movement, exploration and interaction. No pressure, no rush.' },
@@ -95,9 +121,15 @@ export const GAMES: Game[] = [
       { kind: 'website', url: 'https://skyballtheorion.com/' },
     ],
     cover: {
-      src: 'https://skyballtheorion.com/og_banner.png',
+      src: '/games/sky-ball-the-orion/cover.png',
       alt: 'Sky Ball: The Orion key art: a ball and geometric shapes in flat space',
     },
+    screenshots: screenshots('sky-ball-the-orion', [
+      [1600, 1200, 'Levels built from glowing outlined shapes: a relaxing game with no ads and no internet needed'],
+      [1600, 1200, 'A level of four squares: an anti-stress brain puzzle'],
+      [1600, 1200, 'Squares and triangles to knock down: develop your thinking skills'],
+      [1600, 1200, 'Circles, a diamond and a triangle: knock down shapes with one move'],
+    ]),
     features: [
       { title: 'One-shot physics puzzles', text: 'Clear every element in a single launch, using angle and reflection.' },
       { title: 'Minimalist flat space', text: 'A clean geometric visual style inspired by flat space aesthetics.' },
@@ -144,6 +176,9 @@ export const GAMES: Game[] = [
       { label: 'Developer and publisher', value: 'XPLOIT' },
     ],
     platforms: ['Windows'],
+    steam: {
+      embed: 'https://store.steampowered.com/widget/2757440/',
+    },
   },
   {
     slug: 'hold-my-helmet',
@@ -195,6 +230,14 @@ export const GAMES: Game[] = [
       src: '/media/blog/idled-survival/10019-idled-survival-171a9a05e8.webp',
       alt: 'IDLED Survival key art',
     },
+    screenshots: screenshots('idled-survival', [
+      [1024, 1024, 'A forest clearing arena littered with wreckage'],
+      [1024, 1024, 'A ruined city crossroads full of abandoned cars'],
+      [1024, 1024, 'A looted supermarket floor'],
+      [1024, 1024, 'An isometric city block'],
+      [1024, 1024, 'A glowing forest arena at night'],
+      [1024, 1024, 'The IDLED Survival hero, armed and ready'],
+    ]),
     features: [
       { title: 'Idle progression', text: 'Collect resources, upgrade systems, unlock new zones and scale up, even while you are away.' },
       { title: 'Cards and buffs', text: 'Collectible cards with random buffs add strategy and make every session unique.' },

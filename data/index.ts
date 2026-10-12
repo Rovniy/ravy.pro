@@ -156,7 +156,7 @@ export const footerData = {
   aboutAuthor: 'Engineering manager, founder, and software developer building web platforms, game systems, real-time services, and automation tools. 15 years of shipped work — currently at Gaijin.net.',
   authorTitle: 'Get in Touch',
   authorInterest: 'Building an MVP, shipping a game feature, or automating a team workflow? Open source or paid — let\'s talk.',
-  aboutTheSite: 'Personal blog of Andrei Rovnyi — notes on engineering, game tech, automation, and the craft of shipping software.',
+  aboutTheSite: 'Personal site of Andrei Rovnyi — notes on engineering, game tech, automation, and the craft of shipping software, plus the games, AI music and animation I make.',
   copyright: `© 2020-${currentYear} XPLOIT FZE. All trademarks, names and logos belong to their respective copyright holders.`,
   newsletter: {
     title: 'Newsletter',
@@ -201,12 +201,12 @@ export const homePage = {
   },
   meta: {
     title: 'Andrei Rovnyi — Mentorship, Consulting & Engineering Help',
-    description: 'Work with Andrei Rovnyi: one-on-one IT mentorship paid after you are hired, product and engineering consulting, and part-time engineering help for your team. Plus an engineering blog and free developer tools.',
+    description: 'Work with Andrei Rovnyi: one-on-one IT mentorship paid after you are hired, product and engineering consulting, and part-time engineering help for your team. Plus an engineering blog, free developer tools, and my games, AI music and animation.',
   },
   og: {
     headline: 'Greetings 👋',
     title: navbarData.homeTitle,
-    description: 'Engineering blog and practical web tools, including QR Code Generator.',
+    description: 'Engineering blog, free developer tools, and my games, AI music and animation.',
     link: '/open_graph/og_image_default.png',
   },
 }
@@ -256,16 +256,16 @@ export const toolsPage = {
 export const linksPage = {
   content: {
     title: 'Links',
-    description: 'Discover helpful resources for learning, tools, and personal growth. We\'ve curated links to platforms, articles, and services to support your productivity and success.',
+    description: 'Every project in one place: games, music, the Tiny Boo series, code, and the documents that go with them.',
   },
   meta: {
     title: 'Links',
-    description: 'Discover helpful resources for learning, tools, and personal growth. We\'ve curated links to platforms, articles, and services to support your productivity and success.',
+    description: 'Links to Andrei Rovnyi\'s projects: the games Tiny Boo: Homecoming and Sky Ball, the AI music of Zynthar and Diva Rogue, the Tiny Boo Movie series, GitHub repositories, and app policies.',
   },
   og: {
     headline: 'Greetings 👋',
     title: 'Links',
-    description: 'Curated resources for software development, game engines, AI tools, and learning platforms.',
+    description: 'Games, AI music, the Tiny Boo series, code, and app policies, all in one place.',
     link: '/open_graph/pages/links.png',
   },
 }
@@ -311,7 +311,7 @@ export const mentorshipPage = {
 export const nowPage = {
   meta: {
     title: 'Now — Andrei Rovnyi',
-    description: 'What Andrei Rovnyi is working on right now: web projects at Gaijin Entertainment, a co-op Steam rogue-like in Unity, the Tiny Boo Movie AI-animated series, a new Zynthar album — and current availability for fractional CTO work, consulting, and mentorship.',
+    description: 'What Andrei Rovnyi is working on right now: web projects at Gaijin Entertainment, the Steam games Hold my Helmet and TCG: FANTASY Card Collection, the Tiny Boo Movie AI-animated series, the new Zynthar album — and current availability for fractional CTO work, consulting, and mentorship.',
   },
   og: {
     headline: 'Now',

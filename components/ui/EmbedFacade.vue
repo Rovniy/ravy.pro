@@ -103,7 +103,7 @@ onMounted(() => {
       />
       <span class="absolute inset-0 grid place-items-center">
         <span class="grid place-items-center w-16 h-16 rounded-full bg-white/90 text-slate-900 shadow-xl transition-transform duration-200 group-hover:scale-110">
-          <Icon name="mdi:play" class="w-8 h-8 translate-x-0.5" aria-hidden="true" />
+          <Icon name="mdi:play" class="w-32 h-32 text-4xl translate-x-0.5" aria-hidden="true" />
         </span>
       </span>
       <span class="absolute left-0 right-0 bottom-0 px-4 py-3 text-left text-sm font-semibold text-white bg-gradient-to-t from-black/70 to-transparent">
