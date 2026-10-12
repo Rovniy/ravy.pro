@@ -34,6 +34,12 @@ function choose(release: Release) {
 }
 
 const failedCovers = ref(new Set<string>())
+
+// A long discography starts folded so the platforms and posts below stay in
+// reach; the newest releases are the ones worth seeing first.
+const FOLDED_COUNT = 6
+const showAll = ref(project.releases.length <= FOLDED_COUNT)
+const shownReleases = computed(() => showAll.value ? project.releases : project.releases.slice(0, FOLDED_COUNT))
 const total = trackTotal(project)
 </script>
 
@@ -113,23 +119,26 @@ const total = trackTotal(project)
       </div>
       <ol class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <li
-          v-for="release in project.releases"
+          v-for="release in shownReleases"
           :key="release.title"
           class="flex gap-4 rounded-xl border bg-white dark:bg-slate-900 p-4 transition-colors"
           :class="current?.title === release.title ? 'border-accent-400 dark:border-accent-600' : 'border-slate-200 dark:border-slate-800'"
         >
           <div class="shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-accent-600/40 via-slate-800 to-emerald-700/30">
-            <img
+            <NuxtImg
               v-if="!failedCovers.has(release.title)"
               :src="release.cover"
               :alt="`${release.title} cover`"
               width="96"
               height="96"
+              sizes="96px"
+              densities="x1 x2"
+              format="webp"
               class="w-full h-full object-cover"
               loading="lazy"
               decoding="async"
               @error="failedCovers.add(release.title)"
-            >
+            />
           </div>
           <div class="min-w-0">
             <p class="font-semibold text-slate-900 dark:text-slate-100 leading-snug">
@@ -140,7 +149,7 @@ const total = trackTotal(project)
                 · {{ release.trackCount }} tracks
               </template>
             </p>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-snug">
+            <p v-if="release.theme" class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-snug">
               {{ release.theme }}
             </p>
             <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium">
@@ -164,6 +173,14 @@ const total = trackTotal(project)
           </div>
         </li>
       </ol>
+      <button
+        v-if="!showAll"
+        type="button"
+        class="mt-4 inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500 cursor-pointer"
+        @click="showAll = true"
+      >
+        <Icon name="mdi:chevron-down" class="w-4 h-4" aria-hidden="true" /> Show all {{ project.releases.length }} albums
+      </button>
     </section>
 
     <!-- Platforms -->
