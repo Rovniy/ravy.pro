@@ -56,6 +56,15 @@ export interface Game {
   steam?: {
     embed?: string
   }
+  /** App icon or logo, 512px PNG under public/games/<slug>/. Offered in the press kit. */
+  icon?: { src: string, alt: string }
+  /** Copy for /games/<slug>/press that journalists can paste as is. */
+  press: {
+    /** About 50 words. */
+    short: string
+    /** About 200 words, as paragraphs. */
+    long: string[]
+  }
 }
 
 export const GAMES: Game[] = [
@@ -107,6 +116,15 @@ export const GAMES: Game[] = [
     platforms: ['iOS', 'Android'],
     blogTag: 'tiny-boo',
     privacyPolicyPath: '/docs/tiny-boo-privacy-policy',
+    icon: { src: '/games/tiny-boo-homecoming/icon.png', alt: 'Tiny Boo: Homecoming app icon: Boo with a glowing firefly' },
+    press: {
+      short: 'Tiny Boo: Homecoming is a cozy mobile platformer about a tiny forest creature blown far from his home tree. Players guide Boo through a giant magical forest where leaves are platforms and branches are roads. No combat and no rush: a gentle adventure about curiosity, courage and kindness, free on iOS and Android.',
+      long: [
+        'Tiny Boo: Homecoming is a cozy adventure platformer from XPLOIT, an independent game studio. A gust of wind tears Boo, a tiny leaf-bud creature, away from his home tree and scatters him across Lumia, a giant magical forest seen from the size of an acorn. Leaves become platforms, branches become roads, and the way home is long.',
+        'The game is built for calm sessions. Controls are easy to learn and focus on movement, exploration and interaction, with no combat and no pressure. Hand-crafted levels hide secrets and gentle surprises, while soft music and warm art direction set the mood. The story is told by the world itself: a quiet narrative about home and belonging, carried by places instead of dialogue.',
+        'Tiny Boo: Homecoming is free on iPhone, iPad, Apple silicon Macs and Android, with ads and in-app purchases, and is localised into seven languages. Boo\'s world continues in Tiny Boo Movie, an AI-animated YouTube series set in Lumia.',
+      ],
+    },
   },
   {
     slug: 'sky-ball-the-orion',
@@ -143,6 +161,15 @@ export const GAMES: Game[] = [
       { label: 'Studio', value: 'XPLOIT' },
     ],
     platforms: ['iOS', 'Android'],
+    icon: { src: '/games/sky-ball-the-orion/icon.png', alt: 'Sky Ball: The Orion app icon: an orange orbit of three linked circles' },
+    press: {
+      short: 'Sky Ball: The Orion is a minimalist space puzzle game for iOS and Android. Each of its 160+ levels is a small cosmic puzzle: clear every shape in a single launch using slingshot physics, angles and reflections. Flat geometric visuals and a soft lo-fi soundtrack make it a calm, meditative brain teaser.',
+      long: [
+        'Sky Ball: The Orion is a casual physics puzzle game from XPLOIT, an independent game studio. In a silent abstract universe, geometry becomes a language: each level is a small cosmic puzzle built from glowing shapes, and the goal is to clear every one of them in a single launch.',
+        'The core is a slingshot. Players choose the angle and the force, then watch the ball bounce off walls and shapes, so every level is about reading reflections and planning one perfect shot. More than 160 levels move from a few simple squares to dense arrangements of circles, diamonds and triangles.',
+        'The look is minimalist flat space: clean outlined shapes on a dark field, inspired by flat space aesthetics. A soft lo-fi soundtrack keeps the pace relaxed, and the game plays without ads or an internet connection, which suits short breaks as well as long sessions. Sky Ball: The Orion is available on the App Store and Google Play.',
+      ],
+    },
   },
   {
     slug: 'tcg-fantasy-card-collection',
@@ -179,6 +206,14 @@ export const GAMES: Game[] = [
     steam: {
       embed: 'https://store.steampowered.com/widget/2757440/',
     },
+    press: {
+      short: 'TCG: FANTASY Card Collection is a relaxing card-collecting game for PC, coming soon to Steam. Explore a room scattered with more than 3,000 fantasy cards, examine rare finds up close, and organise your collection in cabinets by faction and rarity. Single-player, with the interface in 27 languages.',
+      long: [
+        'TCG: FANTASY Card Collection is a cozy collecting game from XPLOIT, an independent game studio, coming soon to Steam for Windows. It is about the quiet pleasure of a collection: finding cards, looking at them closely and putting everything in its place.',
+        'Players explore a room scattered with cards from different factions and rarities. Every card can be picked up, zoomed in and turned over to see both sides. Cabinets and their sections wait to be filled, and the chaos of the room slowly turns into order. Rare and legendary finds get their own display spots.',
+        'There are more than 3,000 cards to find. The game is single-player, supports Steam Family Sharing and has its interface translated into 27 languages. It runs on Windows 10 and 11 with modest hardware: an Intel Core i5-10400 or AMD Ryzen 5 3600, 8 GB of RAM and a GeForce GTX 1050 are enough.',
+      ],
+    },
   },
   {
     slug: 'hold-my-helmet',
@@ -213,6 +248,14 @@ export const GAMES: Game[] = [
     ],
     platforms: ['Windows'],
     blogPath: '/blogs/atd-devlog-five-weeks-into-the-arena',
+    press: {
+      short: 'Hold my Helmet is a co-op action game about gladiator trials, in development for Steam. A party walks into the arena, an announcer calls the next trial, the traps wake up and a boss comes through the gate. Third-person physics combat, ragdolls and a lot of things that explode, played together online.',
+      long: [
+        'Hold my Helmet is a co-op action game from XPLOIT, an independent game studio, in development for Steam on Windows. Friends enter an arena as a party of gladiators and survive a run of trials, each one staged by the Arena Trial Director: the doors open, the traps wake up, the boss walks out, rewards are paid and the shop opens for a short break.',
+        'Combat is third-person and physics-driven. Fifteen weapon profiles run from bare fists to dynamite, bodies are full ragdolls, and body parts can be knocked off and repaired. Whoever goes down watches in spectator mode, and the party\'s pet will happily carry a live grenade if nobody stops him.',
+        'The game is played online over Steam with lobbies and friends, on host-authoritative netcode with client-side prediction. Development started in September 2026 and is documented in a public devlog.',
+      ],
+    },
   },
   {
     slug: 'idled-survival',
@@ -256,6 +299,14 @@ export const GAMES: Game[] = [
     ],
     platforms: ['Web', 'Telegram'],
     blogTag: 'idled',
+    press: {
+      short: 'IDLED Survival is an idle survival RPG that runs as a Telegram mini app. Resources are gathered automatically, your decisions make the machine more efficient, and collectible cards with random buffs make every run different. Your world keeps living while you sleep. Released in January 2023 and playable right inside Telegram.',
+      long: [
+        'IDLED Survival is an idle survival RPG from XPLOIT, an independent game studio, released in January 2023 as a Telegram mini app. There is nothing to install: the game opens inside Telegram, and its world keeps living while the player is away.',
+        'Resources are gathered automatically. The player\'s job is to make that machine more efficient: upgrade systems, unlock new zones and scale up. Collectible cards with random buffs add a layer of strategy and make every session different, and fights stay readable and stable even with a large number of enemies on screen.',
+        'The game runs on a custom engine written in TypeScript and Vue 3, with its own collision detection and damage calculation. A companion Telegram bot handles notifications, polls and sharing, and the players\' community lives in the game\'s Telegram channel.',
+      ],
+    },
   },
 ]
 
@@ -265,9 +316,14 @@ export function gamePath(game: Pick<Game, 'slug'>): string {
   return `${GAMES_PATH}/${game.slug}`
 }
 
+/** The press kit for a game: fact sheet, copy, images and a ZIP of them. */
+export function gamePressPath(game: Pick<Game, 'slug'>): string {
+  return `${gamePath(game)}/press`
+}
+
 export function gameBySlug(slug: string): Game | undefined {
   return GAMES.find(g => g.slug === slug)
 }
 
 /** Every page under /games. Read by the prerender list and the sitemap. */
-export const GAME_PAGE_PATHS: string[] = [GAMES_PATH, ...GAMES.map(gamePath)]
+export const GAME_PAGE_PATHS: string[] = [GAMES_PATH, ...GAMES.flatMap(g => [gamePath(g), gamePressPath(g)])]

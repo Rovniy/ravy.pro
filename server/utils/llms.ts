@@ -6,7 +6,7 @@
 // `publicServices` / `OFFERINGS` every time a tool or service was added.
 import { baseData, publicServices, seoData, toolsPage } from '~/data'
 import { TINY_BOO_MOVIE } from '~/data/animation'
-import { gamePath, GAMES } from '~/data/games'
+import { gamePath, gamePressPath, GAMES } from '~/data/games'
 import { MUSIC_PROJECTS, musicPath } from '~/data/music'
 import { OFFERINGS } from '~/data/offerings'
 import { STATUS_LABEL } from '~/data/projects'
@@ -81,7 +81,7 @@ export function llmsServices(): string {
 
 /** Games, music and animation, from the registries in data/. */
 export function llmsProjects(): string {
-  const games = GAMES.map(g => `- [${g.title}](${abs(gamePath(g))}): ${g.tagline} ${STATUS_LABEL[g.status]}.`)
+  const games = GAMES.map(g => `- [${g.title}](${abs(gamePath(g))}): ${g.tagline} ${STATUS_LABEL[g.status]}. [Press kit](${abs(gamePressPath(g))}).`)
   const music = MUSIC_PROJECTS.map(p => `- [${p.name}](${abs(musicPath(p))}): ${p.tagline} An AI music project written and produced by Andrei.`)
   return `## Projects
 
