@@ -2,7 +2,7 @@
 description: 'Software developer, engineering manager, and founder with 15 years of experience — from World of Tanks and War Thunder Mobile to his own game studio XPLOIT, real-time platforms, and AI-powered tools.'
 title: About Andrei Rovnyi
 createdAt: 2025-05-05T22:00:00.000Z
-lastUpdated: 2026-07-06T12:00:00.000Z
+lastUpdated: 2026-10-12T00:00:00.000Z
 ---
 
 # Andrei Rovnyi
@@ -104,9 +104,13 @@ The best proof is running software. A few things you can try right now:
 
 ### Games at XPLOIT
 
-* **[Tiny Boo: Homecoming](https://tinyboohomecoming.com)** — a cozy mobile adventure for iOS and Android, currently in development. The studio's flagship project.
-* **[IDLED Survival](/blogs/idled-survival)** — an idle survival RPG on Telegram, released in 2023. Your world keeps living while you sleep.
-* **[Sky Ball: The Orion](https://skyballtheorion.com/)** — a minimalist space puzzle with slingshot physics and 160+ levels.
+All of them, with trailers, store links and what I built in each: [Games](/games).
+
+* **[Tiny Boo: Homecoming](/games/tiny-boo-homecoming)** — a cozy adventure about a tiny forest creature finding his way home. Out now on iOS and Android. The studio's flagship project.
+* **[Sky Ball: The Orion](/games/sky-ball-the-orion)** — a minimalist space puzzle with slingshot physics and 160+ levels. Out now on iOS and Android.
+* **[TCG: FANTASY Card Collection](/games/tcg-fantasy-card-collection)** — a relaxing game about collecting more than 3,000 fantasy cards. Coming soon to Steam.
+* **[Hold my Helmet](/games/hold-my-helmet)** — a co-op gladiator game for Steam, in development.
+* **[IDLED Survival](/games/idled-survival)** — an idle survival RPG on Telegram, released in 2023. Your world keeps living while you sleep.
 * **Egocentrism** — a nominee for the Game Development World Championship 2021 award.
 
 ### Open source & writing
@@ -198,8 +202,8 @@ The work I enjoy most lives between disciplines — where product, design, busin
 
 Not everything I build is software. Two ongoing creative projects:
 
-* **[Tiny Boo Movie](/blogs/how-we-made-the-first-episode-of-tiny-boo)** — an AI-animated YouTube series set in the world of Tiny Boo. Writing, directing, and an AI video pipeline, all in-house.
-* **Music** — I produce and release music with AI-assisted workflows under [Diva Rogue](https://divarogue.com) and [Zynthar](https://zynthar.rocks), available on Spotify and Apple Music ([how I started](/blogs/how-i-started-making-music-with-ai)).
+* **[Tiny Boo Movie](/animation/tiny-boo)** — an AI-animated YouTube series set in the world of Tiny Boo. Writing, directing, and an AI video pipeline, all in-house.
+* **[Music](/music)** — two AI music projects I write and produce: [Zynthar](/music/zynthar), an imagined post-hardcore band with real emotions, and [Diva Rogue](/music/diva-rogue), an AI R&B and hip-hop artist. Both are on Spotify, Apple Music and the other major platforms ([how I started](/blogs/how-i-started-making-music-with-ai)).
 
 These aren't just hobbies — they're where I stress-test the AI content pipelines that later show up in my professional work.
 
