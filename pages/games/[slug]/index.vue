@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { EVENTS } from '~/data/analytics'
-import { gameBySlug } from '~/data/games'
+import { gameBySlug, gamePressPath } from '~/data/games'
 import { releaseMonth, STATUS_LABEL } from '~/data/projects'
 
 const route = useRoute()
@@ -42,6 +42,12 @@ const releaseLine = computed(() => game.releaseDate
             devlog
           </NuxtLink>.
         </p>
+        <NuxtLink
+          :to="gamePressPath(game)"
+          class="mt-5 inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500"
+        >
+          <Icon name="mdi:newspaper-variant-outline" class="w-4 h-4" aria-hidden="true" /> Press kit
+        </NuxtLink>
       </div>
       <div class="lg:col-span-2">
         <img

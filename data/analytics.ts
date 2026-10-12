@@ -49,6 +49,10 @@ export const EVENTS = {
   STORE_CLICK: 'store_click',
   MUSIC_PLAY: 'music_play',
   VIDEO_PLAY: 'video_play',
+  // Press kit at /games/<slug>/press: the ZIP download ({ project, files }) and
+  // a copied description ({ project, item: 'short' | 'long' }).
+  PRESS_KIT_DOWNLOAD: 'press_kit_download',
+  PRESS_COPY: 'press_copy',
 
   // Paid funnels (Steam AI disclosure, Contract scanner)
   SCAN_START: 'scan_start',

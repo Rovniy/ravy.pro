@@ -1065,15 +1065,19 @@ function projectPage(opts: {
   description: string
   image: string
   hub: { name: string, path: string }
+  /** A crumb between the hub and this page (the game, on its press kit). */
+  parent?: { name: string, path: string }
   entity: { '@id': string } & Record<string, unknown>
   projectId: string
-  kind: 'game' | 'music' | 'animation'
+  kind: 'game' | 'music' | 'animation' | 'press'
 }) {
   const url = absUrl(opts.path)
   pageHead({ url, title: opts.title, description: opts.description, image: absUrl(opts.image) })
   const crumbs = [{ name: 'Home', url: `${SITE}/` }, PROJECTS_CRUMB]
   if (opts.hub.path !== '/projects')
     crumbs.push({ name: opts.hub.name, url: absUrl(opts.hub.path) })
+  if (opts.parent)
+    crumbs.push({ name: opts.parent.name, url: absUrl(opts.parent.path) })
   crumbs.push({ name: opts.title, url })
   const crumb = breadcrumbNode(crumbs)
   injectGraph([
@@ -1106,6 +1110,22 @@ export function useGamePageSchema(game: Game) {
     entity: gameNode(game, absUrl(path), SCHEMA_REFS),
     projectId: game.slug,
     kind: 'game',
+  })
+}
+
+/** /games/<slug>/press. The page is about the game, so the game node is its primary entity. */
+export function useGamePressPageSchema(game: Game) {
+  const gameUrlPath = `/games/${game.slug}`
+  projectPage({
+    path: `${gameUrlPath}/press`,
+    title: `${game.title} press kit`,
+    description: `Press kit for ${game.title}: fact sheet, short and long descriptions, logo, cover and screenshots in one ZIP, trailer and press contact.`,
+    image: game.cover.src,
+    hub: { name: 'Games', path: '/games' },
+    parent: { name: game.title, path: gameUrlPath },
+    entity: gameNode(game, absUrl(gameUrlPath), SCHEMA_REFS),
+    projectId: game.slug,
+    kind: 'press',
   })
 }
 

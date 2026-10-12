@@ -1,5 +1,5 @@
 import { ANIMATION_PAGE_PATHS, TINY_BOO_MOVIE } from './animation'
-import { GAME_PAGE_PATHS, gamePath, GAMES, GAMES_PATH } from './games'
+import { GAME_PAGE_PATHS, gamePath, gamePressPath, GAMES, GAMES_PATH } from './games'
 import { MUSIC_PAGE_PATHS, MUSIC_PATH, MUSIC_PROJECTS, musicPath } from './music'
 
 export const PROJECTS_PATH = '/projects'
@@ -29,13 +29,17 @@ export function projectSitemapEntries(): Array<{ loc: string, images: SitemapIma
   return [
     { loc: PROJECTS_PATH, images: [] },
     { loc: GAMES_PATH, images: [] },
-    ...GAMES.map(g => ({
-      loc: gamePath(g),
-      images: own([
-        { path: g.cover.src, title: g.title },
-        ...(g.screenshots ?? []).map(s => ({ path: s.src, title: `${g.title}: ${s.alt}` })),
-      ]),
-    })),
+    ...GAMES.flatMap(g => [
+      {
+        loc: gamePath(g),
+        images: own([
+          { path: g.cover.src, title: g.title },
+          ...(g.screenshots ?? []).map(s => ({ path: s.src, title: `${g.title}: ${s.alt}` })),
+        ]),
+      },
+      // The images are already listed on the game page; the icon is the one new one.
+      { loc: gamePressPath(g), images: own(g.icon ? [{ path: g.icon.src, title: `${g.title} icon` }] : []) },
+    ]),
     { loc: MUSIC_PATH, images: [] },
     ...MUSIC_PROJECTS.map(p => ({
       loc: musicPath(p),

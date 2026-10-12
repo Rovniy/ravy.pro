@@ -2,10 +2,11 @@ import { existsSync, readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import config from '~~/nuxt.config'
 import { TINY_BOO_MOVIE } from '~/data/animation'
-import { GAME_PAGE_PATHS, GAMES } from '~/data/games'
+import { GAME_PAGE_PATHS, gamePressPath, GAMES } from '~/data/games'
 import { MUSIC_PAGE_PATHS, MUSIC_PROJECTS, SPOTIFY_ID_RX } from '~/data/music'
 import { PROJECT_PAGE_PATHS, projectSitemapEntries, TAG_PROJECT_LINKS } from '~/data/project-routes'
 import { PLATFORM_META, YOUTUBE_ID_RX } from '~/data/projects'
+import { factSheetText, pressFacts, pressFiles } from '~/utils/press-kit'
 import { gameNode, musicGroupNode, seriesNode } from '~/utils/project-schema'
 
 const REFS = { site: 'https://ravy.pro', personId: 'https://ravy.pro/#person', organizationId: 'https://ravy.pro/#org' }
@@ -40,6 +41,54 @@ describe('games registry', () => {
   it('uses valid YouTube ids for trailers', () => {
     for (const g of GAMES.filter(g => g.trailerYoutubeId))
       expect(g.trailerYoutubeId, g.slug).toMatch(YOUTUBE_ID_RX)
+  })
+})
+
+describe('press kits', () => {
+  const words = (text: string) => text.split(/\s+/).filter(Boolean).length
+
+  it('has a press page for every game', () => {
+    for (const g of GAMES)
+      expect(GAME_PAGE_PATHS, g.slug).toContain(gamePressPath(g))
+  })
+
+  it('keeps the short description near 50 words and the long one in paragraphs', () => {
+    for (const g of GAMES) {
+      expect(words(g.press.short), g.slug).toBeGreaterThanOrEqual(35)
+      expect(words(g.press.short), g.slug).toBeLessThanOrEqual(70)
+      expect(g.press.long.length, g.slug).toBeGreaterThanOrEqual(2)
+      expect(words(g.press.long.join(' ')), g.slug).toBeGreaterThanOrEqual(120)
+      expect(words(g.press.long.join(' ')), g.slug).toBeLessThanOrEqual(260)
+    }
+  })
+
+  // The ZIP is built in the browser with fetch(), so every file must be served
+  // by this site, and a file in public/ must exist.
+  it('only zips same-origin files that exist', () => {
+    for (const g of GAMES) {
+      for (const f of pressFiles(g)) {
+        expect(f.path.startsWith('/'), f.path).toBe(true)
+        if (!f.path.startsWith('/media/'))
+          expect(existsSync(`public${f.path}`), f.path).toBe(true)
+      }
+      const names = pressFiles(g).map(f => f.name)
+      expect(new Set(names).size, g.slug).toBe(names.length)
+    }
+  })
+
+  it('names the studio once in the fact sheet', () => {
+    for (const g of GAMES) {
+      const labels = pressFacts(g).map(f => f.label)
+      expect(labels.filter(l => /studio|developer/i.test(l)), g.slug).toHaveLength(1)
+    }
+  })
+
+  it('puts the whole page into fact-sheet.txt', () => {
+    const g = GAMES[0]!
+    const text = factSheetText(g, { site: 'https://ravy.pro', email: 'press@example.com' })
+    expect(text).toContain(`https://ravy.pro/games/${g.slug}/press`)
+    expect(text).toContain(g.press.short)
+    expect(text).toContain('press@example.com')
   })
 })
 
