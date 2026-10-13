@@ -51,6 +51,25 @@ const errorMsg = ref('')
 const done = ref(false)
 
 const fatal = computed(() => check.value && !check.value.ok && !check.value.redirectable)
+const returnable = computed(() => check.value && !check.value.ok && check.value.redirectable)
+
+// Client registration is open, so a redirect_uri is only as trustworthy as
+// whoever registered it. Bouncing an error back automatically would turn this
+// page into an open redirector under the site's domain for any https URL an
+// attacker registered. Only a loopback address — a CLI on the user's own
+// machine — is safe to return to without a click (RFC 9700 §4.11.2).
+function isLoopback(uri: string): boolean {
+  try {
+    return ['localhost', '127.0.0.1', '[::1]'].includes(new URL(uri).hostname)
+  }
+  catch {
+    return false
+  }
+}
+
+function returnWithError() {
+  redirectWith({ error: check.value?.error ?? 'invalid_request', state: request.state })
+}
 
 function redirectWith(params: Record<string, string>) {
   const url = new URL(request.redirect_uri)
@@ -67,9 +86,10 @@ onMounted(async () => {
     const query = new URLSearchParams(Object.entries(request).filter(([, v]) => v)).toString()
     check.value = await $fetch<ClientCheck>(`/api/oauth/client?${query}`)
     // A malformed but correctly addressed request goes back to the client with
-    // the error, as the spec requires, rather than stranding the user here.
-    if (!check.value.ok && check.value.redirectable && check.value.error)
-      redirectWith({ error: check.value.error, state: request.state })
+    // the error, as the spec requires — automatically only for loopback, behind
+    // a click everywhere else (see isLoopback).
+    if (returnable.value && isLoopback(request.redirect_uri))
+      returnWithError()
   }
   catch {
     check.value = { ok: false, error: 'Could not validate the request. Try connecting again.' }
@@ -110,6 +130,19 @@ function deny() {
 
     <div v-else-if="fatal" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
       {{ check.error }}
+    </div>
+
+    <div v-else-if="returnable && !done" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
+      <p class="mb-4">
+        The app sent a malformed connection request (<span class="font-mono">{{ check.error }}</span>), so nothing was authorized.
+      </p>
+      <button
+        type="button"
+        class="rounded-md border border-red-300 dark:border-red-700 px-4 py-2 font-medium hover:cursor-pointer"
+        @click="returnWithError"
+      >
+        Return to {{ check.redirectHost }}
+      </button>
     </div>
 
     <StudioGate v-else-if="check.ok">

@@ -183,6 +183,16 @@ export function parseRegistration(body: unknown): ClientRegistration {
   }
 }
 
+/** A malformed `%` sequence is bad input, not a 500; it just won't match anything. */
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  }
+  catch {
+    return ''
+  }
+}
+
 /** Credentials from either `client_secret_basic` or the form body. */
 export function clientCredentials(authorization: string | undefined, form: Record<string, string>): { clientId: string, clientSecret: string } {
   const basic = authorization?.match(/^Basic\s+(\S+)$/i)?.[1]
@@ -191,8 +201,8 @@ export function clientCredentials(authorization: string | undefined, form: Recor
     const sep = decoded.indexOf(':')
     if (sep > 0) {
       return {
-        clientId: decodeURIComponent(decoded.slice(0, sep)),
-        clientSecret: decodeURIComponent(decoded.slice(sep + 1)),
+        clientId: safeDecode(decoded.slice(0, sep)),
+        clientSecret: safeDecode(decoded.slice(sep + 1)),
       }
     }
   }

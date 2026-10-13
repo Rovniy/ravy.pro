@@ -1,4 +1,5 @@
 import type { H3Event } from 'h3'
+import { createHash } from 'node:crypto'
 import { createError, getRequestIP } from 'h3'
 import { getDb } from './firebase-admin'
 import { reportServerEvent } from './report-error'
@@ -19,7 +20,11 @@ export interface RateLimitOptions {
 export async function assertRateLimit(opts: RateLimitOptions): Promise<void> {
   const { bucket, identity, limit, windowMs } = opts
   const windowStart = Math.floor(Date.now() / windowMs) * windowMs
-  const ref = getDb().collection(COLLECTION).doc(`${bucket}__${identity}__${windowStart}`)
+  // Hashed: the identity can come from a request header, and a raw value of a
+  // couple of KB would make the doc id invalid — the write would throw and the
+  // fail-open catch below would wave the request through.
+  const key = createHash('sha256').update(identity).digest('hex').slice(0, 32)
+  const ref = getDb().collection(COLLECTION).doc(`${bucket}__${key}__${windowStart}`)
 
   let count: number
   try {

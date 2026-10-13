@@ -51,6 +51,18 @@ export function isPrivateAddress(ip: string): boolean {
     const mapped = lower.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/)
     if (mapped?.[1])
       return ipv4Private(mapped[1])
+    // The same IPv4-mapped address in hex — the form Node's URL parser turns
+    // `[::ffff:127.0.0.1]` into, so the dotted check above alone is bypassable.
+    const hex = lower.match(/^::ffff:([\da-f]{1,4}):([\da-f]{1,4})$/)
+    if (hex?.[1] && hex[2]) {
+      const hi = Number.parseInt(hex[1], 16)
+      const lo = Number.parseInt(hex[2], 16)
+      return ipv4Private(`${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`)
+    }
+    // NAT64 (64:ff9b::/96) and 6to4 (2002::/16) embed an IPv4 address that the
+    // network may route to; refuse them rather than decode every variant.
+    if (lower.startsWith('64:ff9b:') || lower.startsWith('2002:'))
+      return true
     return lower === '::' || lower === '::1' || /^f[cd]/.test(lower) || /^fe[89ab]/.test(lower) || lower.startsWith('ff')
   }
   return true

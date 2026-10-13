@@ -23,7 +23,9 @@ import {
  * - `mcp_oauth_codes/{sha256(code)}` — single-use authorization codes.
  * - `mcp_oauth_tokens/{sha256(token)}` — access and refresh tokens.
  *
- * Only hashes of codes and tokens are stored. Every expiring document carries
+ * Only hashes of codes and tokens are stored. Every token carries the `familyId`
+ * of the authorization it descends from, so a replayed refresh token can revoke
+ * the whole chain (RFC 9700 §4.14.2). Every expiring document carries
  * `expiresAt` as a Firestore Timestamp, so a TTL policy on that field (as for
  * `rate_limits`) cleans them up; expiry is also checked on every read, so the
  * policy is housekeeping, not a control.
@@ -146,19 +148,25 @@ export interface IssuedTokens {
   scope: string
 }
 
-export async function issueTokens(owner: TokenOwner): Promise<IssuedTokens> {
+/**
+ * Issues an access + refresh pair. A fresh authorization starts a new family;
+ * a rotation passes the family of the refresh token it consumed.
+ */
+export async function issueTokens(owner: TokenOwner, familyId: string = newSecret()): Promise<IssuedTokens> {
   const access = newSecret()
   const refresh = newSecret()
   const now = Date.now()
   const batch = getDb().batch()
   batch.set(tokens().doc(hashSecret(access)), {
     ...owner,
+    familyId,
     kind: 'access',
     expiresAt: new Date(now + ACCESS_TOKEN_TTL_MS),
     createdAt: new Date(now),
   })
   batch.set(tokens().doc(hashSecret(refresh)), {
     ...owner,
+    familyId,
     kind: 'refresh',
     expiresAt: new Date(now + REFRESH_TOKEN_TTL_MS),
     createdAt: new Date(now),
@@ -173,21 +181,78 @@ export async function issueTokens(owner: TokenOwner): Promise<IssuedTokens> {
   }
 }
 
-/** Rotates a refresh token: the old one is consumed, a new pair is issued. */
+/**
+ * How long a consumed refresh token may be presented again without being
+ * treated as stolen. A client whose response got lost retries with the same
+ * token; that must fail, but it must not log the user out everywhere.
+ */
+export const REFRESH_REUSE_GRACE_MS = 30_000
+
+interface StoredRefresh extends TokenOwner {
+  kind: string
+  familyId?: string
+  usedAt?: { toMillis: () => number }
+  expiresAt: { toMillis: () => number }
+}
+
+/**
+ * Rotates a refresh token: the old one is marked used, a new pair is issued in
+ * the same family. A used token is kept until it expires rather than deleted —
+ * that is what makes a replay detectable. Presenting it again after the grace
+ * window means two parties hold the chain, so the whole family is revoked and
+ * both have to sign in again.
+ */
 export async function rotateRefreshToken(refresh: string, clientId: string): Promise<IssuedTokens> {
   const ref = tokens().doc(hashSecret(refresh))
-  const owner = await getDb().runTransaction(async (tx) => {
+  const now = Date.now()
+  const result = await getDb().runTransaction(async (tx) => {
     const snap = await tx.get(ref)
-    if (!snap.exists || snap.data()?.kind !== 'refresh')
+    const data = snap.exists ? snap.data() as StoredRefresh : null
+    if (!data || data.kind !== 'refresh')
       return null
-    tx.delete(ref)
-    return snap.data() as TokenOwner & { expiresAt: { toMillis: () => number } }
+    if (data.usedAt)
+      return { owner: data, replayed: true }
+    tx.update(ref, { usedAt: new Date(now) })
+    return { owner: data, replayed: false }
   })
-  if (!owner || owner.expiresAt.toMillis() < Date.now())
+  if (!result || result.owner.expiresAt.toMillis() < now)
     throw new OAuthError('invalid_grant', 'Refresh token is invalid or expired')
+  const { owner, replayed } = result
   if (owner.clientId !== clientId)
     throw new OAuthError('invalid_grant', 'Refresh token was issued to another client')
-  return issueTokens({ clientId: owner.clientId, email: owner.email, uid: owner.uid, resource: owner.resource })
+  if (replayed) {
+    if (now - owner.usedAt!.toMillis() > REFRESH_REUSE_GRACE_MS)
+      await revokeFamily(owner.familyId, ref)
+    throw new OAuthError('invalid_grant', 'Refresh token has already been used')
+  }
+  // Tokens issued before families existed start one on their first rotation.
+  return issueTokens(
+    { clientId: owner.clientId, email: owner.email, uid: owner.uid, resource: owner.resource },
+    owner.familyId ?? newSecret(),
+  )
+}
+
+/** Deletes every token of a family; a pre-family token is deleted on its own. */
+async function revokeFamily(familyId: string | undefined, fallback: FirebaseFirestore.DocumentReference): Promise<void> {
+  if (!familyId) {
+    await fallback.delete()
+    return
+  }
+  await deleteAll(await tokens().where('familyId', '==', familyId).get())
+}
+
+/**
+ * Deletes every document of a query result. BulkWriter rather than one batch:
+ * a batch caps at 500 writes, and a busy account's token count passes that well
+ * before the TTL policy catches up.
+ */
+async function deleteAll(snap: FirebaseFirestore.QuerySnapshot): Promise<void> {
+  if (snap.empty)
+    return
+  const writer = getDb().bulkWriter()
+  for (const doc of snap.docs)
+    void writer.delete(doc.ref)
+  await writer.close()
 }
 
 /** The owner of a live access token, or null. */
@@ -214,12 +279,7 @@ export async function revokeToken(token: string, clientId: string): Promise<void
 /** Every token belonging to this account — the studio's "disconnect" button. */
 export async function revokeAllForEmail(email: string): Promise<number> {
   const snap = await tokens().where('email', '==', email).get()
-  if (snap.empty)
-    return 0
-  const batch = getDb().batch()
-  for (const doc of snap.docs)
-    batch.delete(doc.ref)
-  await batch.commit()
+  await deleteAll(snap)
   return snap.size
 }
 
@@ -236,7 +296,7 @@ export async function listConnectedClients(email: string): Promise<ConnectedClie
   const now = Date.now()
   for (const doc of snap.docs) {
     const data = doc.data()
-    if (data.kind !== 'refresh' || data.expiresAt?.toMillis?.() < now)
+    if (data.kind !== 'refresh' || data.usedAt || data.expiresAt?.toMillis?.() < now)
       continue
     const created = data.createdAt?.toMillis?.() ?? 0
     latest.set(data.clientId, Math.max(latest.get(data.clientId) ?? 0, created))

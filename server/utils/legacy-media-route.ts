@@ -16,7 +16,14 @@ export async function legacyMediaRedirect(event: H3Event, prefix: string): Promi
   if (!path || path.includes('..'))
     throw createError({ statusCode: 404, statusMessage: 'Not found' })
 
-  const target = (await getLegacyMediaMap())[`/${prefix}/${decodeURIComponent(path)}`]
+  let decoded: string
+  try {
+    decoded = decodeURIComponent(path)
+  }
+  catch {
+    throw createError({ statusCode: 404, statusMessage: 'Not found' })
+  }
+  const target = (await getLegacyMediaMap())[`/${prefix}/${decoded}`]
   if (!target)
     throw createError({ statusCode: 404, statusMessage: 'Not found' })
 

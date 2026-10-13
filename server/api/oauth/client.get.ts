@@ -21,18 +21,20 @@ export default defineEventHandler(async (event) => {
   if (!redirectUri || !redirectUriMatches(client.redirectUris, redirectUri))
     return { ok: false, error: 'The redirect address does not match the one this client registered.' }
 
-  // From here on errors can go back to the client, but the page needs to know.
+  // From here on errors can go back to the client, but the page needs to know —
+  // and needs the host, because it only returns there after a click.
+  const redirectHost = new URL(redirectUri).host
   if (q.response_type !== 'code')
-    return { ok: false, redirectable: true, error: 'unsupported_response_type' }
+    return { ok: false, redirectable: true, redirectHost, error: 'unsupported_response_type' }
   if (q.code_challenge_method !== 'S256' || !isValidCodeChallenge(q.code_challenge))
-    return { ok: false, redirectable: true, error: 'invalid_request' }
+    return { ok: false, redirectable: true, redirectHost, error: 'invalid_request' }
   if (!isAcceptableResource(q.resource, siteOrigin(event)))
-    return { ok: false, redirectable: true, error: 'invalid_target' }
+    return { ok: false, redirectable: true, redirectHost, error: 'invalid_target' }
 
   return {
     ok: true,
     clientName: client.clientName,
-    redirectHost: new URL(redirectUri).host,
+    redirectHost,
     issuer: siteOrigin(event),
   }
 })

@@ -36,9 +36,9 @@ export default defineEventHandler(async (event) => {
   }
 
   await savePost(record)
-  // The body cache is keyed on lastUpdated, so a stale entry can't be served —
-  // but clearing keeps the bounded cache from filling with dead revisions
-  // during a run of quick edits.
+  // The body cache is keyed on the markdown itself, so a stale entry can't be
+  // served — clearing only keeps the bounded cache from filling with dead
+  // revisions during a run of quick edits.
   clearRenderCache()
   // A live change (or a post just taken down) is worth a recrawl; a draft is not.
   if (record.published || existing?.published)

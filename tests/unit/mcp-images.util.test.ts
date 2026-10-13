@@ -24,6 +24,13 @@ describe('isPrivateAddress', () => {
       expect(isPrivateAddress(ip), ip).toBe(true)
   })
 
+  it('blocks IPv4-mapped addresses in hex form, and NAT64 / 6to4 prefixes', () => {
+    // `new URL('https://[::ffff:127.0.0.1]/').hostname` is `[::ffff:7f00:1]`.
+    for (const ip of ['::ffff:7f00:1', '::ffff:a9fe:a9fe', '::ffff:c0a8:101', '64:ff9b::7f00:1', '2002:7f00:1::1'])
+      expect(isPrivateAddress(ip), ip).toBe(true)
+    expect(isPrivateAddress('::ffff:808:808')).toBe(false)
+  })
+
   it('allows public addresses', () => {
     for (const ip of ['8.8.8.8', '151.101.1.69', '2606:4700::6810:84e5'])
       expect(isPrivateAddress(ip), ip).toBe(false)

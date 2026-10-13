@@ -360,9 +360,6 @@ export default defineNuxtConfig({
       // The blog API is the source those pages render from; prerendering it
       // would bake the post list into the build.
       '/api/blog/**': { prerender: false },
-      // Image upload from the studio. The panel converts to WebP client-side
-      // first, so this ceiling is for the pathological case.
-      '/api/blog/admin/media': { prerender: false, maxBodySize: '10mb' },
       // Post images proxied out of Cloud Storage. Object names carry a nanoid
       // and are never reused, so the year-long immutable cache is accurate.
       '/media/**': { ssr: true, prerender: false, headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },

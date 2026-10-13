@@ -4,7 +4,7 @@ import { BLOG_MCP_INSTRUCTIONS, blogTools } from '~~/server/utils/mcp/blog-tools
 import { applyMcpCors } from '~~/server/utils/mcp/http'
 import { isAcceptableResource, protectedResourceMetadataUrl } from '~~/server/utils/mcp/oauth'
 import { resolveAccessToken, siteOrigin } from '~~/server/utils/mcp/oauth-store'
-import { dispatch, RPC_PARSE_ERROR } from '~~/server/utils/mcp/protocol'
+import { dispatch, RPC_INVALID_REQUEST, RPC_PARSE_ERROR } from '~~/server/utils/mcp/protocol'
 import { TIL_MCP_INSTRUCTIONS, tilTools } from '~~/server/utils/mcp/til-tools'
 import { reportServerEvent } from '~~/server/utils/report-error'
 
@@ -27,6 +27,9 @@ const SERVER_INFO = {
 
 /** Blog post tools and TIL note tools, served as one server. */
 const TOOLS = [...blogTools, ...tilTools]
+
+/** Legacy JSON-RPC batches are still answered, but only this many at a time. */
+const MAX_BATCH = 10
 
 function unauthorized(event: Parameters<typeof applyMcpCors>[0], origin: string, description: string) {
   setResponseStatus(event, 401)
@@ -79,6 +82,10 @@ export default defineEventHandler(async (event) => {
     reportServerEvent('ERROR', 'MCP tool failed', { kind: 'mcp-tool', tool, detail: String(err) })
 
   if (Array.isArray(message)) {
+    // Every element runs concurrently, so an uncapped batch is one request
+    // fanning out into any number of Firestore writes and image fetches.
+    if (message.length > MAX_BATCH)
+      return { jsonrpc: '2.0', id: null, error: { code: RPC_INVALID_REQUEST, message: `Batch too large (max ${MAX_BATCH})` } }
     const responses = (await Promise.all(message.map(m => dispatch(m, TOOLS, SERVER_INFO, ctx, onError)))).filter(Boolean)
     if (!responses.length) {
       setResponseStatus(event, 202)

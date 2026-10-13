@@ -2,6 +2,7 @@ import { Buffer } from 'node:buffer'
 import { nanoid } from 'nanoid'
 import { requireToolAccess } from '~~/server/utils/access'
 import { putMedia } from '~~/server/utils/blog-media'
+import { sniffImageType } from '~~/server/utils/mcp/images'
 import { assertRateLimit } from '~~/server/utils/rate-limit'
 import { extensionForType, MAX_IMAGE_BYTES, mediaUrl } from '~~/utils/blog-media'
 import { isValidSlug } from '~~/utils/blog-post'
@@ -39,10 +40,12 @@ export default defineEventHandler(async (event) => {
   if (file.data.length > MAX_IMAGE_BYTES)
     throw createError({ statusCode: 413, statusMessage: 'Image is larger than 10 MB' })
 
-  const contentType = file.type ?? ''
+  // The type comes from the bytes, not from the part header the browser sent —
+  // the same rule the MCP upload path follows.
+  const contentType = sniffImageType(file.data) ?? ''
   const extension = extensionForType(contentType)
   if (!extension)
-    throw createError({ statusCode: 415, statusMessage: `Unsupported image type: ${contentType || 'unknown'}` })
+    throw createError({ statusCode: 415, statusMessage: `Unsupported image type: ${file.type || 'unknown'}` })
 
   // Content-addressed enough for the purpose: the name is never reused, which
   // is what lets the serving route mark these immutable.
