@@ -8,6 +8,13 @@ outputFiles:
   serverApp:
     include: [.]
 env:
+  # The Nitro server bundle step after prerender outgrew Node's default ~2 GB
+  # heap and died with "JavaScript heap out of memory". Build-only: the
+  # runtime instance has just 1 GiB.
+  - variable: NODE_OPTIONS
+    value: --max-old-space-size=4096
+    availability:
+      - BUILD
   - variable: HOST
     value: 0.0.0.0
     availability:
