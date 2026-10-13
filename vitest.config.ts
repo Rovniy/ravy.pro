@@ -21,6 +21,18 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
+      // Without `include`, files no test imports don't appear at all and the
+      // report overstates coverage. Components and pages are left out: they are
+      // exercised in the browser, not here.
+      include: ['server/**', 'utils/**', 'composables/**', 'data/**'],
+      // A ratchet, set just under the level measured on 2026-10-13 (67.7 /
+      // 79.9 / 84): raise it as coverage grows, never lower it to get green.
+      thresholds: {
+        statements: 65,
+        branches: 78,
+        functions: 82,
+        lines: 65,
+      },
     },
   },
 })

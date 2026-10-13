@@ -220,7 +220,7 @@ Tailwind CSS v4 (via `@tailwindcss/postcss`) with dark mode as default (`colorMo
 
 ### Tests
 
-Vitest with `happy-dom`. Specs live next to components/utils. Use `npm test` for one-shot runs, `npm run test:coverage` for coverage.
+Vitest, `node` environment by default (a spec that needs a DOM opts in with a `// @vitest-environment happy-dom` docblock). Specs live under `tests/` — `tests/unit` for pure helpers, `tests/server` for routes and stores — with an in-memory Firestore in `tests/helpers/fake-firestore.ts`. Nitro globals (`defineEventHandler`, `defineCachedEventHandler`) are stubbed in `tests/setup.ts`; a route test stubs the h3 helpers it uses. `npm run test:coverage` measures `server`, `utils`, `composables` and `data` against thresholds in `vitest.config.ts` — a ratchet: raise them, never lower them to get green.
 
 ### Deployment
 

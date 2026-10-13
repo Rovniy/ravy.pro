@@ -105,24 +105,24 @@ describe('gET /api/blog/post/[slug]', () => {
     expect(result.title).toBe('Live')
     // The raw markdown must not travel to the client — it would double the payload.
     expect('markdown' in result).toBe(false)
-    expect(result.body).toBeTruthy()
+    expect(JSON.stringify(result.body)).toContain('Body text.')
     // The toc has to sit on `body`, because components/blog/toc.vue reads
     // `articles.body.toc.links` while parseMarkdown returns it as a sibling.
-    expect(result.body.toc).toBeTruthy()
+    expect(result.body.toc.links[0]).toMatchObject({ id: 'hello', text: 'Hello' })
   }, 20_000)
 
   it('404s a draft rather than exposing it', async () => {
     mocks.slugParam = 'draft'
     const { default: handler } = await import('~~/server/api/blog/post/[slug].get')
-    await expect(handler({} as never)).rejects.toThrow('Post not found')
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 404 })
   })
 
   it('404s an unknown or malformed slug', async () => {
     const { default: handler } = await import('~~/server/api/blog/post/[slug].get')
     mocks.slugParam = 'nope'
-    await expect(handler({} as never)).rejects.toThrow('Post not found')
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 404 })
     mocks.slugParam = 'Not A Slug'
-    await expect(handler({} as never)).rejects.toThrow('Post not found')
+    await expect(handler({} as never)).rejects.toMatchObject({ statusCode: 404 })
   })
 })
 
