@@ -49,6 +49,7 @@ const showUpdated = computed(() => {
     </h1>
 
     <NuxtImg
+      preload
       fetchpriority="high"
       loading="eager"
       :src="image || ''"

@@ -3,6 +3,7 @@ import type { BlogPostRecord } from '~/utils/blog-post'
 import { useDebounceFn } from '@vueuse/core'
 import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useBlogStudio } from '~/composables/useBlogStudio'
+import { useUnsavedGuard } from '~/composables/useUnsavedGuard'
 import { BlogPostTag } from '~/data'
 import { DEFAULT_LOCALE, isValidSlug, RESERVED_SLUGS, slugify } from '~/utils/blog-post'
 
@@ -76,6 +77,10 @@ async function load() {
       markdown: post.markdown,
       createdAt: post.createdAt,
     })
+    // Let the deep `watch(form)` below flush while `loading` is still true;
+    // otherwise it fires after the finally block and marks a freshly loaded
+    // post as edited.
+    await nextTick()
     dirty.value = false
   }
   catch (e: unknown) {
@@ -193,6 +198,7 @@ async function onDelete() {
   errorMsg.value = ''
   try {
     await deletePost(form.slug)
+    dirty.value = false
     await router.replace('/studio')
   }
   catch (e: unknown) {
@@ -200,6 +206,8 @@ async function onDelete() {
     deleting.value = false
   }
 }
+
+useUnsavedGuard(dirty)
 
 onMounted(load)
 </script>
@@ -268,6 +276,7 @@ onMounted(load)
             :class="form.tags.includes(tag)
               ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
               : 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300'"
+            :aria-pressed="form.tags.includes(tag)"
             @click="toggleTag(tag)"
           >
             {{ tag }}

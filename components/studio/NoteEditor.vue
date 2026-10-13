@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { useBlogStudio } from '~/composables/useBlogStudio'
 import { useTilStudio } from '~/composables/useTilStudio'
+import { useUnsavedGuard } from '~/composables/useUnsavedGuard'
 import { baseData } from '~/data'
 import { TIL_TOPICS } from '~/data/til'
 import { isValidSlug, slugify } from '~/utils/blog-post'
@@ -72,6 +73,10 @@ async function load() {
       createdAt: note.createdAt,
     })
     livePublished.value = note.published
+    // Let the deep `watch(form)` below flush while `loading` is still true;
+    // otherwise it fires after the finally block and marks a freshly loaded
+    // post as edited.
+    await nextTick()
     dirty.value = false
   }
   catch (e: unknown) {
@@ -137,6 +142,7 @@ async function onDelete() {
   deleting.value = true
   try {
     await deleteNote(form.slug)
+    dirty.value = false
     await router.replace('/studio?tab=notes')
   }
   catch (e: unknown) {
@@ -154,6 +160,8 @@ async function copy(kind: 'linkedin' | 'x', text: string) {
   }
   catch {}
 }
+
+useUnsavedGuard(dirty)
 
 onMounted(load)
 </script>
@@ -208,6 +216,7 @@ onMounted(load)
             :class="form.topics.includes(t.id)
               ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
               : 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300'"
+            :aria-pressed="form.topics.includes(t.id)"
             @click="toggleTopic(t.id)"
           >
             {{ t.name }}

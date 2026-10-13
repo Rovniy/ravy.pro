@@ -3,8 +3,13 @@ import type { BlogPostMeta } from '~/utils/blog-post'
 import { makeFirstCharUpper } from '@/utils/helper'
 import { blogsPage, categoriesPage, seoData } from '~/data'
 
-const { data } = await useAsyncData('blog-post-list', () =>
+const { data, error } = await useAsyncData('blog-post-list', () =>
   $fetch<BlogPostMeta[]>('/api/blog/posts'))
+
+// An empty list because Firestore failed is not an empty blog: a 503 is
+// retried by crawlers and not held by the CDN, a 200 (or a 404) would be.
+if (error.value)
+  throw createError({ statusCode: 503, statusMessage: 'Posts temporarily unavailable', fatal: true })
 
 const allTags = new Map()
 

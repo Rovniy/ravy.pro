@@ -38,6 +38,8 @@ export interface Game {
   links: ExternalLink[]
   /** Official trailer or gameplay video on YouTube. */
   trailerYoutubeId?: string
+  /** When YouTube published the trailer (ISO 8601). Required with a trailer: Google needs it for VideoObject. */
+  trailerUploadDate?: string
   /** 16:9 image for the hub card and the page hero. */
   cover: { src: string, alt: string }
   /** In-game screenshots, shown as a gallery under the trailer. */
@@ -182,6 +184,7 @@ export const GAMES: Game[] = [
       { kind: 'steam', url: 'https://store.steampowered.com/app/2757440/TCG_FANTASY_Card_Collection/', label: 'Wishlist on Steam' },
     ],
     trailerYoutubeId: 'cmYjFNb2OO0',
+    trailerUploadDate: '2026-10-08T13:37:33-07:00',
     cover: {
       src: 'https://i.ytimg.com/vi/cmYjFNb2OO0/hqdefault.jpg',
       alt: 'TCG: FANTASY Card Collection gameplay: fantasy cards laid out in a room',

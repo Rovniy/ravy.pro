@@ -8,6 +8,8 @@ export interface Episode {
   code: string
   title: string
   youtubeId: string
+  /** When YouTube published it (ISO 8601). Required by Google for VideoObject. */
+  uploadDate: string
   /** One line on what happens. */
   logline: string
 }
@@ -32,12 +34,14 @@ export const TINY_BOO_MOVIE = {
       code: 'S1 · E1',
       title: 'Carried Away',
       youtubeId: 'SnM8GiVSY6Y',
+      uploadDate: '2026-06-09T12:22:35-07:00',
       logline: 'A storm takes Boo far from home, and he takes his first step back.',
     },
     {
       code: 'S1 · E2',
       title: 'The Dewdrop',
       youtubeId: 'vb_KBaEMviA',
+      uploadDate: '2026-05-31T04:33:37-07:00',
       logline: 'Boo wants a sip from a giant dewdrop, and it turns into a tiny adventure.',
     },
   ] satisfies Episode[],

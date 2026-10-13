@@ -506,13 +506,14 @@ watch(
               :key="`${photo.name}-${idx}`"
               class="relative rounded-md overflow-hidden border border-slate-200 dark:border-slate-700"
             >
-              <img :src="photo.base64" :alt="`photo-${idx + 1}`" class="w-full h-20 object-cover">
+              <img :src="photo.base64" :alt="`Contract page ${idx + 1}`" class="w-full h-20 object-cover">
               <button
                 type="button"
-                class="absolute top-1 right-1 bg-black/60 text-white rounded-full p-0.5"
+                class="absolute top-1 right-1 inline-flex items-center justify-center size-6 bg-black/60 text-white rounded-full"
+                :aria-label="`Remove page ${idx + 1}`"
                 @click="removePhoto(idx)"
               >
-                <Icon name="mdi:close" size="12" />
+                <Icon name="mdi:close" size="14" aria-hidden="true" />
               </button>
               <span class="absolute bottom-1 left-1 text-[10px] px-1 rounded bg-black/60 text-white">
                 {{ idx + 1 }}

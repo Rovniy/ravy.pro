@@ -235,8 +235,10 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
           </span>
         </label>
 
-        <p v-if="status === 'error'" class="text-xs text-rose-600 dark:text-rose-400" aria-live="polite">
-          {{ error }}
+        <!-- Always in the DOM (visually hidden when empty): a live region
+             inserted together with its text is often not announced at all. -->
+        <p role="alert" class="text-xs text-rose-600 dark:text-rose-400" :class="{ 'sr-only': status !== 'error' }">
+          {{ status === 'error' ? error : '' }}
         </p>
 
         <div class="flex flex-wrap items-center gap-3 pt-1">

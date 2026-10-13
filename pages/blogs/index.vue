@@ -8,8 +8,13 @@ import { toCardData } from '~/utils/blog-post'
 const route = useRoute()
 const router = useRouter()
 
-const { data } = await useAsyncData('blog-post-list', () =>
+const { data, error } = await useAsyncData('blog-post-list', () =>
   $fetch<BlogPostMeta[]>('/api/blog/posts'))
+
+// An empty list because Firestore failed is not an empty blog: a 503 is
+// retried by crawlers and not held by the CDN, a 200 (or a 404) would be.
+if (error.value)
+  throw createError({ statusCode: 503, statusMessage: 'Posts temporarily unavailable', fatal: true })
 
 const elementPerPage = 5
 const searchTest = ref('')

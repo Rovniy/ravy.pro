@@ -10,10 +10,10 @@ interface BlogPostResponse extends BlogPostMeta {
   body: Record<string, unknown>
 }
 
-const { path } = useRoute()
-const slug = slugFromPath(path)
+const { path: requestPath } = useRoute()
+const slug = slugFromPath(requestPath)
 
-const { data: articles, error } = await useAsyncData(`blog-post-${path}`, () =>
+const { data: articles, error } = await useAsyncData(`blog-post-${slug}`, () =>
   $fetch<BlogPostResponse>(`/api/blog/post/${slug}`))
 
 // A backend failure must not be reported as a 404: these URLs are indexed, and
@@ -25,6 +25,11 @@ if (error.value || !articles?.value) {
     ? createError({ statusCode: 404, statusMessage: 'Page not found', fatal: true })
     : createError({ statusCode: 503, statusMessage: 'Post temporarily unavailable', fatal: true })
 }
+
+// The stored path, not the request path: `slugFromPath` also accepts
+// `/blogs/foo/`, and that URL must not declare itself canonical (or miss its
+// own entry in the prev/next list).
+const path = articles.value?.path || requestPath
 
 // One list fetch serves both the prev/next nav and the related posts. The key
 // is shared with the other pages that read it, so Nuxt dedupes it in the payload.
@@ -144,12 +149,9 @@ useHead({
       rel: 'canonical',
       href: `${seoData.mySite}${path}`,
     },
-    {
-      rel: 'preload',
-      as: 'image',
-      href: data.value.image,
-      type: 'image/webp',
-    },
+    // No manual cover preload: BlogHeader's <NuxtImg preload> emits one for the
+    // /_ipx/ variant it actually renders. A preload of the raw URL here was never
+    // used, so the LCP image downloaded twice.
   ],
 })
 
@@ -238,7 +240,7 @@ defineOgImage('Blog', {
           :url="`${seoData.mySite}${path}`"
           class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
           :hashtags="hashTags"
-          aria-label="Share with {network}"
+          :aria-label="`Share on ${network}`"
         />
       </div>
 

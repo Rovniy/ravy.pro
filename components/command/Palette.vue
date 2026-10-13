@@ -413,6 +413,7 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
       class="cmdk-dialog"
       aria-label="Search the site"
       @cancel="onCancel"
+      @close="close"
       @click="onBackdrop"
     >
       <div class="cmdk-panel flex flex-col overflow-hidden rounded-none sm:rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-slate-950/20 dark:shadow-black/50">

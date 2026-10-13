@@ -22,8 +22,13 @@ const category = computed(() => {
 // serialised array, so a tag that is a prefix of another would have matched
 // both; and there is no per-tag query left to make now that the index is a
 // single document.
-const { data } = await useAsyncData('blog-post-list', () =>
+const { data, error } = await useAsyncData('blog-post-list', () =>
   $fetch<BlogPostMeta[]>('/api/blog/posts'))
+
+// An empty list because Firestore failed is not an empty blog: a 503 is
+// retried by crawlers and not held by the CDN, a 200 (or a 404) would be.
+if (error.value)
+  throw createError({ statusCode: 503, statusMessage: 'Posts temporarily unavailable', fatal: true })
 
 const posts = computed(() => (data.value ?? []).filter(p => p.tags.includes(category.value)))
 

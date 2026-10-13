@@ -21,7 +21,8 @@ function abs(site: string, path: string): string {
   return /^https?:\/\//.test(path) ? path : `${site}${path.startsWith('/') ? path : `/${path}`}`
 }
 
-function youtubeVideoNode(id: string, name: string, description: string, uploadDate?: string) {
+// `uploadDate` is required: Google marks a VideoObject without it invalid.
+function youtubeVideoNode(id: string, name: string, description: string, uploadDate: string) {
   return {
     '@type': 'VideoObject',
     name,
@@ -29,7 +30,7 @@ function youtubeVideoNode(id: string, name: string, description: string, uploadD
     'thumbnailUrl': `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
     'embedUrl': `https://www.youtube-nocookie.com/embed/${id}`,
     'contentUrl': `https://www.youtube.com/watch?v=${id}`,
-    ...(uploadDate ? { uploadDate } : {}),
+    uploadDate,
   }
 }
 
@@ -66,8 +67,8 @@ export function gameNode(game: Game, url: string, refs: SchemaRefs) {
           },
         }
       : {}),
-    ...(game.trailerYoutubeId
-      ? { trailer: youtubeVideoNode(game.trailerYoutubeId, `${game.title} trailer`, game.tagline) }
+    ...(game.trailerYoutubeId && game.trailerUploadDate
+      ? { trailer: youtubeVideoNode(game.trailerYoutubeId, `${game.title} trailer`, game.tagline, game.trailerUploadDate) }
       : {}),
     'sameAs': game.links.filter(l => l.kind !== 'telegram').map(l => l.url),
   }
@@ -124,7 +125,7 @@ export function seriesNode(opts: {
     'publisher': { '@id': refs.organizationId },
     'sameAs': [opts.channelUrl],
     'hasPart': opts.episodes.map(e => ({
-      ...youtubeVideoNode(e.youtubeId, `${opts.name}: ${e.title}`, e.logline),
+      ...youtubeVideoNode(e.youtubeId, `${opts.name}: ${e.title}`, e.logline, e.uploadDate),
       isPartOf: { '@id': `${opts.url}#series` },
     })),
   }

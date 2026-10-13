@@ -38,6 +38,14 @@ describe('games registry', () => {
     }
   })
 
+  it('gives every trailer and episode an ISO upload date (required for VideoObject)', () => {
+    const iso = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/
+    for (const g of GAMES.filter(g => g.trailerYoutubeId))
+      expect(g.trailerUploadDate, g.slug).toMatch(iso)
+    for (const e of TINY_BOO_MOVIE.episodes)
+      expect(e.uploadDate, e.code).toMatch(iso)
+  })
+
   it('uses valid YouTube ids for trailers', () => {
     for (const g of GAMES.filter(g => g.trailerYoutubeId))
       expect(g.trailerYoutubeId, g.slug).toMatch(YOUTUBE_ID_RX)
