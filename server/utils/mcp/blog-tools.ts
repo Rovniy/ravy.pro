@@ -5,9 +5,8 @@ import { baseData, BlogPostTag, categoryDescriptions, categoryNames } from '~~/d
 import { mediaUrl } from '~~/utils/blog-media'
 import { BlogPostValidationError, isValidSlug, normalizeRecord, slugify } from '~~/utils/blog-post'
 import { putMedia } from '../blog-media'
-import { clearRenderCache } from '../blog-render'
-import { getPost, listMeta, savePost } from '../blog-store'
-import { pingIndexNow } from '../indexnow'
+import { persistPost } from '../blog-save'
+import { getPost, listMeta } from '../blog-store'
 import { assertRateLimit } from '../rate-limit'
 import { decodeBase64Image, fetchRemoteImage, ImageIntakeError, prepareImage } from './images'
 import { jsonResult, ToolInputError } from './protocol'
@@ -83,7 +82,7 @@ function pickEditable(args: Record<string, unknown>): Record<string, unknown> {
   return out
 }
 
-/** Validates, saves and clears the render cache — the studio PUT route, minus HTTP. */
+/** Validates and saves — the studio PUT route, minus HTTP. */
 async function save(input: Record<string, unknown>, existing: BlogPostRecord | null): Promise<BlogPostRecord> {
   let record: BlogPostRecord
   try {
@@ -94,10 +93,7 @@ async function save(input: Record<string, unknown>, existing: BlogPostRecord | n
       throw new ToolInputError(err.message)
     throw err
   }
-  await savePost(record)
-  clearRenderCache()
-  if (record.published || existing?.published)
-    await pingIndexNow([record.path, '/blogs', ...record.tags.map(t => `/categories/${t}`)])
+  await persistPost(record, existing)
   return record
 }
 

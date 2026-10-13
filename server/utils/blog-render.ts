@@ -56,18 +56,28 @@ function getParser() {
  * costs nothing: the parsed tree held in the value is far larger than the
  * string held in the key.
  *
- * The limit sits above the post count so the RSS feed, which renders every post
- * in one pass, warms this cache instead of evicting the pages that use it.
+ * LRU, bounded by the total length of the cached sources rather than by entry
+ * count: blog posts and TIL notes share it, and one long post with highlighted
+ * code is worth dozens of notes in memory on a 1 GiB instance. 2 M characters
+ * holds the whole blog plus the notes the feeds render, so the RSS pass warms
+ * the cache instead of evicting the pages that use it. Since the key is the
+ * content, an edit can't serve a stale body — the old revision just ages out,
+ * so nothing has to clear the cache on save.
  */
-const CACHE_LIMIT = 100
+const CACHE_MAX_CHARS = 2_000_000
 const cache = new Map<string, RenderedBody>()
+let cachedChars = 0
 
 export async function renderMarkdown(markdown: string): Promise<RenderedBody> {
   const source = String(markdown ?? '').replace(/\r\n/g, '\n')
 
   const hit = cache.get(source)
-  if (hit)
+  if (hit) {
+    // Re-insert to mark it most recently used: Map iterates in insertion order.
+    cache.delete(source)
+    cache.set(source, hit)
     return hit
+  }
 
   const parser = await getParser()
   const parsed = await parser(source)
@@ -76,19 +86,19 @@ export async function renderMarkdown(markdown: string): Promise<RenderedBody> {
     toc: parsed.toc,
   } as RenderedBody
 
+  // A source bigger than the whole budget is rendered but not kept.
+  if (source.length > CACHE_MAX_CHARS)
+    return body
+
   cache.set(source, body)
-  // FIFO: Map preserves insertion order, so the first key is the oldest.
-  while (cache.size > CACHE_LIMIT) {
-    const oldest = cache.keys().next().value
-    if (oldest === undefined)
+  cachedChars += source.length
+  // The first key is the least recently used.
+  for (const oldest of cache.keys()) {
+    if (cachedChars <= CACHE_MAX_CHARS)
       break
     cache.delete(oldest)
+    cachedChars -= oldest.length
   }
 
   return body
-}
-
-/** Drops every cached body. Called after a post is saved or deleted. */
-export function clearRenderCache(): void {
-  cache.clear()
 }

@@ -38,7 +38,6 @@ vi.mock('~~/server/utils/indexnow', () => ({
 }))
 vi.mock('~~/server/utils/blog-render', () => ({
   renderMarkdown: vi.fn(async (md: string) => ({ type: 'root', children: [{ type: 'text', value: md }] })),
-  clearRenderCache: vi.fn(),
 }))
 vi.mock('~~/server/utils/blog-store', () => ({ listMeta: vi.fn(async () => []), getPost: vi.fn(async () => null), savePost: vi.fn() }))
 vi.mock('~~/server/utils/blog-media', () => ({ putMedia: vi.fn() }))

@@ -1,10 +1,12 @@
 import { Feed } from 'feed'
 import { baseData, homePage, navbarData } from '~/data'
 import { renderMarkdown } from '../utils/blog-render'
-import { getPost, listMeta } from '../utils/blog-store'
+import { getPosts, listMeta } from '../utils/blog-store'
 import { mdcToHtml } from '../utils/mdc-html'
 
-export default defineEventHandler(async (event) => {
+// Cached in-process as well as at the CDN: each of the two instances would
+// otherwise re-read and re-render every post on its own CDN misses.
+export default defineCachedEventHandler(async (event) => {
   setHeader(event, 'content-type', 'application/rss+xml; charset=utf-8')
   // The feed only changes when a post is published/edited — let the CDN
   // serve it and refresh in the background instead of hitting the DB on
@@ -12,8 +14,7 @@ export default defineEventHandler(async (event) => {
   setHeader(event, 'cache-control', 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400')
 
   const index = await listMeta({ publishedOnly: true })
-  const docs = (await Promise.all(index.map(meta => getPost(meta.slug))))
-    .filter((post): post is NonNullable<typeof post> => !!post)
+  const docs = await getPosts(index.map(meta => meta.slug))
 
   const feed = new Feed({
     title: navbarData.homeTitle,
@@ -45,4 +46,4 @@ export default defineEventHandler(async (event) => {
   }
 
   return feed.rss2()
-})
+}, { name: 'rss-blog', maxAge: 3600, swr: true })

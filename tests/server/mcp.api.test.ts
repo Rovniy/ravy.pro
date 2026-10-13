@@ -25,7 +25,6 @@ vi.mock('~~/server/utils/blog-store', () => ({
     mocks.posts = [...mocks.posts.filter(p => p.slug !== record.slug), record]
   }),
 }))
-vi.mock('~~/server/utils/blog-render', () => ({ clearRenderCache: vi.fn() }))
 vi.mock('~~/server/utils/blog-media', () => ({ putMedia: vi.fn(async () => {}) }))
 vi.mock('~~/server/utils/rate-limit', () => ({ assertRateLimit: vi.fn(async () => {}) }))
 vi.mock('~~/server/utils/report-error', () => ({ reportServerEvent: vi.fn() }))

@@ -1,5 +1,4 @@
 import { requireToolAccess } from '~~/server/utils/access'
-import { clearRenderCache } from '~~/server/utils/blog-render'
 import { deletePost, getPost } from '~~/server/utils/blog-store'
 import { isValidSlug } from '~~/utils/blog-post'
 
@@ -22,7 +21,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Post not found' })
 
   await deletePost(slug)
-  clearRenderCache()
 
   return { ok: true, slug }
 })

@@ -2,6 +2,7 @@ import type { TilNoteMeta } from '~~/utils/til'
 import { TIL_TOPIC_IDS } from '~~/data/til'
 import { renderMarkdown } from '~~/server/utils/blog-render'
 import { getNotes, listNotes } from '~~/server/utils/til-store'
+import { topicCounts } from '~~/utils/til'
 
 const MAX_LIMIT = 50
 
@@ -28,11 +29,7 @@ export default defineEventHandler(async (event) => {
     .filter(r => r.published)
     .map(async ({ markdown, ...meta }) => ({ ...meta, body: await renderMarkdown(markdown) })))
 
-  const counts: Record<string, number> = {}
-  for (const note of published) {
-    for (const t of note.topics)
-      counts[t] = (counts[t] ?? 0) + 1
-  }
+  const counts = topicCounts(published)
 
   setHeader(event, 'cache-control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=600')
   return {

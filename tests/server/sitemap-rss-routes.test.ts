@@ -29,7 +29,7 @@ vi.mock('@nuxt/content/server', () => ({
 
 vi.mock('~~/server/utils/blog-store', () => ({
   listMeta: vi.fn(async () => mocks.posts.map(({ markdown: _markdown, ...meta }) => meta)),
-  getPost: vi.fn(async (slug: string) => mocks.posts.find(p => p.slug === slug) ?? null),
+  getPosts: vi.fn(async (slugs: string[]) => slugs.map(s => mocks.posts.find(p => p.slug === s)).filter(Boolean)),
 }))
 
 vi.mock('~~/server/utils/til-store', () => ({

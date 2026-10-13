@@ -1,5 +1,5 @@
 import { baseData } from '~/data'
-import { getPost, listMeta } from '../utils/blog-store'
+import { getPosts, listMeta } from '../utils/blog-store'
 import { abs, absolutizeMarkdown, llmsHeader } from '../utils/llms'
 import { getNotes, listNotes } from '../utils/til-store'
 
@@ -16,18 +16,17 @@ import { getNotes, listNotes } from '../utils/til-store'
  *
  * Posts marked `noindex` are excluded, matching /llms.txt and the sitemap.
  */
-export default defineEventHandler(async (event) => {
+// Cached in-process as well as at the CDN: each of the two instances would
+// otherwise re-read and re-render every post on its own CDN misses.
+export default defineCachedEventHandler(async (event) => {
   setHeader(event, 'content-type', 'text/plain; charset=utf-8')
   setHeader(event, 'cache-control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400')
 
   const index = (await listMeta({ publishedOnly: true })).filter(post => !post.noindex)
 
-  // One document read per post. The route is CDN-cached for an hour and hit by
-  // crawlers rather than readers, so the cost is a handful of reads a day.
-  const posts = await Promise.all(index.map(meta => getPost(meta.slug)))
+  const posts = await getPosts(index.map(meta => meta.slug))
 
   const sections = posts
-    .filter((post): post is NonNullable<typeof post> => !!post)
     .map((post) => {
       const meta = [
         `URL: ${abs(post.path)}`,
@@ -59,4 +58,4 @@ export default defineEventHandler(async (event) => {
     ...sections,
     ...notes,
   ].join('\n\n---\n\n')
-})
+}, { name: 'llms-full', maxAge: 3600, swr: true })

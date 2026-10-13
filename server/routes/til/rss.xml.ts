@@ -6,7 +6,9 @@ import { mdcToHtml } from '../../utils/mdc-html'
 import { getNotes, listNotes } from '../../utils/til-store'
 
 /** Full-text feed of the 50 newest notes. Separate from /rss.xml so blog readers aren't flooded. */
-export default defineEventHandler(async (event) => {
+// Cached in-process as well as at the CDN: each of the two instances would
+// otherwise re-read and re-render every note on its own CDN misses.
+export default defineCachedEventHandler(async (event) => {
   setHeader(event, 'content-type', 'application/rss+xml; charset=utf-8')
   setHeader(event, 'cache-control', 'public, max-age=300, s-maxage=3600, stale-while-revalidate=86400')
 
@@ -39,4 +41,4 @@ export default defineEventHandler(async (event) => {
   }
 
   return feed.rss2()
-})
+}, { name: 'rss-til', maxAge: 3600, swr: true })

@@ -1,7 +1,6 @@
 import { requireToolAccess } from '~~/server/utils/access'
-import { clearRenderCache } from '~~/server/utils/blog-render'
-import { getPost, savePost } from '~~/server/utils/blog-store'
-import { pingIndexNow } from '~~/server/utils/indexnow'
+import { persistPost } from '~~/server/utils/blog-save'
+import { getPost } from '~~/server/utils/blog-store'
 import { BlogPostValidationError, isValidSlug, normalizeRecord } from '~~/utils/blog-post'
 
 /**
@@ -35,14 +34,7 @@ export default defineEventHandler(async (event) => {
     throw err
   }
 
-  await savePost(record)
-  // The body cache is keyed on the markdown itself, so a stale entry can't be
-  // served — clearing only keeps the bounded cache from filling with dead
-  // revisions during a run of quick edits.
-  clearRenderCache()
-  // A live change (or a post just taken down) is worth a recrawl; a draft is not.
-  if (record.published || existing?.published)
-    await pingIndexNow([record.path, '/blogs', ...record.tags.map(t => `/categories/${t}`)])
+  await persistPost(record, existing)
 
   return record
 })
