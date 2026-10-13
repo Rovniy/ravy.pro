@@ -6,7 +6,7 @@ import { useAuth } from '~/composables/useAuth'
 // Same three states as /shortify: auth still resolving, signed out, signed in
 // without the grant. The slot only mounts in the fourth state, which is what
 // keeps the editor from firing admin requests it would get a 403 for.
-const { state, isAuthed, signIn } = useAuth()
+const { state, isAuthed, signIn } = useAuth({ eager: true })
 const { hasTool } = useAccess()
 
 const canUse = computed(() => hasTool('studio'))

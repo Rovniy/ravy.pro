@@ -23,7 +23,7 @@ useHead({
   ],
 })
 
-const { state, isAuthed, signIn, signOut } = useAuth()
+const { state, isAuthed, signIn, signOut } = useAuth({ eager: true })
 const { hasTool, isAdmin } = useAccess()
 const { track } = useAnalytics()
 const route = useRoute()

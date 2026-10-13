@@ -2,7 +2,7 @@ import type { ShortLink } from '~/types/shortify'
 import { useAuth } from './useAuth'
 
 export function useShortify() {
-  const { getIdToken } = useAuth()
+  const { getIdToken } = useAuth({ eager: true })
 
   async function authedFetch<T>(url: string, init: RequestInit = {}, retried = false): Promise<T> {
     const token = await getIdToken(retried)

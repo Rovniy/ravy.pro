@@ -2,9 +2,9 @@ import type { FirebaseApp } from 'firebase/app'
 import type { Auth } from 'firebase/auth'
 
 // Firebase SDK (~40-60 KB gzip) is dynamic-imported on first call so it
-// stays out of the home-page initial chunk. The provider exposes an async
-// loader that callers (header auth slot, /shortify, /qr-code) invoke from
-// onMounted — by then LCP is already painted.
+// stays out of the initial chunk. `useAuth` decides when that is: on mount for
+// a browser that has signed in before or a page that needs auth, otherwise on
+// the first click of "Sign in" — so an anonymous visitor never downloads it.
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
   const fb = config.public.firebase as {

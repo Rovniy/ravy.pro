@@ -18,7 +18,7 @@ useHead({
   ],
 })
 
-const { state, isAuthed, signIn } = useAuth()
+const { state, isAuthed, signIn } = useAuth({ eager: true })
 const { hasTool } = useAccess()
 const canUse = computed(() => hasTool('shortify'))
 const { listLinks, createLink } = useShortify()

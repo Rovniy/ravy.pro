@@ -26,7 +26,7 @@ const UPLOAD_QUALITY = 0.85
  */
 export function useBlogStudio() {
   const { authedFetch } = useAuthedFetch()
-  const { getIdToken } = useAuth()
+  const { getIdToken } = useAuth({ eager: true })
 
   function listPosts(): Promise<BlogPostMeta[]> {
     return authedFetch<BlogPostMeta[]>('/api/blog/admin/posts')

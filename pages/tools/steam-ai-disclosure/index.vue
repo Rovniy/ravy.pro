@@ -8,7 +8,7 @@ import { classifyAudit, RULESET_VERSION } from '~/utils/steam-ai-ruleset'
 definePageMeta({ layout: 'default' })
 
 const config = useRuntimeConfig()
-const { getIdToken, isAdmin } = useAuth()
+const { getIdToken, isAdmin } = useAuth({ eager: true })
 
 const PUBLISHED = '2026-06-23'
 const UPDATED = '2026-06-26'

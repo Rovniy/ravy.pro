@@ -11,7 +11,7 @@ const PUBLISHED = '2026-06-27'
 const UPDATED = '2026-06-27'
 
 const config = useRuntimeConfig()
-const { state, isAuthed, getIdToken } = useAuth()
+const { state, isAuthed, getIdToken } = useAuth({ eager: true })
 const { hasTool } = useAccess()
 // Admins (and any legacy grant holder) read the full report for free.
 const canSeeFreeFull = computed(() => hasTool('contract-scanner'))

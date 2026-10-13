@@ -13,7 +13,7 @@ useHead({
 
 const config = useRuntimeConfig()
 const route = useRoute()
-const { getIdToken } = useAuth()
+const { getIdToken } = useAuth({ eager: true })
 const id = computed(() => String(route.params.id || ''))
 
 const priceUsd = computed(() => {

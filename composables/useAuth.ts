@@ -7,10 +7,37 @@ interface AuthState {
   ready: boolean
 }
 
-let listenerAttached = false
+let attaching: Promise<void> | null = null
 let authRef: Auth | null = null
 
-export function useAuth() {
+/**
+ * Set while someone is signed in on this browser. The Firebase SDK is ~124 KB
+ * and almost every visitor is anonymous, so it only loads up front for a
+ * browser that has signed in before, or on a page that needs auth (`eager`).
+ * Everyone else gets it on the first click of "Sign in".
+ */
+const SIGNED_IN_HINT = 'ravy:signed-in'
+
+function readHint(): boolean {
+  try {
+    return localStorage.getItem(SIGNED_IN_HINT) === '1'
+  }
+  catch {
+    return false
+  }
+}
+
+function writeHint(signedIn: boolean) {
+  try {
+    if (signedIn)
+      localStorage.setItem(SIGNED_IN_HINT, '1')
+    else
+      localStorage.removeItem(SIGNED_IN_HINT)
+  }
+  catch {}
+}
+
+export function useAuth(opts: { eager?: boolean } = {}) {
   const state = useState<AuthState>('auth', () => ({ user: null, ready: false }))
   const { $ensureFirebase } = useNuxtApp() as unknown as {
     $ensureFirebase?: () => Promise<{ auth: Auth } | null>
@@ -25,36 +52,55 @@ export function useAuth() {
     return !!adminEmail && email === adminEmail
   })
 
-  onMounted(async () => {
-    if (listenerAttached || !$ensureFirebase)
-      return
-    const fb = await $ensureFirebase()
-    if (!fb) {
+  /** Loads Firebase and subscribes to the auth state, once per page load. */
+  function attach(): Promise<void> {
+    if (attaching)
+      return attaching
+    state.value.ready = false
+    attaching = (async () => {
+      const fb = $ensureFirebase ? await $ensureFirebase() : null
+      if (!fb) {
+        state.value.ready = true
+        return
+      }
+      authRef = fb.auth
+      const { onAuthStateChanged } = await import('firebase/auth')
+      await new Promise<void>((resolve) => {
+        onAuthStateChanged(authRef!, (user: User | null) => {
+          state.value.user = user
+            ? {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+              }
+            : null
+          state.value.ready = true
+          writeHint(!!user)
+          resolve()
+        })
+      })
+    })()
+    return attaching
+  }
+
+  onMounted(() => {
+    if (opts.eager || readHint())
+      void attach()
+    else if (!attaching)
       state.value.ready = true
-      return
-    }
-    authRef = fb.auth
-    listenerAttached = true
-    const { onAuthStateChanged } = await import('firebase/auth')
-    onAuthStateChanged(authRef, (user: User | null) => {
-      state.value.user = user
-        ? {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-          }
-        : null
-      state.value.ready = true
-    })
   })
 
   async function signIn() {
     if (!$ensureFirebase)
       throw new Error('Firebase auth is not available')
-    const fb = await $ensureFirebase()
-    if (!fb)
+    await attach()
+    if (!authRef)
       throw new Error('Firebase auth is not initialized')
+    // Signed in already, just not loaded yet on this page (no hint, e.g. the
+    // first visit after this change shipped): no popup needed.
+    if (authRef.currentUser)
+      return
     // Popup-flow: Firebase recommends this as the primary sign-in path on web.
     // `signInWithRedirect` is broken in modern browsers (Chrome 115+ storage
     // partitioning, Safari ITP) unless `__/auth/handler` is hosted on this
@@ -64,7 +110,7 @@ export function useAuth() {
     // completes correctly. See firebase/firebase-js-sdk#7600.
     const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth')
     const provider = new GoogleAuthProvider()
-    await signInWithPopup(fb.auth, provider)
+    await signInWithPopup(authRef, provider)
   }
 
   async function signOutUser() {
@@ -75,6 +121,9 @@ export function useAuth() {
   }
 
   async function getIdToken(forceRefresh = false): Promise<string | null> {
+    // A call right after mount must not lose the race with the SDK loading.
+    if (attaching)
+      await attaching
     if (!authRef?.currentUser)
       return null
     return authRef.currentUser.getIdToken(forceRefresh)
