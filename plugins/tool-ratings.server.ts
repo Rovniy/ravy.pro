@@ -3,26 +3,26 @@ import type { ToolRatingSummary } from '~/types/rating'
 import { toolIdFromPath } from '~/data/analytics'
 
 /**
- * Loads the tool ratings into shared state before the server renders.
+ * Loads the tool ratings into shared state before the server renders, so the
+ * prerendered tool pages and the /tools hub ship the rating widget and the card
+ * badges already filled in instead of a skeleton.
  *
- * Why a plugin and not a composable: the rating has to be in the JSON-LD that
- * crawlers read, and tool pages are prerendered. A `useAsyncData` call inside the
- * schema composable does not work — it registers a promise but does not suspend
- * setup, so Vue renders the graph with `null` and only the payload gets the value
- * afterwards. An async Nuxt plugin *is* awaited before the app renders, so the
- * data is there in time. Verified by the absence of `aggregateRating` in the
- * prerendered HTML with the composable approach.
+ * Why a plugin and not a composable: tool pages are prerendered, and a
+ * `useAsyncData` call inside a composable registers a promise without suspending
+ * setup, so the HTML would render with `null`. An async Nuxt plugin *is* awaited
+ * before the app renders.
  *
- * Server-only (`.server.ts`): the client already loads ratings on mount for the
- * interactive widget, and `useState` carries this value across in the payload, so
- * the browser makes no extra request.
+ * The ratings are deliberately NOT in the JSON-LD: the counters are seeded, and
+ * review markup on invented votes is a manual-action risk (see useToolPageSchema).
  *
- * Scoped to `/tools` routes so the other ~50 prerendered pages don't each pay a
+ * Server-only (`.server.ts`): `useState` carries the value across in the payload,
+ * so the browser makes no extra request.
+ *
+ * Scoped to `/tools` routes so the other prerendered pages don't each pay a
  * Firestore round-trip at build time.
  *
- * Fails soft and silently: a build with no Firestore credentials (or a Firestore
- * outage) leaves the state null, `useToolPageSchema` omits the `aggregateRating`
- * node exactly as it did before, and the widget still fills in on the client.
+ * Fails soft and silently: with no Firestore credentials (or an outage) the
+ * state stays null and the widget fills in on the client.
  */
 export default defineNuxtPlugin(async (nuxtApp) => {
   const path = nuxtApp.ssrContext?.url?.split('?')[0] ?? ''
@@ -42,6 +42,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     ratings.value = await $fetch<Record<ToolId, ToolRatingSummary>>('/api/ratings')
   }
   catch {
-    // Fail-soft: no rating node in the graph, same as before this existed.
+    // Fail-soft: the widget loads its numbers on the client instead.
   }
 })

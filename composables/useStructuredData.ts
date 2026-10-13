@@ -4,7 +4,6 @@ import type { Game } from '~/data/games'
 import type { MusicProject } from '~/data/music'
 import { toValue } from 'vue'
 import { useAnalytics } from '~/composables/useAnalytics'
-import { useToolRatings } from '~/composables/useToolRating'
 import { baseData, footerData, seoData, socialNetworks } from '~/data'
 import { EVENTS, toolIdFromPath } from '~/data/analytics'
 import { gameNode, musicGroupNode, seriesNode } from '~/utils/project-schema'
@@ -308,7 +307,7 @@ function howToNode(url: string, opts: {
 // purpose rather than shipping a misleading number.
 //
 // Do NOT add `aggregateRating` or `Review` here. There is no rating source for
-// services (the tool ratings come from real Firestore counters), the case studies
+// services (the tool counters are seeded, so tools don't get it either), the case studies
 // are anonymised and unverifiable, and self-serving review markup on a commercial
 // page is a manual-action risk for the whole domain.
 function serviceNode(opts: {
@@ -523,8 +522,8 @@ function itemListNode(opts: ItemListOpts) {
 }
 
 // Accepts a plain array (static graph) or a getter — the getter form makes
-// useHead reactive, so the JSON-LD updates when async data (e.g. tool
-// ratings) arrives on the client.
+// useHead reactive, so the JSON-LD updates when async data (e.g. an app
+// version) arrives on the client.
 function injectGraph(graph: unknown[] | (() => unknown[])) {
   const build = () => JSON.stringify({
     '@context': 'https://schema.org',
@@ -916,17 +915,14 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
   ])
 
   const toolId = toolIdFromPath(opts.path)
-  // Shared rating state. It is populated *before the server renders* by
-  // plugins/tool-ratings.server.ts — that is what puts `aggregateRating` into the
-  // prerendered HTML, which is the only version crawlers and AI fetchers read.
-  // Loading it client-side (the previous arrangement) meant the node existed only
-  // after hydration and effectively never shipped.
-  const { ratings } = useToolRatings()
 
-  // Still built lazily: the rating can also arrive or change client-side after a
-  // vote, and the graph getter below re-runs on that state change.
+  // No `aggregateRating`. The tool counters are seeded with invented votes
+  // (utils/rating.ts), and review markup built on them is exactly what Google's
+  // review-snippet policy treats as spam — a manual-action risk for the whole
+  // domain. The widget on the page still shows them; the schema must not.
+  //
+  // Built lazily so `softwareVersion` can follow a ref that resolves on the client.
   const appNode = () => {
-    const summary = toolId ? ratings.value?.[toolId] : null
     const version = toValue(opts.appSoftwareVersion)
     return {
       '@type': 'SoftwareApplication',
@@ -957,17 +953,6 @@ export function useToolPageSchema(opts: ToolPageSchemaOpts) {
               },
             }
           : {}),
-      ...(summary && summary.count > 0
-        ? {
-            aggregateRating: {
-              '@type': 'AggregateRating',
-              'ratingValue': summary.average,
-              'ratingCount': summary.count,
-              'bestRating': 5,
-              'worstRating': 1,
-            },
-          }
-        : {}),
     }
   }
 

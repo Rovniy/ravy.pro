@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 // Explicit import: Nuxt 4's split tsconfig (project references) leaves the
 // `defineNuxtConfig` global unresolved in some IDE type contexts.
 import { defineNuxtConfig } from 'nuxt/config'
-import { baseData, navbarData, seoData } from './data'
+import { baseData, navbarData, publicServices, seoData } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
 import { PROJECT_PAGE_PATHS } from './data/project-routes'
 import { PLATFORM_META } from './data/projects'
@@ -34,6 +34,11 @@ const PDF_WORKER_INCLUDES = ['pdfjs-dist/legacy/build/pdf.worker.mjs', 'pdfjs-di
 const DOCS_ROUTES = readdirSync(fileURLToPath(new URL('./content/docs', import.meta.url)))
   .filter(name => name.endsWith('.md'))
   .map(name => `/docs/${name.replace(/\.md$/, '')}`)
+
+// Every public tool page is prerendered and CDN-cached. Read from the registry
+// so a new tool can't be forgotten here — a tool missing from both lists ships
+// with no `Cache-Control` and every view goes to the origin.
+const TOOL_PAGE_PATHS = publicServices.map(s => s.path)
 
 // CSP is set per-route by `server/plugins/csp.ts`, which hashes every inline
 // <script> in the actually-rendered HTML — including Nuxt's payload, JSON-LD,
@@ -287,6 +292,14 @@ export default defineNuxtConfig({
     // too, not just assets.
     compressPublicAssets: { gzip: true, brotli: true },
 
+    // @nuxt/icon emits its externalized collections as
+    // `import(json, { with: { type: 'json' } })`, and Rollup rewrites that to the
+    // legacy `assert` keyword by default. Node 22 removed `assert`, so every
+    // /api/_nuxt_icon request 500s there. `with` works from Node 20.10 on.
+    rollupConfig: {
+      output: { importAttributesKey: 'with' },
+    },
+
     // Force the pdfjs worker into the server trace so the deployed bundle can
     // resolve it at runtime (see PDF_WORKER_INCLUDES above).
     externals: {
@@ -309,14 +322,7 @@ export default defineNuxtConfig({
         '/services/fractional-cto',
         '/services/mentorship',
         '/tools',
-        '/tools/qr-code-generator',
-        '/tools/contract-red-flag-scanner',
-        '/tools/credit-card-generator',
-        '/tools/jwt-decoder',
-        '/tools/image-converter',
-        '/tools/steam-ai-disclosure',
-        '/tools/xploit-translator',
-        '/tools/xploit-game-ui',
+        ...TOOL_PAGE_PATHS,
         ...DOCS_ROUTES,
         // /projects, /games/**, /music/**, /animation/** — derived from the
         // registries in data/, so a new game or album needs no edit here.
@@ -383,16 +389,10 @@ export default defineNuxtConfig({
       // headers; without them they ship no `Cache-Control`, the CDN refuses to
       // hold them, and every single view is forwarded to the origin.
       '/tools': { headers: CONTENT_CACHE_HEADERS },
-      '/tools/qr-code-generator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
-      '/tools/contract-red-flag-scanner': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
+      // Derived from `publicServices`, so a new tool needs no edit here.
+      ...Object.fromEntries(TOOL_PAGE_PATHS.map(path => [path, { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS }])),
       '/tools/contract-red-flag-scanner/result/**': { ssr: true, prerender: false },
-      '/tools/credit-card-generator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
-      '/tools/jwt-decoder': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
-      '/tools/image-converter': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
-      '/tools/steam-ai-disclosure': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
-      '/tools/xploit-translator': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
-      '/tools/xploit-game-ui': { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS },
       // Creative-work pages. Static registry data, so prerendered and CDN-cached
       // like /services; the "devlog" lists on them load client-side.
       ...Object.fromEntries(PROJECT_PAGE_PATHS.map(path => [path, { prerender: true, headers: CONTENT_CACHE_HEADERS }])),
@@ -520,6 +520,15 @@ export default defineNuxtConfig({
   },
 
   icon: {
+    // Left on `auto`, the server bundle inlines every installed @iconify-json
+    // collection whole — about 9 MB of string literals (simple-icons alone is
+    // 4.7 MB) for ~30 icons. Rollup parsing that is what ran the Nitro build out
+    // of its 2 GB heap on App Hosting. Externalized, the JSON stays in
+    // node_modules and is imported at runtime instead.
+    serverBundle: {
+      collections: ['mdi', 'simple-icons', 'bi', 'fa', 'svg-spinners'],
+      externalizeIconsJson: true,
+    },
     clientBundle: {
       // `scan: true` catches every literal `<Icon name="..."/>`. Dynamic
       // names (e.g. social icons resolved at runtime via `item.icon`) are
@@ -659,16 +668,6 @@ export default defineNuxtConfig({
   postcss: {
     plugins: {
       '@tailwindcss/postcss': {},
-    },
-  },
-
-  vite: {
-    build: {
-      minify: 'terser',
-      terserOptions: {
-        compress: true,
-        mangle: true,
-      },
     },
   },
 
