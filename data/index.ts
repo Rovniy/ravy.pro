@@ -71,7 +71,7 @@ export const categoryDescriptions: Record<string, string> = {
 }
 
 export const navbarData = {
-  homeTitle: baseData.me.name,
+  homeTitle: baseData.me.nick,
 }
 
 // Access-gated tools live in `data/services.ts` (GATED_TOOLS) and are surfaced
