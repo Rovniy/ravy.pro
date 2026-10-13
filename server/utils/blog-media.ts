@@ -66,7 +66,3 @@ export async function getMedia(relativePath: string): Promise<Buffer | null> {
     throw err
   }
 }
-
-export async function deleteMedia(relativePath: string): Promise<void> {
-  await getMediaBucket().file(mediaObjectName(relativePath)).delete({ ignoreNotFound: true })
-}

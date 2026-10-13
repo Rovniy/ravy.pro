@@ -80,7 +80,8 @@ const LIVE_CONTENT_CACHE_HEADERS = {
 // every group rather than sitting at the top level. It previously sat only at the
 // top level, which merged it into `*` and left the named AI groups with nothing.
 const PRIVATE_PATHS = [
-  '/projects/',
+  // Not '/projects/': that prefix would also hide any future page under the
+  // live /projects hub. Only the legacy URL is private.
   '/projects/altcover/',
   '/author/xploitravy/',
   '/tag/customization/',

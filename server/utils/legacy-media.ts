@@ -61,25 +61,3 @@ export async function getLegacyMediaMap(fresh = false): Promise<MediaMap> {
 
   return memo?.map ?? {}
 }
-
-/**
- * Adds entries without touching existing ones.
- *
- * Merge rather than replace so a second import run cannot repoint URLs that
- * were already published under their new location.
- */
-export async function addLegacyMediaEntries(entries: MediaMap): Promise<number> {
-  const current = await getLegacyMediaMap(true)
-  const merged = { ...current }
-  let added = 0
-  for (const [from, to] of Object.entries(entries)) {
-    if (!(from in merged)) {
-      merged[from] = to
-      added++
-    }
-  }
-  if (added)
-    await doc().set({ map: merged, updatedAt: new Date().toISOString() })
-  memo = { map: merged, fetchedAt: Date.now() }
-  return added
-}

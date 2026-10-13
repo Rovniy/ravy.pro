@@ -12,27 +12,6 @@ export interface UploadResponse {
   bytes: number
 }
 
-export interface MigrateResponse {
-  ok: boolean
-  dryRun: boolean
-  wrote: number
-  planned?: number
-  indexed?: number
-  errors: string[]
-}
-
-export interface MigrateMediaResponse {
-  ok: boolean
-  dryRun: boolean
-  files: number
-  uploads: number
-  skipped: number
-  postsToRewrite: string[]
-  unsupported: string[]
-  redirectsAdded?: number
-  rewrote?: number
-}
-
 /** Longest edge of an uploaded image. Wider than any column the site renders. */
 const MAX_IMAGE_EDGE = 1600
 const UPLOAD_TYPE = 'image/webp'
@@ -77,22 +56,6 @@ export function useBlogStudio() {
 
   function reindex(): Promise<{ ok: boolean, count: number }> {
     return authedFetch<{ ok: boolean, count: number }>('/api/blog/admin/reindex', { method: 'POST' })
-  }
-
-  /** Dev-only one-off import of content/blogs/*.md. The route 404s in production. */
-  function migrate(dryRun: boolean): Promise<MigrateResponse> {
-    return authedFetch<MigrateResponse>('/api/blog/admin/migrate', {
-      method: 'POST',
-      body: JSON.stringify({ dryRun }),
-    })
-  }
-
-  /** Dev-only one-off import of the public/blog-* image folders into Storage. */
-  function migrateMedia(dryRun: boolean): Promise<MigrateMediaResponse> {
-    return authedFetch<MigrateMediaResponse>('/api/blog/admin/migrate-media', {
-      method: 'POST',
-      body: JSON.stringify({ dryRun }),
-    })
   }
 
   /**
@@ -168,5 +131,5 @@ export function useBlogStudio() {
     return await res.json() as UploadResponse
   }
 
-  return { listPosts, getPost, savePost, deletePost, preview, reindex, migrate, migrateMedia, uploadImage }
+  return { listPosts, getPost, savePost, deletePost, preview, reindex, uploadImage }
 }

@@ -3,7 +3,6 @@ import {
   ALLOWED_IMAGE_TYPES,
   extensionForType,
   isSafeMediaPath,
-  legacyMediaName,
   mediaObjectName,
   mediaUrl,
   SANDBOXED_TYPES,
@@ -57,31 +56,6 @@ describe('isSafeMediaPath', () => {
     ]) {
       expect(isSafeMediaPath(bad), bad).toBe(false)
     }
-  })
-})
-
-describe('legacyMediaName', () => {
-  // The hash is of the file's contents, which is what makes the year-long
-  // immutable header on the serving route honest and the import idempotent.
-  it('keeps the basename and appends the content hash', () => {
-    expect(legacyMediaName('/blog-cover/xploit-translator.webp', 'abc1234567'))
-      .toBe('xploit-translator-abc1234567.webp')
-  })
-
-  it('sanitises anything the serving route would reject', () => {
-    expect(legacyMediaName('/blog-content/x/E7D18772-C76F-45D5.webp', 'deadbeef12'))
-      .toBe('e7d18772-c76f-45d5-deadbeef12.webp')
-    expect(legacyMediaName('/blog-content/x/Tiny Boo (final).PNG', 'deadbeef12'))
-      .toBe('tiny-boo-final-deadbeef12.png')
-  })
-
-  it('produces a path the serving route accepts', () => {
-    const name = legacyMediaName('/blog-content/x/Tiny Boo (final).PNG', 'deadbeef12')
-    expect(isSafeMediaPath(`a-post/${name}`)).toBe(true)
-  })
-
-  it('survives a file with no extension', () => {
-    expect(legacyMediaName('/blog-content/x/README', 'abc1234567')).toBe('readme-abc1234567.bin')
   })
 })
 

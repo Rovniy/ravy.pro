@@ -3,10 +3,7 @@ import type { BlogPostMeta } from '~/utils/blog-post'
 import { computed, onMounted, ref } from 'vue'
 import { useBlogStudio } from '~/composables/useBlogStudio'
 
-const { listPosts, reindex, migrate, migrateMedia } = useBlogStudio()
-
-// The importer route only exists in dev, so neither does the button.
-const isDev = import.meta.dev
+const { listPosts, reindex } = useBlogStudio()
 
 const posts = ref<BlogPostMeta[]>([])
 const loading = ref(true)
@@ -42,60 +39,6 @@ async function onReindex() {
   }
   finally {
     reindexing.value = false
-  }
-}
-
-const migrating = ref(false)
-const migrateMsg = ref('')
-const migrateErrors = ref<string[]>([])
-
-async function onMigrate(dryRun: boolean) {
-  migrating.value = true
-  migrateMsg.value = ''
-  migrateErrors.value = []
-  try {
-    const res = await migrate(dryRun)
-    migrateErrors.value = res.errors ?? []
-    if (!res.ok)
-      migrateMsg.value = 'Aborted — nothing was written. See the mismatches below.'
-    else if (res.dryRun)
-      migrateMsg.value = `Dry run OK: ${res.planned} posts ready to import.`
-    else
-      migrateMsg.value = `Imported ${res.wrote} posts, index holds ${res.indexed}.`
-    if (res.ok && !res.dryRun)
-      await refresh()
-  }
-  catch (e: unknown) {
-    migrateMsg.value = e instanceof Error ? e.message : 'Import failed'
-  }
-  finally {
-    migrating.value = false
-  }
-}
-
-const mediaMigrating = ref(false)
-const mediaMsg = ref('')
-const mediaErrors = ref<string[]>([])
-
-async function onMigrateMedia(dryRun: boolean) {
-  mediaMigrating.value = true
-  mediaMsg.value = ''
-  mediaErrors.value = []
-  try {
-    const res = await migrateMedia(dryRun)
-    mediaErrors.value = res.unsupported ?? []
-    const posts = res.postsToRewrite?.length ?? 0
-    mediaMsg.value = res.dryRun
-      ? `Dry run: ${res.uploads} files to upload, ${res.skipped} already done, ${posts} posts to rewrite.`
-      : `Uploaded ${res.uploads} files, added ${res.redirectsAdded} redirects, rewrote ${res.rewrote} posts.`
-    if (!res.dryRun)
-      await refresh()
-  }
-  catch (e: unknown) {
-    mediaMsg.value = e instanceof Error ? e.message : 'Media import failed'
-  }
-  finally {
-    mediaMigrating.value = false
   }
 }
 
@@ -209,80 +152,6 @@ onMounted(refresh)
       <p v-if="reindexMsg" class="mt-2 text-xs text-slate-600 dark:text-slate-300">
         {{ reindexMsg }}
       </p>
-    </div>
-
-    <div v-if="isDev" class="mt-6 rounded-md border border-dashed border-slate-300 dark:border-slate-700 p-4">
-      <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        Import from content/blogs
-      </h2>
-      <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        One-off migration of the markdown files into Firestore. Dev only — the route does not exist in production.
-        Run the dry run first; it aborts on any file that cannot be matched to a live URL.
-      </p>
-      <div class="mt-3 flex gap-3">
-        <button
-          type="button"
-          class="rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-xs disabled:opacity-40 hover:cursor-pointer"
-          :disabled="migrating"
-          @click="onMigrate(true)"
-        >
-          Dry run
-        </button>
-        <button
-          type="button"
-          class="rounded-md bg-slate-900 dark:bg-white px-3 py-1.5 text-xs text-white dark:text-slate-900 disabled:opacity-40 hover:cursor-pointer"
-          :disabled="migrating"
-          @click="onMigrate(false)"
-        >
-          {{ migrating ? 'Working…' : 'Import for real' }}
-        </button>
-      </div>
-      <p v-if="migrateMsg" class="mt-2 text-xs text-slate-700 dark:text-slate-200">
-        {{ migrateMsg }}
-      </p>
-      <ul v-if="migrateErrors.length" class="mt-2 list-disc pl-5 text-xs text-red-600 dark:text-red-400">
-        <li v-for="err in migrateErrors" :key="err">
-          {{ err }}
-        </li>
-      </ul>
-    </div>
-
-    <div v-if="isDev" class="mt-4 rounded-md border border-dashed border-slate-300 dark:border-slate-700 p-4">
-      <h2 class="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        Import images from public/blog-*
-      </h2>
-      <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        Uploads every file from <code>blog-cover</code>, <code>blog-content</code> and <code>blog-opengraph</code> to
-        Storage, rewrites the covers, OG images and body links, and records a 301 for each old URL so nothing that
-        Google or an outside page already links to breaks. Safe to re-run — files already mapped are skipped.
-        Delete the three folders from <code>public/</code> once it reports success.
-      </p>
-      <div class="mt-3 flex gap-3">
-        <button
-          type="button"
-          class="rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-xs disabled:opacity-40 hover:cursor-pointer"
-          :disabled="mediaMigrating"
-          @click="onMigrateMedia(true)"
-        >
-          Dry run
-        </button>
-        <button
-          type="button"
-          class="rounded-md bg-slate-900 dark:bg-white px-3 py-1.5 text-xs text-white dark:text-slate-900 disabled:opacity-40 hover:cursor-pointer"
-          :disabled="mediaMigrating"
-          @click="onMigrateMedia(false)"
-        >
-          {{ mediaMigrating ? 'Working…' : 'Import for real' }}
-        </button>
-      </div>
-      <p v-if="mediaMsg" class="mt-2 text-xs text-slate-700 dark:text-slate-200">
-        {{ mediaMsg }}
-      </p>
-      <ul v-if="mediaErrors.length" class="mt-2 list-disc pl-5 text-xs text-amber-600 dark:text-amber-400">
-        <li v-for="err in mediaErrors" :key="err">
-          Skipped, unsupported type: {{ err }}
-        </li>
-      </ul>
     </div>
   </div>
 </template>

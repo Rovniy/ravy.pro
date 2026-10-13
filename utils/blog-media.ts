@@ -42,14 +42,7 @@ const EXTENSION_TYPES: Record<string, string> = {
 /** Types the browser must never be allowed to sniff or script. */
 export const SANDBOXED_TYPES = new Set(['image/svg+xml', 'application/pdf'])
 
-/**
- * Object folder for files that no post references — the presentation PDF linked
- * from /links is the only real case. A single segment, so it still satisfies
- * `isSafeMediaPath`.
- */
-export const ORPHAN_MEDIA_FOLDER = 'legacy'
-
-/** 10 MB, matching the `maxBodySize` route rule on the upload endpoint. */
+/** 10 MB. The studio downscales to 1600px WebP first, so this is the pathological case. */
 export const MAX_IMAGE_BYTES = 10 * 1024 * 1024
 
 /** The public URL prefix. Same-origin on purpose — see server/routes/media. */
@@ -81,37 +74,6 @@ export function isSafeMediaPath(path: string): boolean {
 
 export function mediaObjectName(relativePath: string): string {
   return `${MEDIA_OBJECT_PREFIX}/${relativePath}`
-}
-
-/**
- * Asset folders that used to live in `public/` and now live in the bucket.
- * Kept as a list because three things need it: the importer that walks them,
- * the routes that 301 their old URLs, and the docs.
- */
-export const LEGACY_MEDIA_DIRS = ['blog-cover', 'blog-content', 'blog-opengraph'] as const
-
-/**
- * Object filename for a file imported out of `public/`.
- *
- * The hash is of the file's *contents*, which is what makes the year-long
- * `immutable` header on the serving route honest and the import idempotent: the
- * same bytes always produce the same name, and different bytes never collide.
- * The basename is kept so the URL still says what the picture is.
- */
-export function legacyMediaName(oldPath: string, contentHash: string): string {
-  const filename = oldPath.split('/').pop() ?? 'file'
-  const dot = filename.lastIndexOf('.')
-  const rawBase = dot > 0 ? filename.slice(0, dot) : filename
-  const rawExt = dot > 0 ? filename.slice(dot + 1) : 'bin'
-
-  const base = rawBase
-    .toLowerCase()
-    .replace(/[^a-z0-9_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 60) || 'file'
-  const ext = rawExt.toLowerCase().replace(/[^a-z0-9]/g, '') || 'bin'
-
-  return `${base}-${contentHash}.${ext}`
 }
 
 export function mediaUrl(relativePath: string): string {
