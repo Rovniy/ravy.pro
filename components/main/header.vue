@@ -100,6 +100,11 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           </NuxtLink>
         </li>
         <li class="hidden lg:block">
+          <NuxtLink to="/til" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" title="Today I Learned: short notes" @click="navClick('til')">
+            TIL
+          </NuxtLink>
+        </li>
+        <li class="hidden lg:block">
           <MainToolsMenu />
         </li>
         <li class="hidden lg:block">
@@ -125,7 +130,7 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
         </li>
         <!-- Theme switching lives in the floating control at the bottom-left
              (layouts/default.vue) so the header carries navigation only. -->
-        <li class="flex items-center">
+        <li class="flex items-center mr-0">
           <MainAuthButton />
         </li>
         <li class="lg:hidden">
@@ -164,6 +169,11 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           <li>
             <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs', 'mobile')">
               Blogs
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/til" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('til', 'mobile')">
+              TIL notes
             </NuxtLink>
           </li>
           <li>

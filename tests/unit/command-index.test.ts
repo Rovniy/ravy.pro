@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import config from '~~/nuxt.config'
 import { homePage } from '~/data'
 import { PROJECT_PAGE_PATHS } from '~/data/project-routes'
-import { commandIcons, postItems, RUN, SCOPES, staticCommandItems, TYPE_LABEL } from '~/utils/command-index'
+import { commandIcons, noteItems, postItems, RUN, SCOPES, staticCommandItems, TYPE_LABEL } from '~/utils/command-index'
 import { searchCommands } from '~/utils/command-search'
 
 const items = staticCommandItems()
@@ -78,6 +78,15 @@ describe('command index', () => {
     expect(posts[0]!.actions[1]!.value).toBe('https://ravy.pro/blogs/hello')
     expect(posts[0]!.image).toBe('/media/blog/x.webp')
     expect(posts[1]!.image).toBeUndefined()
+  })
+
+  it('builds note items that read the note and search by topic', () => {
+    const items = noteItems([{ path: '/til/a', title: 'How do I X?', excerpt: 'e', topics: ['unity'] }, { title: 'no path' }])
+    expect(items).toHaveLength(1)
+    expect(items[0]!.id).toBe('note:/til/a')
+    expect(TYPE_LABEL[items[0]!.type]).toBeTruthy()
+    expect(commandIcons()).toContain(items[0]!.icon)
+    expect(searchCommands(items, 'unity').hits[0]?.item.id).toBe('note:/til/a')
   })
 
   it('finds something for every hero suggestion chip', () => {

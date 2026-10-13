@@ -1,5 +1,6 @@
 import type { BlogPostMeta } from './blog-post'
 import type { CommandAction, CommandItem } from './command-search'
+import type { TilNoteMeta } from './til'
 // Relative imports, not `~/`: nuxt.config.ts imports `commandIcons()` to bundle
 // the icons, and the config is loaded before the alias exists.
 import { baseData, categoryNames, publicServices, socialNetworks } from '../data'
@@ -8,6 +9,7 @@ import { gamePath, gamePressPath, GAMES } from '../data/games'
 import { MUSIC_PROJECTS, musicPath } from '../data/music'
 import { OFFERINGS } from '../data/offerings'
 import { PLATFORM_META, platformLabel, STATUS_LABEL } from '../data/projects'
+import { tilTopic } from '../data/til'
 
 // Everything the ⌘K palette can find, built from the same registries the pages
 // render from, so a new tool, game or album is searchable without touching
@@ -106,6 +108,7 @@ function pageItems(): CommandItem[] {
   return [
     page('home', 'Home', '/', 'mdi:home-outline', 'Start page', ['main', 'index', 'главная'], 2),
     page('blogs', 'Blog', '/blogs', 'mdi:post-outline', 'Every post', ['blogs', 'posts', 'articles', 'writing', 'блог', 'статьи'], 6),
+    page('til', 'Today I Learned', '/til', 'mdi:lightbulb-on-outline', 'Short notes: one problem, one fix', ['til', 'notes', 'tips', 'snippets', 'заметки', 'советы'], 5),
     page('categories', 'Categories', '/categories', 'mdi:tag-multiple-outline', 'Posts by topic', ['tags', 'topics', 'категории', 'теги']),
     page('tools', 'Tools', '/tools', 'mdi:tools', 'Free browser tools', ['utilities', 'инструменты', 'утилиты'], 5),
     page('projects', 'Projects', '/projects', 'mdi:shape-outline', 'Games, music and animation', ['portfolio', 'work', 'проекты', 'портфолио'], 6),
@@ -285,8 +288,27 @@ export function postItems(posts: Array<Partial<BlogPostMeta> & { path?: string }
     }))
 }
 
+/** Published TIL notes from /api/til/notes. */
+export function noteItems(notes: Array<Partial<TilNoteMeta>>): CommandItem[] {
+  return notes
+    .filter(n => n.path && n.title)
+    .map(n => ({
+      id: `note:${n.path}`,
+      type: 'note' as const,
+      title: n.title!,
+      subtitle: n.excerpt,
+      keywords: ['til', ...(n.topics ?? []).flatMap(t => [t, tilTopic(t)?.name ?? ''])],
+      icon: 'mdi:lightbulb-on-outline',
+      actions: [
+        go('Read', n.path!, 'mdi:book-open-page-variant-outline'),
+        { label: 'Copy link', kind: 'copy' as const, value: `${baseData.site.url}${n.path}`, icon: 'mdi:link-variant' },
+      ],
+      priority: 1,
+    }))
+}
+
 /** Icons the palette itself renders by literal name. */
-const CHROME_ICONS = ['mdi:magnify', 'mdi:keyboard-return', 'mdi:history', 'mdi:auto-fix', 'mdi:post-outline', 'mdi:book-open-page-variant-outline', 'mdi:link-variant']
+const CHROME_ICONS = ['mdi:lightbulb-on-outline', 'mdi:magnify', 'mdi:keyboard-return', 'mdi:history', 'mdi:auto-fix', 'mdi:post-outline', 'mdi:book-open-page-variant-outline', 'mdi:link-variant']
 
 /**
  * Every icon the palette can show. Item icons are bound at runtime, which the
@@ -311,6 +333,7 @@ export const TYPE_LABEL: Record<CommandItem['type'], string> = {
   action: 'Quick actions',
   page: 'Pages',
   post: 'Posts',
+  note: 'TIL notes',
   tool: 'Tools',
   service: 'Services',
   game: 'Games',
@@ -322,7 +345,7 @@ export const TYPE_LABEL: Record<CommandItem['type'], string> = {
 /** Filter chips. `types` lists what each one shows. */
 export const SCOPES = [
   { id: 'all', label: 'All', types: null },
-  { id: 'posts', label: 'Posts', types: ['post'] },
+  { id: 'posts', label: 'Posts', types: ['post', 'note'] },
   { id: 'tools', label: 'Tools', types: ['tool'] },
   { id: 'games', label: 'Games', types: ['game'] },
   { id: 'music', label: 'Music', types: ['music', 'album'] },

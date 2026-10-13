@@ -67,6 +67,58 @@ The import deliberately does **not** bump `lastUpdated` — a URL rewrite is not
 
 **Auth is OAuth 2.1, with the site as its own authorization server.** That is what lets claude.ai web, Desktop, mobile and Claude Code connect by URL alone. The discovery chain is: `401` with `WWW-Authenticate: resource_metadata` → `/.well-known/oauth-protected-resource[/mcp]` → `/.well-known/oauth-authorization-server` → DCR at `/oauth/register` → consent at the **page** `/oauth/authorize` → `/oauth/token`, with PKCE S256 required and refresh tokens rotated. The consent page sits behind `<StudioGate>` (Google sign-in plus the `studio` grant). It validates the request through `GET /api/oauth/client` **before** it will redirect anywhere, so it cannot act as an open redirector, and approves through `POST /api/oauth/authorize`. Codes and tokens are stored only as SHA-256 hashes in `mcp_oauth_codes` / `mcp_oauth_tokens`, and registered clients live in `mcp_oauth_clients`. Every MCP call re-checks `hasToolAccess(email, 'studio')`, so revoking the grant cuts off clients that are already connected. `/account` → **MCP** tab (`AccountMcpConnect`, shown to anyone with `hasTool('studio')`) has per-client setup steps (Claude, Claude Code, Codex, ChatGPT, Cursor, VS Code, Gemini CLI, mcp-remote), the list of connected clients and a "Disconnect all" button. `/studio` links to it. In production, issuer and resource are pinned to `baseData.site.url` (`siteOrigin`). Note that nested `server/utils/mcp/*` exports are Nitro auto-imports: do not reuse h3 names (the CORS helper is `applyMcpCors`, not `handleCors`).
 
+#### TIL notes (`/til`)
+
+Short "Today I Learned" notes, written in **English** (the goal is international search and LinkedIn reach). A note is a question as its title, a few lines of markdown, one or more topics, and no cover. Its description is derived from the body.
+
+- **Storage.** The store is `server/utils/til-store.ts`, built the same way as the blog's.
+  - Firestore holds each note in `til_notes/{slug}` and the metadata index in `til_index/current`.
+  - The index is memoised for 60s and the stale copy is served if Firestore fails.
+  - `getNotes(slugs)` reads bodies in one `getAll`.
+- **Pure helpers.** These live in `utils/til.ts`, tested in `tests/unit/til.util.test.ts`.
+  - `normalizeNote` checks the note:
+    - the title is at most `NOTE_TITLE_MAX` (110) characters;
+    - the markdown is at most `NOTE_MAX_CHARS` (4000) characters;
+    - every topic is in `TIL_TOPICS`;
+    - embeds follow `findEmbedProblems`.
+  - Other helpers: `excerptOf`, `relatedNotes`, `topicCounts` and `notePingPaths`.
+  - `noteWarnings` gives advice that never blocks a save: add code or a link, the note is too short or too long, the title is long, Cyrillic text found.
+  - `linkedInPost` and `xPost` build ready-to-paste share texts. `xPost` counts the URL as 23 characters.
+  - `path` is stored and never re-derived.
+  - Reserved note slugs: `new`, `topic`, `rss`. The blog's `RESERVED_SLUGS` gains `notes`.
+- **Topics.** `TIL_TOPICS` in `data/til.ts` is a closed list: unity, gamedev, ai, web, devops, leadership.
+  - Each topic has a unique 100–200 character description (the hub's meta description), optional hashtags, and an optional blog `category` that the hub links to.
+- **Pages.**
+  - Routes: `/til`, `/til/[slug]` and `/til/topic/[topic]`, SSR with the same live cache headers as the blog.
+  - Shared parts: `components/til/*`. `Feed.vue` renders the list and `AuthorBox.vue` is the "who wrote this" block under every note, which fires `cta_click` `til_author_*`.
+  - An unknown topic returns 404. A hub with no notes is `noindex` and left out of the sitemap.
+  - When Firestore is down, the pages return 503, not 404.
+- **API.**
+  - Public: `GET /api/til/notes` (metadata), `GET /api/til/feed?topic&limit` (rendered bodies plus archive and counts) and `GET /api/til/note/[slug]` (drafts 404).
+  - Admin, behind `requireToolAccess(event, 'studio')`: `admin/notes`, `admin/note/[slug]` (GET and DELETE) and `admin/note` (PUT).
+  - The PUT returns 409 when `mode: 'create'` hits an existing slug. It returns the note plus `warnings`.
+- **Studio.** `/studio?tab=notes` lists notes, and `/studio/notes/[slug]` (`components/studio/NoteEditor.vue`) edits one.
+  - The editor shows live warnings, a search snippet, and a preview through the blog's `renderMarkdown`.
+  - Once a note is published, a "Share it" panel shows the LinkedIn and X texts.
+- **MCP.** The tools are in `server/utils/mcp/til-tools.ts` and are merged into the one `/mcp` server: `TOOLS = [...blogTools, ...tilTools]`, with `TIL_MCP_INSTRUCTIONS` appended.
+  - Tools: `list_notes`, `get_note`, `list_topics`, `create_note`, `update_note`, `publish_note` (with an optional `redate`) and `unpublish_note`.
+  - `update_note` never changes `published`, and there is no delete tool.
+  - A publish returns `share: { linkedin, x }`.
+- **IndexNow.** `pingIndexNow(paths)` in `server/utils/indexnow.ts` tells Bing and Yandex when a URL changes.
+  - Key: `INDEXNOW_KEY` in `utils/indexnow.ts`, served at `/indexnow-key.txt`.
+  - It runs after a save of a note or post that is, or was, published. It covers the page, its feed and its hubs.
+  - It runs only in production (never in dev or vitest) and is best-effort: a failure is logged as a WARNING.
+  - Google ignores IndexNow and relies on the sitemap.
+- **Distribution.**
+  - Feeds: the sitemap, `/til/rss.xml` (50 newest), and `llms.txt` / `llms-full.txt`. Each fails soft, so a notes outage leaves the blog's output intact.
+  - In the ⌘K palette, notes are the `note` type in the Posts scope, loaded from `/api/til/notes`.
+  - Header nav: "TIL".
+- **Schema and OG.**
+  - A note page emits `TechArticle`, whose author is the `#person` node (`useTilNoteSchema`).
+  - `/til` and the hubs emit `CollectionPage` + `ItemList` (`useTilCollectionSchema`).
+  - The OG card is `components/OgImage/Note.satori.vue`.
+  - Satori drops Tailwind's `border` utilities, so use inline `border` styles in that file.
+
 ### Data & Configuration
 
 Site-wide metadata (nav links, social networks, SEO defaults) lives in `/data/index.ts` — not in nuxt.config.ts or environment variables. This is the single source of truth for site identity.
@@ -153,7 +205,7 @@ Event tracking flows **app → `window.dataLayer` → GTM (`GTM-57T2XCRL`) → G
 - **API:** `useAnalytics()` (`composables/useAnalytics.ts`) — SSR-safe `track(event, params)` plus helpers `trackTool`, `trackDownload`, `trackToolError`, `trackOutbound`, `trackCta`, `trackPurchase`. Unit-tested in `tests/unit/analytics.test.ts`.
 - **Auto-capture:** outbound link clicks (external host, `mailto:`, `tel:`) fire `outbound_click` via a delegated listener in `plugins/analytics.client.ts` — no per-link code needed. Every tool page fires `tool_view` automatically because `useToolPageSchema()` emits it on mount.
 
-Event taxonomy: `tool_view`, `tool_action` (`tool_id`+`action`), `tool_download`, `tool_error`; `blog_view`, `blog_read_progress` (25/50/75), `blog_complete`, `blog_filter`, `blog_search`; `outbound_click`, `nav_click`, `cta_click`; `command_palette_open`, `command_palette_action`, `search`; `newsletter_subscribe`, `contact_click`, `login`/`logout`; and the paid funnel `scan_start` → `scan_submit` → `scan_result` → `paywall_view` → `begin_checkout` → `purchase` (purchase fires on the result pages when a Stripe `session_id` is present).
+Event taxonomy: `tool_view`, `tool_action` (`tool_id`+`action`), `tool_download`, `tool_error`; `blog_view`, `blog_read_progress` (25/50/75), `blog_complete`, `blog_filter`, `blog_search`; `til_view`, `til_share` (`{ slug, network: copy | linkedin | x }`); `outbound_click`, `nav_click`, `cta_click`; `command_palette_open`, `command_palette_action`, `search`; `newsletter_subscribe`, `contact_click`, `login`/`logout`; and the paid funnel `scan_start` → `scan_submit` → `scan_result` → `paywall_view` → `begin_checkout` → `purchase` (purchase fires on the result pages when a Stripe `session_id` is present).
 
 **Rule when adding features:** add any new event name to `EVENTS` in `data/analytics.ts` first (the `track()` type enforces this), then emit via `useAnalytics()`. New tools get `tool_view` free via `useToolPageSchema` — also wire `tool_action`/`tool_download` for their key actions. New paid flows use `begin_checkout` + `purchase`. New outbound links need no code (auto-tracked).
 

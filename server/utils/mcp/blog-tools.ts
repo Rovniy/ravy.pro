@@ -7,6 +7,7 @@ import { BlogPostValidationError, isValidSlug, normalizeRecord, slugify } from '
 import { putMedia } from '../blog-media'
 import { clearRenderCache } from '../blog-render'
 import { getPost, listMeta, savePost } from '../blog-store'
+import { pingIndexNow } from '../indexnow'
 import { assertRateLimit } from '../rate-limit'
 import { decodeBase64Image, fetchRemoteImage, ImageIntakeError, prepareImage } from './images'
 import { jsonResult, ToolInputError } from './protocol'
@@ -95,6 +96,8 @@ async function save(input: Record<string, unknown>, existing: BlogPostRecord | n
   }
   await savePost(record)
   clearRenderCache()
+  if (record.published || existing?.published)
+    await pingIndexNow([record.path, '/blogs', ...record.tags.map(t => `/categories/${t}`)])
   return record
 }
 

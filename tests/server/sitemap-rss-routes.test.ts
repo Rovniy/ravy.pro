@@ -1,4 +1,5 @@
 import type { BlogPostRecord } from '~~/utils/blog-post'
+import type { TilNoteMeta } from '~~/utils/til'
 import { describe, expect, it, vi } from 'vitest'
 
 // `/docs` still comes from @nuxt/content, and the routes import
@@ -11,6 +12,7 @@ import { describe, expect, it, vi } from 'vitest'
 const mocks = vi.hoisted(() => ({
   docRows: [] as Record<string, unknown>[],
   posts: [] as BlogPostRecord[],
+  notes: [] as TilNoteMeta[],
 }))
 
 vi.mock('@nuxt/content/server', () => ({
@@ -28,6 +30,10 @@ vi.mock('@nuxt/content/server', () => ({
 vi.mock('~~/server/utils/blog-store', () => ({
   listMeta: vi.fn(async () => mocks.posts.map(({ markdown: _markdown, ...meta }) => meta)),
   getPost: vi.fn(async (slug: string) => mocks.posts.find(p => p.slug === slug) ?? null),
+}))
+
+vi.mock('~~/server/utils/til-store', () => ({
+  listNotes: vi.fn(async () => mocks.notes),
 }))
 
 function post(overrides: Partial<BlogPostRecord> = {}): BlogPostRecord {
@@ -91,6 +97,28 @@ describe('sitemap and rss routes', () => {
     // Promoted from inquiry-only via OFFERING_PAGE_PATHS — no sitemap edit
     // needed, which is exactly what this asserts.
     expect(locs).toContain('/services/fractional-cto')
+  })
+
+  it('sitemap lists published notes, the feed and only the topic hubs in use', async () => {
+    mocks.docRows = []
+    mocks.posts = []
+    mocks.notes = [{
+      path: '/til/a',
+      slug: 'a',
+      title: 'How?',
+      topics: ['unity'],
+      excerpt: 'x',
+      published: true,
+      createdAt: '2026-10-01',
+      lastUpdated: '2026-10-02',
+    }]
+    const { default: handler } = await import('~~/server/api/__sitemap__/urls')
+    const locs = (await handler({} as never)).map((x: { loc: string }) => x.loc)
+    mocks.notes = []
+    expect(locs).toContain('/til')
+    expect(locs).toContain('/til/a')
+    expect(locs).toContain('/til/topic/unity')
+    expect(locs).not.toContain('/til/topic/ai')
   })
 
   it('rss route renders each post body to html', async () => {

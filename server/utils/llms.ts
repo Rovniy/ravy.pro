@@ -49,6 +49,7 @@ export function llmsMainPages(): string {
 - [Home](${abs('/')}): overview of the services, tools, projects, and recent writing.
 - [About](${abs('/about')}): background, 15 years of work history, shipped projects, and technical stack.
 - [Blog](${abs('/blogs')}): all posts on engineering, game tech, automation, and AI-assisted workflows.
+- [Today I Learned](${abs('/til')}): short technical notes, one problem and its fix each.
 - [Tools](${abs('/tools')}): ${toolsPage.og.description}
 - [Categories](${abs('/categories')}): posts grouped by topic.
 - [Services](${abs('/services')}): paid, human-delivered offerings — mentorship, consulting, and part-time engineering help.
@@ -99,6 +100,7 @@ export function llmsOptional(docPaths: Array<{ path: string, title: string }>): 
 
 - [Full text of every post](${abs('/llms-full.txt')}): this site's articles as one Markdown file.
 - [RSS feed](${abs('/rss.xml')}): full-text feed of blog posts.
+- [TIL RSS feed](${abs('/til/rss.xml')}): full-text feed of the short notes.
 - [Sitemap](${abs('/sitemap.xml')}): every indexable URL.
 - [Curriculum vitae (PDF)](${abs('/misc/andrei_rovnyi_cv.pdf')}): full professional history.
 ${docs.join('\n')}`

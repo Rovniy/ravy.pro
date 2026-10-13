@@ -54,6 +54,10 @@ export const EVENTS = {
   PRESS_KIT_DOWNLOAD: 'press_kit_download',
   PRESS_COPY: 'press_copy',
 
+  // TIL notes at /til. `til_view` carries { slug, topics }; `til_share` fires
+  // when a reader shares or copies a note's link ({ slug, network }).
+  TIL_VIEW: 'til_view',
+  TIL_SHARE: 'til_share',
   // ⌘K command palette. `command_palette_open` carries { source } (shortcut,
   // header, hero, mobile); `command_palette_action` is a picked result with
   // { item_type, item_id, action, position, query_length, scope }. A picked

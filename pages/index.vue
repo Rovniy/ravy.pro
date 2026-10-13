@@ -72,6 +72,9 @@ function ratingFor(path: string) {
     <div class="container max-w-5xl mx-auto">
       <LazyMainRecent hydrate-on-visible />
 
+      <!-- Newest TIL notes; renders nothing until the first one is published. -->
+      <LazyMainTil hydrate-on-visible />
+
       <section class="py-14 px-6">
         <UiSectionHeader eyebrow="Utilities" title="Tools" />
 

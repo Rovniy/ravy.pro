@@ -5,6 +5,7 @@ import { applyMcpCors } from '~~/server/utils/mcp/http'
 import { isAcceptableResource, protectedResourceMetadataUrl } from '~~/server/utils/mcp/oauth'
 import { resolveAccessToken, siteOrigin } from '~~/server/utils/mcp/oauth-store'
 import { dispatch, RPC_PARSE_ERROR } from '~~/server/utils/mcp/protocol'
+import { TIL_MCP_INSTRUCTIONS, tilTools } from '~~/server/utils/mcp/til-tools'
 import { reportServerEvent } from '~~/server/utils/report-error'
 
 /**
@@ -21,8 +22,11 @@ const SERVER_INFO = {
   name: 'ravy-pro-blog',
   title: 'ravy.pro blog',
   version: '1.0.0',
-  instructions: BLOG_MCP_INSTRUCTIONS,
+  instructions: `${BLOG_MCP_INSTRUCTIONS}\n\n${TIL_MCP_INSTRUCTIONS}`,
 }
+
+/** Blog post tools and TIL note tools, served as one server. */
+const TOOLS = [...blogTools, ...tilTools]
 
 function unauthorized(event: Parameters<typeof applyMcpCors>[0], origin: string, description: string) {
   setResponseStatus(event, 401)
@@ -75,7 +79,7 @@ export default defineEventHandler(async (event) => {
     reportServerEvent('ERROR', 'MCP tool failed', { kind: 'mcp-tool', tool, detail: String(err) })
 
   if (Array.isArray(message)) {
-    const responses = (await Promise.all(message.map(m => dispatch(m, blogTools, SERVER_INFO, ctx, onError)))).filter(Boolean)
+    const responses = (await Promise.all(message.map(m => dispatch(m, TOOLS, SERVER_INFO, ctx, onError)))).filter(Boolean)
     if (!responses.length) {
       setResponseStatus(event, 202)
       return null
@@ -83,7 +87,7 @@ export default defineEventHandler(async (event) => {
     return responses
   }
 
-  const response = await dispatch(message, blogTools, SERVER_INFO, ctx, onError)
+  const response = await dispatch(message, TOOLS, SERVER_INFO, ctx, onError)
   if (!response) {
     setResponseStatus(event, 202)
     return null

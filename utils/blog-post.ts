@@ -96,7 +96,7 @@ function stringList(value: unknown): string[] {
  * be unreachable from the panel, so it is rejected at save time rather than
  * discovered later.
  */
-export const RESERVED_SLUGS = new Set(['new'])
+export const RESERVED_SLUGS = new Set(['new', 'notes'])
 
 export class BlogPostValidationError extends Error {}
 

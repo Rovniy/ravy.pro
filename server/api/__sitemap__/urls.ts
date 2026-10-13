@@ -2,9 +2,11 @@
 // 1-arg composable in the IDE's type context; the server variant takes (event, collection).
 import { queryCollection } from '@nuxt/content/server'
 import { listMeta } from '~~/server/utils/blog-store'
+import { listNotes } from '~~/server/utils/til-store'
 import { publicServices, seoData } from '~/data'
 import { OFFERING_PAGE_PATHS } from '~/data/offerings'
 import { projectSitemapEntries } from '~/data/project-routes'
+import { tilTopicPath } from '~/data/til'
 
 export default defineEventHandler(async (event) => {
   const posts = await listMeta({ publishedOnly: true })
@@ -97,6 +99,21 @@ export default defineEventHandler(async (event) => {
 
   for (const tag of tagSet) {
     urls.push({ loc: `/categories/${tag}` })
+  }
+
+  // TIL notes, the feed, and only the topic hubs that have a note in them
+  // (an empty hub renders noindex). Fails soft: a notes outage must not take
+  // the blog and every other URL out of the sitemap with it.
+  const notes = await listNotes({ publishedOnly: true }).catch(() => [])
+  if (notes.length) {
+    urls.push({ loc: '/til', lastmod: notes[0]!.lastUpdated || notes[0]!.createdAt || undefined })
+    const topics = new Set<string>()
+    for (const note of notes) {
+      note.topics.forEach(t => topics.add(t))
+      urls.push({ loc: note.path, lastmod: note.lastUpdated || note.createdAt || undefined })
+    }
+    for (const topic of topics)
+      urls.push({ loc: tilTopicPath(topic) })
   }
 
   return urls

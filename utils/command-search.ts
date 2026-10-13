@@ -10,7 +10,7 @@
 // Half the audience types on a Russian keyboard, so a query that finds nothing
 // is retried through the ЙЦУКЕН ↔ QWERTY map ("ешт? ищщ" → "tiny boo").
 
-export type CommandType = 'action' | 'page' | 'post' | 'tool' | 'game' | 'music' | 'album' | 'service' | 'social'
+export type CommandType = 'action' | 'page' | 'post' | 'note' | 'tool' | 'game' | 'music' | 'album' | 'service' | 'social'
 
 export type CommandActionKind
   /** Internal route, through the router. */

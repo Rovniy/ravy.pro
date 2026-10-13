@@ -1,6 +1,7 @@
 // Explicit import: the auto-imported `queryCollection` resolves to the app-side
 // 1-arg composable in the IDE's type context; the server variant takes (event, collection).
 import { queryCollection } from '@nuxt/content/server'
+import { tilTopic } from '~/data/til'
 import { listMeta } from '../utils/blog-store'
 import {
   abs,
@@ -11,6 +12,7 @@ import {
   llmsServices,
   llmsTools,
 } from '../utils/llms'
+import { listNotes } from '../utils/til-store'
 
 /**
  * /llms.txt — the llmstxt.org descriptor, generated rather than hand-written.
@@ -49,13 +51,30 @@ export default defineEventHandler(async (event) => {
     }),
   ].join('\n')
 
+  // Short answers are exactly what an assistant quotes, so the notes get their
+  // own section. A notes outage leaves the rest of the file intact.
+  const notes = await listNotes({ publishedOnly: true }).catch(() => [])
+  const til = notes.length
+    ? [
+        '## Today I Learned notes',
+        '',
+        `${notes.length} short technical notes, each answering one question, newest first. Feed: ${abs('/til')}.`,
+        '',
+        ...notes.map((note) => {
+          const topics = note.topics.map(t => tilTopic(t)?.name ?? t).join(', ')
+          return `- [${note.title}](${abs(note.path)}) (${note.createdAt.slice(0, 10)}): ${note.excerpt} Topics: ${topics}.`
+        }),
+      ].join('\n')
+    : ''
+
   return [
     llmsHeader(),
     llmsMainPages(),
     llmsTools(),
     llmsServices(),
     writing,
+    til,
     llmsProjects(),
     llmsOptional(docs.map(d => ({ path: d.path, title: d.title ?? d.path }))),
-  ].join('\n\n')
+  ].filter(Boolean).join('\n\n')
 })

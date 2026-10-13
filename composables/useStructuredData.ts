@@ -1171,3 +1171,96 @@ export function useSeriesPageSchema(series: {
     kind: 'animation',
   })
 }
+
+// ─── TIL notes (/til) ────────────────────────────────────────────────────────
+
+/**
+ * A note is a `TechArticle` (a how-to-shaped answer to one technical
+ * question) whose author is the site's Person node. That authorship link is
+ * the point: every note adds to the same entity's `knowsAbout`, which is what
+ * search engines and LLMs read when deciding whose answer to trust.
+ */
+export function useTilNoteSchema(note: {
+  url: string
+  title: string
+  excerpt: string
+  topics: Array<{ id: string, name: string, url: string }>
+  createdAt: string
+  lastUpdated?: string
+}) {
+  const crumb = breadcrumbNode([
+    { name: 'Home', url: `${SITE}/` },
+    { name: 'TIL', url: `${SITE}/til` },
+    ...(note.topics[0] ? [{ name: note.topics[0].name, url: note.topics[0].url }] : []),
+    { name: note.title, url: note.url },
+  ])
+  const pub = toIsoDate(note.createdAt) || new Date().toISOString()
+  const mod = toIsoDate(note.lastUpdated) || pub
+  injectGraph([
+    ...identityNodes(),
+    webPageNode({
+      url: note.url,
+      name: note.title,
+      description: note.excerpt,
+      breadcrumbId: crumb['@id'],
+      datePublished: note.createdAt,
+      dateModified: note.lastUpdated || note.createdAt,
+      primaryEntityId: `${note.url}#article`,
+    }),
+    {
+      '@type': 'TechArticle',
+      '@id': `${note.url}#article`,
+      'isPartOf': [{ '@id': `${note.url}#webpage` }, { '@id': `${SITE}/til#collection` }],
+      'mainEntityOfPage': { '@id': `${note.url}#webpage` },
+      'url': note.url,
+      'headline': note.title,
+      'description': note.excerpt,
+      'datePublished': pub,
+      'dateModified': mod,
+      'author': { '@id': ID.person },
+      'publisher': { '@id': ID.organization },
+      'inLanguage': 'en-US',
+      'genre': 'Today I Learned',
+      'articleSection': note.topics.map(t => t.name),
+      'keywords': note.topics.map(t => t.name).join(', '),
+      'about': note.topics.map(t => ({ '@type': 'Thing', 'name': t.name, 'url': t.url })),
+    },
+    crumb,
+  ])
+}
+
+/** /til and each topic hub: a CollectionPage listing its notes. */
+export function useTilCollectionSchema(opts: {
+  url: string
+  name: string
+  description: string
+  topic?: { name: string }
+  notes: Array<{ path: string, title: string }>
+}) {
+  const crumb = breadcrumbNode([
+    { name: 'Home', url: `${SITE}/` },
+    { name: 'TIL', url: `${SITE}/til` },
+    ...(opts.topic ? [{ name: opts.topic.name, url: opts.url }] : []),
+  ])
+  socialMeta({ title: opts.name, description: opts.description })
+  injectGraph([
+    ...identityNodes(),
+    {
+      ...webPageNode({
+        url: opts.url,
+        name: opts.name,
+        description: opts.description,
+        type: 'CollectionPage',
+        breadcrumbId: crumb['@id'],
+      }),
+      ...(opts.topic ? {} : { '@id': `${opts.url}#collection` }),
+      author: { '@id': ID.person },
+    },
+    itemListNode({
+      id: `${opts.url}#list`,
+      name: opts.name,
+      items: opts.notes.map(n => ({ url: absUrl(n.path), name: n.title })),
+    }),
+    crumb,
+  ])
+}

@@ -1,6 +1,7 @@
 import { requireToolAccess } from '~~/server/utils/access'
 import { clearRenderCache } from '~~/server/utils/blog-render'
 import { getPost, savePost } from '~~/server/utils/blog-store'
+import { pingIndexNow } from '~~/server/utils/indexnow'
 import { BlogPostValidationError, isValidSlug, normalizeRecord } from '~~/utils/blog-post'
 
 /**
@@ -39,6 +40,9 @@ export default defineEventHandler(async (event) => {
   // but clearing keeps the bounded cache from filling with dead revisions
   // during a run of quick edits.
   clearRenderCache()
+  // A live change (or a post just taken down) is worth a recrawl; a draft is not.
+  if (record.published || existing?.published)
+    await pingIndexNow([record.path, '/blogs', ...record.tags.map(t => `/categories/${t}`)])
 
   return record
 })

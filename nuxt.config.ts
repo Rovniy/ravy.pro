@@ -347,6 +347,10 @@ export default defineNuxtConfig({
       '/api/services/**': { prerender: false },
       '/blogs/**': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
       '/categories/**': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
+      // TIL notes: live from Firestore like the blog, same 60s CDN window.
+      '/til': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
+      '/til/**': { ssr: true, prerender: false, headers: LIVE_CONTENT_CACHE_HEADERS },
+      '/api/til/**': { prerender: false },
       // The blog API is the source those pages render from; prerendering it
       // would bake the post list into the build.
       '/api/blog/**': { prerender: false },

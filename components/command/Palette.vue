@@ -3,7 +3,7 @@ import type { ScopeId } from '~/utils/command-index'
 import type { CommandAction, CommandItem, SearchHit } from '~/utils/command-search'
 import { baseData } from '~/data'
 import { EVENTS } from '~/data/analytics'
-import { postItems, RUN, SCOPES, staticCommandItems, TYPE_LABEL } from '~/utils/command-index'
+import { noteItems, postItems, RUN, SCOPES, staticCommandItems, TYPE_LABEL } from '~/utils/command-index'
 import { highlightParts, searchCommands } from '~/utils/command-search'
 
 // The ⌘K palette. A WAI-ARIA combobox: focus never leaves the input, the
@@ -52,7 +52,19 @@ async function loadPosts() {
   }
 }
 
-const allItems = computed(() => [...staticItems, ...posts.value])
+const notes = ref<CommandItem[]>([])
+
+/** Notes load beside posts and fail on their own: either list missing is fine. */
+async function loadNotes() {
+  if (notes.value.length)
+    return
+  try {
+    notes.value = noteItems(await $fetch<Parameters<typeof noteItems>[0]>('/api/til/notes'))
+  }
+  catch {}
+}
+
+const allItems = computed(() => [...staticItems, ...posts.value, ...notes.value])
 
 // --- Recents ----------------------------------------------------------------
 
@@ -345,6 +357,7 @@ function show() {
   copiedKey.value = null
   readRecents()
   loadPosts()
+  loadNotes()
   dialog.showModal()
   document.documentElement.classList.add('cmdk-lock')
   nextTick(() => {

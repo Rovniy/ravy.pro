@@ -1,6 +1,7 @@
 import { baseData } from '~/data'
 import { getPost, listMeta } from '../utils/blog-store'
 import { abs, absolutizeMarkdown, llmsHeader } from '../utils/llms'
+import { getNotes, listNotes } from '../utils/til-store'
 
 /**
  * /llms-full.txt — every post's full text as one Markdown document.
@@ -43,9 +44,19 @@ export default defineEventHandler(async (event) => {
       ].filter(Boolean).join('\n\n')
     })
 
+  const noteIndex = await listNotes({ publishedOnly: true }).catch(() => [])
+  const notes = (await getNotes(noteIndex.map(n => n.slug)).catch(() => []))
+    .filter(n => n.published)
+    .map(note => [
+      `# TIL: ${note.title}`,
+      `URL: ${abs(note.path)} · Published: ${note.createdAt.slice(0, 10)} · Author: ${baseData.me.name}`,
+      absolutizeMarkdown(note.markdown.trim()),
+    ].join('\n\n'))
+
   return [
     llmsHeader(),
-    `This file contains the full text of ${sections.length} posts, newest first, separated by horizontal rules. The index with per-post summaries is at ${abs('/llms.txt')}.`,
+    `This file contains the full text of ${sections.length} posts and ${notes.length} short TIL notes, newest first, separated by horizontal rules. The index with per-post summaries is at ${abs('/llms.txt')}.`,
     ...sections,
+    ...notes,
   ].join('\n\n---\n\n')
 })
