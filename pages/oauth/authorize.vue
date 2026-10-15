@@ -163,7 +163,7 @@ function deny() {
         <div class="flex gap-3">
           <button
             type="button"
-            class="bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer disabled:opacity-50"
+            class="skew-box btn btn-primary btn-sm"
             :disabled="busy || done"
             @click="allow"
           >
@@ -171,7 +171,7 @@ function deny() {
           </button>
           <button
             type="button"
-            class="border border-line-strong px-4 py-2 text-sm font-medium hover:cursor-pointer disabled:opacity-50"
+            class="skew-box btn btn-secondary btn-sm"
             :disabled="busy || done"
             @click="deny"
           >

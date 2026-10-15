@@ -147,7 +147,7 @@ generate()
 </script>
 
 <template>
-  <div class="px-6 py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-12 mx-auto w-full max-w-6xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
         <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">
@@ -220,7 +220,7 @@ generate()
           <div class="flex items-center gap-3">
             <button
               type="submit"
-              class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+              class="skew-box btn btn-primary btn-sm"
             >
               <Icon name="mdi:credit-card-plus-outline" size="16" />
               Generate
@@ -228,7 +228,7 @@ generate()
             <button
               type="button"
               :disabled="!cards.length"
-              class="inline-flex items-center gap-2 border border-line-strong bg-panel px-3 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+              class="skew-box btn btn-secondary btn-sm"
               @click="copyAll"
             >
               <Icon name="mdi:content-copy" size="16" />

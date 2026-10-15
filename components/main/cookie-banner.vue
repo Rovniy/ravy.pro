@@ -134,7 +134,7 @@ function onToggleAds(granted: boolean) {
             <button
               v-if="!expanded"
               type="button"
-              class="text-sm font-medium px-5 py-2.5 border border-line-strong text-fg hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
+              class="skew-box btn btn-secondary btn-sm"
               @click="onReject"
             >
               Reject all
@@ -142,14 +142,14 @@ function onToggleAds(granted: boolean) {
             <button
               v-if="expanded"
               type="button"
-              class="text-sm font-medium px-5 py-2.5 border border-line-strong text-fg hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
+              class="skew-box btn btn-secondary btn-sm"
               @click="onSavePrefs"
             >
               Save preferences
             </button>
             <button
               type="button"
-              class="text-sm font-semibold px-5 py-2.5 text-white bg-accent-600 hover:bg-accent-700 dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 transition-colors"
+              class="skew-box btn btn-primary btn-sm"
               @click="onAccept"
             >
               Accept all

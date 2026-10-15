@@ -153,7 +153,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
               <button
                 type="button"
                 :disabled="!answers[category.id]"
-                class="inline-flex items-center gap-2 bg-fg text-bg px-5 py-2.5 font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer transition"
+                class="skew-box btn btn-primary disabled:cursor-not-allowed"
                 @click="next"
               >
                 {{ isLast ? 'See my verdict' : 'Next' }}

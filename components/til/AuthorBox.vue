@@ -33,14 +33,14 @@ const { trackCta } = useAnalytics()
       <div class="mt-4 flex flex-wrap gap-2">
         <NuxtLink
           to="/about"
-          class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-accent-600 hover:bg-accent-700 dark:text-slate-950 dark:bg-accent-400 dark:hover:bg-accent-300 transition-colors"
+          class="skew-box btn btn-primary btn-sm"
           @click="trackCta('til_author_about', 'til')"
         >
           About me
         </NuxtLink>
         <NuxtLink
           to="/services"
-          class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-line-strong text-fg hover:border-accent-500/50 hover:text-accent-ink transition-colors"
+          class="skew-box btn btn-secondary btn-sm"
           @click="trackCta('til_author_services', 'til')"
         >
           Work with me
@@ -50,14 +50,14 @@ const { trackCta } = useAnalytics()
           :to="linkedin.href"
           target="_blank"
           rel="noopener"
-          class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-line-strong text-fg hover:border-accent-500/50 hover:text-accent-ink transition-colors"
+          class="skew-box btn btn-secondary btn-sm"
         >
           <Icon name="fa:linkedin" size="14" aria-hidden="true" />
           Follow
         </NuxtLink>
         <a
           href="/til/rss.xml"
-          class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold border border-line-strong text-fg hover:border-accent-500/50 hover:text-accent-ink transition-colors"
+          class="skew-box btn btn-secondary btn-sm"
         >
           <Icon name="mdi:rss" size="14" aria-hidden="true" />
           RSS

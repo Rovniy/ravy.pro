@@ -123,7 +123,7 @@ const fieldClasses = 'w-full border border-line-strong bg-panel px-4 py-2.5 text
         :href="telegramHref"
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-5 inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-ink transition-colors"
+        class="skew-box btn btn-secondary btn-sm mt-5"
       >
         <Icon name="fa:telegram" class="w-4 h-4" aria-hidden="true" />
         Message on Telegram
@@ -255,7 +255,7 @@ const fieldClasses = 'w-full border border-line-strong bg-panel px-4 py-2.5 text
             :href="telegramHref"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-ink transition-colors"
+            class="skew-box btn btn-secondary btn-sm"
           >
             <Icon name="fa:telegram" class="w-4 h-4" aria-hidden="true" />
             Message on Telegram instead

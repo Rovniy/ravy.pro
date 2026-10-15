@@ -62,7 +62,7 @@ const previewCards = computed(() => {
         <button
           type="button"
           :disabled="loading"
-          class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-fg text-bg px-5 py-3 font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition"
+          class="skew-box btn btn-primary mt-6 w-full disabled:cursor-not-allowed"
           @click="$emit('unlock')"
         >
           <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:lock-open-variant'" class="w-5 h-5" />

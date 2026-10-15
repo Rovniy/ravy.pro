@@ -74,7 +74,7 @@ onMounted(load)
       <button
         type="button"
         :disabled="loading || saving"
-        class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+        class="skew-box btn btn-primary btn-sm"
         @click="save"
       >
         <Icon :name="saving ? 'svg-spinners:180-ring' : 'mdi:content-save-outline'" size="16" />

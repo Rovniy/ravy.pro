@@ -111,7 +111,7 @@ function downloadPdf() {
       </div>
       <button
         type="button"
-        class="shrink-0 inline-flex items-center gap-1.5 bg-fg text-bg px-3.5 py-1.5 text-sm font-medium hover:opacity-90 hover:cursor-pointer transition"
+        class="skew-box btn btn-primary btn-sm shrink-0"
         @click="downloadPdf"
       >
         <Icon name="mdi:file-download-outline" class="w-4 h-4" />

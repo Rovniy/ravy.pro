@@ -53,7 +53,7 @@ const suggestToolUrl = `https://t.me/xploitravy?text=${suggestToolText}`
 
 <template>
   <div class="text-fg-muted">
-    <section class="container max-w-5xl mx-auto px-6 py-14">
+    <section class="mx-auto w-full max-w-6xl px-6 lg:px-10 py-14">
       <p class="eyebrow mb-2.5">
         {{ toolsPage.og.headline }}
       </p>

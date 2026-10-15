@@ -388,7 +388,7 @@ watch(
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 max-w-3xl">
@@ -476,7 +476,7 @@ watch(
         <button
           type="button"
           :disabled="isRunning"
-          class="sm:hidden w-full inline-flex items-center justify-center gap-2 border border-line-strong px-4 py-2 text-base font-medium hover:bg-panel-raised disabled:opacity-60"
+          class="skew-box btn btn-secondary w-full"
           @click="openPhotoPicker"
         >
           <Icon name="mdi:camera" size="18" />
@@ -539,7 +539,7 @@ watch(
         <button
           type="button"
           :disabled="!hasInput || isRunning"
-          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-fg text-bg px-4 py-2 text-base font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="skew-box btn btn-primary w-full sm:w-auto disabled:cursor-not-allowed"
           @click="runScan"
         >
           <Icon :name="isRunning ? 'svg-spinners:180-ring' : 'mdi:shield-search'" size="16" />

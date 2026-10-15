@@ -124,7 +124,7 @@ async function startCheckout() {
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 max-w-3xl">
@@ -170,7 +170,7 @@ async function startCheckout() {
       <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <button
           type="button"
-          class="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3 font-medium hover:opacity-90 hover:cursor-pointer transition"
+          class="skew-box btn btn-primary"
           @click="startWizard"
         >
           <Icon name="mdi:rocket-launch-outline" class="w-5 h-5" />

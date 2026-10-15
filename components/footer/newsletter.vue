@@ -62,7 +62,7 @@ async function subscribe() {
         <button
           type="submit"
           :disabled="status === 'loading'"
-          class="inline-flex items-center justify-center gap-2 bg-accent-600 hover:bg-accent-700 text-white dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 text-sm font-semibold px-5 py-2.5 ring-1 ring-accent-400/30 disabled:opacity-60 hover:cursor-pointer transition-all"
+          class="skew-box btn btn-primary btn-sm"
         >
           <Icon v-if="status === 'loading'" name="svg-spinners:180-ring" size="16" aria-hidden="true" />
           <Icon v-else name="mdi:email-fast-outline" size="16" aria-hidden="true" />

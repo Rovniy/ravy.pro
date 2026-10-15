@@ -52,8 +52,8 @@ const cardClasses = 'group relative flex flex-col border border-line bg-panel p-
 
 <template>
   <div class="text-fg-muted">
-    <div class="container max-w-5xl mx-auto">
-      <section class="py-14 px-6">
+    <div class="mx-auto w-full max-w-6xl px-6 lg:px-10">
+      <section class="py-14">
         <p class="eyebrow mb-2">
           {{ servicesPage.content.eyebrow }}
         </p>
@@ -154,7 +154,7 @@ const cardClasses = 'group relative flex flex-col border border-line bg-panel p-
         </p>
       </section>
 
-      <section id="inquiry" class="pb-14 px-6 scroll-mt-28">
+      <section id="inquiry" class="pb-14 scroll-mt-28">
         <ServiceInquiryForm
           heading="Tell me what you need"
           lede="One message, and I'll reply within 24 hours with an honest read on whether I can help and what it would take. If it isn't something I can do well, I'll say so and point you elsewhere."

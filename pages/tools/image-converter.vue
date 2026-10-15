@@ -472,7 +472,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 </script>
 
 <template>
-  <div class="px-6 py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-12 mx-auto w-full max-w-6xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
         <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">
@@ -664,7 +664,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           <button
             v-if="item.status === 'done'"
             type="button"
-            class="inline-flex items-center gap-1 bg-fg text-bg px-2.5 py-1.5 text-xs font-medium hover:opacity-90 hover:cursor-pointer"
+            class="skew-box btn btn-primary btn-sm"
             @click="downloadItem(item)"
           >
             <Icon name="mdi:download" size="14" aria-hidden="true" />

@@ -100,7 +100,7 @@ async function downloadZip() {
         </UiButton>
         <a
           :href="mailto"
-          class="inline-flex items-center gap-2 border border-line-strong bg-panel px-4 py-2 text-sm font-medium text-fg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          class="skew-box btn btn-secondary btn-sm"
         >
           <Icon name="mdi:email-outline" class="w-5 h-5" aria-hidden="true" /> Press contact
         </a>

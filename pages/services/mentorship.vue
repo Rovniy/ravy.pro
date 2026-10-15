@@ -33,11 +33,11 @@ defineOgImage('Blog', {
 
 <template>
   <div class="text-fg-muted">
-    <div class="container max-w-5xl mx-auto">
+    <div class="mx-auto w-full max-w-6xl px-6 lg:px-10">
       <!-- Hero. Plain on purpose: the gradient h1 and grid/blob backdrop are the
            home hero's signature, and reusing them here would make this page
            compete with the site's identity. -->
-      <section class="pt-14 pb-10 px-6">
+      <section class="pt-14 pb-10">
         <p class="eyebrow mb-2">
           {{ m.hero.eyebrow }}
         </p>
@@ -56,7 +56,7 @@ defineOgImage('Blog', {
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
             :href="m.hero.ctaPrimary.to"
-            class="inline-flex items-center gap-2 bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 px-5 py-2.5 text-sm font-semibold ring-1 ring-accent-400/30 transition-all"
+            class="skew-box btn btn-primary btn-sm"
           >
             {{ m.hero.ctaPrimary.label }}
             <Icon name="mdi:arrow-down" class="w-4 h-4" aria-hidden="true" />
@@ -65,7 +65,7 @@ defineOgImage('Blog', {
             :href="m.hero.ctaSecondary.href"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 border border-line-strong bg-panel px-5 py-2.5 text-sm font-semibold hover:border-accent-400 hover:text-accent-ink transition-all"
+            class="skew-box btn btn-secondary btn-sm"
           >
             <Icon name="fa:telegram" class="w-4 h-4" aria-hidden="true" />
             {{ m.hero.ctaSecondary.label }}
@@ -79,7 +79,7 @@ defineOgImage('Blog', {
            the gap between any two sections is a constant 64px. Two-sided py-14
            used to double up to 112px between most sections while the CTA and the
            footer notes sat at 56px — the page breathed unevenly. -->
-      <section class="px-6 pb-16">
+      <section class="pb-16">
         <div class="border-t border-line pt-6">
           <dl class="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-6">
             <div v-for="stat in m.numbers.items" :key="stat.label">
@@ -99,7 +99,7 @@ defineOgImage('Blog', {
 
       <!-- Fit before program: someone arriving from an engineering blog asks
            "is this about me" before "what's the syllabus". -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.fit.eyebrow" :title="m.fit.title" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -134,7 +134,7 @@ defineOgImage('Blog', {
         </p>
       </section>
 
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.author.eyebrow" :title="m.author.title" />
 
         <div class="max-w-3xl space-y-4">
@@ -162,7 +162,7 @@ defineOgImage('Blog', {
         </NuxtLink>
       </section>
 
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.program.eyebrow" :title="m.program.title" />
         <p class="-mt-4 mb-8 max-w-2xl text-sm leading-relaxed text-fg-muted">
           {{ m.program.lede }}
@@ -196,7 +196,7 @@ defineOgImage('Blog', {
 
       <!-- A checklist, not eight cards: this is the format a skeptic uses to
            price the offer mentally. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.included.eyebrow" :title="m.included.title" />
 
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
@@ -214,7 +214,7 @@ defineOgImage('Blog', {
       <!-- The load-bearing block. `1.2×` is the important number: "20% for six
            months" reads as open-ended, "1.2 months of salary in total" is finite
            and comparable to a recruiter fee. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.terms.eyebrow" :title="m.terms.title" />
         <p class="-mt-4 mb-8 max-w-3xl text-base leading-relaxed text-fg-muted">
           {{ m.terms.lede }}
@@ -262,7 +262,7 @@ defineOgImage('Blog', {
 
       <!-- The single mid-page CTA, placed after the terms rather than after the
            program: people convert on the money model, not the syllabus. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <ServiceCtaBlock
           :label="m.cta.label"
           :note="m.cta.note"
@@ -275,7 +275,7 @@ defineOgImage('Blog', {
 
       <!-- Cases after the terms: proof lands harder once the reader knows the
            incentive. No photos, no pull-quotes — these are anonymised. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.cases.eyebrow" :title="m.cases.title" />
         <p class="-mt-4 mb-8 max-w-3xl text-sm leading-relaxed text-fg-muted">
           {{ m.cases.lede }}
@@ -312,7 +312,7 @@ defineOgImage('Blog', {
         </p>
       </section>
 
-      <section id="apply" class="pb-16 px-6 scroll-mt-28">
+      <section id="apply" class="pb-16 scroll-mt-28">
         <ServiceInquiryForm
           :heading="m.apply.heading"
           :lede="m.apply.lede"
@@ -323,7 +323,7 @@ defineOgImage('Blog', {
         />
       </section>
 
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="m.faq.eyebrow" :title="m.faq.title" />
 
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
@@ -345,7 +345,7 @@ defineOgImage('Blog', {
       <!-- Cross-link to the Russian original. Latin-only text on purpose: the
            self-hosted font subset has no Cyrillic block, so a Russian word here
            would fall back to a system font and show a visible seam. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <div class="border border-line px-5 py-4">
           <p class="font-spacemono text-micro uppercase tracking-wider text-fg-muted">
             {{ m.origin.eyebrow }}
@@ -368,7 +368,7 @@ defineOgImage('Blog', {
 
       <!-- Real fine print, honestly formatted: not styled to be overlooked, not
            inflated into a warning box. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <p class="border-t border-line pt-6 max-w-3xl text-xs leading-relaxed text-fg-muted">
           {{ m.honestyNote }}
           <NuxtLink :to="m.terms.fullTerms.to" class="underline decoration-slate-400/50 hover:text-accent-ink">

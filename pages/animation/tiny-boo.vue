@@ -30,7 +30,7 @@ const { trackCta } = useAnalytics()
             :href="s.channelUrl"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-2 bg-fg text-bg px-5 py-3 font-medium hover:opacity-90 transition"
+            class="skew-box btn btn-primary"
             @click="trackCta(s.channelUrl, 'animation_hero')"
           >
             <Icon name="simple-icons:youtube" class="w-5 h-5" aria-hidden="true" />
@@ -39,7 +39,7 @@ const { trackCta } = useAnalytics()
           </a>
           <NuxtLink
             :to="s.game"
-            class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
+            class="skew-box btn btn-secondary"
           >
             <Icon name="mdi:gamepad-variant-outline" class="w-5 h-5" aria-hidden="true" />
             The game

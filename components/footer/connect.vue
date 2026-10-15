@@ -17,7 +17,7 @@ const { track } = useAnalytics()
 
     <NuxtLink
       to="/contacts"
-      class="inline-flex items-center justify-center gap-2 mt-5 px-5 py-2.5 bg-accent-600 hover:bg-accent-700 text-white dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 text-sm font-semibold ring-1 ring-accent-400/30 transition-all"
+      class="skew-box btn btn-primary btn-sm mt-5"
       @click="track('contact_click', { method: 'contacts_page' })"
     >
       <Icon name="mdi:card-account-details-outline" size="16" aria-hidden="true" />

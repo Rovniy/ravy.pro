@@ -73,7 +73,7 @@ onMounted(refresh)
     <div class="flex flex-wrap items-center gap-2 mb-5">
       <NuxtLink
         to="/studio/new"
-        class="inline-flex items-center gap-1.5 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90"
+        class="skew-box btn btn-primary btn-sm"
       >
         <Icon name="mdi:plus" size="16" />
         New post

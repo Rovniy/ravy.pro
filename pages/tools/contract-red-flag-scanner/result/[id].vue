@@ -177,7 +177,7 @@ onMounted(fetchState)
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-3xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <NuxtLink to="/tools/contract-red-flag-scanner" class="inline-flex items-center gap-1.5 eyebrow hover:text-accent-500 transition-colors">
       <Icon name="mdi:arrow-left" class="w-3.5 h-3.5" /> Contract Red-Flag Scanner
     </NuxtLink>

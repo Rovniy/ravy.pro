@@ -262,7 +262,7 @@ function stringify(value: unknown): string {
 </script>
 
 <template>
-  <div class="px-6 py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-12 mx-auto w-full max-w-6xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
         <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">

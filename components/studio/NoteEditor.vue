@@ -309,7 +309,7 @@ onMounted(load)
         <button
           type="button"
           :disabled="saving"
-          class="shrink-0 bg-fg px-5 py-2 text-sm font-medium text-bg disabled:opacity-50 hover:opacity-90 hover:cursor-pointer"
+          class="skew-box btn btn-primary btn-sm shrink-0"
           @click="onSave"
         >
           {{ saving ? 'Saving…' : 'Save' }}

@@ -560,7 +560,7 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
               Try another word, or ask me directly.
             </p>
             <div class="mt-5 flex flex-wrap justify-center gap-2">
-              <a :href="askHref" class="inline-flex items-center gap-1.5 bg-accent-600 px-3 py-2 text-sm font-semibold text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300" @click="close">
+              <a :href="askHref" class="skew-box btn btn-primary btn-sm" @click="close">
                 <Icon name="mdi:email-fast-outline" class="w-4 h-4" aria-hidden="true" /> Ask Andrei
               </a>
               <button type="button" class="inline-flex items-center gap-1.5 border border-line px-3 py-2 text-sm font-semibold text-fg hover:border-accent-500/60" @click="query = ''; scope = 'all'; inputRef?.focus()">

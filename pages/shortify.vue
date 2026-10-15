@@ -159,7 +159,7 @@ if (import.meta.client) {
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="skew-box btn btn-primary btn-sm"
         @click="onSignIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />
@@ -198,7 +198,7 @@ if (import.meta.client) {
         <button
           type="submit"
           :disabled="submitting"
-          class="bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+          class="skew-box btn btn-primary btn-sm"
         >
           {{ submitting ? 'Creating…' : 'Shorten' }}
         </button>

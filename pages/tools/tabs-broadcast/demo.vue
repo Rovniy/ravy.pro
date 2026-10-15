@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-3xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <NuxtLink to="/tools/tabs-broadcast" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500">
       <Icon name="mdi:arrow-left" class="w-4 h-4" aria-hidden="true" /> tabs-broadcast
     </NuxtLink>
@@ -163,7 +163,7 @@ onBeforeUnmount(() => {
         </div>
         <button
           type="button"
-          class="inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium text-fg hover:border-accent-500 transition"
+          class="skew-box btn btn-secondary btn-sm"
           @click="openAnotherTab"
         >
           <Icon name="mdi:tab-plus" class="w-4 h-4" aria-hidden="true" />

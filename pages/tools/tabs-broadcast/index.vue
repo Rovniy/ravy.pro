@@ -116,7 +116,7 @@ function copyInstall() {
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1 max-w-3xl">
@@ -143,7 +143,7 @@ function copyInstall() {
       <div class="flex flex-wrap items-center gap-3">
         <button
           type="button"
-          class="inline-flex items-center gap-2 bg-fg text-bg px-5 py-3 font-spacemono text-sm hover:opacity-90 transition"
+          class="skew-box btn btn-primary font-spacemono! normal-case! tracking-normal! text-sm"
           :aria-label="`Copy: ${INSTALL_COMMAND}`"
           @click="copyInstall"
         >
@@ -153,21 +153,21 @@ function copyInstall() {
         </button>
         <NuxtLink
           :to="DEMO_PATH"
-          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
+          class="skew-box btn btn-secondary"
         >
           <Icon name="mdi:play-circle-outline" class="w-5 h-5" />
           Live demo
         </NuxtLink>
         <a
           :href="NPM_URL"
-          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
+          class="skew-box btn btn-secondary"
         >
           <Icon name="mdi:npm" class="w-5 h-5" />
           npm
         </a>
         <a
           :href="REPO_URL"
-          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
+          class="skew-box btn btn-secondary"
         >
           <Icon name="fa:github" class="w-5 h-5" />
           Source on GitHub

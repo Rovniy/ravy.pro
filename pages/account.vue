@@ -101,7 +101,7 @@ function selectTab(key: string) {
         v-if="state.ready && isAuthed"
         type="button"
         :disabled="signingOut"
-        class="shrink-0 inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-ink disabled:opacity-50 hover:cursor-pointer transition-colors"
+        class="skew-box btn btn-secondary btn-sm shrink-0"
         @click="onSignOut"
       >
         <Icon :name="signingOut ? 'svg-spinners:180-ring' : 'mdi:logout'" size="16" aria-hidden="true" />
@@ -119,7 +119,7 @@ function selectTab(key: string) {
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="skew-box btn btn-primary btn-sm"
         @click="signIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />

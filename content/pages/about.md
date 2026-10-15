@@ -5,67 +5,60 @@ createdAt: 2025-05-05T22:00:00.000Z
 lastUpdated: 2026-10-12T00:00:00.000Z
 ---
 
-# Andrei Rovnyi
-
-**Software Developer · Engineering Manager · Founder**
-
-![Andrei Rovnyi](/photos/a_rovnyi_deep.webp){width=1086 height=1448}
-
 I'm a software developer, engineering manager, and founder with 15 years of experience building web platforms, game systems, real-time services, and digital products. Today I lead web development as an **Engineering Manager at [Gaijin Entertainment](https://gaijin.net/)** and run **[XPLOIT](https://xploit.games)**, my own independent game studio. This site is where that work lives in public — part portfolio, part blog, part technical notebook.
-
-<div class="not-prose flex flex-wrap gap-3 my-8">
-  <a href="https://ravy.pro/misc/andrei_rovnyi_cv.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-sky-400/30 transition-all">View my CV</a>
-  <a href="/contacts" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">Contact me</a>
-  <a href="/blogs" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">Read my blog</a>
-</div>
 
 ## What I Do
 
 <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-  <div class="p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm">
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-2">Product &amp; Full-Stack Engineering</h3>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">I turn vague ideas into shipped products — early technical decisions, architecture, frontend, backend, deployment, analytics, and iteration. MVPs, dashboards, APIs, and internal tools on stacks I can stand behind in production.</p>
-  </div>
-  <div class="p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm">
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-2">Real-Time &amp; High-Load Systems</h3>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">My specialty: WebRTC, WebSockets, authoritative state, and infrastructure that stays up under pressure. I've built platforms serving hundreds of thousands of concurrent users and CI/CD pipelines with zero downtime at 10,000+ RPS peaks.</p>
-  </div>
-  <div class="p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm">
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-2">Game Development &amp; Game Tech</h3>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">Gameplay features, game UI engines, Unity workflows, monetization logic, analytics, and store integrations — both inside large studios and in my own games at XPLOIT.</p>
-  </div>
-  <div class="p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm">
-    <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100 mb-2">Automation &amp; AI Tooling</h3>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">The tools that quietly remove manual work: LLM-powered utilities, AI content pipelines, admin panels, integrations, data scripts, and operational dashboards. Several of them run live on this site.</p>
-  </div>
+  <div class="frame cut"><div class="frame-inner cut p-5">
+    <h3 class="font-display font-extrabold uppercase text-2xl leading-none text-fg mb-3">Product &amp; Full-Stack Engineering</h3>
+    <p class="text-sm leading-relaxed text-fg-muted">I turn vague ideas into shipped products — early technical decisions, architecture, frontend, backend, deployment, analytics, and iteration. MVPs, dashboards, APIs, and internal tools on stacks I can stand behind in production.</p>
+  </div></div>
+  <div class="frame cut"><div class="frame-inner cut p-5">
+    <h3 class="font-display font-extrabold uppercase text-2xl leading-none text-fg mb-3">Real-Time &amp; High-Load Systems</h3>
+    <p class="text-sm leading-relaxed text-fg-muted">My specialty: WebRTC, WebSockets, authoritative state, and infrastructure that stays up under pressure. I've built platforms serving hundreds of thousands of concurrent users and CI/CD pipelines with zero downtime at 10,000+ RPS peaks.</p>
+  </div></div>
+  <div class="frame cut"><div class="frame-inner cut p-5">
+    <h3 class="font-display font-extrabold uppercase text-2xl leading-none text-fg mb-3">Game Development &amp; Game Tech</h3>
+    <p class="text-sm leading-relaxed text-fg-muted">Gameplay features, game UI engines, Unity workflows, monetization logic, analytics, and store integrations — both inside large studios and in my own games at XPLOIT.</p>
+  </div></div>
+  <div class="frame cut"><div class="frame-inner cut p-5">
+    <h3 class="font-display font-extrabold uppercase text-2xl leading-none text-fg mb-3">Automation &amp; AI Tooling</h3>
+    <p class="text-sm leading-relaxed text-fg-muted">The tools that quietly remove manual work: LLM-powered utilities, AI content pipelines, admin panels, integrations, data scripts, and operational dashboards. Several of them run live on this site.</p>
+  </div></div>
 </div>
 
 ## Experience
 
-<div class="not-prose my-6 space-y-6 border-l-2 border-zinc-200 dark:border-zinc-800 pl-6">
-  <div>
-    <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2023 — now</p>
-    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">Engineering Manager — <a href="https://gaijin.net/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Gaijin Entertainment</a></p>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Led UI development of <a href="https://wtmobile.com/" target="_blank" rel="noopener" class="underline decoration-zinc-400/40 hover:text-sky-500">War Thunder Mobile</a> from development through worldwide launch, plus the web services around the game. Work in the ecosystems of <em>War Thunder</em>, <em>Crossout</em>, <em>Active Matter</em>, and <em>Star Wrath</em>.</p>
+<div class="not-prose my-6 space-y-7 border-l-2 border-line pl-6">
+  <div class="relative">
+    <span class="absolute -left-[31px] top-1 w-3 h-3 bg-accent" aria-hidden="true"></span>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-accent-ink mb-1">2023 — now</p>
+    <p class="text-base font-semibold text-fg">Engineering Manager — <a href="https://gaijin.net/" target="_blank" rel="noopener" class="text-accent-ink hover:text-fg">Gaijin Entertainment</a></p>
+    <p class="text-sm leading-relaxed text-fg-muted mt-1">Led UI development of <a href="https://wtmobile.com/" target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-2 hover:text-accent-ink">War Thunder Mobile</a> from development through worldwide launch, plus the web services around the game. Work in the ecosystems of <em>War Thunder</em>, <em>Crossout</em>, <em>Active Matter</em>, and <em>Star Wrath</em>.</p>
   </div>
-  <div>
-    <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2020 — 2022</p>
-    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">CTO &amp; Founder — <a href="https://elopub.com" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">ELOPUB</a></p>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Built an esports platform for fully automated CS:GO tournaments from scratch into a $10M-valued company with investors from three countries. Led a team of 40+ across development, design, QA, and marketing; ran zero-downtime CI/CD at 10,000+ RPS peaks.</p>
+  <div class="relative">
+    <span class="absolute -left-[31px] top-1 w-3 h-3 bg-accent" aria-hidden="true"></span>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-accent-ink mb-1">2020 — 2022</p>
+    <p class="text-base font-semibold text-fg">CTO &amp; Founder — <a href="https://elopub.com" target="_blank" rel="noopener" class="text-accent-ink hover:text-fg">ELOPUB</a></p>
+    <p class="text-sm leading-relaxed text-fg-muted mt-1">Built an esports platform for fully automated CS:GO tournaments from scratch into a $10M-valued company with investors from three countries. Led a team of 40+ across development, design, QA, and marketing; ran zero-downtime CI/CD at 10,000+ RPS peaks.</p>
   </div>
-  <div>
-    <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2019 — 2021</p>
-    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">Team Lead / Lead Frontend Engineer — <a href="https://wargaming.net/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Wargaming</a>, <em>World of Tanks</em></p>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Managed 35+ engineers across four teams. Drove the game's migration to the Coherent Gameface UI engine and built its component library; shipped major features including Frontline, Marathons, Tank Football, and the WoT 10th Anniversary.</p>
+  <div class="relative">
+    <span class="absolute -left-[31px] top-1 w-3 h-3 bg-accent" aria-hidden="true"></span>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-accent-ink mb-1">2019 — 2021</p>
+    <p class="text-base font-semibold text-fg">Team Lead / Lead Frontend Engineer — <a href="https://wargaming.net/" target="_blank" rel="noopener" class="text-accent-ink hover:text-fg">Wargaming</a>, <em>World of Tanks</em></p>
+    <p class="text-sm leading-relaxed text-fg-muted mt-1">Managed 35+ engineers across four teams. Drove the game's migration to the Coherent Gameface UI engine and built its component library; shipped major features including Frontline, Marathons, Tank Football, and the WoT 10th Anniversary.</p>
   </div>
-  <div>
-    <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">2018 — 2019</p>
-    <p class="text-base font-bold text-zinc-900 dark:text-zinc-100">Lead Frontend Engineer — <a href="https://www.eu-startups.com/directory/play2live/" target="_blank" rel="noopener" class="text-sky-500 hover:text-sky-400">Play2Live</a></p>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Built the frontend of a streaming platform designed for hundreds of thousands of concurrent viewers: an RTC video player, live chat, and 50+ interactive widgets, served in SSR mode at tens of thousands of RPS.</p>
+  <div class="relative">
+    <span class="absolute -left-[31px] top-1 w-3 h-3 bg-accent" aria-hidden="true"></span>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-accent-ink mb-1">2018 — 2019</p>
+    <p class="text-base font-semibold text-fg">Lead Frontend Engineer — <a href="https://www.eu-startups.com/directory/play2live/" target="_blank" rel="noopener" class="text-accent-ink hover:text-fg">Play2Live</a></p>
+    <p class="text-sm leading-relaxed text-fg-muted mt-1">Built the frontend of a streaming platform designed for hundreds of thousands of concurrent viewers: an RTC video player, live chat, and 50+ interactive widgets, served in SSR mode at tens of thousands of RPS.</p>
   </div>
-  <div>
-    <p class="text-xs font-semibold uppercase tracking-wide text-sky-500 dark:text-sky-400 mb-1">Earlier</p>
-    <p class="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">Co-founded <a href="https://streampub.net/" target="_blank" rel="noopener" class="underline decoration-zinc-400/40 hover:text-sky-500">StreamPub</a> (CTO) and Gamestars, built insurance and e-commerce web products, and taught web development and 3D modeling.</p>
+  <div class="relative">
+    <span class="absolute -left-[31px] top-1 w-3 h-3 bg-accent" aria-hidden="true"></span>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-accent-ink mb-1">Earlier</p>
+    <p class="text-sm leading-relaxed text-fg-muted">Co-founded <a href="https://streampub.net/" target="_blank" rel="noopener" class="underline decoration-line-strong underline-offset-2 hover:text-accent-ink">StreamPub</a> (CTO) and Gamestars, built insurance and e-commerce web products, and taught web development and 3D modeling.</p>
   </div>
 </div>
 
@@ -76,30 +69,30 @@ The best proof is running software. A few things you can try right now:
 ### Tools on this site
 
 <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
-  <a href="/tools/steam-ai-disclosure" class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm block">
-    <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Steam AI Disclosure</p>
-    <p class="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Fill Steam's mandatory AI content disclosure correctly.</p>
-  </a>
-  <a href="/tools/contract-red-flag-scanner" class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm block">
-    <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Contract Red-Flag Scanner</p>
-    <p class="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Spot risky clauses in influencer and brand contracts.</p>
-  </a>
-  <a href="/tools/jwt-decoder" class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm block">
-    <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">JWT Decoder</p>
-    <p class="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Decode and verify JSON Web Tokens fully in your browser.</p>
-  </a>
-  <a href="/tools/image-converter" class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm block">
-    <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Image Converter</p>
-    <p class="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Convert PNG, JPEG, and WebP locally — with ICC color management.</p>
-  </a>
-  <a href="/tools/qr-code-generator" class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm block">
-    <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">QR Code Generator</p>
-    <p class="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Styled QR codes with a logo, exported as PNG.</p>
-  </a>
-  <a href="/tools/credit-card-generator" class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-slate-900/50 transition-all hover:border-sky-300 dark:hover:border-sky-700/60 hover:shadow-sm block">
-    <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Credit Card Generator</p>
-    <p class="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400 mt-1">Luhn-valid test card numbers for QA and payment testing.</p>
-  </a>
+  <a href="/tools/steam-ai-disclosure" class="frame cut cut-sm"><span class="frame-inner cut cut-sm block p-4">
+    <span class="block font-semibold text-fg">Steam AI Disclosure</span>
+    <span class="block text-xs leading-relaxed text-fg-muted mt-1">Fill Steam's mandatory AI content disclosure correctly.</span>
+  </span></a>
+  <a href="/tools/contract-red-flag-scanner" class="frame cut cut-sm"><span class="frame-inner cut cut-sm block p-4">
+    <span class="block font-semibold text-fg">Contract Red-Flag Scanner</span>
+    <span class="block text-xs leading-relaxed text-fg-muted mt-1">Spot risky clauses in influencer and brand contracts.</span>
+  </span></a>
+  <a href="/tools/jwt-decoder" class="frame cut cut-sm"><span class="frame-inner cut cut-sm block p-4">
+    <span class="block font-semibold text-fg">JWT Decoder</span>
+    <span class="block text-xs leading-relaxed text-fg-muted mt-1">Decode and verify JSON Web Tokens fully in your browser.</span>
+  </span></a>
+  <a href="/tools/image-converter" class="frame cut cut-sm"><span class="frame-inner cut cut-sm block p-4">
+    <span class="block font-semibold text-fg">Image Converter</span>
+    <span class="block text-xs leading-relaxed text-fg-muted mt-1">Convert PNG, JPEG, and WebP locally — with ICC color management.</span>
+  </span></a>
+  <a href="/tools/qr-code-generator" class="frame cut cut-sm"><span class="frame-inner cut cut-sm block p-4">
+    <span class="block font-semibold text-fg">QR Code Generator</span>
+    <span class="block text-xs leading-relaxed text-fg-muted mt-1">Styled QR codes with a logo, exported as PNG.</span>
+  </span></a>
+  <a href="/tools/credit-card-generator" class="frame cut cut-sm"><span class="frame-inner cut cut-sm block p-4">
+    <span class="block font-semibold text-fg">Credit Card Generator</span>
+    <span class="block text-xs leading-relaxed text-fg-muted mt-1">Luhn-valid test card numbers for QA and payment testing.</span>
+  </span></a>
 </div>
 
 ### Games at XPLOIT
@@ -122,72 +115,72 @@ All of them, with trailers, store links and what I built in each: [Games](/games
 
 <div class="not-prose space-y-5 my-6">
   <div>
-    <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Frontend</p>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mb-2">Frontend</p>
     <div class="flex flex-wrap gap-1.5">
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Vue</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Nuxt</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">React</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Svelte</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">TypeScript</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Tailwind CSS</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">SSR</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300">Capacitor</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Vue</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Nuxt</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">React</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Svelte</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">TypeScript</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Tailwind CSS</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">SSR</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Capacitor</span>
     </div>
   </div>
   <div>
-    <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Backend</p>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mb-2">Backend</p>
     <div class="flex flex-wrap gap-1.5">
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">Node.js</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">Go</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">Python</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">PHP</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">PostgreSQL</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">MongoDB</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">Redis</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">Firebase</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Node.js</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Go</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Python</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">PHP</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">PostgreSQL</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">MongoDB</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Redis</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Firebase</span>
     </div>
   </div>
   <div>
-    <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Real-Time &amp; High-Load</p>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mb-2">Real-Time &amp; High-Load</p>
     <div class="flex flex-wrap gap-1.5">
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">WebRTC</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">WebSockets</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">Server-Sent Events</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">Authoritative State</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-cyan-100 text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">Microservices</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">WebRTC</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">WebSockets</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Server-Sent Events</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Authoritative State</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Microservices</span>
     </div>
   </div>
   <div>
-    <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Game Development</p>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mb-2">Game Development</p>
     <div class="flex flex-wrap gap-1.5">
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Unity</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">C#</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">C++</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Coherent Gameface</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Gameplay Systems</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Monetization &amp; LiveOps</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">Game Analytics</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Unity</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">C#</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">C++</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Coherent Gameface</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Gameplay Systems</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Monetization &amp; LiveOps</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Game Analytics</span>
     </div>
   </div>
   <div>
-    <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">DevOps &amp; Infrastructure</p>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mb-2">DevOps &amp; Infrastructure</p>
     <div class="flex flex-wrap gap-1.5">
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Docker</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Kubernetes</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">CI/CD (GitHub Actions)</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Nginx</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Linux Servers</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">Monitoring</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Docker</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Kubernetes</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">CI/CD (GitHub Actions)</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Nginx</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Linux Servers</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Monitoring</span>
     </div>
   </div>
   <div>
-    <p class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Automation &amp; AI</p>
+    <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mb-2">Automation &amp; AI</p>
     <div class="flex flex-wrap gap-1.5">
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">LLM-Powered Tools</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">AI Content Pipelines</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Agentic Workflows</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">n8n</span>
-      <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Data Pipelines</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">LLM-Powered Tools</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">AI Content Pipelines</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Agentic Workflows</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">n8n</span>
+      <span class="border border-line-strong px-2 py-1 font-spacemono text-micro uppercase tracking-[0.08em] text-fg-muted">Data Pipelines</span>
     </div>
   </div>
 </div>
@@ -221,7 +214,7 @@ If you have an idea, a product, a technical mess, or a project that needs a stro
 
 Want to build something, discuss a project, or just exchange ideas? Feel free to reach out.
 
-<div class="not-prose flex flex-wrap gap-3 my-6">
-  <a href="/contacts" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-sky-400/30 transition-all">Contact me</a>
-  <a href="https://ravy.pro/misc/andrei_rovnyi_cv.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">View CV</a>
+<div class="not-prose flex flex-wrap gap-4 my-8">
+  <a href="/contacts" class="skew-box btn btn-primary">Contact me</a>
+  <a href="https://ravy.pro/misc/andrei_rovnyi_cv.pdf" target="_blank" rel="noopener" class="skew-box btn btn-secondary">View CV</a>
 </div>

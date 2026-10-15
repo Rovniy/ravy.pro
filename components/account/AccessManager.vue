@@ -108,7 +108,7 @@ onMounted(load)
       >
       <button
         type="submit"
-        class="inline-flex items-center justify-center gap-1.5 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="skew-box btn btn-primary btn-sm"
       >
         <Icon name="mdi:account-plus-outline" class="w-4 h-4" />
         Add

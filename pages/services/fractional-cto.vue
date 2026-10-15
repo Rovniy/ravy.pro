@@ -38,11 +38,11 @@ const { trackCta } = useAnalytics()
 
 <template>
   <div class="text-fg-muted">
-    <div class="container max-w-5xl mx-auto">
+    <div class="mx-auto w-full max-w-6xl px-6 lg:px-10">
       <!-- Hero. Plain on purpose, same reasoning as the mentorship page.
            Section rhythm matches it too: bottom padding only (pb-16), so the
            gap between any two sections is a constant 64px. -->
-      <section class="pt-14 pb-10 px-6">
+      <section class="pt-14 pb-10">
         <p class="eyebrow mb-2">
           {{ c.hero.eyebrow }}
         </p>
@@ -56,7 +56,7 @@ const { trackCta } = useAnalytics()
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
             :href="c.hero.ctaPrimary.to"
-            class="inline-flex items-center gap-2 bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 px-5 py-2.5 text-sm font-semibold ring-1 ring-accent-400/30 transition-all"
+            class="skew-box btn btn-primary btn-sm"
             @click="trackCta('fractional-cto-fit-call', 'fractional_cto_hero')"
           >
             {{ c.hero.ctaPrimary.label }}
@@ -74,7 +74,7 @@ const { trackCta } = useAnalytics()
       </section>
 
       <!-- Fact strip: four verifiable numbers instead of adjectives. -->
-      <section class="px-6 pb-16">
+      <section class="pb-16">
         <div class="border-t border-line pt-6">
           <p class="font-spacemono text-micro uppercase tracking-wider text-fg-muted">
             <template v-for="(fact, i) in c.facts" :key="fact">
@@ -85,7 +85,7 @@ const { trackCta } = useAnalytics()
       </section>
 
       <!-- The filter that saves everyone's hours. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="c.fit.eyebrow" :title="c.fit.title" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -116,7 +116,7 @@ const { trackCta } = useAnalytics()
         </div>
       </section>
 
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="c.steps.eyebrow" :title="c.steps.title" />
 
         <ol class="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-8">
@@ -142,7 +142,7 @@ const { trackCta } = useAnalytics()
       </section>
 
       <!-- Prices on the page, not "on request" — the price is part of the filter. -->
-      <section id="packages" class="pb-16 px-6 scroll-mt-28">
+      <section id="packages" class="pb-16 scroll-mt-28">
         <UiSectionHeader :eyebrow="c.packages.eyebrow" :title="c.packages.title" />
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
@@ -193,7 +193,7 @@ const { trackCta } = useAnalytics()
         </p>
       </section>
 
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="c.deliverables.eyebrow" :title="c.deliverables.title" />
         <p class="-mt-4 mb-8 max-w-2xl text-sm leading-relaxed text-fg-muted">
           {{ c.deliverables.lede }}
@@ -214,7 +214,7 @@ const { trackCta } = useAnalytics()
       <!-- Track record: only the facts already published on /about. No
            testimonials, no logos, no ratings — there are none yet, and an empty
            section is more honest than a fabricated one. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="c.track.eyebrow" :title="c.track.title" />
 
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 max-w-4xl">
@@ -249,7 +249,7 @@ const { trackCta } = useAnalytics()
 
       <!-- The constraint stated as a fact, not hidden: it reads as
            professionalism on the page and would surface on the first call anyway. -->
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="c.availability.eyebrow" :title="c.availability.title" />
         <div class="max-w-3xl space-y-4">
           <p v-for="para in c.availability.paragraphs" :key="para" class="text-base leading-relaxed text-fg-muted">
@@ -258,7 +258,7 @@ const { trackCta } = useAnalytics()
         </div>
       </section>
 
-      <section id="fit-call" class="pb-16 px-6 scroll-mt-28">
+      <section id="fit-call" class="pb-16 scroll-mt-28">
         <ServiceInquiryForm
           :heading="c.apply.heading"
           :lede="c.apply.lede"
@@ -272,7 +272,7 @@ const { trackCta } = useAnalytics()
         </p>
       </section>
 
-      <section class="pb-16 px-6">
+      <section class="pb-16">
         <UiSectionHeader :eyebrow="c.faq.eyebrow" :title="c.faq.title" />
 
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">

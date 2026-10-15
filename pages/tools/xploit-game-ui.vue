@@ -98,7 +98,7 @@ function onDownload() {
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1 max-w-3xl">
@@ -126,7 +126,7 @@ function onDownload() {
       <div class="flex flex-wrap items-center gap-3">
         <a
           :href="RELEASES_URL"
-          class="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3 font-medium hover:opacity-90 transition"
+          class="skew-box btn btn-primary"
           @click="onDownload"
         >
           <Icon name="mdi:unity" class="w-5 h-5" />
@@ -135,7 +135,7 @@ function onDownload() {
         </a>
         <a
           :href="REPO_URL"
-          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
+          class="skew-box btn btn-secondary"
         >
           <Icon name="fa:github" class="w-5 h-5" />
           Source on GitHub

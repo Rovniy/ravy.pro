@@ -200,7 +200,7 @@ onBeforeUnmount(stopPolling)
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-3xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <NuxtLink to="/tools/steam-ai-disclosure" class="inline-flex items-center gap-1.5 eyebrow hover:text-accent-500 transition-colors">
       <Icon name="mdi:arrow-left" class="w-3.5 h-3.5" /> Steam AI Disclosure
     </NuxtLink>
@@ -227,7 +227,7 @@ onBeforeUnmount(stopPolling)
       <button
         type="button"
         :disabled="retrying"
-        class="mt-4 inline-flex items-center gap-2 bg-fg text-bg px-5 py-2.5 font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition"
+        class="skew-box btn btn-primary mt-4 disabled:cursor-not-allowed"
         @click="retry"
       >
         <Icon :name="retrying ? 'svg-spinners:180-ring' : 'mdi:refresh'" class="w-5 h-5" />
