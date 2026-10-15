@@ -23,7 +23,7 @@ function onClick(link: ExternalLink) {
 </script>
 
 <template>
-  <div v-if="links.length" class="flex flex-wrap items-center gap-3">
+  <div v-if="links.length" class="flex flex-wrap items-center gap-x-5 gap-y-4">
     <template v-if="!compact">
       <a
         v-for="(link, i) in links"
@@ -31,10 +31,8 @@ function onClick(link: ExternalLink) {
         :href="link.url"
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-2 px-5 py-3 font-medium transition"
-        :class="i === 0
-          ? 'bg-fg text-bg hover:opacity-90'
-          : 'border border-line-strong text-fg hover:border-accent-500'"
+        class="skew-box btn"
+        :class="i === 0 ? 'btn-primary' : 'btn-secondary'"
         @click="onClick(link)"
       >
         <Icon :name="PLATFORM_META[link.kind].icon" class="w-5 h-5" aria-hidden="true" />
@@ -49,7 +47,7 @@ function onClick(link: ExternalLink) {
         :href="link.url"
         target="_blank"
         rel="noopener"
-        class="inline-flex items-center gap-2 border border-line bg-panel px-3.5 py-2 text-sm font-medium text-fg hover:border-accent-500 hover:text-accent-ink transition"
+        class="skew-box btn btn-secondary btn-sm"
         @click="onClick(link)"
       >
         <Icon :name="PLATFORM_META[link.kind].icon" class="w-4 h-4" aria-hidden="true" />

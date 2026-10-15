@@ -12,6 +12,8 @@ import { describe, expect, it } from 'vitest'
 
 const ROOT = join(__dirname, '..', '..')
 const DIRS = ['components', 'pages', 'layouts']
+// Root-level SFCs (error.vue, app.vue) sit outside those folders.
+const ROOT_FILES = ['error.vue', 'app.vue']
 
 const RULES: Array<{ name: string, pattern: RegExp }> = [
   { name: 'pixel font size', pattern: /\btext-\[\d+(?:\.\d+)?(?:px|rem)\]/g },
@@ -49,6 +51,11 @@ function scan(): Map<string, number> {
       if (n > 0)
         counts.set(relative(ROOT, file).split(sep).join('/'), n)
     }
+  }
+  for (const name of ROOT_FILES) {
+    const n = countViolations(readFileSync(join(ROOT, name), 'utf8'))
+    if (n > 0)
+      counts.set(name, n)
   }
   return counts
 }

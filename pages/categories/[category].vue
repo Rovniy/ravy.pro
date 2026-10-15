@@ -81,7 +81,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <div class="container max-w-5xl mx-auto text-fg-muted px-4">
+  <div class="mx-auto w-full max-w-6xl px-6 lg:px-10 text-fg-muted">
     <CategoryTopic />
 
     <NuxtLink
@@ -90,7 +90,7 @@ defineOgImage('Blog', {
       class="group -mt-2 mb-8 flex items-center justify-between gap-4 border border-line bg-panel px-5 py-4 transition hover:border-accent"
     >
       <span class="font-semibold text-fg">{{ projectLink.label }}</span>
-      <Icon name="mdi:arrow-right" class="w-4 h-4 text-accent-500 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+      <Icon name="mdi:arrow-right" class="w-4 h-4 text-accent-ink transition-transform group-hover:translate-x-1" aria-hidden="true" />
     </NuxtLink>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-14">

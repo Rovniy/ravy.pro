@@ -206,21 +206,21 @@ onBeforeUnmount(stopPolling)
     </NuxtLink>
 
     <!-- Load / auth error -->
-    <div v-if="loadError" class="mt-6 border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 p-6">
-      <h1 class="text-xl font-bold text-rose-700 dark:text-rose-300 flex items-center gap-2">
+    <div v-if="loadError" class="mt-6 border border-danger/40 bg-danger/10 p-6">
+      <h1 class="text-xl font-bold text-danger flex items-center gap-2">
         <Icon name="mdi:alert-circle-outline" class="w-6 h-6" /> Can't open this result
       </h1>
-      <p class="mt-2 text-sm text-rose-700/90 dark:text-rose-300/90">
+      <p class="mt-2 text-sm text-danger">
         {{ loadError }}
       </p>
     </div>
 
     <!-- Generation error — payment is safe, offer a free retry -->
-    <div v-else-if="isError" class="mt-6 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-6">
-      <h1 class="text-xl font-bold text-amber-800 dark:text-amber-200 flex items-center gap-2">
+    <div v-else-if="isError" class="mt-6 border border-warn/40 bg-warn/10 p-6">
+      <h1 class="text-xl font-bold text-warn flex items-center gap-2">
         <Icon name="mdi:wrench-outline" class="w-6 h-6" /> Generation hit a snag
       </h1>
-      <p class="mt-2 text-sm text-amber-800/90 dark:text-amber-200/90 leading-relaxed">
+      <p class="mt-2 text-sm text-warn leading-relaxed">
         Your payment is safe and your answers are saved — retrying does <strong>not</strong> charge you again.
         We already retried once automatically.
       </p>
@@ -233,7 +233,7 @@ onBeforeUnmount(stopPolling)
         <Icon :name="retrying ? 'svg-spinners:180-ring' : 'mdi:refresh'" class="w-5 h-5" />
         {{ retrying ? 'Retrying…' : 'Retry generation' }}
       </button>
-      <p class="mt-3 text-xs text-amber-700/80 dark:text-amber-300/80">
+      <p class="mt-3 text-xs text-warn">
         Still stuck? Email <a href="mailto:contact@ravy.pro" class="underline">contact@ravy.pro</a> with this page URL and we'll fix it or refund you.
       </p>
     </div>
@@ -248,7 +248,7 @@ onBeforeUnmount(stopPolling)
         {{ record?.step || 'This usually takes a few seconds.' }}
       </p>
       <div v-if="record" class="mt-5 max-w-xs mx-auto h-2 bg-panel-raised overflow-hidden">
-        <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${record.progress}%` }" />
+        <div class="h-full bg-accent transition-all duration-500" :style="{ width: `${record.progress}%` }" />
       </div>
 
       <div v-if="slowGenerating" class="mt-6 pt-5 border-t border-line">
@@ -280,7 +280,7 @@ onBeforeUnmount(stopPolling)
       </header>
 
       <!-- Save your link -->
-      <div class="border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="border border-accent bg-accent/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
         <Icon name="mdi:bookmark-outline" class="w-5 h-5 text-accent-500 shrink-0" />
         <p class="text-sm text-fg-muted flex-1">
           Save this private link to return to your pack anytime — we also emailed it to you.

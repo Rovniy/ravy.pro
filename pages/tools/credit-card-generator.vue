@@ -139,7 +139,7 @@ const validatorStateClass = computed(() => {
     return 'border-line-strong'
   if (v.luhnValid && v.lengthValid)
     return 'border-ok'
-  return 'border-rose-500 dark:border-rose-400'
+  return 'border-danger'
 })
 
 // Seed one set so the page has content on first render.
@@ -161,7 +161,7 @@ generate()
       <ToolRatingWidget />
     </header>
 
-    <div class="mb-8 border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 px-4 py-3 text-sm flex gap-3 items-start">
+    <div class="mb-8 border border-warn/40 bg-warn/10 text-warn px-4 py-3 text-sm flex gap-3 items-start">
       <Icon name="mdi:alert-circle-outline" size="18" class="shrink-0 mt-0.5" />
       <div>
         <strong class="font-semibold">For testing only.</strong>
@@ -239,7 +239,7 @@ generate()
 
         <div v-if="cards.length" class="mt-6 border border-line overflow-hidden">
           <table class="w-full text-xs sm:text-sm">
-            <thead class="bg-slate-50 dark:bg-slate-900/60 text-fg-muted text-left">
+            <thead class="bg-panel-raised text-fg-muted text-left">
               <tr>
                 <th class="px-3 py-2 font-medium">
                   Number
@@ -256,7 +256,7 @@ generate()
               </tr>
             </thead>
             <tbody class="divide-y divide-line">
-              <tr v-for="card in cards" :key="card.number" class="hover:bg-slate-50 dark:hover:bg-slate-900/40">
+              <tr v-for="card in cards" :key="card.number" class="hover:bg-panel-raised">
                 <td class="px-3 py-2 font-mono">
                   <button
                     type="button"
@@ -324,12 +324,12 @@ generate()
                 v-else
                 name="mdi:close-circle"
                 size="20"
-                class="text-rose-500"
+                class="text-danger"
               />
               <span class="font-medium">
                 {{ validation.luhnValid && validation.lengthValid ? 'Looks valid' : 'Invalid' }}
               </span>
-              <span v-if="validation.brandLabel" class="ml-auto inline-flex items-center gap-1 bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300 px-2 py-0.5 text-xs font-medium">
+              <span v-if="validation.brandLabel" class="ml-auto inline-flex items-center gap-1 bg-accent/10 text-accent-700 dark:text-accent-300 px-2 py-0.5 text-xs font-medium">
                 <Icon name="mdi:credit-card-outline" size="14" />
                 {{ validation.brandLabel }}
               </span>
@@ -347,14 +347,14 @@ generate()
               </dt>
               <dd>
                 {{ validation.digits.length }} digit{{ validation.digits.length === 1 ? '' : 's' }}
-                <span v-if="validation.brand && !validation.lengthValid" class="text-rose-600 dark:text-rose-400">
+                <span v-if="validation.brand && !validation.lengthValid" class="text-danger">
                   (does not match {{ validation.brandLabel }})
                 </span>
               </dd>
               <dt class="text-fg-muted">
                 Luhn checksum
               </dt>
-              <dd :class="validation.luhnValid ? 'text-ok' : 'text-rose-600 dark:text-rose-400'">
+              <dd :class="validation.luhnValid ? 'text-ok' : 'text-danger'">
                 {{ validation.luhnValid ? 'pass' : 'fail' }}
               </dd>
               <template v-if="validation.cvvLength">
@@ -425,7 +425,7 @@ generate()
         <li>Fully <strong>client-side</strong> operation — nothing you type or generate is stored or sent anywhere</li>
       </ul>
 
-      <p class="mt-6 text-sm text-slate-400">
+      <p class="mt-6 text-sm text-fg-subtle">
         For software testing only. Generated numbers are fake test data and cannot be used for real transactions.
       </p>
     </section>

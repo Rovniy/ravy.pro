@@ -183,11 +183,11 @@ onMounted(fetchState)
     </NuxtLink>
 
     <!-- Load / auth error -->
-    <div v-if="mode === 'error'" class="mt-6 border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 p-6">
-      <h1 class="text-xl font-bold text-rose-700 dark:text-rose-300 flex items-center gap-2">
+    <div v-if="mode === 'error'" class="mt-6 border border-danger/40 bg-danger/10 p-6">
+      <h1 class="text-xl font-bold text-danger flex items-center gap-2">
         <Icon name="mdi:alert-circle-outline" class="w-6 h-6" /> Can't open this report
       </h1>
-      <p class="mt-2 text-sm text-rose-700/90 dark:text-rose-300/90">
+      <p class="mt-2 text-sm text-danger">
         {{ loadError }}
       </p>
     </div>
@@ -235,7 +235,7 @@ onMounted(fetchState)
       </header>
 
       <!-- Save your link -->
-      <div class="border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="border border-accent bg-accent/10 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
         <Icon name="mdi:bookmark-outline" class="w-5 h-5 text-accent-500 shrink-0" />
         <p class="text-sm text-fg-muted flex-1">
           Save this private link to return to your report anytime — we also emailed it to you.
@@ -263,7 +263,7 @@ onMounted(fetchState)
           <Icon :name="isSharing ? 'svg-spinners:180-ring' : copiedShare ? 'mdi:check' : 'mdi:share-variant'" size="18" />
           {{ isSharing ? 'Creating share link…' : copiedShare ? 'Link copied' : 'Share report' }}
         </button>
-        <p v-if="shareError" class="text-sm text-red-600 dark:text-red-400">
+        <p v-if="shareError" class="text-sm text-danger">
           {{ shareError }}
         </p>
       </div>

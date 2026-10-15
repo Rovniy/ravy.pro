@@ -148,10 +148,10 @@ function downloadPdf() {
           </tr>
         </tbody>
       </table>
-      <p v-if="popupBlocked" class="mt-3 text-sm text-amber-600 dark:text-amber-400">
+      <p v-if="popupBlocked" class="mt-3 text-sm text-warn">
         Your browser blocked the print window. Allow pop-ups for this site, then tap Download PDF again.
       </p>
-      <p class="mt-4 text-xs text-slate-400 leading-relaxed">
+      <p class="mt-4 text-xs text-fg-subtle leading-relaxed">
         This dated record documents your good-faith review against Valve policy v{{ record.rulesetVersion }}. Keep it in case of a report or rule change. Informational, not legal advice.
       </p>
     </div>

@@ -88,7 +88,7 @@ onMounted(refresh)
 
       <button
         type="button"
-        class="text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer"
+        class="text-xs text-fg-muted hover:text-fg underline hover:cursor-pointer"
         :disabled="loading"
         @click="refresh"
       >
@@ -96,7 +96,7 @@ onMounted(refresh)
       </button>
     </div>
 
-    <p v-if="errorMsg" class="mb-4 text-sm text-red-600 dark:text-red-400">
+    <p v-if="errorMsg" class="mb-4 text-sm text-danger">
       {{ errorMsg }}
     </p>
 
@@ -104,7 +104,7 @@ onMounted(refresh)
       {{ posts.length }} posts · {{ draftCount }} draft{{ draftCount === 1 ? '' : 's' }}
     </p>
 
-    <div v-if="loading" class="text-sm text-slate-500">
+    <div v-if="loading" class="text-sm text-fg-muted">
       Loading posts…
     </div>
 
@@ -116,7 +116,7 @@ onMounted(refresh)
         >
           <span
             class="mt-1.5 h-2 w-2 shrink-0 rounded-full"
-            :class="post.published ? 'bg-green-500' : 'bg-amber-500'"
+            :class="post.published ? 'bg-ok' : 'bg-warn'"
             :title="post.published ? 'Published' : 'Draft'"
           />
           <span class="min-w-0 flex-1">
@@ -129,10 +129,10 @@ onMounted(refresh)
               <template v-if="post.noindex"> · noindex</template>
             </span>
           </span>
-          <Icon name="mdi:chevron-right" size="18" class="mt-1 shrink-0 text-slate-400" />
+          <Icon name="mdi:chevron-right" size="18" class="mt-1 shrink-0 text-fg-subtle" />
         </NuxtLink>
       </li>
-      <li v-if="!filtered.length" class="py-6 text-sm text-slate-500">
+      <li v-if="!filtered.length" class="py-6 text-sm text-fg-muted">
         No posts match.
       </li>
     </ul>
@@ -140,7 +140,7 @@ onMounted(refresh)
     <div class="mt-8 pt-4 border-t border-line">
       <button
         type="button"
-        class="text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer"
+        class="text-xs text-fg-muted hover:text-fg underline hover:cursor-pointer"
         :disabled="reindexing"
         @click="onReindex"
       >

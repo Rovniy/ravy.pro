@@ -81,7 +81,7 @@ async function downloadZip() {
 </script>
 
 <template>
-  <div v-if="game" class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div v-if="game" class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Header -->
     <header>
       <NuxtLink :to="gamePath(game)" class="eyebrow hover:text-accent-500 transition-colors">
@@ -105,7 +105,7 @@ async function downloadZip() {
           <Icon name="mdi:email-outline" class="w-5 h-5" aria-hidden="true" /> Press contact
         </a>
       </div>
-      <p v-if="zipError" class="mt-3 text-sm text-red-600 dark:text-red-400" role="alert">
+      <p v-if="zipError" class="mt-3 text-sm text-danger" role="alert">
         The archive could not be built. The images below can be downloaded one by one.
       </p>
     </header>

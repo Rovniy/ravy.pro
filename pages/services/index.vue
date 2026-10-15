@@ -87,7 +87,7 @@ const cardClasses = 'group relative flex flex-col border border-line bg-panel p-
                 <span class="border border-line px-2.5 py-1 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
                   {{ offering.tag }}
                 </span>
-                <span class="bg-accent-50 dark:bg-accent-950/50 px-2.5 py-1 font-spacemono text-micro uppercase tracking-wider text-accent-ink">
+                <span class="bg-accent/10 px-2.5 py-1 font-spacemono text-micro uppercase tracking-wider text-accent-ink">
                   Full page
                 </span>
               </div>

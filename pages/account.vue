@@ -86,7 +86,7 @@ function selectTab(key: string) {
 </script>
 
 <template>
-  <div class="px-6 py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-12 mx-auto w-full max-w-6xl">
     <div class="flex items-start justify-between gap-x-6">
       <div class="min-w-0 flex-1">
         <h1 class="text-4xl font-display font-extrabold uppercase text-fg leading-none">
@@ -109,7 +109,7 @@ function selectTab(key: string) {
       </button>
     </div>
 
-    <div v-if="!state.ready" class="mt-6 text-slate-500">
+    <div v-if="!state.ready" class="mt-6 text-fg-muted">
       Loading…
     </div>
 

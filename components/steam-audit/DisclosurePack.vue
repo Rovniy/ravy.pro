@@ -82,7 +82,7 @@ async function copy(card: PackCard) {
           <h3 class="font-semibold text-fg">
             {{ card.field }}
           </h3>
-          <p class="mt-0.5 flex items-center gap-1.5 text-xs text-slate-400 font-spacemono">
+          <p class="mt-0.5 flex items-center gap-1.5 text-xs text-fg-subtle font-spacemono">
             <Icon name="mdi:map-marker-outline" class="w-3.5 h-3.5 shrink-0" />
             {{ card.where }}
           </p>
@@ -101,7 +101,7 @@ async function copy(card: PackCard) {
         <p v-if="card.text" class="whitespace-pre-wrap text-sm leading-relaxed text-fg">
           {{ card.text }}
         </p>
-        <p v-else class="text-sm italic text-slate-400">
+        <p v-else class="text-sm italic text-fg-subtle">
           {{ card.empty }}
         </p>
       </div>
@@ -110,7 +110,7 @@ async function copy(card: PackCard) {
     <!-- Community phrasing tips -->
     <section
       v-if="result.communityPhrasingNotes.length"
-      class="border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-5"
+      class="border border-accent bg-accent/10 p-5"
     >
       <h3 class="flex items-center gap-2 font-semibold text-fg">
         <Icon name="mdi:lightbulb-on-outline" class="w-5 h-5 text-accent-500" />

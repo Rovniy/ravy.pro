@@ -17,7 +17,7 @@ useHead({
 </script>
 
 <template>
-  <div class="px-6 py-12 mx-auto w-full max-w-4xl">
+  <div class="px-6 lg:px-10 py-12 mx-auto w-full max-w-6xl">
     <header class="mb-8">
       <h1 class="text-4xl font-display font-extrabold uppercase leading-none">
         Studio
@@ -37,7 +37,7 @@ useHead({
           role="tab"
           :aria-selected="tab === t.id"
           class="px-4 py-1.5 text-sm font-medium transition-colors hover:cursor-pointer"
-          :class="tab === t.id ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900' : 'text-fg-muted'"
+          :class="tab === t.id ? 'bg-fg text-bg' : 'text-fg-muted'"
           @click="router.replace({ query: { ...route.query, tab: t.id === 'posts' ? undefined : t.id } })"
         >
           {{ t.label }}

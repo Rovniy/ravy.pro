@@ -36,14 +36,14 @@ function statusMeta(r: SteamAuditPublicRecord): { label: string, tone: string } 
   switch (r.status) {
     case 'done':
       return r.classification?.mustDisclose
-        ? { label: 'Disclosure required', tone: 'text-rose-600 dark:text-rose-400' }
+        ? { label: 'Disclosure required', tone: 'text-danger' }
         : { label: 'No disclosure needed', tone: 'text-ok' }
     case 'error':
-      return { label: 'Failed', tone: 'text-rose-600 dark:text-rose-400' }
+      return { label: 'Failed', tone: 'text-danger' }
     case 'awaiting_payment':
-      return { label: 'Awaiting payment', tone: 'text-slate-500' }
+      return { label: 'Awaiting payment', tone: 'text-fg-muted' }
     default:
-      return { label: 'Generating…', tone: 'text-amber-600 dark:text-amber-400' }
+      return { label: 'Generating…', tone: 'text-warn' }
   }
 }
 
@@ -67,16 +67,16 @@ onMounted(load)
       </button>
     </div>
 
-    <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400">
+    <p v-if="error" class="mt-3 text-sm text-danger">
       {{ error }}
     </p>
 
-    <div v-if="loading" class="mt-4 text-sm text-slate-500">
+    <div v-if="loading" class="mt-4 text-sm text-fg-muted">
       Loading…
     </div>
 
     <div v-else-if="items.length === 0" class="mt-4">
-      <p class="text-sm text-slate-500">
+      <p class="text-sm text-fg-muted">
         No audits yet.
       </p>
       <NuxtLink to="/tools/steam-ai-disclosure" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-ink hover:underline">

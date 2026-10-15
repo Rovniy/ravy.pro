@@ -81,8 +81,8 @@ const ratingLabel = computed(() =>
   summary.value ? `Rated ${summary.value.average} out of 5 based on ${summary.value.count} votes` : '')
 
 const BUTTON_BASE = 'inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-accent-500/60 disabled:opacity-60 disabled:active:scale-100'
-const BUTTON_ACTIVE = 'border-accent-400 text-accent-600 dark:border-accent-500/60 dark:text-accent-400 bg-accent-50 dark:bg-accent-950/50'
-const BUTTON_IDLE = 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-ink hover:-translate-y-px'
+const BUTTON_ACTIVE = 'border-accent text-accent-600 dark:border-accent/60 dark:text-accent-400 bg-accent/10 '
+const BUTTON_IDLE = 'border-line text-fg-muted hover:border-accent hover:text-accent-ink hover:-translate-y-px'
 </script>
 
 <template>
@@ -95,7 +95,7 @@ const BUTTON_IDLE = 'border-line text-fg-muted hover:border-accent-400 hover:tex
             <Icon v-for="i in 5" :key="`bg-${i}`" name="mdi:star" class="w-4 h-4" aria-hidden="true" />
           </span>
           <span
-            class="absolute inset-0 flex overflow-hidden text-amber-400"
+            class="absolute inset-0 flex overflow-hidden text-warn"
             :style="{ width: `${starsPercent}%` }"
             aria-hidden="true"
           >

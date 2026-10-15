@@ -20,7 +20,7 @@ const { data, status, error } = await useAsyncData(`scan-share-${shareId}`, () =
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <header class="mb-4">
       <h1 class="text-3xl sm:text-4xl font-display font-extrabold uppercase text-fg leading-none">
         Shared Scan Report
@@ -30,11 +30,11 @@ const { data, status, error } = await useAsyncData(`scan-share-${shareId}`, () =
       </p>
     </header>
 
-    <div v-if="status === 'pending'" class="text-slate-500">
+    <div v-if="status === 'pending'" class="text-fg-muted">
       Loading…
     </div>
-    <div v-else-if="error || !data?.result" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4">
-      <p class="text-red-700 dark:text-red-300">
+    <div v-else-if="error || !data?.result" class="border border-danger/40 bg-danger/10 p-4">
+      <p class="text-danger">
         Shared report not found or unavailable.
       </p>
     </div>

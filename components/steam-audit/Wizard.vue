@@ -29,9 +29,9 @@ const tally = computed(() => {
 })
 
 const stats = computed(() => [
-  { key: 'pre', label: 'Must disclose · Pre', value: tally.value.pre, dot: 'bg-rose-500' },
-  { key: 'live', label: 'Must disclose · Live', value: tally.value.live, dot: 'bg-amber-500' },
-  { key: 'gray', label: 'Gray zone', value: tally.value.gray, dot: 'bg-yellow-400' },
+  { key: 'pre', label: 'Must disclose · Pre', value: tally.value.pre, dot: 'bg-danger' },
+  { key: 'live', label: 'Must disclose · Live', value: tally.value.live, dot: 'bg-warn' },
+  { key: 'gray', label: 'Gray zone', value: tally.value.gray, dot: 'bg-warn' },
   { key: 'exempt', label: 'Exempt', value: tally.value.exempt, dot: 'bg-ok' },
 ])
 
@@ -85,13 +85,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <div class="border border-line bg-panel overflow-hidden">
       <!-- Progress -->
       <div class="h-1.5 bg-panel-raised">
-        <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${progress}%` }" />
+        <div class="h-full bg-accent transition-all duration-500" :style="{ width: `${progress}%` }" />
       </div>
 
       <div class="p-5 sm:p-7">
         <div class="flex items-center justify-between">
           <span class="eyebrow">Step {{ stepIndex + 1 }} / {{ total }}</span>
-          <button type="button" class="text-xs font-spacemono text-slate-400 hover:text-accent-500 transition-colors" @click="back">
+          <button type="button" class="text-xs font-spacemono text-fg-subtle hover:text-accent-500 transition-colors" @click="back">
             {{ stepIndex === 0 ? 'Back to start' : '← Previous' }}
           </button>
         </div>
@@ -127,15 +127,15 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 type="button"
                 class="group w-full text-left border p-3.5 sm:p-4 transition-all hover:cursor-pointer flex items-start gap-3"
                 :class="answers[category.id] === opt.value
-                  ? 'border-accent-500 bg-accent-50/70 dark:bg-accent-900/20 ring-1 ring-accent-500/40'
-                  : 'border-line hover:border-accent-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'"
+                  ? 'border-accent bg-accent/10 ring-1 ring-accent-500/40'
+                  : 'border-line hover:border-accent hover:bg-panel-raised'"
                 @click="select(opt.value)"
               >
                 <span
                   class="shrink-0 mt-0.5 w-6 h-6 grid place-items-center font-spacemono text-xs border transition-colors"
                   :class="answers[category.id] === opt.value
-                    ? 'bg-accent-600 border-accent-600 text-white dark:bg-accent-400 dark:border-accent-400 dark:text-slate-950'
-                    : 'border-line-strong text-slate-400 group-hover:border-accent-400'"
+                    ? 'bg-accent border-accent text-accent-fg'
+                    : 'border-line-strong text-fg-subtle group-hover:border-accent'"
                 >
                   {{ i + 1 }}
                 </span>
@@ -147,7 +147,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             </div>
 
             <div class="mt-6 flex items-center justify-between gap-3">
-              <span class="text-xs font-spacemono text-slate-400 hidden sm:inline">
+              <span class="text-xs font-spacemono text-fg-subtle hidden sm:inline">
                 Tip: press 1–{{ ANSWER_OPTIONS.length }} to answer
               </span>
               <button
@@ -176,13 +176,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
           </span>
           <span
             class="font-spacemono text-sm tabular-nums transition-colors"
-            :class="s.value > 0 ? 'text-fg font-bold' : 'text-slate-400'"
+            :class="s.value > 0 ? 'text-fg font-bold' : 'text-fg-subtle'"
           >
             {{ s.value }}
           </span>
         </li>
       </ul>
-      <p class="mt-5 text-xs text-slate-400 leading-relaxed border-t border-line pt-4">
+      <p class="mt-5 text-xs text-fg-subtle leading-relaxed border-t border-line pt-4">
         Updated live as you answer. Nothing is sent anywhere until you choose to unlock your disclosure pack.
       </p>
     </aside>

@@ -147,6 +147,22 @@ async function copy() {
   line-height: 1.7;
 }
 
+/* The page scrollbar follows the site theme; the code panel is always dark,
+   so its own horizontal scrollbar stays on the panel's colours. */
+.code-block :deep(pre) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--code-line) var(--code-bg);
+}
+.code-block :deep(pre)::-webkit-scrollbar-track {
+  background-color: var(--code-bg);
+}
+.code-block :deep(pre)::-webkit-scrollbar-thumb {
+  background-color: var(--code-line);
+}
+.code-block :deep(pre)::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-accent-400);
+}
+
 /* Shiki emits each token's colour as an inline `--shiki-default`. */
 .code-block :deep(pre span) {
   color: var(--shiki-default);

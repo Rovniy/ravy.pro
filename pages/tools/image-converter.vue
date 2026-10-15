@@ -464,10 +464,10 @@ onBeforeUnmount(() => {
 })
 
 const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: string }> = {
-  queued: { icon: 'mdi:clock-outline', classes: 'text-slate-400', label: 'Queued' },
+  queued: { icon: 'mdi:clock-outline', classes: 'text-fg-subtle', label: 'Queued' },
   converting: { icon: 'svg-spinners:180-ring', classes: 'text-accent-500', label: 'Converting' },
   done: { icon: 'mdi:check-circle', classes: 'text-ok', label: 'Done' },
-  error: { icon: 'mdi:alert-circle', classes: 'text-rose-500', label: 'Error' },
+  error: { icon: 'mdi:alert-circle', classes: 'text-danger', label: 'Error' },
 }
 </script>
 
@@ -566,15 +566,15 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       type="button"
       class="w-full border-2 border-dashed p-10 text-center transition-colors hover:cursor-pointer"
       :class="isDragging
-        ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20'
-        : 'border-line-strong hover:border-slate-400 dark:hover:border-slate-600'"
+        ? 'border-accent bg-accent/10 '
+        : 'border-line-strong hover:border-line-strong'"
       aria-label="Add images: drag and drop, click to browse, or paste from clipboard"
       @click="openPicker"
       @drop="onDrop"
       @dragover="onDragOver"
       @dragleave="onDragLeave"
     >
-      <Icon name="mdi:image-plus-outline" size="36" class="mx-auto text-slate-400" aria-hidden="true" />
+      <Icon name="mdi:image-plus-outline" size="36" class="mx-auto text-fg-subtle" aria-hidden="true" />
       <p class="mt-3 text-sm font-medium text-fg">
         Drag &amp; drop images here
       </p>
@@ -591,7 +591,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       @change="onPick"
     >
 
-    <p v-if="rejectedNote" class="mt-3 text-sm text-amber-600 dark:text-amber-400">
+    <p v-if="rejectedNote" class="mt-3 text-sm text-warn">
       {{ rejectedNote }}
     </p>
 
@@ -616,7 +616,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       >
         <button
           type="button"
-          class="absolute right-2 top-2 p-1 text-slate-400 hover:bg-panel-raised hover:cursor-pointer"
+          class="absolute right-2 top-2 p-1 text-fg-subtle hover:bg-panel-raised hover:cursor-pointer"
           aria-label="Remove"
           @click="removeItem(item.id)"
         >
@@ -638,7 +638,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
               class="px-1.5 py-0.5 font-medium"
               :class="savingsPercent(item.originalSize, item.outSize) >= 0
                 ? 'bg-ok/10 text-ok'
-                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'"
+                : 'bg-warn/10 text-warn'"
             >
               {{ savingsPercent(item.originalSize, item.outSize) >= 0
                 ? `${savingsPercent(item.originalSize, item.outSize)}% smaller`
@@ -649,7 +649,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 
         <p
           v-if="item.status === 'done' && item.profileName"
-          class="mt-1 flex items-center gap-1 text-micro text-slate-400 truncate"
+          class="mt-1 flex items-center gap-1 text-micro text-fg-subtle truncate"
           :title="`${item.profileName}${item.colorNote ? ` — ${item.colorNote}` : ''}`"
         >
           <Icon name="mdi:palette-outline" size="12" class="shrink-0" aria-hidden="true" />
@@ -671,7 +671,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
             Download
           </button>
         </div>
-        <p v-if="item.status === 'error'" class="mt-2 text-xs text-rose-500">
+        <p v-if="item.status === 'error'" class="mt-2 text-xs text-danger">
           {{ item.error }}
         </p>
       </div>

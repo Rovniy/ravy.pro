@@ -115,14 +115,14 @@ onMounted(load)
       </button>
     </form>
 
-    <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400">
+    <p v-if="error" class="mt-3 text-sm text-danger">
       {{ error }}
     </p>
 
-    <div v-if="loading" class="mt-4 text-sm text-slate-500">
+    <div v-if="loading" class="mt-4 text-sm text-fg-muted">
       Loading…
     </div>
-    <div v-else-if="accounts.length === 0" class="mt-4 text-sm text-slate-500">
+    <div v-else-if="accounts.length === 0" class="mt-4 text-sm text-fg-muted">
       No accounts yet. Add an email above to grant access.
     </div>
 
@@ -132,7 +132,7 @@ onMounted(load)
           <p class="font-medium text-fg truncate">
             {{ account.email }}
           </p>
-          <p class="text-xs" :class="account.hasSignedIn ? 'text-ok' : 'text-slate-400'">
+          <p class="text-xs" :class="account.hasSignedIn ? 'text-ok' : 'text-fg-subtle'">
             {{ account.hasSignedIn ? 'Has signed in' : 'Not signed in yet' }}
           </p>
         </div>

@@ -142,24 +142,24 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <div class="container max-w-5xl mx-auto text-fg-muted">
+  <div class="mx-auto w-full max-w-6xl lg:px-4 text-fg-muted">
     <ArchiveHero />
 
     <div class="px-6 mt-2 mb-8">
       <div class="relative">
-        <Icon name="mdi:magnify" size="18" aria-hidden="true" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <Icon name="mdi:magnify" size="18" aria-hidden="true" class="absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle" />
         <input
           v-model="searchTest"
           placeholder="Search by title, description, or tag…"
           aria-label="Search posts by title, description, or tag"
           type="text"
-          class="block w-full pl-9 pr-11 py-2.5 bg-panel dark:placeholder-slate-500 text-fg-muted border border-line focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 transition-all"
+          class="block w-full pl-9 pr-11 py-2.5 bg-panel text-fg-muted border border-line focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent transition-all"
         >
         <button
           v-if="searchTest"
           type="button"
           aria-label="Clear search"
-          class="absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 text-slate-400 hover:text-accent-500 hover:bg-panel-raised transition-colors hover:cursor-pointer"
+          class="absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 text-fg-subtle hover:text-accent-500 hover:bg-panel-raised transition-colors hover:cursor-pointer"
           @click="searchTest = ''"
         >
           <Icon name="mdi:close" size="16" aria-hidden="true" />
@@ -181,8 +181,8 @@ defineOgImage('Blog', {
           :aria-pressed="!activeTag && !onlyPopular"
           class="px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="!activeTag && !onlyPopular
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-            : 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+            ? 'border-accent bg-accent text-accent-fg'
+            : 'border-line text-fg-muted hover:border-accent hover:text-accent-500 hover:-translate-y-px'"
           @click="router.push({ query: { ...route.query, tag: undefined, popular: undefined, page: undefined } })"
         >
           All
@@ -192,8 +192,8 @@ defineOgImage('Blog', {
           :aria-pressed="onlyPopular"
           class="inline-flex items-center gap-1.5 px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="onlyPopular
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-            : 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+            ? 'border-accent bg-accent text-accent-fg'
+            : 'border-line text-fg-muted hover:border-accent hover:text-accent-500 hover:-translate-y-px'"
           @click="togglePopular"
         >
           <Icon name="mdi:fire" size="14" aria-hidden="true" />
@@ -206,8 +206,8 @@ defineOgImage('Blog', {
           :aria-pressed="activeTag === t.tag"
           class="inline-flex items-center gap-1.5 px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="activeTag === t.tag
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-            : 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+            ? 'border-accent bg-accent text-accent-fg'
+            : 'border-line text-fg-muted hover:border-accent hover:text-accent-500 hover:-translate-y-px'"
           @click="toggleTag(t.tag)"
         >
           {{ t.tag }}
@@ -247,7 +247,7 @@ defineOgImage('Blog', {
         :disabled="pageNumber <= 1"
         type="button"
         aria-label="Previous page"
-        class="w-11 h-11 flex items-center justify-center border border-line-strong disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 transition-all"
+        class="w-11 h-11 flex items-center justify-center border border-line-strong disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent enabled:hover:text-accent-500 transition-all"
         @click="onPreviousPageClick"
       >
         <Icon name="mdi:chevron-left" size="20" aria-hidden="true" />
@@ -259,7 +259,7 @@ defineOgImage('Blog', {
         :disabled="pageNumber >= totalPage"
         type="button"
         aria-label="Next page"
-        class="w-11 h-11 flex items-center justify-center border border-line-strong disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 transition-all"
+        class="w-11 h-11 flex items-center justify-center border border-line-strong disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent enabled:hover:text-accent-500 transition-all"
         @click="onNextPageClick"
       >
         <Icon name="mdi:chevron-right" size="20" aria-hidden="true" />

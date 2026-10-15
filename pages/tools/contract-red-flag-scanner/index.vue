@@ -409,7 +409,7 @@ watch(
       <ToolRatingWidget />
     </header>
 
-    <div v-if="checkoutCancelled" class="mt-6 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">
+    <div v-if="checkoutCancelled" class="mt-6 border border-warn/40 bg-warn/10 p-4 text-sm text-warn">
       Checkout was cancelled — your scan is still here. You can unlock the full report whenever you're ready.
     </div>
 
@@ -459,7 +459,7 @@ watch(
           type="button"
           :disabled="isRunning"
           class="w-full border-2 border-dashed p-4 sm:p-5 text-left transition-colors disabled:opacity-60"
-          :class="isDragging ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20' : 'border-line-strong hover:border-accent-400'"
+          :class="isDragging ? 'border-accent bg-accent/10 ' : 'border-line-strong hover:border-accent'"
           @click="openFilePicker"
           @drop="onDrop"
           @dragover="onDragOver"
@@ -468,7 +468,7 @@ watch(
           <p class="text-base font-medium text-fg">
             Drag and drop your contract here
           </p>
-          <p class="mt-1 text-sm text-slate-500">
+          <p class="mt-1 text-sm text-fg-muted">
             or tap to choose a file (.txt, .pdf, image)
           </p>
         </button>
@@ -483,11 +483,11 @@ watch(
           Take photo (mobile)
         </button>
 
-        <span v-if="fileName" class="block text-xs text-slate-500">{{ fileName }}</span>
-        <span v-if="fileName && (fileMime === 'application/pdf' || fileMime.startsWith('image/'))" class="block text-xs text-slate-500">
+        <span v-if="fileName" class="block text-xs text-fg-muted">{{ fileName }}</span>
+        <span v-if="fileName && (fileMime === 'application/pdf' || fileMime.startsWith('image/'))" class="block text-xs text-fg-muted">
           Text is extracted first and shown below for your review.
         </span>
-        <div v-if="inputStage" class="flex items-center gap-2 text-xs text-slate-500">
+        <div v-if="inputStage" class="flex items-center gap-2 text-xs text-fg-muted">
           <Icon :name="isExtracting || isSubmitting ? 'svg-spinners:180-ring' : 'mdi:check-circle-outline'" size="14" />
           <span>{{ inputStage }}</span>
         </div>
@@ -548,14 +548,14 @@ watch(
         <button
           v-if="teaser || fullResult"
           type="button"
-          class="text-xs font-spacemono text-slate-400 hover:text-accent-500 transition-colors"
+          class="text-xs font-spacemono text-fg-subtle hover:text-accent-500 transition-colors"
           @click="restart"
         >
           ↺ Start over
         </button>
       </div>
 
-      <p v-if="runError" class="mt-3 text-base text-red-600 dark:text-red-400 break-words">
+      <p v-if="runError" class="mt-3 text-base text-danger break-words">
         {{ runError }}
       </p>
 
@@ -565,7 +565,7 @@ watch(
           <span>{{ teaser.progress }}%</span>
         </div>
         <div class="h-2 bg-panel-raised overflow-hidden">
-          <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${teaser.progress}%` }" />
+          <div class="h-full bg-accent transition-all duration-500" :style="{ width: `${teaser.progress}%` }" />
         </div>
       </div>
     </div>
@@ -585,11 +585,11 @@ watch(
     />
 
     <!-- Scan error -->
-    <section v-else-if="teaser?.status === 'error'" class="mt-8 border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-5">
-      <h2 class="text-lg font-semibold text-red-700 dark:text-red-300">
+    <section v-else-if="teaser?.status === 'error'" class="mt-8 border border-danger/40 bg-danger/10 p-4 sm:p-5">
+      <h2 class="text-lg font-semibold text-danger">
         Scan failed
       </h2>
-      <p class="mt-2 text-sm text-red-700/90 dark:text-red-300/90">
+      <p class="mt-2 text-sm text-danger">
         {{ teaser.error || 'Unknown error during document analysis.' }}
       </p>
     </section>
@@ -645,7 +645,7 @@ watch(
         <li>Your negotiation priorities and fallback positions</li>
       </ul>
 
-      <p class="mt-6 text-sm text-slate-400">
+      <p class="mt-6 text-sm text-fg-subtle">
         Informational risk-spotting, not legal advice. For binding guidance consult a qualified lawyer.
       </p>
     </section>

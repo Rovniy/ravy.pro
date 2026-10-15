@@ -102,10 +102,10 @@ const compactToken = computed(() => {
 
 const STATUS_META: Record<string, { label: string, icon: string, classes: string }> = {
   'valid': { label: 'Valid', icon: 'mdi:check-circle', classes: 'text-ok border-ok/30 bg-ok/10' },
-  'expired': { label: 'Expired', icon: 'mdi:close-circle', classes: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/10' },
-  'not-yet-valid': { label: 'Not yet valid', icon: 'mdi:alert', classes: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10' },
-  'no-expiry': { label: 'No expiry', icon: 'mdi:information', classes: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10' },
-  'invalid': { label: 'Invalid', icon: 'mdi:close-circle', classes: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/10' },
+  'expired': { label: 'Expired', icon: 'mdi:close-circle', classes: 'text-danger border-danger/40 bg-danger/10' },
+  'not-yet-valid': { label: 'Not yet valid', icon: 'mdi:alert', classes: 'text-warn border-warn/40 bg-warn/10' },
+  'no-expiry': { label: 'No expiry', icon: 'mdi:information', classes: 'text-warn border-warn/40 bg-warn/10' },
+  'invalid': { label: 'Invalid', icon: 'mdi:close-circle', classes: 'text-danger border-danger/40 bg-danger/10' },
 }
 const statusMeta = computed(() => STATUS_META[status.value])
 
@@ -250,8 +250,8 @@ async function verify() {
 
 const VERIFY_META: Record<Exclude<VerifyState, 'idle' | 'verifying'>, { label: string, icon: string, classes: string }> = {
   verified: { label: 'Signature verified', icon: 'mdi:shield-check', classes: 'text-ok border-ok/30 bg-ok/10' },
-  invalid: { label: 'Invalid signature', icon: 'mdi:shield-alert', classes: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/10' },
-  unable: { label: 'Unable to verify', icon: 'mdi:alert', classes: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10' },
+  invalid: { label: 'Invalid signature', icon: 'mdi:shield-alert', classes: 'text-danger border-danger/40 bg-danger/10' },
+  unable: { label: 'Unable to verify', icon: 'mdi:alert', classes: 'text-warn border-warn/40 bg-warn/10' },
 }
 
 function stringify(value: unknown): string {
@@ -306,10 +306,10 @@ function stringify(value: unknown): string {
       <!-- Colored token preview -->
       <div v-if="decoded.partCount >= 2" class="mt-3 border border-line p-3 font-mono text-sm break-all bg-panel-raised">
         <span class="text-rose-500">{{ decoded.raw.header }}</span>
-        <span class="text-slate-400">.</span>
+        <span class="text-fg-subtle">.</span>
         <span class="text-fuchsia-500">{{ decoded.raw.payload }}</span>
         <template v-if="decoded.raw.signature">
-          <span class="text-slate-400">.</span>
+          <span class="text-fg-subtle">.</span>
           <span class="text-accent-500">{{ decoded.raw.signature }}</span>
         </template>
       </div>
@@ -327,14 +327,14 @@ function stringify(value: unknown): string {
         <Icon name="mdi:key-variant" size="16" aria-hidden="true" />
         {{ algInfo.alg }}
       </span>
-      <span v-if="algInfo.warning" class="inline-flex items-center gap-1.5 border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-medium text-amber-600 dark:text-amber-400">
+      <span v-if="algInfo.warning" class="inline-flex items-center gap-1.5 border border-warn/40 bg-warn/10 px-3 py-1 font-medium text-amber-600 dark:text-amber-400">
         <Icon name="mdi:alert" size="16" aria-hidden="true" />
         {{ algInfo.warning }}
       </span>
     </div>
 
     <!-- Decode errors (when not ok) -->
-    <div v-if="!decoded.ok && token.trim()" class="mb-6 border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-600 dark:text-rose-400">
+    <div v-if="!decoded.ok && token.trim()" class="mb-6 border border-danger/40 bg-danger/10 p-4 text-sm text-danger">
       <p v-for="err in decoded.errors" :key="err.part">
         <span class="font-medium capitalize">{{ err.part }}:</span> {{ err.message }}
       </p>
@@ -359,10 +359,10 @@ function stringify(value: unknown): string {
           </button>
         </div>
         <pre v-if="headerJson" class="font-mono text-xs overflow-auto text-fg">{{ headerJson }}</pre>
-        <p v-else-if="partError('header')" class="text-xs text-rose-500">
+        <p v-else-if="partError('header')" class="text-xs text-danger">
           {{ partError('header') }}
         </p>
-        <p v-else class="text-xs text-slate-400">
+        <p v-else class="text-xs text-fg-subtle">
           —
         </p>
       </div>
@@ -384,10 +384,10 @@ function stringify(value: unknown): string {
           </button>
         </div>
         <pre v-if="payloadJson" class="font-mono text-xs overflow-auto text-fg">{{ payloadJson }}</pre>
-        <p v-else-if="partError('payload')" class="text-xs text-rose-500">
+        <p v-else-if="partError('payload')" class="text-xs text-danger">
           {{ partError('payload') }}
         </p>
-        <p v-else class="text-xs text-slate-400">
+        <p v-else class="text-xs text-fg-subtle">
           —
         </p>
       </div>

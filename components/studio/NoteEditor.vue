@@ -167,19 +167,19 @@ onMounted(load)
 </script>
 
 <template>
-  <div v-if="loading" class="text-sm text-slate-500">
+  <div v-if="loading" class="text-sm text-fg-muted">
     Loading note…
   </div>
 
   <div v-else class="pb-28">
-    <p v-if="errorMsg" class="mb-4 border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+    <p v-if="errorMsg" class="mb-4 border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
       {{ errorMsg }}
     </p>
 
     <div class="grid gap-5">
       <label class="block">
-        <span class="mb-1 flex justify-between text-xs font-semibold uppercase tracking-wide text-slate-500">
-          Question <span class="font-normal normal-case tracking-normal" :class="form.title.length > NOTE_TITLE_MAX ? 'text-red-500' : ''">{{ form.title.length }}/{{ NOTE_TITLE_MAX }}</span>
+        <span class="mb-1 flex justify-between text-xs font-semibold uppercase tracking-wide text-fg-muted">
+          Question <span class="font-normal normal-case tracking-normal" :class="form.title.length > NOTE_TITLE_MAX ? 'text-danger' : ''">{{ form.title.length }}/{{ NOTE_TITLE_MAX }}</span>
         </span>
         <input
           v-model="form.title"
@@ -187,13 +187,13 @@ onMounted(load)
           placeholder="How to … in …"
           class="w-full border border-line-strong bg-panel px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         >
-        <span class="mt-1 block text-xs text-slate-500">The title, phrased the way someone would search for it. In English.</span>
+        <span class="mt-1 block text-xs text-fg-muted">The title, phrased the way someone would search for it. In English.</span>
       </label>
 
       <label class="block">
-        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">
           Slug
-          <span v-if="!isNew" class="ml-1 font-normal normal-case tracking-normal text-slate-400">locked — the URL is published</span>
+          <span v-if="!isNew" class="ml-1 font-normal normal-case tracking-normal text-fg-subtle">locked — the URL is published</span>
         </span>
         <input
           v-model="form.slug"
@@ -202,11 +202,11 @@ onMounted(load)
           class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
           @input="slugTouched = true"
         >
-        <span class="mt-1 block font-spacemono text-xs" :class="form.slug && !slugOk ? 'text-red-500' : 'text-slate-500'">/til/{{ form.slug || '…' }}</span>
+        <span class="mt-1 block font-spacemono text-xs" :class="form.slug && !slugOk ? 'text-danger' : 'text-fg-muted'">/til/{{ form.slug || '…' }}</span>
       </label>
 
       <div>
-        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Topics</span>
+        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">Topics</span>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="t in TIL_TOPICS"
@@ -214,7 +214,7 @@ onMounted(load)
             type="button"
             class="border px-3 py-1 text-sm transition-colors hover:cursor-pointer"
             :class="form.topics.includes(t.id)
-              ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+              ? 'border-accent bg-accent text-accent-fg'
               : 'border-line-strong text-fg-muted'"
             :aria-pressed="form.topics.includes(t.id)"
             @click="toggleTopic(t.id)"
@@ -226,17 +226,17 @@ onMounted(load)
 
       <div>
         <div class="mb-1 flex flex-wrap items-center gap-3">
-          <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Note (markdown)</span>
+          <span class="text-xs font-semibold uppercase tracking-wide text-fg-muted">Note (markdown)</span>
           <button
             v-if="!form.markdown.trim()"
             type="button"
-            class="text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer"
+            class="text-xs underline text-fg-muted hover:text-fg hover:cursor-pointer"
             @click="form.markdown = TEMPLATE"
           >
             Insert template
           </button>
-          <span class="ml-auto font-spacemono text-xs" :class="form.markdown.length > NOTE_MAX_CHARS ? 'text-red-500' : 'text-slate-400'">{{ form.markdown.length }}/{{ NOTE_MAX_CHARS }}</span>
-          <button type="button" class="text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer" @click="showPreview = !showPreview">
+          <span class="ml-auto font-spacemono text-xs" :class="form.markdown.length > NOTE_MAX_CHARS ? 'text-danger' : 'text-fg-subtle'">{{ form.markdown.length }}/{{ NOTE_MAX_CHARS }}</span>
+          <button type="button" class="text-xs underline text-fg-muted hover:text-fg hover:cursor-pointer" @click="showPreview = !showPreview">
             {{ showPreview ? 'Hide preview' : 'Preview' }}
           </button>
         </div>
@@ -246,12 +246,12 @@ onMounted(load)
           spellcheck="true"
           class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
-        <p v-if="excerpt" class="mt-1 text-xs text-slate-500">
+        <p v-if="excerpt" class="mt-1 text-xs text-fg-muted">
           <span class="font-semibold">Search snippet:</span> {{ excerpt }}
         </p>
       </div>
 
-      <ul v-if="warnings.length" class="border border-amber-300/70 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200 space-y-1">
+      <ul v-if="warnings.length" class="border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-warn space-y-1">
         <li v-for="w in warnings" :key="w" class="flex gap-2">
           <Icon name="mdi:lightbulb-on-outline" size="16" class="mt-0.5 shrink-0" aria-hidden="true" />
           {{ w }}
@@ -272,11 +272,11 @@ onMounted(load)
         Published
       </label>
 
-      <section v-if="livePublished && !dirty" class="border border-accent-500/30 bg-accent-500/5 p-4">
+      <section v-if="livePublished && !dirty" class="border border-accent/30 bg-accent/5 p-4">
         <h2 class="mb-1 text-sm font-semibold">
           Share it
         </h2>
-        <p class="mb-3 text-xs text-slate-500">
+        <p class="mb-3 text-xs text-fg-muted">
           LinkedIn is where hiring managers will see it. Paste, add a line of your own, post.
         </p>
         <div class="grid gap-3 sm:grid-cols-2">
@@ -300,10 +300,10 @@ onMounted(load)
           <template v-else-if="savedAt">Saved at {{ savedAt }}</template>
           <template v-else>{{ form.published ? 'Published' : 'Draft' }}</template>
         </span>
-        <NuxtLink v-if="!isNew && livePublished" :to="notePath(form.slug)" target="_blank" class="text-xs underline text-slate-500 hover:text-fg">
+        <NuxtLink v-if="!isNew && livePublished" :to="notePath(form.slug)" target="_blank" class="text-xs underline text-fg-muted hover:text-fg">
           View
         </NuxtLink>
-        <button v-if="!isNew" type="button" :disabled="deleting" class="text-xs underline text-red-600 dark:text-red-400 disabled:opacity-40 hover:cursor-pointer" @click="onDelete">
+        <button v-if="!isNew" type="button" :disabled="deleting" class="text-xs underline text-danger disabled:opacity-40 hover:cursor-pointer" @click="onDelete">
           {{ deleting ? 'Deleting…' : 'Delete' }}
         </button>
         <button

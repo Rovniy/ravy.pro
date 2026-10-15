@@ -60,16 +60,16 @@ onMounted(load)
       </button>
     </div>
 
-    <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400">
+    <p v-if="error" class="mt-3 text-sm text-danger">
       {{ error }}
     </p>
 
-    <div v-if="loading" class="mt-4 text-sm text-slate-500">
+    <div v-if="loading" class="mt-4 text-sm text-fg-muted">
       Loading…
     </div>
 
     <div v-else-if="items.length === 0" class="mt-4">
-      <p class="text-sm text-slate-500">
+      <p class="text-sm text-fg-muted">
         No scans yet.
       </p>
       <NuxtLink to="/tools/contract-red-flag-scanner" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-ink hover:underline">
@@ -89,9 +89,9 @@ onMounted(load)
           </p>
           <p v-if="item.teaser.overallRiskScore" class="mt-1 text-sm text-fg-muted">
             Overall risk: <span class="font-medium capitalize">{{ item.teaser.overallRiskScore.score }}</span>
-            <span v-if="item.teaser.redFlagCounts" class="text-slate-500">· {{ item.teaser.redFlagCounts.total }} red flag(s)</span>
+            <span v-if="item.teaser.redFlagCounts" class="text-fg-muted">· {{ item.teaser.redFlagCounts.total }} red flag(s)</span>
           </p>
-          <p class="mt-1 text-sm font-medium" :class="item.teaser.paid ? 'text-ok' : 'text-amber-600 dark:text-amber-400'">
+          <p class="mt-1 text-sm font-medium" :class="item.teaser.paid ? 'text-ok' : 'text-warn'">
             {{ item.teaser.paid ? 'Unlocked' : 'Not unlocked' }}
           </p>
         </div>

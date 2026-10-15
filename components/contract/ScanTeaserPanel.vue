@@ -13,9 +13,9 @@ defineEmits<{ (e: 'unlock'): void }>()
 
 const riskTone: Record<string, string> = {
   low: 'text-ok border-ok/40 bg-ok/10',
-  medium: 'text-amber-600 dark:text-amber-400 border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30',
-  high: 'text-orange-600 dark:text-orange-400 border-orange-300 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/30',
-  critical: 'text-rose-600 dark:text-rose-400 border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30',
+  medium: 'text-warn border-warn/40 bg-warn/10',
+  high: 'text-warn border-warn/40 bg-warn/10',
+  critical: 'text-danger border-danger/40 bg-danger/10',
 }
 
 const score = computed(() => props.teaser.overallRiskScore?.score || 'medium')
@@ -58,10 +58,10 @@ const benefits = [
       </p>
 
       <div class="mt-4 flex flex-wrap gap-2">
-        <span class="inline-flex items-center gap-1.5 bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 px-3 py-1 text-sm font-medium">
+        <span class="inline-flex items-center gap-1.5 bg-danger/10 text-danger px-3 py-1 text-sm font-medium">
           {{ counts.high }} high
         </span>
-        <span class="inline-flex items-center gap-1.5 bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 px-3 py-1 text-sm font-medium">
+        <span class="inline-flex items-center gap-1.5 bg-warn/10 text-warn px-3 py-1 text-sm font-medium">
           {{ counts.medium }} medium
         </span>
         <span class="inline-flex items-center gap-1.5 bg-panel-raised text-fg-muted px-3 py-1 text-sm font-medium">
@@ -103,10 +103,10 @@ const benefits = [
             <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:lock-open-variant'" class="w-5 h-5" />
             {{ loading ? 'Opening secure checkout…' : `Unlock full report for ${priceLabel}` }}
           </button>
-          <p class="mt-2.5 text-center text-xs font-spacemono text-slate-400">
+          <p class="mt-2.5 text-center text-xs font-spacemono text-fg-subtle">
             One-time · per scan · secure Stripe checkout
           </p>
-          <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400 text-center">
+          <p v-if="error" class="mt-3 text-sm text-danger text-center">
             {{ error }}
           </p>
         </div>
@@ -115,7 +115,7 @@ const benefits = [
         <div class="relative p-6 sm:p-7 bg-panel-raised">
           <div class="space-y-4" aria-hidden="true">
             <div v-for="(lines, idx) in previewRows" :key="idx" class="border border-line bg-panel p-3">
-              <div class="font-spacemono text-micro text-slate-400 mb-2">
+              <div class="font-spacemono text-micro text-fg-subtle mb-2">
                 Red flag #{{ idx + 1 }}
               </div>
               <div class="space-y-1.5 select-none blur-[5px]">

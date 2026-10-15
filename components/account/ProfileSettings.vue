@@ -65,7 +65,7 @@ onMounted(load)
           Русский
         </option>
       </select>
-      <p class="mt-1 text-xs text-slate-400">
+      <p class="mt-1 text-xs text-fg-subtle">
         Used for AI-generated output in your tools.
       </p>
     </div>
@@ -85,7 +85,7 @@ onMounted(load)
     <p v-if="status" class="text-sm text-ok">
       {{ status }}
     </p>
-    <p v-if="error" class="text-sm text-rose-600 dark:text-rose-400">
+    <p v-if="error" class="text-sm text-danger">
       {{ error }}
     </p>
   </section>

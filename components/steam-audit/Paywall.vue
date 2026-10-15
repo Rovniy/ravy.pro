@@ -73,10 +73,10 @@ const previewCards = computed(() => {
             {{ loading ? 'Opening secure checkout…' : `Unlock for ${priceLabel}` }}
           </template>
         </button>
-        <p class="mt-2.5 text-center text-xs font-spacemono text-slate-400">
+        <p class="mt-2.5 text-center text-xs font-spacemono text-fg-subtle">
           {{ free ? 'Admin · free · no charge' : 'One-time · per game · secure Stripe checkout' }}
         </p>
-        <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400 text-center">
+        <p v-if="error" class="mt-3 text-sm text-danger text-center">
           {{ error }}
         </p>
       </div>
@@ -85,7 +85,7 @@ const previewCards = computed(() => {
       <div class="relative p-6 sm:p-7 bg-panel-raised">
         <div class="space-y-4" aria-hidden="true">
           <div v-for="card in previewCards" :key="card.field" class="border border-line bg-panel p-3">
-            <div class="font-spacemono text-micro text-slate-400 mb-2">
+            <div class="font-spacemono text-micro text-fg-subtle mb-2">
               {{ card.field }}
             </div>
             <div class="space-y-1.5 select-none blur-[5px]">

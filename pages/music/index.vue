@@ -24,7 +24,7 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <header>
       <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
         Projects
@@ -56,7 +56,7 @@ const { trackCta } = useAnalytics()
       <span class="eyebrow">How it is made</span>
       <p class="mt-3 text-fg-muted leading-relaxed">
         Both projects are made with generative AI, and I say so openly. I write the concepts and the stories, direct the sound, and pick, edit and release every track myself.
-        <NuxtLink to="/blogs/how-i-started-making-music-with-ai" class="underline decoration-slate-400/40 hover:text-accent-500">
+        <NuxtLink to="/blogs/how-i-started-making-music-with-ai" class="underline decoration-line-strong hover:text-accent-500">
           How I started making music with AI
         </NuxtLink>.
       </p>

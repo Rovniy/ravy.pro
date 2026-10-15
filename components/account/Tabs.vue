@@ -13,7 +13,7 @@ defineEmits<{ (e: 'update:modelValue', key: string): void }>()
       type="button"
       class="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px whitespace-nowrap transition-colors hover:cursor-pointer"
       :class="modelValue === t.key
-        ? 'border-accent-500 text-fg'
+        ? 'border-accent text-fg'
         : 'border-transparent text-fg-muted hover:text-fg'"
       @click="$emit('update:modelValue', t.key)"
     >

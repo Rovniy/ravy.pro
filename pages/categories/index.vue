@@ -55,7 +55,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <div class="container max-w-5xl mx-auto text-fg-muted">
+  <div class="mx-auto w-full max-w-6xl lg:px-4 text-fg-muted">
     <CategoryHero />
 
     <div class="flex flex-wrap px-6 mt-12 gap-3">

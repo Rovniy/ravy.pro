@@ -9,7 +9,7 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
       <div class="lg:col-span-3 min-w-0">
@@ -50,7 +50,7 @@ const { trackCta } = useAnalytics()
         <img
           :src="s.hero.src"
           :alt="s.hero.alt"
-          class="w-full aspect-video object-cover border border-line bg-slate-800"
+          class="w-full aspect-video object-cover border border-line bg-panel-raised"
           decoding="async"
         >
       </div>

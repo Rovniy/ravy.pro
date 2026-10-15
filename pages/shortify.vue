@@ -134,7 +134,7 @@ if (import.meta.client) {
 </script>
 
 <template>
-  <div class="px-6 py-12 mx-auto w-full max-w-4xl">
+  <div class="px-6 lg:px-10 py-12 mx-auto w-full max-w-6xl">
     <header class="mb-8">
       <h1 class="text-4xl font-display font-extrabold uppercase leading-none">
         Shortify
@@ -145,7 +145,7 @@ if (import.meta.client) {
     </header>
 
     <!-- Loading auth state -->
-    <div v-if="!state.ready" class="text-slate-500">
+    <div v-if="!state.ready" class="text-fg-muted">
       Loading…
     </div>
 
@@ -165,17 +165,17 @@ if (import.meta.client) {
         <Icon name="mdi:google" class="w-4 h-4" />
         Sign in with Google
       </button>
-      <p v-if="signInError" class="mt-3 text-sm text-red-600 dark:text-red-400">
+      <p v-if="signInError" class="mt-3 text-sm text-danger">
         {{ signInError }}
       </p>
     </div>
 
     <!-- Authed but no access to this tool -->
-    <div v-else-if="!canUse" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
-      <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
+    <div v-else-if="!canUse" class="border border-danger/40 bg-danger/10 p-6">
+      <h2 class="text-lg font-semibold mb-2 text-danger">
         Access denied
       </h2>
-      <p class="text-sm text-red-700/80 dark:text-red-300/80 mb-4">
+      <p class="text-sm text-danger mb-4">
         Your account <strong>{{ state.user?.email }}</strong> is not authorized to use this service.
       </p>
       <!-- Signing out happens on /account, so the escape hatch points there
@@ -204,11 +204,11 @@ if (import.meta.client) {
         </button>
       </form>
 
-      <div v-if="errorMsg" class="mb-4 text-sm text-red-600 dark:text-red-400">
+      <div v-if="errorMsg" class="mb-4 text-sm text-danger">
         {{ errorMsg }}
       </div>
 
-      <div v-if="justCreated" class="mb-6 border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm flex items-center gap-2 flex-wrap">
+      <div v-if="justCreated" class="mb-6 border border-ok/40 bg-ok/10 p-3 text-sm flex items-center gap-2 flex-wrap">
         <span>Created:</span>
         <a class="underline font-mono" :href="shortUrl(justCreated.code)" target="_blank">{{ shortUrl(justCreated.code) }}</a>
         <NuxtLink
@@ -221,7 +221,7 @@ if (import.meta.client) {
         <button
           type="button"
           class="ml-auto inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-          :class="copiedKey === `created-${justCreated.code}` ? 'text-green-700 dark:text-green-400' : 'underline text-fg-muted'"
+          :class="copiedKey === `created-${justCreated.code}` ? 'text-ok' : 'underline text-fg-muted'"
           @click="copy(shortUrl(justCreated.code), `created-${justCreated.code}`)"
         >
           <Icon v-if="copiedKey === `created-${justCreated.code}`" name="mdi:check" size="14" />
@@ -234,19 +234,19 @@ if (import.meta.client) {
           <h2 class="text-lg font-semibold">
             Links
           </h2>
-          <button type="button" class="text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
+          <button type="button" class="text-xs text-fg-muted hover:text-fg underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
             {{ loadingList ? 'Refreshing…' : 'Refresh' }}
           </button>
         </div>
 
-        <div v-if="!loadingList && links.length === 0" class="text-sm text-slate-500">
+        <div v-if="!loadingList && links.length === 0" class="text-sm text-fg-muted">
           No links yet.
         </div>
 
         <div v-else class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
-              <tr class="text-left text-xs uppercase tracking-wide text-slate-500 border-b border-line">
+              <tr class="text-left text-xs uppercase tracking-wide text-fg-muted border-b border-line">
                 <th class="py-2 pr-4">
                   Code
                 </th>
@@ -263,7 +263,7 @@ if (import.meta.client) {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="link in links" :key="link.code" class="border-b border-slate-100 dark:border-slate-800/50">
+              <tr v-for="link in links" :key="link.code" class="border-b border-line">
                 <td class="py-2 pr-4 font-mono">
                   <a :href="shortUrl(link.code)" target="_blank" class="hover:underline">
                     /s/{{ link.code }}
@@ -275,14 +275,14 @@ if (import.meta.client) {
                 <td class="py-2 pr-4 tabular-nums">
                   {{ link.clicks }}
                 </td>
-                <td class="py-2 pr-4 text-slate-500 whitespace-nowrap">
+                <td class="py-2 pr-4 text-fg-muted whitespace-nowrap">
                   {{ formatDate(link.createdAt) }}
                 </td>
                 <td class="py-2 text-right whitespace-nowrap">
                   <div class="inline-flex items-center gap-3 justify-end">
                     <NuxtLink
                       :to="qrLink(shortUrl(link.code))"
-                      class="inline-flex items-center gap-1 text-xs underline text-slate-500 hover:text-fg"
+                      class="inline-flex items-center gap-1 text-xs underline text-fg-muted hover:text-fg"
                       :title="`Create QR code for /s/${link.code}`"
                     >
                       <Icon name="mdi:qrcode" size="14" />
@@ -291,7 +291,7 @@ if (import.meta.client) {
                     <button
                       type="button"
                       class="inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-                      :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-slate-500 hover:text-fg'"
+                      :class="copiedKey === link.code ? 'text-ok' : 'underline text-fg-muted hover:text-fg'"
                       @click="copy(shortUrl(link.code), link.code)"
                     >
                       <Icon v-if="copiedKey === link.code" name="mdi:check" size="14" />

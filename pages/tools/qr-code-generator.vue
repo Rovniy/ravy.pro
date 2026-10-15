@@ -296,7 +296,7 @@ function download() {
             <button
               v-if="image"
               type="button"
-              class="text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer"
+              class="text-xs underline text-fg-muted hover:text-fg hover:cursor-pointer"
               @click="clearImage"
             >
               Clear
@@ -322,7 +322,7 @@ function download() {
           <ClientOnly>
             <div ref="previewRef" class="flex items-center justify-center [&_canvas]:max-w-full [&_canvas]:h-auto" />
             <template #fallback>
-              <div class="w-[300px] h-[300px] flex items-center justify-center text-slate-400">
+              <div class="w-[300px] h-[300px] flex items-center justify-center text-fg-subtle">
                 <Icon name="svg-spinners:180-ring" size="32" />
               </div>
             </template>

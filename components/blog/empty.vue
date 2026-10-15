@@ -1,5 +1,5 @@
 <template>
-  <article class="group border dark:border-slate-800 m-2 overflow-hidden text-slate-700">
+  <article class="group border border-line bg-panel overflow-hidden text-fg">
     <NuxtLink to="/">
       <div
         class="lg:h-48 md:h-36 w-full object-cover object-center transition-all duration-500"
@@ -7,7 +7,7 @@
         <LogoConfused />
       </div>
       <div class="p-5">
-        <h2 class="text-3xl font-semibold text-fg pb-1 group-hover:text-accent-ink">
+        <h2 class="font-display font-extrabold uppercase text-3xl leading-none text-fg pb-2 group-hover:text-accent-ink">
           No Post Available
         </h2>
 

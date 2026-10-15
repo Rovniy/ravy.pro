@@ -213,7 +213,7 @@ onMounted(load)
 </script>
 
 <template>
-  <div v-if="loading" class="text-sm text-slate-500">
+  <div v-if="loading" class="text-sm text-fg-muted">
     Loading post…
   </div>
 
@@ -226,13 +226,13 @@ onMounted(load)
       @change="onFileChosen"
     >
 
-    <p v-if="errorMsg" class="mb-4 border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+    <p v-if="errorMsg" class="mb-4 border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
       {{ errorMsg }}
     </p>
 
     <div class="grid gap-4">
       <label class="block">
-        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Title</span>
+        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">Title</span>
         <input
           v-model="form.title"
           type="text"
@@ -241,9 +241,9 @@ onMounted(load)
       </label>
 
       <label class="block">
-        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">
           Slug
-          <span v-if="!isNew" class="ml-1 font-normal normal-case tracking-normal text-slate-400">locked — the URL is published</span>
+          <span v-if="!isNew" class="ml-1 font-normal normal-case tracking-normal text-fg-subtle">locked — the URL is published</span>
         </span>
         <input
           v-model="form.slug"
@@ -252,21 +252,21 @@ onMounted(load)
           class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
           @input="slugTouched = true"
         >
-        <span class="mt-1 block font-spacemono text-xs text-slate-500">/blogs/{{ form.slug || '…' }}</span>
+        <span class="mt-1 block font-spacemono text-xs text-fg-muted">/blogs/{{ form.slug || '…' }}</span>
       </label>
 
       <label class="block">
-        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Description</span>
+        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">Description</span>
         <textarea
           v-model="form.description"
           rows="2"
           class="w-full border border-line-strong bg-panel px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
-        <span class="mt-1 block text-xs text-slate-500">Used as the meta description, the card blurb and the alt text fallback.</span>
+        <span class="mt-1 block text-xs text-fg-muted">Used as the meta description, the card blurb and the alt text fallback.</span>
       </label>
 
       <div>
-        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Tags</span>
+        <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">Tags</span>
         <div class="flex flex-wrap gap-2">
           <button
             v-for="tag in BlogPostTag"
@@ -274,7 +274,7 @@ onMounted(load)
             type="button"
             class="border px-3 py-1 text-sm transition-colors hover:cursor-pointer"
             :class="form.tags.includes(tag)
-              ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+              ? 'border-accent bg-accent text-accent-fg'
               : 'border-line-strong text-fg-muted'"
             :aria-pressed="form.tags.includes(tag)"
             @click="toggleTag(tag)"
@@ -286,7 +286,7 @@ onMounted(load)
 
       <div class="grid gap-4 sm:grid-cols-2">
         <div>
-          <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Cover image</span>
+          <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">Cover image</span>
           <img v-if="form.image" :src="form.image" alt="" class="mb-2 h-28 w-full object-cover border border-line">
           <div class="flex gap-2">
             <input
@@ -307,7 +307,7 @@ onMounted(load)
         </div>
 
         <div>
-          <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">OpenGraph image</span>
+          <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-fg-muted">OpenGraph image</span>
           <img v-if="form.ogImage" :src="form.ogImage" alt="" class="mb-2 h-28 w-full object-cover border border-line">
           <div class="flex gap-2">
             <input
@@ -345,24 +345,24 @@ onMounted(load)
 
       <div>
         <div class="mb-1 flex flex-wrap items-center gap-3">
-          <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Body (markdown)</span>
+          <span class="text-xs font-semibold uppercase tracking-wide text-fg-muted">Body (markdown)</span>
           <button
             type="button"
             :disabled="!canUpload || uploading"
-            class="text-xs underline text-slate-500 hover:text-fg disabled:opacity-40 hover:cursor-pointer"
+            class="text-xs underline text-fg-muted hover:text-fg disabled:opacity-40 hover:cursor-pointer"
             @click="pickFile('inline')"
           >
             {{ uploading ? 'Uploading…' : 'Insert image' }}
           </button>
           <button
             type="button"
-            class="ml-auto text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer"
+            class="ml-auto text-xs underline text-fg-muted hover:text-fg hover:cursor-pointer"
             @click="showPreview = !showPreview"
           >
             {{ showPreview ? 'Hide preview' : 'Show preview' }}
           </button>
         </div>
-        <p v-if="!canUpload" class="mb-2 text-xs text-amber-600 dark:text-amber-400">
+        <p v-if="!canUpload" class="mb-2 text-xs text-warn">
           Give the post a title first — uploads are filed under its slug.
         </p>
         <textarea
@@ -375,10 +375,10 @@ onMounted(load)
       </div>
 
       <section v-if="showPreview" class="border border-line p-4">
-        <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-fg-muted">
           Preview
         </h2>
-        <p v-if="previewError" class="text-sm text-red-600 dark:text-red-400">
+        <p v-if="previewError" class="text-sm text-danger">
           {{ previewError }}
         </p>
         <!-- Same renderer and the same prose classes as pages/blogs/[blog].vue,
@@ -389,7 +389,7 @@ onMounted(load)
         >
           <ContentRenderer :value="{ body: previewBody }" />
         </div>
-        <p v-else class="text-sm text-slate-500">
+        <p v-else class="text-sm text-fg-muted">
           Rendering…
         </p>
       </section>
@@ -409,7 +409,7 @@ onMounted(load)
           v-if="!isNew && form.published"
           :to="`/blogs/${form.slug}`"
           target="_blank"
-          class="text-xs underline text-slate-500 hover:text-fg"
+          class="text-xs underline text-fg-muted hover:text-fg"
         >
           View
         </NuxtLink>
@@ -418,7 +418,7 @@ onMounted(load)
           v-if="!isNew"
           type="button"
           :disabled="deleting"
-          class="text-xs underline text-red-600 dark:text-red-400 disabled:opacity-40 hover:cursor-pointer"
+          class="text-xs underline text-danger disabled:opacity-40 hover:cursor-pointer"
           @click="onDelete"
         >
           {{ deleting ? 'Deleting…' : 'Delete' }}

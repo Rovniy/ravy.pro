@@ -6,7 +6,7 @@
 <template>
   <NuxtLink
     to="/account?tab=mcp"
-    class="mb-8 flex items-center gap-2 border border-line px-4 py-3 text-sm hover:border-slate-400 dark:hover:border-slate-600"
+    class="mb-8 flex items-center gap-2 border border-line px-4 py-3 text-sm hover:border-line-strong"
   >
     <Icon name="mdi:connection" size="16" />
     <span><strong>Write with Claude, Codex or ChatGPT</strong> — connect the blog MCP server</span>

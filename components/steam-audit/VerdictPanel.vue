@@ -58,19 +58,19 @@ const verdict = computed(() => {
 
 const toneClasses: Record<string, { banner: string, dot: string, badge: string }> = {
   rose: {
-    banner: 'border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30',
-    dot: 'bg-rose-500',
-    badge: 'text-rose-700 dark:text-rose-300',
+    banner: 'border-danger/40 bg-danger/10',
+    dot: 'bg-danger',
+    badge: 'text-danger',
   },
   amber: {
-    banner: 'border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30',
-    dot: 'bg-amber-500',
-    badge: 'text-amber-700 dark:text-amber-300',
+    banner: 'border-warn/40 bg-warn/10',
+    dot: 'bg-warn',
+    badge: 'text-warn',
   },
   yellow: {
-    banner: 'border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/20',
-    dot: 'bg-yellow-400',
-    badge: 'text-yellow-700 dark:text-yellow-300',
+    banner: 'border-warn/40 bg-warn/10',
+    dot: 'bg-warn',
+    badge: 'text-warn',
   },
   emerald: {
     banner: 'border-ok/40 bg-ok/10',
@@ -110,7 +110,7 @@ const toneClasses: Record<string, { banner: string, dot: string, badge: string }
           <h3 class="font-semibold text-fg">
             {{ g.title }}
           </h3>
-          <span class="ml-auto font-spacemono text-xs text-slate-400">{{ g.items.length }}</span>
+          <span class="ml-auto font-spacemono text-xs text-fg-subtle">{{ g.items.length }}</span>
         </header>
         <p v-if="g.note" class="px-5 pt-3 text-sm text-fg-muted">
           {{ g.note }}
@@ -121,7 +121,7 @@ const toneClasses: Record<string, { banner: string, dot: string, badge: string }
             <p class="mt-0.5 text-fg-muted leading-relaxed">
               {{ item.rationale }}
             </p>
-            <p v-if="item.flag" class="mt-1 flex items-start gap-1.5 text-amber-700 dark:text-amber-300">
+            <p v-if="item.flag" class="mt-1 flex items-start gap-1.5 text-warn">
               <Icon name="mdi:flag-variant" class="w-4 h-4 shrink-0 mt-0.5" />
               <span>{{ item.flag }}</span>
             </p>

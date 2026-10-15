@@ -44,7 +44,7 @@ const total = trackTotal(project)
 </script>
 
 <template>
-  <div v-if="project" class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div v-if="project" class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
       <div class="lg:col-span-3 min-w-0">
@@ -60,7 +60,7 @@ const total = trackTotal(project)
         <p class="mt-3 italic text-fg-muted">
           “{{ project.motto }}”
         </p>
-        <p class="mt-4 flex gap-2 border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/30 px-4 py-3 text-sm text-fg-muted leading-relaxed">
+        <p class="mt-4 flex gap-2 border border-accent bg-accent/10 px-4 py-3 text-sm text-fg-muted leading-relaxed">
           <Icon name="mdi:robot-outline" class="w-5 h-5 shrink-0 text-accent-500" aria-hidden="true" />
           <span>{{ project.aiDisclosure }}</span>
         </p>
@@ -122,7 +122,7 @@ const total = trackTotal(project)
           v-for="release in shownReleases"
           :key="release.title"
           class="flex gap-4 border bg-panel p-4 transition-colors"
-          :class="current?.title === release.title ? 'border-accent-400 dark:border-accent-600' : 'border-line'"
+          :class="current?.title === release.title ? 'border-accent dark:border-accent' : 'border-line'"
         >
           <div class="shrink-0 w-24 h-24 overflow-hidden bg-panel-raised">
             <NuxtImg

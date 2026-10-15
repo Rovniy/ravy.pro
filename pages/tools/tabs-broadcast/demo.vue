@@ -139,7 +139,7 @@ onBeforeUnmount(() => {
       </p>
     </header>
 
-    <div v-if="unsupported" class="mt-8 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">
+    <div v-if="unsupported" class="mt-8 border border-warn/40 bg-warn/10 p-4 text-sm text-warn">
       This browser has no BroadcastChannel API, so the demo can't run here. Try a current Chrome, Edge, Firefox or Safari 15.4+.
     </div>
 
@@ -155,7 +155,7 @@ onBeforeUnmount(() => {
         >
           <span class="relative flex w-2.5 h-2.5" aria-hidden="true">
             <span v-if="isPrimary" class="absolute inline-flex w-full h-full rounded-full bg-ok opacity-75 motion-safe:animate-ping" />
-            <span class="relative inline-flex w-2.5 h-2.5 rounded-full" :class="isPrimary ? 'bg-ok' : 'bg-slate-400'" />
+            <span class="relative inline-flex w-2.5 h-2.5 rounded-full" :class="isPrimary ? 'bg-ok' : 'bg-panel-raised'" />
           </span>
           <span v-if="!ready">Connecting…</span>
           <span v-else-if="isPrimary">Primary tab — can emit events</span>
@@ -182,8 +182,8 @@ onBeforeUnmount(() => {
             :disabled="!ready || !isPrimary"
             class="flex items-center justify-between gap-3 border px-4 py-3 text-left font-medium transition disabled:cursor-not-allowed disabled:opacity-40"
             :class="i === 0
-              ? 'border-accent-500 bg-accent-500 text-white enabled:hover:bg-accent-600'
-              : 'border-line-strong text-fg enabled:hover:border-accent-500'"
+              ? 'border-accent bg-accent text-accent-fg enabled:hover:brightness-105'
+              : 'border-line-strong text-fg enabled:hover:border-accent'"
             @click="emit(a)"
           >
             <span>{{ a.label }}</span>

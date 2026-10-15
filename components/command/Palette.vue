@@ -460,8 +460,8 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
             tabindex="-1"
             class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium transition-colors"
             :class="effective.scope === s.id
-              ? 'bg-accent-600 text-white dark:bg-accent-400 dark:text-slate-950'
-              : 'text-fg-muted hover:bg-slate-100 dark:hover:bg-white/5'"
+              ? 'bg-accent text-accent-fg'
+              : 'text-fg-muted hover:bg-panel-raised dark:hover:bg-white/5'"
             :aria-pressed="effective.scope === s.id"
             @click="scope = s.id; inputRef?.focus()"
           >
@@ -490,12 +490,12 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
               role="option"
               :aria-selected="active === offsets[si]! + hi"
               class="cmdk-row group relative flex flex-wrap sm:flex-nowrap items-center gap-x-3 gap-y-2 px-3 py-2.5 cursor-pointer select-none"
-              :class="active === offsets[si]! + hi ? 'bg-accent-500/10 dark:bg-accent-400/10' : ''"
+              :class="active === offsets[si]! + hi ? 'bg-accent/10 dark:bg-accent/10' : ''"
               @mousemove="onRowPointer(offsets[si]! + hi)"
               @click="onRowClick(offsets[si]! + hi, $event)"
             >
               <span
-                class="relative shrink-0 w-10 h-10 overflow-hidden flex items-center justify-center border border-line bg-slate-50 dark:bg-slate-900"
+                class="relative shrink-0 w-10 h-10 overflow-hidden flex items-center justify-center border border-line bg-panel-raised"
                 :class="active === offsets[si]! + hi ? 'text-accent-ink' : 'text-fg-muted'"
               >
                 <NuxtImg
@@ -534,8 +534,8 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
                   tabindex="-1"
                   class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors"
                   :class="ai === 0
-                    ? 'bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300'
-                    : 'border border-line text-fg hover:border-accent-500/60 hover:text-accent-ink'"
+                    ? 'bg-accent text-accent-fg'
+                    : 'border border-line text-fg hover:border-accent/60 hover:text-accent-ink'"
                   @click.stop="run(hit.item, action, { newTab: $event.metaKey || $event.ctrlKey })"
                 >
                   <Icon v-if="copiedKey === actionKey(hit.item, action)" name="mdi:check" class="w-3.5 h-3.5" aria-hidden="true" />
@@ -563,7 +563,7 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
               <a :href="askHref" class="skew-box btn btn-primary btn-sm" @click="close">
                 <Icon name="mdi:email-fast-outline" class="w-4 h-4" aria-hidden="true" /> Ask Andrei
               </a>
-              <button type="button" class="inline-flex items-center gap-1.5 border border-line px-3 py-2 text-sm font-semibold text-fg hover:border-accent-500/60" @click="query = ''; scope = 'all'; inputRef?.focus()">
+              <button type="button" class="inline-flex items-center gap-1.5 border border-line px-3 py-2 text-sm font-semibold text-fg hover:border-accent/60" @click="query = ''; scope = 'all'; inputRef?.focus()">
                 Clear search
               </button>
             </div>

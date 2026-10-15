@@ -24,7 +24,7 @@ async function onSignIn() {
 </script>
 
 <template>
-  <div v-if="!state.ready" class="text-slate-500">
+  <div v-if="!state.ready" class="text-fg-muted">
     Loading…
   </div>
 
@@ -43,16 +43,16 @@ async function onSignIn() {
       <Icon name="mdi:google" class="w-4 h-4" />
       Sign in with Google
     </button>
-    <p v-if="signInError" class="mt-3 text-sm text-red-600 dark:text-red-400">
+    <p v-if="signInError" class="mt-3 text-sm text-danger">
       {{ signInError }}
     </p>
   </div>
 
-  <div v-else-if="!canUse" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
-    <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
+  <div v-else-if="!canUse" class="border border-danger/40 bg-danger/10 p-6">
+    <h2 class="text-lg font-semibold mb-2 text-danger">
       Access denied
     </h2>
-    <p class="text-sm text-red-700/80 dark:text-red-300/80 mb-4">
+    <p class="text-sm text-danger mb-4">
       Your account <strong>{{ state.user?.email }}</strong> is not authorized to publish posts.
     </p>
     <NuxtLink to="/account" class="text-sm underline hover:no-underline">

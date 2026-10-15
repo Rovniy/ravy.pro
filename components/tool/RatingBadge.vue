@@ -11,7 +11,7 @@ defineProps<{ summary: ToolRatingSummary | null }>()
     class="inline-flex items-center gap-1 text-xs text-fg-muted"
     :aria-label="`Rated ${summary.average} out of 5 based on ${summary.count} votes`"
   >
-    <Icon name="mdi:star" class="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
+    <Icon name="mdi:star" class="w-3.5 h-3.5 text-warn" aria-hidden="true" />
     <span class="font-medium text-fg-muted">{{ summary.average }}</span>
     <span>({{ formatCompactCount(summary.count) }})</span>
   </span>

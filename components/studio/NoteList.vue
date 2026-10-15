@@ -39,12 +39,12 @@ onMounted(refresh)
         <Icon name="mdi:plus" size="16" />
         New note
       </NuxtLink>
-      <NuxtLink to="/til" target="_blank" class="text-xs text-slate-500 hover:text-fg underline">
+      <NuxtLink to="/til" target="_blank" class="text-xs text-fg-muted hover:text-fg underline">
         Open /til
       </NuxtLink>
       <button
         type="button"
-        class="ml-auto text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer"
+        class="ml-auto text-xs text-fg-muted hover:text-fg underline hover:cursor-pointer"
         :disabled="loading"
         @click="refresh"
       >
@@ -52,30 +52,30 @@ onMounted(refresh)
       </button>
     </div>
 
-    <p v-if="errorMsg" class="mb-4 text-sm text-red-600 dark:text-red-400">
+    <p v-if="errorMsg" class="mb-4 text-sm text-danger">
       {{ errorMsg }}
     </p>
     <p v-if="!loading" class="mb-3 font-spacemono text-xs text-fg-muted">
       {{ notes.length }} notes · {{ drafts }} draft{{ drafts === 1 ? '' : 's' }}
     </p>
-    <div v-if="loading" class="text-sm text-slate-500">
+    <div v-if="loading" class="text-sm text-fg-muted">
       Loading notes…
     </div>
 
     <ul v-else class="divide-y divide-line border-y border-line">
       <li v-for="note in notes" :key="note.slug">
         <NuxtLink :to="`/studio/notes/${note.slug}`" class="flex items-start gap-3 py-3 group">
-          <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full" :class="note.published ? 'bg-green-500' : 'bg-amber-500'" :title="note.published ? 'Published' : 'Draft'" />
+          <span class="mt-1.5 h-2 w-2 shrink-0 rounded-full" :class="note.published ? 'bg-ok' : 'bg-warn'" :title="note.published ? 'Published' : 'Draft'" />
           <span class="min-w-0 flex-1">
             <span class="block font-medium text-fg group-hover:text-accent-500 transition-colors">{{ note.title }}</span>
             <span class="block font-spacemono text-xs text-fg-muted truncate">
               /til/{{ note.slug }} · {{ formatBlogDate(note.createdAt) }} · {{ note.topics.join(', ') }}
             </span>
           </span>
-          <Icon name="mdi:chevron-right" size="18" class="mt-1 shrink-0 text-slate-400" />
+          <Icon name="mdi:chevron-right" size="18" class="mt-1 shrink-0 text-fg-subtle" />
         </NuxtLink>
       </li>
-      <li v-if="!notes.length" class="py-6 text-sm text-slate-500">
+      <li v-if="!notes.length" class="py-6 text-sm text-fg-muted">
         No notes yet. A note is a question as the title and a few lines with the fix.
       </li>
     </ul>

@@ -124,21 +124,21 @@ function deny() {
       Connect to Claude
     </h1>
 
-    <div v-if="!check" class="text-slate-500">
+    <div v-if="!check" class="text-fg-muted">
       Checking the request…
     </div>
 
-    <div v-else-if="fatal" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
+    <div v-else-if="fatal" class="border border-danger/40 bg-danger/10 p-6 text-sm text-danger">
       {{ check.error }}
     </div>
 
-    <div v-else-if="returnable && !done" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
+    <div v-else-if="returnable && !done" class="border border-danger/40 bg-danger/10 p-6 text-sm text-danger">
       <p class="mb-4">
         The app sent a malformed connection request (<span class="font-mono">{{ check.error }}</span>), so nothing was authorized.
       </p>
       <button
         type="button"
-        class="border border-red-300 dark:border-red-700 px-4 py-2 font-medium hover:cursor-pointer"
+        class="border border-danger/40 px-4 py-2 font-medium hover:cursor-pointer"
         @click="returnWithError"
       >
         Return to {{ check.redirectHost }}
@@ -155,7 +155,7 @@ function deny() {
           <li>create and edit posts and upload images;</li>
           <li>publish and unpublish posts — they go live within a minute.</li>
         </ul>
-        <p class="text-xs text-slate-500 mb-6">
+        <p class="text-xs text-fg-muted mb-6">
           You will be returned to <span class="font-mono">{{ check.redirectHost }}</span>.
           Only allow this if you just started connecting from there. You can disconnect it any time in Studio.
         </p>
@@ -178,13 +178,13 @@ function deny() {
             Deny
           </button>
         </div>
-        <p v-if="errorMsg" class="mt-3 text-sm text-red-600 dark:text-red-400">
+        <p v-if="errorMsg" class="mt-3 text-sm text-danger">
           {{ errorMsg }}
         </p>
       </div>
     </StudioGate>
 
-    <div v-else class="text-slate-500">
+    <div v-else class="text-fg-muted">
       Returning to the app…
     </div>
   </div>

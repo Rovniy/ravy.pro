@@ -67,7 +67,7 @@ onMounted(() => {
     class="relative w-full overflow-hidden"
     :class="[
       variant === 'video' ? 'aspect-video border border-line' : 'h-[352px]',
-      active && variant === 'spotify' ? 'bg-transparent' : 'bg-slate-900',
+      active && variant === 'spotify' ? 'bg-transparent' : 'bg-black',
     ]"
   >
     <iframe
@@ -102,7 +102,7 @@ onMounted(() => {
         aria-hidden="true"
       />
       <span class="absolute inset-0 grid place-items-center">
-        <span class="grid place-items-center w-16 h-16 bg-white/90 text-slate-900 transition-transform duration-200">
+        <span class="grid place-items-center w-16 h-16 bg-white/90 text-fg transition-transform duration-200">
           <Icon name="mdi:play" class="w-32 h-32 text-4xl translate-x-0.5" aria-hidden="true" />
         </span>
       </span>

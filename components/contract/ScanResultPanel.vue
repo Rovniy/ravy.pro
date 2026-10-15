@@ -44,7 +44,7 @@ function severityIcon(severity: 'high' | 'medium' | 'low') {
     <p class="mt-1 text-base text-fg-muted">
       Found {{ flaggedCount }} potential red flags, including {{ highCount }} high-risk items.
     </p>
-    <div class="mt-4 border border-line p-4 bg-slate-50/60 dark:bg-slate-900/40">
+    <div class="mt-4 border border-line p-4 bg-panel-raised">
       <p class="text-fg-muted text-sm flex items-center gap-2">
         <Icon name="mdi:gauge" size="16" />
         Overall risk
@@ -162,17 +162,17 @@ function severityIcon(severity: 'high' | 'medium' | 'low') {
         :key="`${idx}-${item.title}`"
         class="border p-4"
         :class="item.severity === 'high'
-          ? 'border-red-300 dark:border-red-700 bg-red-50/70 dark:bg-red-950/20'
+          ? 'border-danger/40 bg-danger/10'
           : item.severity === 'medium'
-            ? 'border-amber-300 dark:border-amber-700 bg-amber-50/70 dark:bg-amber-950/20'
-            : 'border-line-strong bg-slate-50/70 dark:bg-slate-900/40'"
+            ? 'border-warn/40 bg-warn/10'
+            : 'border-line-strong bg-panel-raised'"
       >
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
           <h3 class="text-sm font-semibold text-fg flex items-center gap-2">
             <Icon :name="severityIcon(item.severity)" size="16" />
             {{ item.title }}
           </h3>
-          <span class="text-xs uppercase font-semibold" :class="item.severity === 'high' ? 'text-red-700 dark:text-red-300' : 'text-amber-700 dark:text-amber-300'">
+          <span class="text-xs uppercase font-semibold" :class="item.severity === 'high' ? 'text-danger' : 'text-warn'">
             {{ item.severity }}
           </span>
         </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { EVENTS } from '~/data/analytics'
 import { gameBySlug, gamePressPath } from '~/data/games'
-import { releaseMonth, STATUS_LABEL } from '~/data/projects'
+import { releaseMonth } from '~/data/projects'
 
 const route = useRoute()
 const game = gameBySlug(String(route.params.slug))
@@ -10,13 +10,12 @@ if (!game)
 
 useGamePageSchema(game)
 
-const releaseLine = computed(() => game.releaseDate
-  ? `${STATUS_LABEL[game.status]} · ${releaseMonth(game.releaseDate)}`
-  : STATUS_LABEL[game.status])
+// The chip beside it already names the status, so this line is only the date.
+const releaseLine = computed(() => game.releaseDate ? releaseMonth(game.releaseDate) : '')
 </script>
 
 <template>
-  <div v-if="game" class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div v-if="game" class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
       <div class="lg:col-span-3 min-w-0">
@@ -34,7 +33,7 @@ const releaseLine = computed(() => game.releaseDate
         </p>
         <div class="mt-4 flex flex-wrap items-center gap-3">
           <ProjectStatusChip :status="game.status" />
-          <span class="eyebrow">{{ releaseLine }}</span>
+          <span v-if="releaseLine" class="eyebrow">{{ releaseLine }}</span>
         </div>
         <ProjectLinkButtons class="mt-6" :links="game.links" :project="game.slug" />
         <p v-if="!game.links.length && game.blogPath" class="mt-6 text-sm text-fg-muted">
@@ -53,7 +52,7 @@ const releaseLine = computed(() => game.releaseDate
         <img
           :src="game.cover.src"
           :alt="game.cover.alt"
-          class="w-full aspect-video object-cover border border-line bg-slate-800"
+          class="w-full aspect-video object-cover border border-line bg-panel-raised"
           decoding="async"
         >
       </div>

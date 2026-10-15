@@ -122,7 +122,7 @@ defineOgImage('Blog', {
             </p>
             <ul class="mt-4 space-y-3">
               <li v-for="item in m.fit.no.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
-                <Icon name="mdi:close" class="mt-0.5 w-4 h-4 shrink-0 text-slate-400" aria-hidden="true" />
+                <Icon name="mdi:close" class="mt-0.5 w-4 h-4 shrink-0 text-fg-subtle" aria-hidden="true" />
                 {{ item }}
               </li>
             </ul>
@@ -371,7 +371,7 @@ defineOgImage('Blog', {
       <section class="pb-16">
         <p class="border-t border-line pt-6 text-xs leading-relaxed text-fg-muted">
           {{ m.honestyNote }}
-          <NuxtLink :to="m.terms.fullTerms.to" class="underline decoration-slate-400/50 hover:text-accent-ink">
+          <NuxtLink :to="m.terms.fullTerms.to" class="underline decoration-line-strong hover:text-accent-ink">
             Full payment terms
           </NuxtLink>.
         </p>

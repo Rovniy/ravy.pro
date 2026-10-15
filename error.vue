@@ -28,8 +28,9 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <div class="min-h-screen">
-    <div class="py-5 container max-w-xl mx-auto flex flex-col items-center justify-center gap-8 min-h-screen text-center">
+  <!-- error.vue replaces app.vue, so it sets the ground and face itself. -->
+  <div class="min-h-screen bg-bg text-fg font-spacegrotesk">
+    <div class="py-5 px-6 mx-auto max-w-xl flex flex-col items-center justify-center gap-8 min-h-screen text-center">
       <Logo404 />
 
       <!-- The page had no h1 at all — the 404 glyph is decorative artwork, so
@@ -39,10 +40,7 @@ defineOgImage('Blog', {
         {{ page404.og.headline }} — {{ page404.meta.description }}
       </h1>
 
-      <a
-        href="/"
-        class="inline-flex items-center gap-2 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-semibold hover:opacity-90 transition-opacity"
-      >
+      <a href="/" class="skew-box btn btn-primary">
         <Icon name="mdi:arrow-left" size="18" aria-hidden="true" />
         Go to home page
       </a>

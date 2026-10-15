@@ -296,11 +296,13 @@
 /*
  * Article (prose) polish. Centralised here so all three prose containers
  * (ContainerOneCol, ContainerTwoCol, blogs/[blog].vue) share one definition
- * instead of duplicating prose-* modifier strings. Plain `.prose el` selectors
- * have higher specificity than the typography plugin's `:where()`-wrapped
- * defaults (which carry 0 specificity), so these win cleanly.
+ * instead of duplicating prose-* modifier strings. In the `utilities` layer on
+ * purpose: Tailwind v4 emits the typography plugin there, and a rule in an
+ * earlier layer loses to it whatever its specificity (that is how inline code
+ * got its backticks back). Inside the same layer the plain `.prose el`
+ * selectors outrank the plugin's `:where()`-wrapped defaults.
  */
-@layer components {
+@layer utilities {
   /* Links: accent ink, underlined with breathing room. Every rule here skips
      `.not-prose` blocks, where markdown pages place buttons and cards. */
   .prose a:not(.not-prose *) {

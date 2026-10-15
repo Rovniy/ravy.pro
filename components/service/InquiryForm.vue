@@ -196,7 +196,7 @@ const fieldClasses = 'w-full border border-line-strong bg-bg px-4 py-2.5 text-ba
 
         <div>
           <label for="inquiry-message" class="block text-sm font-medium text-fg-muted mb-1.5">
-            Where you are right now <span class="text-slate-400 font-normal">(optional)</span>
+            Where you are right now <span class="text-fg-subtle font-normal">(optional)</span>
           </label>
           <textarea
             id="inquiry-message"
@@ -231,13 +231,13 @@ const fieldClasses = 'w-full border border-line-strong bg-bg px-4 py-2.5 text-ba
           >
           <span>
             I agree that Andrei Rovnyi (XPLOIT FZE) may use the contact details above to reply to this inquiry, as described in the
-            <NuxtLink to="/docs/privacy-policy" class="underline decoration-slate-400/50 hover:text-accent-ink">Privacy Policy</NuxtLink>.
+            <NuxtLink to="/docs/privacy-policy" class="underline decoration-line-strong hover:text-accent-ink">Privacy Policy</NuxtLink>.
           </span>
         </label>
 
         <!-- Always in the DOM (visually hidden when empty): a live region
              inserted together with its text is often not announced at all. -->
-        <p role="alert" class="text-xs text-rose-600 dark:text-rose-400" :class="{ 'sr-only': status !== 'error' }">
+        <p role="alert" class="text-xs text-danger" :class="{ 'sr-only': status !== 'error' }">
           {{ status === 'error' ? error : '' }}
         </p>
 

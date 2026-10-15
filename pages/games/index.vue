@@ -17,7 +17,7 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
+  <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <header>
       <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
         Projects
@@ -50,7 +50,7 @@ const { trackCta } = useAnalytics()
     </div>
 
     <p class="mt-10 text-sm text-fg-muted">
-      All of these are made at <a href="https://xploit.games" class="underline decoration-slate-400/40 hover:text-accent-500">XPLOIT</a>, the independent game studio I founded.
+      All of these are made at <a href="https://xploit.games" class="underline decoration-line-strong hover:text-accent-500">XPLOIT</a>, the independent game studio I founded.
     </p>
   </div>
 </template>

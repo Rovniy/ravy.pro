@@ -234,8 +234,8 @@ function copyInstall() {
           </div>
         </li>
       </ol>
-      <div class="mt-4 overflow-x-auto border border-line bg-slate-950">
-        <pre class="p-5 font-spacemono text-xs sm:text-sm leading-relaxed text-slate-200"><code>{{ QUICK_START_CODE }}</code></pre>
+      <div class="mt-4 overflow-x-auto border border-line bg-[#0b0e14]">
+        <pre class="p-5 font-spacemono text-xs sm:text-sm leading-relaxed text-[#bfbdb6]"><code>{{ QUICK_START_CODE }}</code></pre>
       </div>
     </section>
 

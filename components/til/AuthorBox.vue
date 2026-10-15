@@ -17,7 +17,7 @@ const { trackCta } = useAnalytics()
       width="72"
       height="72"
       densities="x1 x2"
-      class="w-18 h-18 shrink-0 object-cover ring-1 ring-slate-200 dark:ring-slate-700"
+      class="w-18 h-18 shrink-0 object-cover ring-1 ring-line"
       loading="lazy"
     />
     <div class="min-w-0">

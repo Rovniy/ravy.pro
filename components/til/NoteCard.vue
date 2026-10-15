@@ -15,7 +15,7 @@ defineProps<{
 </script>
 
 <template>
-  <article class="til-note group relative border border-line bg-white/60 dark:bg-slate-900/40 p-5 sm:p-6 transition-colors hover:border-accent">
+  <article class="til-note group relative border border-line bg-white/60 p-5 sm:p-6 transition-colors hover:border-accent">
     <header class="mb-3">
       <div class="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-spacemono text-xs text-fg-muted">
         <time :datetime="note.createdAt">{{ formatBlogDate(note.createdAt) }}</time>

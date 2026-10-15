@@ -225,7 +225,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <ClientOnly v-else>
           <span v-if="loading" class="h-4 w-14 bg-panel-raised animate-pulse" aria-hidden="true" />
         </ClientOnly>
-        <span v-if="publishedLabel" class="text-xs text-slate-400">· {{ publishedLabel }}</span>
+        <span v-if="publishedLabel" class="text-xs text-fg-subtle">· {{ publishedLabel }}</span>
       </div>
 
       <div class="mt-4 flex flex-wrap items-center gap-3">
@@ -416,7 +416,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
           </tbody>
         </table>
       </div>
-      <p class="mt-3 text-sm text-slate-400">
+      <p class="mt-3 text-sm text-fg-subtle">
         Rates are OpenAI's and can change — check their pricing page for the current figures.
       </p>
     </section>
@@ -536,7 +536,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         and you should not download it.
       </p>
 
-      <p class="mt-6 text-sm text-slate-400">
+      <p class="mt-6 text-sm text-fg-subtle">
         Source is published on GitHub. No licence has been attached yet, so the usual defaults apply — ask
         before reusing the code.
       </p>

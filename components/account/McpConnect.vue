@@ -194,7 +194,7 @@ onMounted(() => {
           {{ copiedKey === 'url' ? 'Copied' : 'Copy' }}
         </button>
       </div>
-      <p class="text-xs text-slate-500">
+      <p class="text-xs text-fg-muted">
         No API key to paste: every client signs in through this site with your Google account, and access follows your Studio grant.
       </p>
     </section>
@@ -212,8 +212,8 @@ onMounted(() => {
           :aria-selected="selected === g.key"
           class="border px-3 py-1 text-sm hover:cursor-pointer transition-colors"
           :class="selected === g.key
-            ? 'border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900'
-            : 'border-line-strong text-fg-muted hover:border-slate-500'"
+            ? 'border-fg bg-fg text-bg'
+            : 'border-line-strong text-fg-muted hover:border-line-strong'"
           @click="selected = g.key"
         >
           {{ g.label }}
@@ -235,7 +235,7 @@ onMounted(() => {
               <pre class="overflow-x-auto bg-panel-raised p-3 pr-12 text-xs"><code>{{ step.code }}</code></pre>
               <button
                 type="button"
-                class="absolute top-2 right-2 p-1 text-slate-500 hover:text-fg hover:cursor-pointer"
+                class="absolute top-2 right-2 p-1 text-fg-muted hover:text-fg hover:cursor-pointer"
                 :aria-label="`Copy step ${i + 1}`"
                 @click="copy(step.code, `${guide.key}-${i}`)"
               >
@@ -251,28 +251,28 @@ onMounted(() => {
       <h3 class="text-sm font-medium text-fg">
         Connected clients
       </h3>
-      <p v-if="loading" class="text-sm text-slate-500">
+      <p v-if="loading" class="text-sm text-fg-muted">
         Loading…
       </p>
-      <p v-else-if="!clients.length" class="text-sm text-slate-500">
+      <p v-else-if="!clients.length" class="text-sm text-fg-muted">
         Nothing connected yet.
       </p>
       <ul v-else class="divide-y divide-line text-sm">
         <li v-for="c in clients" :key="c.clientId" class="flex justify-between gap-4 py-2">
           <span class="truncate">{{ c.clientName }}</span>
-          <span class="flex-none font-mono text-xs text-slate-500">signed in {{ c.lastIssuedAt.slice(0, 16).replace('T', ' ') }} UTC</span>
+          <span class="flex-none font-mono text-xs text-fg-muted">signed in {{ c.lastIssuedAt.slice(0, 16).replace('T', ' ') }} UTC</span>
         </li>
       </ul>
       <button
         v-if="clients.length"
         type="button"
         :disabled="revoking"
-        class="border border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 px-3 py-1.5 text-sm hover:cursor-pointer disabled:opacity-50"
+        class="border border-danger/40 text-danger px-3 py-1.5 text-sm hover:cursor-pointer disabled:opacity-50"
         @click="disconnectAll"
       >
         Disconnect all
       </button>
-      <p v-if="message" class="text-sm text-slate-500">
+      <p v-if="message" class="text-sm text-fg-muted">
         {{ message }}
       </p>
     </section>

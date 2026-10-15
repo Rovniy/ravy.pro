@@ -108,7 +108,7 @@ const { trackCta } = useAnalytics()
             </p>
             <ul class="mt-4 space-y-3">
               <li v-for="item in c.fit.no.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
-                <Icon name="mdi:close" class="mt-0.5 w-4 h-4 shrink-0 text-slate-400" aria-hidden="true" />
+                <Icon name="mdi:close" class="mt-0.5 w-4 h-4 shrink-0 text-fg-subtle" aria-hidden="true" />
                 {{ item }}
               </li>
             </ul>
@@ -151,14 +151,14 @@ const { trackCta } = useAnalytics()
             :key="pkg.id"
             class="flex flex-col border bg-panel p-6"
             :class="pkg.emphasized
-              ? 'border-accent-400/60 dark:border-accent-500/50 ring-1 ring-accent-400/30'
+              ? 'border-accent/60 dark:border-accent/50 ring-1 ring-accent-400/30'
               : 'border-line'"
           >
             <div class="flex items-center justify-between gap-3">
               <p class="text-lg font-bold tracking-tight text-fg">
                 {{ pkg.name }}
               </p>
-              <span v-if="pkg.emphasized" class="bg-accent-500/10 text-accent-ink px-2.5 py-0.5 font-spacemono text-micro uppercase tracking-wider">
+              <span v-if="pkg.emphasized" class="bg-accent/10 text-accent-ink px-2.5 py-0.5 font-spacemono text-micro uppercase tracking-wider">
                 Default
               </span>
             </div>
@@ -178,8 +178,8 @@ const { trackCta } = useAnalytics()
               href="#fit-call"
               class="mt-6 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all"
               :class="pkg.emphasized
-                ? 'bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 ring-1 ring-accent-400/30'
-                : 'border border-line-strong hover:border-accent-400 hover:text-accent-ink'"
+                ? 'bg-accent text-accent-fg ring-1 ring-accent-400/30'
+                : 'border border-line-strong hover:border-accent hover:text-accent-ink'"
               @click="trackCta(`fractional-cto-${pkg.id}`, 'fractional_cto_packages')"
             >
               {{ pkg.cta }}

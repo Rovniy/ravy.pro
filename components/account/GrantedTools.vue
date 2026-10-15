@@ -19,7 +19,7 @@ const { accessibleServices } = useAccess()
   <!-- Spacing lives here, not on the tabs below, so an account with no grants
        gets exactly the layout it had before. -->
   <section v-if="accessibleServices.length" class="mb-6">
-    <h2 class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <h2 class="mb-2 text-xs font-semibold uppercase tracking-wide text-fg-muted">
       Your tools
     </h2>
     <div class="flex flex-wrap gap-2">
@@ -27,11 +27,11 @@ const { accessibleServices } = useAccess()
         v-for="tool in accessibleServices"
         :key="tool.key"
         :to="tool.path"
-        class="inline-flex items-center gap-2 border border-line bg-panel-raised px-3 py-2 text-sm font-medium text-fg hover:border-accent-400 hover:text-accent-ink transition-colors"
+        class="inline-flex items-center gap-2 border border-line bg-panel-raised px-3 py-2 text-sm font-medium text-fg hover:border-accent hover:text-accent-ink transition-colors"
       >
         <Icon :name="tool.icon" size="16" aria-hidden="true" />
         {{ tool.name }}
-        <Icon name="mdi:arrow-right" size="14" aria-hidden="true" class="text-slate-400" />
+        <Icon name="mdi:arrow-right" size="14" aria-hidden="true" class="text-fg-subtle" />
       </NuxtLink>
     </div>
   </section>

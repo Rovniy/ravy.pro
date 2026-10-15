@@ -191,7 +191,7 @@ async function startCheckout() {
     <div v-else-if="stage === 'verdict' && classification" class="mt-8 space-y-6">
       <div class="flex items-center justify-between gap-3">
         <span class="eyebrow">Your verdict</span>
-        <button type="button" class="text-xs font-spacemono text-slate-400 hover:text-accent-500 transition-colors" @click="restart">
+        <button type="button" class="text-xs font-spacemono text-fg-subtle hover:text-accent-500 transition-colors" @click="restart">
           ↺ Start over
         </button>
       </div>
@@ -199,7 +199,7 @@ async function startCheckout() {
       <SteamAuditVerdictPanel :classification="classification" />
 
       <label class="block max-w-md">
-        <span class="block mb-1 text-sm font-medium text-fg">Game name <span class="text-slate-400 font-normal">(optional, used in your disclosure)</span></span>
+        <span class="block mb-1 text-sm font-medium text-fg">Game name <span class="text-fg-subtle font-normal">(optional, used in your disclosure)</span></span>
         <input
           v-model="gameName"
           type="text"
@@ -283,7 +283,7 @@ async function startCheckout() {
         <li>A downloadable, dated <strong>compliance protocol</strong> documenting your review against Valve policy v{{ RULESET_VERSION }}</li>
       </ul>
 
-      <p class="mt-6 text-sm text-slate-400">
+      <p class="mt-6 text-sm text-fg-subtle">
         Informational, not legal advice. Reflects Valve's Steamworks AI content policy as of v{{ RULESET_VERSION }}.
       </p>
     </section>

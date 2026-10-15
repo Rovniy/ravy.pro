@@ -16,11 +16,12 @@ const category = computed(() => {
 </script>
 
 <template>
-  <div class="container mx-auto">
-    <div class="p-6 my-4 mx-2 bg-panel-raised">
-      <h1 class="text-fg font-semibold leading-tight text-xl md:text-2xl">
-        #{{ category }}
-      </h1>
-    </div>
-  </div>
+  <header class="py-10 sm:py-14">
+    <p class="eyebrow mb-4">
+      Category
+    </p>
+    <h1 class="font-display font-extrabold uppercase text-5xl sm:text-6xl leading-none text-fg">
+      <span class="text-accent-ink">#</span>{{ category }}
+    </h1>
+  </header>
 </template>

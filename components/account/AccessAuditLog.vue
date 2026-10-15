@@ -72,14 +72,14 @@ onMounted(() => load())
       </button>
     </div>
 
-    <p v-if="error" class="mt-3 text-sm text-rose-600 dark:text-rose-400">
+    <p v-if="error" class="mt-3 text-sm text-danger">
       {{ error }}
     </p>
 
-    <div v-if="loading" class="mt-4 text-sm text-slate-500">
+    <div v-if="loading" class="mt-4 text-sm text-fg-muted">
       Loading…
     </div>
-    <div v-else-if="entries.length === 0" class="mt-4 text-sm text-slate-500">
+    <div v-else-if="entries.length === 0" class="mt-4 text-sm text-fg-muted">
       No access changes recorded yet.
     </div>
 
@@ -89,17 +89,17 @@ onMounted(() => load())
           <span
             class="inline-flex items-center px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide"
             :class="entry.action === 'revoke'
-              ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300'
+              ? 'bg-danger/10 text-danger'
               : 'bg-ok/15 text-ok '"
           >
             {{ entry.action }}
           </span>
-          <span class="font-spacemono text-xs text-slate-400">{{ formatDate(entry.createdAt) }}</span>
+          <span class="font-spacemono text-xs text-fg-subtle">{{ formatDate(entry.createdAt) }}</span>
         </div>
 
         <p class="mt-1.5 text-sm text-fg">
           <span class="font-medium">{{ entry.adminEmail || 'unknown admin' }}</span>
-          <span class="text-slate-400"> → </span>
+          <span class="text-fg-subtle"> → </span>
           <span class="font-medium">{{ entry.targetEmail }}</span>
         </p>
 
@@ -114,14 +114,14 @@ onMounted(() => load())
           <span
             v-for="t in removed(entry)"
             :key="`r-${t}`"
-            class="inline-flex items-center gap-0.5 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 text-xs text-rose-700 dark:text-rose-300 line-through"
+            class="inline-flex items-center gap-0.5 bg-danger/10 px-2 py-0.5 text-xs text-danger line-through"
           >
             −{{ t }}
           </span>
-          <span v-if="!added(entry).length && !removed(entry).length" class="text-xs text-slate-400">
+          <span v-if="!added(entry).length && !removed(entry).length" class="text-xs text-fg-subtle">
             no change
           </span>
-          <span class="ml-1 font-spacemono text-xs text-slate-400">
+          <span class="ml-1 font-spacemono text-xs text-fg-subtle">
             now: [{{ entry.newTools.join(', ') || '—' }}]
           </span>
         </div>
