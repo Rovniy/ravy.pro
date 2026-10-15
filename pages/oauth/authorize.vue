@@ -120,7 +120,7 @@ function deny() {
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-xl">
-    <h1 class="text-3xl font-bold tracking-tight mb-6">
+    <h1 class="text-4xl font-display font-extrabold uppercase mb-6 leading-none">
       Connect to Claude
     </h1>
 
@@ -128,17 +128,17 @@ function deny() {
       Checking the request…
     </div>
 
-    <div v-else-if="fatal" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
+    <div v-else-if="fatal" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
       {{ check.error }}
     </div>
 
-    <div v-else-if="returnable && !done" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
+    <div v-else-if="returnable && !done" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6 text-sm text-red-700 dark:text-red-300">
       <p class="mb-4">
         The app sent a malformed connection request (<span class="font-mono">{{ check.error }}</span>), so nothing was authorized.
       </p>
       <button
         type="button"
-        class="rounded-md border border-red-300 dark:border-red-700 px-4 py-2 font-medium hover:cursor-pointer"
+        class="border border-red-300 dark:border-red-700 px-4 py-2 font-medium hover:cursor-pointer"
         @click="returnWithError"
       >
         Return to {{ check.redirectHost }}
@@ -146,11 +146,11 @@ function deny() {
     </div>
 
     <StudioGate v-else-if="check.ok">
-      <div class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
+      <div class="border border-line p-6 bg-panel-raised">
         <p class="text-base mb-4">
           <strong>{{ check.clientName }}</strong> wants to manage the blog on this site as you.
         </p>
-        <ul class="text-sm text-slate-600 dark:text-slate-400 list-disc pl-5 space-y-1 mb-4">
+        <ul class="text-sm text-fg-muted list-disc pl-5 space-y-1 mb-4">
           <li>read every post, including drafts;</li>
           <li>create and edit posts and upload images;</li>
           <li>publish and unpublish posts — they go live within a minute.</li>
@@ -163,7 +163,7 @@ function deny() {
         <div class="flex gap-3">
           <button
             type="button"
-            class="rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer disabled:opacity-50"
+            class="bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer disabled:opacity-50"
             :disabled="busy || done"
             @click="allow"
           >
@@ -171,7 +171,7 @@ function deny() {
           </button>
           <button
             type="button"
-            class="rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:cursor-pointer disabled:opacity-50"
+            class="border border-line-strong px-4 py-2 text-sm font-medium hover:cursor-pointer disabled:opacity-50"
             :disabled="busy || done"
             @click="deny"
           >

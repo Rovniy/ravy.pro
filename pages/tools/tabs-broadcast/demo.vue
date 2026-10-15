@@ -124,22 +124,22 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-3xl">
-    <NuxtLink to="/tools/tabs-broadcast" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500">
+    <NuxtLink to="/tools/tabs-broadcast" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500">
       <Icon name="mdi:arrow-left" class="w-4 h-4" aria-hidden="true" /> tabs-broadcast
     </NuxtLink>
 
     <header class="mt-6">
       <span class="eyebrow">Live demo</span>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+      <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         Messages between your tabs
       </h1>
-      <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
         Open this page in two or three tabs. The primary tab emits events and every tab counts them.
         Close or reload the primary tab and another one takes over.
       </p>
     </header>
 
-    <div v-if="unsupported" class="mt-8 rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">
+    <div v-if="unsupported" class="mt-8 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">
       This browser has no BroadcastChannel API, so the demo can't run here. Try a current Chrome, Edge, Firefox or Safari 15.4+.
     </div>
 
@@ -147,15 +147,15 @@ onBeforeUnmount(() => {
       <!-- Status -->
       <div class="mt-8 flex flex-wrap items-center justify-between gap-3">
         <div
-          class="inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-sm font-medium"
+          class="inline-flex items-center gap-2.5 border px-4 py-2 text-sm font-medium"
           :class="isPrimary
-            ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300'
-            : 'border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300'"
+            ? 'border-ok/40 bg-ok/10 text-ok'
+            : 'border-line-strong bg-panel text-fg-muted'"
           role="status"
         >
           <span class="relative flex w-2.5 h-2.5" aria-hidden="true">
-            <span v-if="isPrimary" class="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping" />
-            <span class="relative inline-flex w-2.5 h-2.5 rounded-full" :class="isPrimary ? 'bg-emerald-500' : 'bg-slate-400'" />
+            <span v-if="isPrimary" class="absolute inline-flex w-full h-full rounded-full bg-ok opacity-75 motion-safe:animate-ping" />
+            <span class="relative inline-flex w-2.5 h-2.5 rounded-full" :class="isPrimary ? 'bg-ok' : 'bg-slate-400'" />
           </span>
           <span v-if="!ready">Connecting…</span>
           <span v-else-if="isPrimary">Primary tab — can emit events</span>
@@ -163,7 +163,7 @@ onBeforeUnmount(() => {
         </div>
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+          class="inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium text-fg hover:border-accent-500 transition"
           @click="openAnotherTab"
         >
           <Icon name="mdi:tab-plus" class="w-4 h-4" aria-hidden="true" />
@@ -172,7 +172,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- Emit -->
-      <section class="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+      <section class="mt-6 border border-line bg-panel p-5 sm:p-6">
         <span class="eyebrow">Emit events</span>
         <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
@@ -180,20 +180,20 @@ onBeforeUnmount(() => {
             :key="a.id"
             type="button"
             :disabled="!ready || !isPrimary"
-            class="flex items-center justify-between gap-3 rounded-lg border px-4 py-3 text-left font-medium transition disabled:cursor-not-allowed disabled:opacity-40"
+            class="flex items-center justify-between gap-3 border px-4 py-3 text-left font-medium transition disabled:cursor-not-allowed disabled:opacity-40"
             :class="i === 0
               ? 'border-accent-500 bg-accent-500 text-white enabled:hover:bg-accent-600'
-              : 'border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 enabled:hover:border-accent-500'"
+              : 'border-line-strong text-fg enabled:hover:border-accent-500'"
             @click="emit(a)"
           >
             <span>{{ a.label }}</span>
             <span
-              class="shrink-0 rounded-full px-2 py-0.5 font-spacemono text-xs"
-              :class="i === 0 ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800 text-accent-500'"
+              class="shrink-0 px-2 py-0.5 font-spacemono text-xs"
+              :class="i === 0 ? 'bg-white/20' : 'bg-panel-raised text-accent-500'"
             >{{ a.chip }}</span>
           </button>
         </div>
-        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-4 text-sm text-fg-muted">
           Only the primary tab can emit (<code class="font-spacemono text-xs">emitByPrimaryOnly</code> is on by default). Secondary tabs receive and count.
         </p>
       </section>
@@ -203,25 +203,25 @@ onBeforeUnmount(() => {
         <div
           v-for="c in counterCards"
           :key="c.key"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
           <span class="eyebrow">{{ c.label }}</span>
           <div class="mt-2 h-12 overflow-hidden">
             <span
               :key="pulses[c.key]"
-              class="block font-spacemono text-4xl font-bold text-slate-900 dark:text-slate-100 tabular-nums"
+              class="block font-spacemono text-4xl font-bold text-fg tabular-nums"
               :class="pulses[c.key] ? 'counter-pulse' : ''"
               aria-live="polite"
             >{{ counters[c.key] }}</span>
           </div>
-          <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          <p class="mt-1 text-xs text-fg-muted">
             {{ c.hint }}
           </p>
         </div>
       </section>
     </template>
 
-    <p class="mt-10 text-sm text-slate-500 dark:text-slate-400">
+    <p class="mt-10 text-sm text-fg-muted">
       Install it with <code class="font-spacemono text-xs">npm install tabs-broadcast</code>.
       The <NuxtLink to="/tools/tabs-broadcast" class="text-accent-500 hover:underline">
         library page

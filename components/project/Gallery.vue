@@ -51,7 +51,7 @@ function onDialogClick(e: MouseEvent) {
       <li v-for="(shot, i) in images" :key="shot.src">
         <button
           type="button"
-          class="group block w-full overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-900 cursor-zoom-in"
+          class="group block w-full overflow-hidden border border-line bg-slate-900 cursor-zoom-in"
           :aria-label="`Open screenshot: ${shot.alt}`"
           @click="open(i)"
         >
@@ -64,7 +64,7 @@ function onDialogClick(e: MouseEvent) {
             format="webp"
             loading="lazy"
             decoding="async"
-            class="w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            class="w-full object-cover transition-transform duration-300"
             :class="wide ? 'aspect-video' : 'aspect-square'"
           />
         </button>
@@ -84,19 +84,19 @@ function onDialogClick(e: MouseEvent) {
           :alt="current.alt"
           :width="current.width"
           :height="current.height"
-          class="block max-w-[96vw] max-h-[86vh] w-auto h-auto rounded-lg"
+          class="block max-w-[96vw] max-h-[86vh] w-auto h-auto"
         >
         <figcaption class="mt-2 text-center text-sm text-slate-300">
           {{ current.alt }} · {{ index + 1 }} / {{ images.length }}
         </figcaption>
-        <button type="button" class="absolute top-2 right-2 grid place-items-center w-10 h-10 rounded-full bg-black/60 text-white hover:bg-black/80 cursor-pointer" aria-label="Close" @click="dialog?.close()">
+        <button type="button" class="absolute top-2 right-2 grid place-items-center w-10 h-10 bg-black/60 text-white hover:bg-black/80 cursor-pointer" aria-label="Close" @click="dialog?.close()">
           <Icon name="mdi:close" class="w-5 h-5" aria-hidden="true" />
         </button>
         <template v-if="images.length > 1">
-          <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 grid place-items-center w-10 h-10 rounded-full bg-black/60 text-white hover:bg-black/80 cursor-pointer" aria-label="Previous screenshot" @click="step(-1)">
+          <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 grid place-items-center w-10 h-10 bg-black/60 text-white hover:bg-black/80 cursor-pointer" aria-label="Previous screenshot" @click="step(-1)">
             <Icon name="mdi:chevron-left" class="w-6 h-6" aria-hidden="true" />
           </button>
-          <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center w-10 h-10 rounded-full bg-black/60 text-white hover:bg-black/80 cursor-pointer" aria-label="Next screenshot" @click="step(1)">
+          <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center w-10 h-10 bg-black/60 text-white hover:bg-black/80 cursor-pointer" aria-label="Next screenshot" @click="step(1)">
             <Icon name="mdi:chevron-right" class="w-6 h-6" aria-hidden="true" />
           </button>
         </template>

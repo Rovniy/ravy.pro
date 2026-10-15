@@ -73,9 +73,9 @@ const toneClasses: Record<string, { banner: string, dot: string, badge: string }
     badge: 'text-yellow-700 dark:text-yellow-300',
   },
   emerald: {
-    banner: 'border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30',
-    dot: 'bg-emerald-500',
-    badge: 'text-emerald-700 dark:text-emerald-300',
+    banner: 'border-ok/40 bg-ok/10',
+    dot: 'bg-ok',
+    badge: 'text-ok',
   },
 }
 </script>
@@ -83,13 +83,13 @@ const toneClasses: Record<string, { banner: string, dot: string, badge: string }
 <template>
   <div>
     <!-- Verdict banner -->
-    <div class="rounded-xl border p-5 sm:p-6 flex items-start gap-4" :class="toneClasses[verdict.tone]!.banner">
+    <div class="border p-5 sm:p-6 flex items-start gap-4" :class="toneClasses[verdict.tone]!.banner">
       <Icon :name="verdict.icon" class="w-8 h-8 shrink-0" :class="toneClasses[verdict.tone]!.badge" />
       <div>
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-fg">
           {{ verdict.headline }}
         </h2>
-        <p class="mt-1 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-1 text-sm sm:text-base text-fg-muted leading-relaxed">
           {{ verdict.sub }}
         </p>
         <p class="mt-2 eyebrow">
@@ -103,22 +103,22 @@ const toneClasses: Record<string, { banner: string, dot: string, badge: string }
       <section
         v-for="g in groups"
         :key="g.outcome"
-        class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden"
+        class="border border-line bg-panel overflow-hidden"
       >
-        <header class="flex items-center gap-2.5 px-5 py-3 border-b border-slate-100 dark:border-slate-800">
+        <header class="flex items-center gap-2.5 px-5 py-3 border-b border-line">
           <span class="w-2.5 h-2.5 rounded-full" :class="toneClasses[g.tone]!.dot" />
-          <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="font-semibold text-fg">
             {{ g.title }}
           </h3>
           <span class="ml-auto font-spacemono text-xs text-slate-400">{{ g.items.length }}</span>
         </header>
-        <p v-if="g.note" class="px-5 pt-3 text-sm text-slate-500 dark:text-slate-400">
+        <p v-if="g.note" class="px-5 pt-3 text-sm text-fg-muted">
           {{ g.note }}
         </p>
         <ul class="px-5 py-3 space-y-3">
           <li v-for="item in g.items" :key="item.id" class="text-sm">
-            <span class="font-medium text-slate-900 dark:text-slate-100">{{ item.label }}</span>
-            <p class="mt-0.5 text-slate-500 dark:text-slate-400 leading-relaxed">
+            <span class="font-medium text-fg">{{ item.label }}</span>
+            <p class="mt-0.5 text-fg-muted leading-relaxed">
               {{ item.rationale }}
             </p>
             <p v-if="item.flag" class="mt-1 flex items-start gap-1.5 text-amber-700 dark:text-amber-300">

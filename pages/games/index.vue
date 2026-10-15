@@ -22,19 +22,18 @@ const { trackCta } = useAnalytics()
       <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
         Projects
       </NuxtLink>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+      <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         {{ copy.heading }}
       </h1>
-      <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
         {{ copy.description }}
       </p>
     </header>
 
     <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
       <ProjectCard
-        v-for="(game, i) in GAMES"
+        v-for="game in GAMES"
         :key="game.slug"
-        v-reveal="(i % 2) * 90"
         :to="gamePath(game)"
         :title="game.title"
         :tagline="game.tagline"
@@ -50,7 +49,7 @@ const { trackCta } = useAnalytics()
       </ProjectCard>
     </div>
 
-    <p class="mt-10 text-sm text-slate-500 dark:text-slate-400">
+    <p class="mt-10 text-sm text-fg-muted">
       All of these are made at <a href="https://xploit.games" class="underline decoration-slate-400/40 hover:text-accent-500">XPLOIT</a>, the independent game studio I founded.
     </p>
   </div>

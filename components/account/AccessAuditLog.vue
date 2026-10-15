@@ -51,20 +51,20 @@ onMounted(() => load())
 </script>
 
 <template>
-  <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
+  <section class="border border-line p-6 bg-panel">
     <div class="flex items-center justify-between gap-3">
       <div>
-        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
+        <h2 class="text-xl font-semibold text-fg">
           Access audit log
         </h2>
-        <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-0.5 text-sm text-fg-muted">
           Every access change — who, what, when. Newest first.
         </p>
       </div>
       <button
         type="button"
         :disabled="loading"
-        class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised disabled:opacity-50 hover:cursor-pointer"
         @click="load(true)"
       >
         <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:refresh'" size="14" />
@@ -83,21 +83,21 @@ onMounted(() => load())
       No access changes recorded yet.
     </div>
 
-    <ul v-else class="mt-4 divide-y divide-slate-200 dark:divide-slate-800">
+    <ul v-else class="mt-4 divide-y divide-line">
       <li v-for="entry in entries" :key="entry.id" class="py-3.5">
         <div class="flex flex-wrap items-center gap-2">
           <span
-            class="inline-flex items-center rounded px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide"
+            class="inline-flex items-center px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide"
             :class="entry.action === 'revoke'
               ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300'
-              : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300'"
+              : 'bg-ok/15 text-ok '"
           >
             {{ entry.action }}
           </span>
           <span class="font-spacemono text-xs text-slate-400">{{ formatDate(entry.createdAt) }}</span>
         </div>
 
-        <p class="mt-1.5 text-sm text-slate-700 dark:text-slate-200">
+        <p class="mt-1.5 text-sm text-fg">
           <span class="font-medium">{{ entry.adminEmail || 'unknown admin' }}</span>
           <span class="text-slate-400"> → </span>
           <span class="font-medium">{{ entry.targetEmail }}</span>
@@ -107,14 +107,14 @@ onMounted(() => load())
           <span
             v-for="t in added(entry)"
             :key="`a-${t}`"
-            class="inline-flex items-center gap-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 text-xs text-emerald-700 dark:text-emerald-300"
+            class="inline-flex items-center gap-0.5 bg-ok/10 px-2 py-0.5 text-xs text-ok"
           >
             +{{ t }}
           </span>
           <span
             v-for="t in removed(entry)"
             :key="`r-${t}`"
-            class="inline-flex items-center gap-0.5 rounded-full bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 text-xs text-rose-700 dark:text-rose-300 line-through"
+            class="inline-flex items-center gap-0.5 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 text-xs text-rose-700 dark:text-rose-300 line-through"
           >
             −{{ t }}
           </span>
@@ -132,7 +132,7 @@ onMounted(() => load())
       <button
         type="button"
         :disabled="loadingMore"
-        class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm hover:bg-panel-raised disabled:opacity-50 hover:cursor-pointer"
         @click="load(false)"
       >
         <Icon v-if="loadingMore" name="svg-spinners:180-ring" size="14" />

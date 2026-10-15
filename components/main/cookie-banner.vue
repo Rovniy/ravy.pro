@@ -49,18 +49,18 @@ function onToggleAds(granted: boolean) {
            so without pointer-events-none the invisible remainder swallows clicks
            on whatever sits in that bottom strip (footer links, the theme
            switch). Only the card itself should be interactive. -->
-      <div class="pointer-events-auto mx-auto max-w-4xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg shadow-2xl shadow-black/20">
+      <div class="pointer-events-auto mx-auto max-w-4xl border border-line bg-panel">
         <div class="p-5 sm:p-6">
           <div class="flex items-start gap-3">
             <Icon name="mdi:cookie-outline" size="24" aria-hidden="true" class="shrink-0 text-accent-500 mt-0.5" />
             <div class="flex-1 min-w-0">
-              <h2 id="cookie-banner-title" class="text-base font-semibold text-slate-900 dark:text-slate-100">
+              <h2 id="cookie-banner-title" class="text-base font-semibold text-fg">
                 We use cookies
               </h2>
-              <p class="mt-1 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p class="mt-1 text-sm text-fg-muted leading-relaxed">
                 We use strictly-necessary cookies to make this site work, and — only with your consent — analytics and advertising cookies via Google Tag Manager.
                 See our
-                <NuxtLink to="/docs/privacy-policy" class="text-accent-600 dark:text-accent-400 underline underline-offset-2 hover:no-underline">
+                <NuxtLink to="/docs/privacy-policy" class="text-accent-ink underline underline-offset-2 hover:no-underline">
                   Privacy Policy
                 </NuxtLink>
                 for details.
@@ -68,17 +68,17 @@ function onToggleAds(granted: boolean) {
             </div>
           </div>
 
-          <div v-if="expanded" class="mt-5 grid gap-3 border-t border-slate-200 dark:border-slate-800 pt-5">
+          <div v-if="expanded" class="mt-5 grid gap-3 border-t border-line pt-5">
             <label class="flex items-start gap-3 text-sm">
               <input
                 type="checkbox"
                 checked
                 disabled
-                class="mt-1 rounded text-accent-500 disabled:opacity-50"
+                class="mt-1 text-accent-500 disabled:opacity-50"
               >
               <span>
-                <span class="font-medium text-slate-900 dark:text-slate-100">Strictly necessary</span>
-                <span class="block text-slate-500 dark:text-slate-400 text-xs">Required for the site to work (security, auth, dark mode). Cannot be disabled.</span>
+                <span class="font-medium text-fg">Strictly necessary</span>
+                <span class="block text-fg-muted text-xs">Required for the site to work (security, auth, dark mode). Cannot be disabled.</span>
               </span>
             </label>
 
@@ -86,12 +86,12 @@ function onToggleAds(granted: boolean) {
               <input
                 type="checkbox"
                 :checked="state.analytics_storage === 'granted'"
-                class="mt-1 rounded text-accent-500"
+                class="mt-1 text-accent-500"
                 @change="(e) => setPending('analytics_storage', (e.target as HTMLInputElement).checked)"
               >
               <span>
-                <span class="font-medium text-slate-900 dark:text-slate-100">Analytics</span>
-                <span class="block text-slate-500 dark:text-slate-400 text-xs">Helps us understand how visitors use the site (page views, navigation). No personal profiles.</span>
+                <span class="font-medium text-fg">Analytics</span>
+                <span class="block text-fg-muted text-xs">Helps us understand how visitors use the site (page views, navigation). No personal profiles.</span>
               </span>
             </label>
 
@@ -99,12 +99,12 @@ function onToggleAds(granted: boolean) {
               <input
                 type="checkbox"
                 :checked="state.ad_storage === 'granted'"
-                class="mt-1 rounded text-accent-500"
+                class="mt-1 text-accent-500"
                 @change="(e) => onToggleAds((e.target as HTMLInputElement).checked)"
               >
               <span>
-                <span class="font-medium text-slate-900 dark:text-slate-100">Advertising</span>
-                <span class="block text-slate-500 dark:text-slate-400 text-xs">Used for ad measurement and personalization where applicable.</span>
+                <span class="font-medium text-fg">Advertising</span>
+                <span class="block text-fg-muted text-xs">Used for ad measurement and personalization where applicable.</span>
               </span>
             </label>
 
@@ -112,12 +112,12 @@ function onToggleAds(granted: boolean) {
               <input
                 type="checkbox"
                 :checked="state.personalization_storage === 'granted'"
-                class="mt-1 rounded text-accent-500"
+                class="mt-1 text-accent-500"
                 @change="(e) => setPending('personalization_storage', (e.target as HTMLInputElement).checked)"
               >
               <span>
-                <span class="font-medium text-slate-900 dark:text-slate-100">Personalization</span>
-                <span class="block text-slate-500 dark:text-slate-400 text-xs">Remembers content preferences across visits.</span>
+                <span class="font-medium text-fg">Personalization</span>
+                <span class="block text-fg-muted text-xs">Remembers content preferences across visits.</span>
               </span>
             </label>
           </div>
@@ -126,7 +126,7 @@ function onToggleAds(granted: boolean) {
             <button
               v-if="!expanded"
               type="button"
-              class="text-sm font-medium px-4 py-2.5 rounded-full text-slate-600 dark:text-slate-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+              class="text-sm font-medium px-4 py-2.5 text-fg-muted hover:text-accent-ink transition-colors"
               @click="expanded = true"
             >
               Customize
@@ -134,7 +134,7 @@ function onToggleAds(granted: boolean) {
             <button
               v-if="!expanded"
               type="button"
-              class="text-sm font-medium px-5 py-2.5 rounded-full border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
+              class="text-sm font-medium px-5 py-2.5 border border-line-strong text-fg hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
               @click="onReject"
             >
               Reject all
@@ -142,14 +142,14 @@ function onToggleAds(granted: boolean) {
             <button
               v-if="expanded"
               type="button"
-              class="text-sm font-medium px-5 py-2.5 rounded-full border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
+              class="text-sm font-medium px-5 py-2.5 border border-line-strong text-fg hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
               @click="onSavePrefs"
             >
               Save preferences
             </button>
             <button
               type="button"
-              class="text-sm font-semibold px-5 py-2.5 rounded-full text-white bg-accent-600 hover:bg-accent-700 dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 shadow-lg shadow-accent-500/30 transition-colors"
+              class="text-sm font-semibold px-5 py-2.5 text-white bg-accent-600 hover:bg-accent-700 dark:bg-accent-400 dark:hover:bg-accent-300 dark:text-slate-950 transition-colors"
               @click="onAccept"
             >
               Accept all

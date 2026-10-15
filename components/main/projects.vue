@@ -18,13 +18,12 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <section class="py-14 px-6">
+  <section class="py-14">
     <UiSectionHeader eyebrow="Creative work" title="Games, music & animation" to="/projects" link-label="All projects" />
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
       <ProjectCard
-        v-for="(card, i) in cards"
+        v-for="card in cards"
         :key="card.to"
-        v-reveal="i * 90"
         :to="card.to"
         :title="card.title"
         :tagline="card.tagline"

@@ -23,13 +23,13 @@ const releaseLine = computed(() => game.releaseDate
         <NuxtLink to="/games" class="eyebrow hover:text-accent-500 transition-colors">
           Games · {{ game.genre }}
         </NuxtLink>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           {{ game.title }}
         </h1>
-        <p class="mt-3 text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
+        <p class="mt-3 text-lg text-fg leading-relaxed">
           {{ game.tagline }}
         </p>
-        <p class="mt-3 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base text-fg-muted leading-relaxed">
           {{ game.description }}
         </p>
         <div class="mt-4 flex flex-wrap items-center gap-3">
@@ -37,14 +37,14 @@ const releaseLine = computed(() => game.releaseDate
           <span class="eyebrow">{{ releaseLine }}</span>
         </div>
         <ProjectLinkButtons class="mt-6" :links="game.links" :project="game.slug" />
-        <p v-if="!game.links.length && game.blogPath" class="mt-6 text-sm text-slate-500 dark:text-slate-400">
+        <p v-if="!game.links.length && game.blogPath" class="mt-6 text-sm text-fg-muted">
           No store page yet. Follow the build in the <NuxtLink :to="game.blogPath" class="underline hover:text-accent-500">
             devlog
           </NuxtLink>.
         </p>
         <NuxtLink
           :to="gamePressPath(game)"
-          class="mt-5 inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500"
+          class="mt-5 inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500"
         >
           <Icon name="mdi:newspaper-variant-outline" class="w-4 h-4" aria-hidden="true" /> Press kit
         </NuxtLink>
@@ -53,7 +53,7 @@ const releaseLine = computed(() => game.releaseDate
         <img
           :src="game.cover.src"
           :alt="game.cover.alt"
-          class="w-full aspect-video object-cover rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-800"
+          class="w-full aspect-video object-cover border border-line bg-slate-800"
           decoding="async"
         >
       </div>
@@ -102,18 +102,18 @@ const releaseLine = computed(() => game.releaseDate
     <!-- My role -->
     <section v-if="game.role.length" class="mt-14">
       <span class="eyebrow">What I built</span>
-      <div class="mt-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+      <div class="mt-4 border border-line bg-panel p-5 sm:p-6">
         <ul class="space-y-3">
-          <li v-for="line in game.role" :key="line" class="flex gap-3 text-slate-700 dark:text-slate-200 leading-relaxed">
-            <Icon name="mdi:check" class="w-5 h-5 mt-0.5 shrink-0 text-emerald-500" aria-hidden="true" />
+          <li v-for="line in game.role" :key="line" class="flex gap-3 text-fg leading-relaxed">
+            <Icon name="mdi:check" class="w-5 h-5 mt-0.5 shrink-0 text-ok" aria-hidden="true" />
             <span>{{ line }}</span>
           </li>
         </ul>
-        <div v-if="game.stack.length" class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-2">
+        <div v-if="game.stack.length" class="mt-5 pt-4 border-t border-line flex flex-wrap gap-2">
           <span
             v-for="tech in game.stack"
             :key="tech"
-            class="rounded-full border border-slate-200 dark:border-slate-700 px-2.5 py-1 font-spacemono text-[11px] text-slate-600 dark:text-slate-300"
+            class="border border-line px-2.5 py-1 font-spacemono text-micro text-fg-muted"
           >{{ tech }}</span>
         </div>
       </div>
@@ -126,12 +126,12 @@ const releaseLine = computed(() => game.releaseDate
         <div
           v-for="f in game.features"
           :key="f.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
-          <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="font-semibold text-fg">
             {{ f.title }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ f.text }}
           </p>
         </div>
@@ -139,20 +139,20 @@ const releaseLine = computed(() => game.releaseDate
     </section>
 
     <!-- Facts -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Facts</span>
       <dl class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
         <div v-for="fact in game.facts" :key="fact.label">
-          <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          <dt class="text-xs font-semibold uppercase tracking-wide text-fg-muted">
             {{ fact.label }}
           </dt>
-          <dd class="mt-1 text-slate-800 dark:text-slate-200">
+          <dd class="mt-1 text-fg">
             {{ fact.value }}
           </dd>
         </div>
       </dl>
       <p v-if="game.privacyPolicyPath" class="mt-6 text-sm">
-        <NuxtLink :to="game.privacyPolicyPath" class="text-slate-500 dark:text-slate-400 underline hover:text-accent-500">
+        <NuxtLink :to="game.privacyPolicyPath" class="text-fg-muted underline hover:text-accent-500">
           Privacy policy
         </NuxtLink>
       </p>
@@ -161,7 +161,7 @@ const releaseLine = computed(() => game.releaseDate
     <ProjectRelatedPosts :tag="game.blogTag" :paths="game.blogPath ? [game.blogPath] : []" />
 
     <div class="mt-14">
-      <NuxtLink to="/games" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500">
+      <NuxtLink to="/games" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500">
         <Icon name="mdi:arrow-left" class="w-4 h-4" aria-hidden="true" /> All games
       </NuxtLink>
     </div>

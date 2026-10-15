@@ -75,11 +75,11 @@ async function copy(card: PackCard) {
     <article
       v-for="card in cards"
       :key="card.key"
-      class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden"
+      class="border border-line bg-panel overflow-hidden"
     >
-      <header class="flex items-start justify-between gap-3 px-5 py-3.5 border-b border-slate-100 dark:border-slate-800">
+      <header class="flex items-start justify-between gap-3 px-5 py-3.5 border-b border-line">
         <div>
-          <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="font-semibold text-fg">
             {{ card.field }}
           </h3>
           <p class="mt-0.5 flex items-center gap-1.5 text-xs text-slate-400 font-spacemono">
@@ -90,15 +90,15 @@ async function copy(card: PackCard) {
         <button
           type="button"
           :disabled="!card.text"
-          class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer transition"
+          class="shrink-0 inline-flex items-center gap-1.5 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer transition"
           @click="copy(card)"
         >
-          <Icon :name="copiedKey === card.key ? 'mdi:check' : 'mdi:content-copy'" class="w-4 h-4" :class="copiedKey === card.key ? 'text-emerald-500' : ''" />
+          <Icon :name="copiedKey === card.key ? 'mdi:check' : 'mdi:content-copy'" class="w-4 h-4" :class="copiedKey === card.key ? 'text-ok' : ''" />
           {{ copiedKey === card.key ? 'Copied' : 'Copy' }}
         </button>
       </header>
       <div class="px-5 py-4">
-        <p v-if="card.text" class="whitespace-pre-wrap text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+        <p v-if="card.text" class="whitespace-pre-wrap text-sm leading-relaxed text-fg">
           {{ card.text }}
         </p>
         <p v-else class="text-sm italic text-slate-400">
@@ -110,14 +110,14 @@ async function copy(card: PackCard) {
     <!-- Community phrasing tips -->
     <section
       v-if="result.communityPhrasingNotes.length"
-      class="rounded-xl border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-5"
+      class="border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-5"
     >
-      <h3 class="flex items-center gap-2 font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="flex items-center gap-2 font-semibold text-fg">
         <Icon name="mdi:lightbulb-on-outline" class="w-5 h-5 text-accent-500" />
         Wording tips to avoid backlash
       </h3>
       <ul class="mt-3 space-y-2">
-        <li v-for="(tip, i) in result.communityPhrasingNotes" :key="i" class="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
+        <li v-for="(tip, i) in result.communityPhrasingNotes" :key="i" class="flex items-start gap-2 text-sm text-fg-muted">
           <Icon name="mdi:circle-small" class="w-5 h-5 shrink-0 -ml-1 text-accent-500" />
           <span>{{ tip }}</span>
         </li>

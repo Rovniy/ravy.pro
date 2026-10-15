@@ -136,10 +136,10 @@ if (import.meta.client) {
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-4xl">
     <header class="mb-8">
-      <h1 class="text-3xl font-bold tracking-tight">
+      <h1 class="text-4xl font-display font-extrabold uppercase leading-none">
         Shortify
       </h1>
-      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+      <p class="text-sm text-fg-muted mt-1">
         Personal URL shortener. Links are served from <code>{{ baseUrl }}/s/&lt;code&gt;</code>.
       </p>
     </header>
@@ -150,16 +150,16 @@ if (import.meta.client) {
     </div>
 
     <!-- Not signed in -->
-    <div v-else-if="!isAuthed" class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
+    <div v-else-if="!isAuthed" class="border border-line p-6 bg-panel-raised">
       <h2 class="text-lg font-semibold mb-2">
         Sign in required
       </h2>
-      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+      <p class="text-sm text-fg-muted mb-4">
         This area is restricted. Use the <strong>Sign in</strong> button in the top-right of the header, or click below.
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
         @click="onSignIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />
@@ -171,7 +171,7 @@ if (import.meta.client) {
     </div>
 
     <!-- Authed but no access to this tool -->
-    <div v-else-if="!canUse" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
+    <div v-else-if="!canUse" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
       <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
         Access denied
       </h2>
@@ -193,12 +193,12 @@ if (import.meta.client) {
           type="url"
           required
           placeholder="https://example.com/long-link"
-          class="flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="flex-1 border border-line-strong bg-panel px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         >
         <button
           type="submit"
           :disabled="submitting"
-          class="rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+          class="bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
         >
           {{ submitting ? 'Creating…' : 'Shorten' }}
         </button>
@@ -208,12 +208,12 @@ if (import.meta.client) {
         {{ errorMsg }}
       </div>
 
-      <div v-if="justCreated" class="mb-6 rounded-md border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm flex items-center gap-2 flex-wrap">
+      <div v-if="justCreated" class="mb-6 border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 p-3 text-sm flex items-center gap-2 flex-wrap">
         <span>Created:</span>
         <a class="underline font-mono" :href="shortUrl(justCreated.code)" target="_blank">{{ shortUrl(justCreated.code) }}</a>
         <NuxtLink
           :to="qrLink(shortUrl(justCreated.code))"
-          class="inline-flex items-center gap-1 text-xs underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+          class="inline-flex items-center gap-1 text-xs underline text-fg-muted hover:text-fg"
         >
           <Icon name="mdi:qrcode" size="14" />
           QR
@@ -221,7 +221,7 @@ if (import.meta.client) {
         <button
           type="button"
           class="ml-auto inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-          :class="copiedKey === `created-${justCreated.code}` ? 'text-green-700 dark:text-green-400' : 'underline text-slate-600 dark:text-slate-300'"
+          :class="copiedKey === `created-${justCreated.code}` ? 'text-green-700 dark:text-green-400' : 'underline text-fg-muted'"
           @click="copy(shortUrl(justCreated.code), `created-${justCreated.code}`)"
         >
           <Icon v-if="copiedKey === `created-${justCreated.code}`" name="mdi:check" size="14" />
@@ -234,7 +234,7 @@ if (import.meta.client) {
           <h2 class="text-lg font-semibold">
             Links
           </h2>
-          <button type="button" class="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
+          <button type="button" class="text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer" :disabled="loadingList" @click="refresh">
             {{ loadingList ? 'Refreshing…' : 'Refresh' }}
           </button>
         </div>
@@ -246,7 +246,7 @@ if (import.meta.client) {
         <div v-else class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
-              <tr class="text-left text-xs uppercase tracking-wide text-slate-500 border-b border-slate-200 dark:border-slate-800">
+              <tr class="text-left text-xs uppercase tracking-wide text-slate-500 border-b border-line">
                 <th class="py-2 pr-4">
                   Code
                 </th>
@@ -282,7 +282,7 @@ if (import.meta.client) {
                   <div class="inline-flex items-center gap-3 justify-end">
                     <NuxtLink
                       :to="qrLink(shortUrl(link.code))"
-                      class="inline-flex items-center gap-1 text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                      class="inline-flex items-center gap-1 text-xs underline text-slate-500 hover:text-fg"
                       :title="`Create QR code for /s/${link.code}`"
                     >
                       <Icon name="mdi:qrcode" size="14" />
@@ -291,7 +291,7 @@ if (import.meta.client) {
                     <button
                       type="button"
                       class="inline-flex items-center gap-1 text-xs hover:cursor-pointer"
-                      :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-slate-500 hover:text-slate-900 dark:hover:text-white'"
+                      :class="copiedKey === link.code ? 'text-green-700 dark:text-green-400' : 'underline text-slate-500 hover:text-fg'"
                       @click="copy(shortUrl(link.code), link.code)"
                     >
                       <Icon v-if="copiedKey === link.code" name="mdi:check" size="14" />

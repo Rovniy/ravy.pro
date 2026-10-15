@@ -136,9 +136,9 @@ watch(validatorInput, (value) => {
 const validatorStateClass = computed(() => {
   const v = validation.value
   if (!v)
-    return 'border-slate-300 dark:border-slate-700'
+    return 'border-line-strong'
   if (v.luhnValid && v.lengthValid)
-    return 'border-emerald-500 dark:border-emerald-400'
+    return 'border-ok'
   return 'border-rose-500 dark:border-rose-400'
 })
 
@@ -150,10 +150,10 @@ generate()
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
-        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">
           Credit Card Number Generator
         </h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p class="text-sm text-fg-muted mt-1">
           Generate Luhn-valid test card numbers for QA and sandbox payments, or validate a card number to detect its brand.
         </p>
         <ToolStoryLink class="mt-3" />
@@ -161,7 +161,7 @@ generate()
       <ToolRatingWidget />
     </header>
 
-    <div class="mb-8 rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 px-4 py-3 text-sm flex gap-3 items-start">
+    <div class="mb-8 border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 px-4 py-3 text-sm flex gap-3 items-start">
       <Icon name="mdi:alert-circle-outline" size="18" class="shrink-0 mt-0.5" />
       <div>
         <strong class="font-semibold">For testing only.</strong>
@@ -181,7 +181,7 @@ generate()
             <select
               id="cc-brand"
               v-model="brand"
-              class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2"
+              class="w-full border border-line-strong bg-panel px-3 py-2"
             >
               <option v-for="spec in BRAND_SPECS" :key="spec.brand" :value="spec.brand">
                 {{ spec.label }}
@@ -198,7 +198,7 @@ generate()
                 type="number"
                 min="1"
                 max="50"
-                class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2"
+                class="w-full border border-line-strong bg-panel px-3 py-2"
               >
             </div>
             <div>
@@ -209,18 +209,18 @@ generate()
                 type="text"
                 inputmode="numeric"
                 placeholder="e.g. 424242"
-                class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2"
+                class="w-full border border-line-strong bg-panel px-3 py-2"
               >
             </div>
           </div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 -mt-2">
+          <p class="text-xs text-fg-muted -mt-2">
             {{ prefixHint }}
           </p>
 
           <div class="flex items-center gap-3">
             <button
               type="submit"
-              class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+              class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
             >
               <Icon name="mdi:credit-card-plus-outline" size="16" />
               Generate
@@ -228,7 +228,7 @@ generate()
             <button
               type="button"
               :disabled="!cards.length"
-              class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+              class="inline-flex items-center gap-2 border border-line-strong bg-panel px-3 py-2 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
               @click="copyAll"
             >
               <Icon name="mdi:content-copy" size="16" />
@@ -237,9 +237,9 @@ generate()
           </div>
         </form>
 
-        <div v-if="cards.length" class="mt-6 rounded-md border border-slate-200 dark:border-slate-800 overflow-hidden">
+        <div v-if="cards.length" class="mt-6 border border-line overflow-hidden">
           <table class="w-full text-xs sm:text-sm">
-            <thead class="bg-slate-50 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 text-left">
+            <thead class="bg-slate-50 dark:bg-slate-900/60 text-fg-muted text-left">
               <tr>
                 <th class="px-3 py-2 font-medium">
                   Number
@@ -255,7 +255,7 @@ generate()
                 </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+            <tbody class="divide-y divide-line">
               <tr v-for="card in cards" :key="card.number" class="hover:bg-slate-50 dark:hover:bg-slate-900/40">
                 <td class="px-3 py-2 font-mono">
                   <button
@@ -269,7 +269,7 @@ generate()
                       v-if="copied === card.number"
                       name="mdi:check"
                       size="14"
-                      class="text-emerald-500 inline-block ml-1 align-text-bottom"
+                      class="text-ok inline-block ml-1 align-text-bottom"
                     />
                   </button>
                 </td>
@@ -303,22 +303,22 @@ generate()
               inputmode="numeric"
               autocomplete="off"
               placeholder="4111 1111 1111 1111"
-              class="w-full rounded-md border bg-white dark:bg-slate-900 px-3 py-2 font-mono tracking-wide focus:outline-none focus:ring-2 focus:ring-accent-500/60" :class="[
+              class="w-full border bg-panel px-3 py-2 font-mono tracking-wide focus:outline-none focus:ring-2 focus:ring-accent-500/60" :class="[
                 validatorStateClass,
               ]"
             >
-            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p class="mt-1 text-xs text-fg-muted">
               Do not enter a real card number.
             </p>
           </div>
 
-          <div v-if="validation" class="rounded-md border border-slate-200 dark:border-slate-800 p-4 space-y-3">
+          <div v-if="validation" class="border border-line p-4 space-y-3">
             <div class="flex items-center gap-2">
               <Icon
                 v-if="validation.luhnValid && validation.lengthValid"
                 name="mdi:check-circle"
                 size="20"
-                class="text-emerald-500"
+                class="text-ok"
               />
               <Icon
                 v-else
@@ -329,20 +329,20 @@ generate()
               <span class="font-medium">
                 {{ validation.luhnValid && validation.lengthValid ? 'Looks valid' : 'Invalid' }}
               </span>
-              <span v-if="validation.brandLabel" class="ml-auto inline-flex items-center gap-1 rounded-full bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300 px-2 py-0.5 text-xs font-medium">
+              <span v-if="validation.brandLabel" class="ml-auto inline-flex items-center gap-1 bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300 px-2 py-0.5 text-xs font-medium">
                 <Icon name="mdi:credit-card-outline" size="14" />
                 {{ validation.brandLabel }}
               </span>
             </div>
 
             <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-xs sm:text-sm">
-              <dt class="text-slate-500 dark:text-slate-400">
+              <dt class="text-fg-muted">
                 Formatted
               </dt>
               <dd class="font-mono">
                 {{ validation.formatted || '—' }}
               </dd>
-              <dt class="text-slate-500 dark:text-slate-400">
+              <dt class="text-fg-muted">
                 Length
               </dt>
               <dd>
@@ -351,14 +351,14 @@ generate()
                   (does not match {{ validation.brandLabel }})
                 </span>
               </dd>
-              <dt class="text-slate-500 dark:text-slate-400">
+              <dt class="text-fg-muted">
                 Luhn checksum
               </dt>
-              <dd :class="validation.luhnValid ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'">
+              <dd :class="validation.luhnValid ? 'text-ok' : 'text-rose-600 dark:text-rose-400'">
                 {{ validation.luhnValid ? 'pass' : 'fail' }}
               </dd>
               <template v-if="validation.cvvLength">
-                <dt class="text-slate-500 dark:text-slate-400">
+                <dt class="text-fg-muted">
                   Expected CVV
                 </dt>
                 <dd>
@@ -368,7 +368,7 @@ generate()
             </dl>
           </div>
 
-          <div v-else class="rounded-md border border-dashed border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400 text-xs">
+          <div v-else class="border border-dashed border-line-strong p-4 text-fg-muted text-xs">
             Paste a card number above to see brand, length, and Luhn result.
           </div>
         </div>
@@ -376,16 +376,16 @@ generate()
     </div>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Test credit card numbers, explained
       </h2>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Are generated credit card numbers real?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         No. This tool produces <strong>fake test card numbers</strong> for QA, development, and form
         testing. They are <em>Luhn-valid</em> — they pass the same client-side checksum a payment form
         runs — but they are not issued by any bank, not linked to any account, and have no funds behind
@@ -393,10 +393,10 @@ generate()
           purchases</strong>.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What is the Luhn check?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         The
         <a href="https://en.wikipedia.org/wiki/Luhn_algorithm" class="underline hover:text-accent-600">Luhn algorithm</a>
         is a simple checksum that most payment forms use to catch typos before a card is submitted. A
@@ -405,20 +405,20 @@ generate()
         test forms accept the data exactly as they would a real card.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Is it legal to use a credit card generator?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Yes, when you use the output to test your own software, forms, and QA flows. These numbers are
         fake test data, not real cards. What is illegal is using any card number — real or generated —
         to attempt a real or fraudulent transaction. Keep generated numbers strictly inside your own
         test environment and never enter a real card number into a tool on the public internet.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What this tool produces
       </h3>
-      <ul class="mt-2 space-y-1.5 text-slate-600 dark:text-slate-300 leading-relaxed list-disc pl-5">
+      <ul class="mt-2 space-y-1.5 text-fg-muted leading-relaxed list-disc pl-5">
         <li>Luhn-valid <strong>test card numbers</strong> for Visa, Mastercard, American Express, Discover, JCB, Diners Club, and UnionPay</li>
         <li>Optional <strong>custom BIN prefixes</strong> to target a specific test range</li>
         <li>A <strong>validator</strong> that detects brand, checks length, and verifies the Luhn checksum of a pasted number</li>
@@ -431,14 +431,14 @@ generate()
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>

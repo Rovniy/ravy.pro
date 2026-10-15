@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { daysSince, formatBlogDate, tagColorClass } from '~/utils/helper'
+import { daysSince, formatBlogDate } from '~/utils/helper'
 
 interface Props {
   path?: string
@@ -58,96 +58,88 @@ const restTags = computed(() => props.tags?.slice(1) ?? [])
 </script>
 
 <template>
-  <article
-    v-spotlight
-    class="group relative border border-slate-200/80 dark:border-white/10 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl hover:shadow-slate-900/10 dark:hover:shadow-accent-500/10 bg-white dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent-300 dark:hover:border-accent-500/40 focus-within:ring-2 focus-within:ring-accent-400"
-    :class="horizontal ? 'grid grid-cols-1 sm:grid-cols-10' : 'flex flex-col'"
-  >
-    <NuxtLink
-      :to="path"
-      :aria-label="title"
-      class="absolute inset-0 z-1 focus:outline-none"
-    />
-
-    <div class="relative overflow-hidden" :class="horizontal ? 'sm:col-span-3' : ''">
-      <!-- `sizes` uses @nuxt/image's `screenKey:size` form. Raw CSS media
-           queries get collapsed by the module to the last bare value, which
-           made phones download the desktop-width variant. -->
-      <NuxtImg
-        loading="lazy"
-        class="w-full object-cover object-center transition-all duration-500"
-        :class="horizontal
-          ? 'h-48 sm:h-full group-hover:scale-[1.04]'
-          : 'h-48 group-hover:scale-105 group-hover:brightness-105'"
-        :width="horizontal ? 289 : 400"
-        :height="horizontal ? 184 : 192"
-        :sizes="horizontal
-          ? 'sm:100vw md:289px'
-          : 'sm:100vw md:50vw lg:400px'"
-        densities="x1 x2"
-        :src="image"
-        :alt="alt"
-      />
-      <div
-        class="absolute inset-0 pointer-events-none bg-gradient-to-t"
-        :class="horizontal ? 'from-black/45 via-black/0 to-black/0' : 'from-black/55 via-black/10 to-transparent'"
+  <!-- Cut frame: the whole card is one link (the overlay), the tags are their
+       own links above it. Hover or keyboard focus anywhere turns the border
+       accent (.frame in tailwind.css). -->
+  <article class="frame cut group relative" :class="horizontal ? '' : 'h-full'">
+    <div
+      class="frame-inner cut relative overflow-hidden text-fg-muted"
+      :class="horizontal ? 'grid grid-cols-1 sm:grid-cols-10' : 'flex flex-col'"
+    >
+      <NuxtLink
+        :to="path"
+        :aria-label="title"
+        class="absolute inset-0 z-1 focus:outline-none"
       />
 
-      <div v-if="trending || isNew || isUpdated" class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-        <span v-if="trending" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/95 text-white shadow-sm backdrop-blur">
-          <Icon name="mdi:fire" size="12" aria-hidden="true" />
-          Trending
-        </span>
-        <span v-else-if="isNew" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/95 text-white shadow-sm backdrop-blur">
-          <Icon name="mdi:star-four-points" size="12" aria-hidden="true" />
-          New
-        </span>
-        <span v-if="isUpdated" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-accent-600/95 text-white shadow-sm backdrop-blur">
-          <Icon name="mdi:update" size="12" aria-hidden="true" />
-          Updated
-        </span>
-      </div>
+      <div class="relative overflow-hidden bg-panel-raised" :class="horizontal ? 'sm:col-span-3' : ''">
+        <!-- `sizes` uses @nuxt/image's `screenKey:size` form. Raw CSS media
+             queries get collapsed by the module to the last bare value, which
+             made phones download the desktop-width variant. -->
+        <NuxtImg
+          loading="lazy"
+          class="w-full object-cover object-center"
+          :class="horizontal ? 'h-48 sm:h-full' : 'h-48'"
+          :width="horizontal ? 289 : 400"
+          :height="horizontal ? 184 : 192"
+          :sizes="horizontal
+            ? 'sm:100vw md:289px'
+            : 'sm:100vw md:50vw lg:400px'"
+          densities="x1 x2"
+          :src="image"
+          :alt="alt"
+        />
+        <div class="scrim-b absolute inset-0 pointer-events-none" />
 
-      <span
-        v-if="primaryTag"
-        class="absolute bottom-3 left-3 inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-spacemono font-semibold bg-white/95 text-slate-800 shadow-sm backdrop-blur"
-      >
-        #{{ primaryTag }}
-      </span>
-    </div>
-
-    <div class="flex flex-col gap-2.5" :class="horizontal ? 'sm:col-span-7 p-6' : 'p-5 flex-1'">
-      <h2
-        class="font-bold leading-snug tracking-tight text-slate-900 dark:text-slate-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors line-clamp-2"
-        :class="horizontal ? 'text-lg sm:text-xl' : 'text-lg'"
-      >
-        {{ title }}
-      </h2>
-
-      <p class="text-sm leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-2" :class="horizontal ? '' : 'flex-1'">
-        {{ description }}
-      </p>
-
-      <div v-if="restTags.length" class="relative z-10 flex flex-wrap gap-1.5">
-        <NuxtLink
-          v-for="tag in restTags"
-          :key="tag"
-          :to="`/categories/${tag}`"
-          :class="tagColorClass(tag)"
-          class="rounded-full px-2 py-0.5 text-[11px] font-spacemono font-medium"
-        >
-          #{{ tag }}
-        </NuxtLink>
-      </div>
-
-      <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-slate-100 dark:border-slate-800/80">
-        <div class="flex items-center gap-1.5 font-spacemono text-xs text-slate-500 dark:text-slate-400">
-          <Icon name="mdi:calendar-outline" size="14" aria-hidden="true" />
-          <span>{{ displayDate }}</span>
+        <div v-if="trending || isNew || isUpdated" class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+          <UiTag v-if="trending" tone="accent">
+            <Icon name="mdi:fire" size="12" aria-hidden="true" />
+            Trending
+          </UiTag>
+          <UiTag v-else-if="isNew" tone="accent">
+            New
+          </UiTag>
+          <UiTag v-if="isUpdated" tone="accent">
+            Updated
+          </UiTag>
         </div>
-        <div class="inline-flex items-center gap-1 text-[11px] font-spacemono uppercase tracking-wider text-accent-600 dark:text-accent-400 group-hover:underline">
-          Read More
-          <LogoArrow />
+
+        <span
+          v-if="primaryTag"
+          class="absolute bottom-3 left-3 font-spacemono text-micro uppercase tracking-[0.1em] text-white"
+        >
+          #{{ primaryTag }}
+        </span>
+      </div>
+
+      <div class="flex flex-col gap-2.5" :class="horizontal ? 'sm:col-span-7 p-6' : 'p-5 flex-1'">
+        <h2
+          class="font-semibold leading-snug text-fg group-hover:text-accent-ink transition-colors line-clamp-2"
+          :class="horizontal ? 'text-lg sm:text-xl' : 'text-lg'"
+        >
+          {{ title }}
+        </h2>
+
+        <p class="text-sm leading-relaxed text-fg-muted line-clamp-2" :class="horizontal ? '' : 'flex-1'">
+          {{ description }}
+        </p>
+
+        <div v-if="restTags.length" class="relative z-10 flex flex-wrap gap-1.5">
+          <UiTag
+            v-for="tag in restTags"
+            :key="tag"
+            :to="`/categories/${tag}`"
+          >
+            #{{ tag }}
+          </UiTag>
+        </div>
+
+        <div class="flex items-center justify-between pt-2.5 mt-auto border-t border-line">
+          <time :datetime="createdAt" class="font-spacemono text-xs tabular-nums text-fg-subtle">{{ displayDate }}</time>
+          <span class="inline-flex items-center gap-1 font-display font-bold text-base uppercase tracking-[0.06em] text-accent-ink">
+            Read
+            <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+          </span>
         </div>
       </div>
     </div>

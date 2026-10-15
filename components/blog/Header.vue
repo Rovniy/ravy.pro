@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { baseData } from '~/data'
-import { formatBlogDate, tagColorClass } from '~/utils/helper'
+import { formatBlogDate } from '~/utils/helper'
 
 interface Props {
   title: string
@@ -44,7 +44,7 @@ const showUpdated = computed(() => {
 
 <template>
   <header>
-    <h1 class="text-3xl md:text-4xl lg:text-5xl m-7 font-bold tracking-tight text-center text-slate-900 dark:text-white">
+    <h1 class="text-3xl md:text-4xl lg:text-5xl m-7 font-bold tracking-tight text-center text-fg">
       {{ title || '' }}
     </h1>
 
@@ -57,15 +57,15 @@ const showUpdated = computed(() => {
       width="600"
       height="288"
       sizes="sm:67vw md:80vw"
-      class="m-auto rounded-2xl shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
+      class="m-auto h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
     />
 
-    <p class="text-xs sm:text-sm my-3 max-w-xl mx-auto text-center text-slate-600 dark:text-slate-400">
+    <p class="text-xs sm:text-sm my-3 max-w-xl mx-auto text-center text-fg-muted">
       {{ description }}
     </p>
 
     <div class="flex w-full justify-center text-xs md:text-base my-8">
-      <div class="md:flex items-center text-black dark:text-slate-300 content-center gap-8 text-xs sm:text-sm">
+      <div class="md:flex items-center text-fg content-center gap-8 text-xs sm:text-sm">
         <!--
           Byline. The JSON-LD has always named an author, but nothing on the page
           did — no visible name, no rel="author" — so a reader (or anything
@@ -73,7 +73,7 @@ const showUpdated = computed(() => {
         -->
         <div class="flex items-center gap-1 font-spacemono">
           <Icon name="mdi:account-outline" size="18" aria-hidden="true" />
-          <NuxtLink to="/about" rel="author" class="hover:text-accent-600 dark:hover:text-accent-400 transition-colors">
+          <NuxtLink to="/about" rel="author" class="hover:text-accent-ink transition-colors">
             {{ baseData.me.name }}
           </NuxtLink>
         </div>
@@ -89,7 +89,7 @@ const showUpdated = computed(() => {
           <time :datetime="createdAt">{{ formatBlogDate(createdAt) }}</time>
         </div>
 
-        <div v-if="showUpdated" class="flex items-center gap-1 font-spacemono text-slate-500 dark:text-slate-400">
+        <div v-if="showUpdated" class="flex items-center gap-1 font-spacemono text-fg-muted">
           <Icon name="mdi:update" size="18" aria-hidden="true" />
           <span>Updated <time :datetime="lastUpdated">{{ formatBlogDate(lastUpdated) }}</time></span>
         </div>
@@ -100,15 +100,13 @@ const showUpdated = computed(() => {
         </div>
 
         <div class="flex items-center gap-2 flex-wrap my-5">
-          <NuxtLink
+          <UiTag
             v-for="tag in tags"
             :key="tag"
             :to="`/categories/${tag}`"
-            :class="tagColorClass(tag)"
-            class="rounded-full px-3 py-1 text-xs font-spacemono font-medium transition-opacity hover:opacity-80"
           >
             #{{ tag }}
-          </NuxtLink>
+          </UiTag>
         </div>
       </div>
     </div>

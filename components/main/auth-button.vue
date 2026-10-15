@@ -42,14 +42,14 @@ async function onSignIn() {
       class="auth-control group"
       @click="track('nav_click', { nav_item: 'account', location: 'header' })"
     >
-      <span class="auth-avatar inline-flex items-center justify-center w-7 h-7 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700 ring-1 ring-slate-300 dark:ring-slate-600 group-hover:ring-accent-400 dark:group-hover:ring-accent-500 transition-shadow">
+      <span class="auth-avatar inline-flex items-center justify-center w-7 h-7 overflow-hidden bg-line ring-1 ring-line-strong group-hover:ring-accent transition-shadow">
         <img
           v-if="state.user?.photoURL"
           :src="state.user.photoURL"
           alt=""
           class="w-full h-full object-cover"
         >
-        <span v-else class="text-xs font-bold uppercase text-slate-700 dark:text-slate-200">
+        <span v-else class="text-xs font-bold uppercase text-fg">
           {{ userInitial }}
         </span>
       </span>
@@ -59,7 +59,7 @@ async function onSignIn() {
       v-else-if="state.ready"
       type="button"
       title="Sign in"
-      class="auth-control text-sm lg:text-base font-medium hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
+      class="auth-control text-fg-muted hover:text-fg hover:cursor-pointer"
       @click="onSignIn"
     >
       <Icon name="mdi:login" size="20" aria-hidden="true" />
@@ -67,7 +67,7 @@ async function onSignIn() {
     </button>
 
     <template #fallback>
-      <span class="auth-control text-slate-400">
+      <span class="auth-control text-fg-subtle">
         <Icon name="svg-spinners:180-ring" size="18" aria-hidden="true" />
       </span>
     </template>
@@ -80,7 +80,7 @@ async function onSignIn() {
 /* Matches the theme toggle's 44px touch target and vertical trim so the two
    sit on one baseline in the header pill. */
 .auth-control {
-  @apply inline-flex items-center justify-center gap-1.5 h-11 min-w-11 px-1.5 -my-2 rounded-md transition-colors;
+  @apply inline-flex items-center justify-center gap-1.5 h-11 min-w-11 px-1.5 -my-2 transition-colors;
 }
 
 .auth-control:focus {

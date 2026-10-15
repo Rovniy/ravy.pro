@@ -103,18 +103,18 @@ function onDownload() {
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1 max-w-3xl">
         <span class="eyebrow">Unity · open-source plugin</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           XPLOIT Game UI
         </h1>
-        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
           Build your game's UI with HTML, CSS and JavaScript, and render it on the GPU inside Unity.
           It is not an embedded browser: a small runtime paints the page straight into a texture,
           and costs nothing while nothing on screen moves.
         </p>
         <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Apache-2.0</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> No Chromium, no WebView SDK</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Prebuilt, nothing to compile</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Apache-2.0</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> No Chromium, no WebView SDK</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Prebuilt, nothing to compile</span>
         </p>
         <ToolStoryLink class="mt-3" />
       </div>
@@ -122,11 +122,11 @@ function onDownload() {
     </header>
 
     <!-- Links -->
-    <section class="mt-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+    <section class="mt-8 border border-line bg-panel p-5 sm:p-6">
       <div class="flex flex-wrap items-center gap-3">
         <a
           :href="RELEASES_URL"
-          class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-medium hover:opacity-90 transition"
+          class="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3 font-medium hover:opacity-90 transition"
           @click="onDownload"
         >
           <Icon name="mdi:unity" class="w-5 h-5" />
@@ -135,13 +135,13 @@ function onDownload() {
         </a>
         <a
           :href="REPO_URL"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-5 py-3 font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
         >
           <Icon name="fa:github" class="w-5 h-5" />
           Source on GitHub
         </a>
       </div>
-      <p class="mt-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      <p class="mt-4 text-sm text-fg-muted leading-relaxed">
         The plugin ships as a Unity package tarball (<code class="font-spacemono text-xs">.tgz</code>) attached to the latest GitHub release.
         Requires Unity 6000.2 or newer on Windows 11 x64, with the graphics API set to Direct3D 12.
       </p>
@@ -169,13 +169,13 @@ function onDownload() {
         <div
           v-for="h in highlights"
           :key="h.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
           <Icon :name="h.icon" class="w-5 h-5 text-accent-500" />
-          <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="mt-3 font-semibold text-fg">
             {{ h.title }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ h.text }}
           </p>
         </div>
@@ -189,14 +189,14 @@ function onDownload() {
         <li
           v-for="(s, i) in quickStart"
           :key="s.name"
-          class="flex gap-4 rounded-xl border border-slate-200 dark:border-slate-800 p-5"
+          class="flex gap-4 border border-line p-5"
         >
           <span class="font-spacemono text-sm text-accent-500 shrink-0">0{{ i + 1 }}</span>
           <div class="min-w-0">
-            <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+            <h3 class="font-semibold text-fg">
               {{ s.name }}
             </h3>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p class="mt-1 text-sm text-fg-muted leading-relaxed">
               {{ s.text }}
             </p>
           </div>
@@ -205,14 +205,14 @@ function onDownload() {
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>
@@ -220,7 +220,7 @@ function onDownload() {
     </section>
 
     <!-- Footer strip -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+    <section class="mt-14 border-t border-line pt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fg-muted">
       <a :href="REPO_URL" class="inline-flex items-center gap-1.5 hover:text-accent-500 transition-colors">
         <Icon name="fa:github" class="w-4 h-4" /> Rovniy/xploit_game_ui
       </a>

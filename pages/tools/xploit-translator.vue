@@ -196,18 +196,18 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 max-w-3xl">
         <span class="eyebrow">Windows · desktop app</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           XPLOIT Translator
         </h1>
-        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
           Copy a sentence or a screenshot anywhere in Windows, press <kbd class="font-spacemono text-sm">Ctrl&nbsp;+&nbsp;Alt&nbsp;+&nbsp;T</kbd>,
           and a small window rises above the taskbar with the translation. No tab to open, nothing to paste,
           nothing to close.
         </p>
         <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free app, no account</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Your own OpenAI key</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Key stays in Windows Credential Manager</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Free app, no account</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Your own OpenAI key</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Key stays in Windows Credential Manager</span>
         </p>
         <ToolStoryLink class="mt-3" />
       </div>
@@ -215,7 +215,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     </header>
 
     <!-- Download -->
-    <section class="mt-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+    <section class="mt-8 border border-line bg-panel p-5 sm:p-6">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <span class="eyebrow">Latest release</span>
         <span v-if="release" class="font-spacemono text-sm text-accent-500">v{{ release.version }}</span>
@@ -223,7 +223,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
              first client render `loading` is already true while the prerendered
              HTML has nothing here — that is a hydration mismatch. -->
         <ClientOnly v-else>
-          <span v-if="loading" class="h-4 w-14 rounded bg-slate-200 dark:bg-slate-800 animate-pulse" aria-hidden="true" />
+          <span v-if="loading" class="h-4 w-14 bg-panel-raised animate-pulse" aria-hidden="true" />
         </ClientOnly>
         <span v-if="publishedLabel" class="text-xs text-slate-400">· {{ publishedLabel }}</span>
       </div>
@@ -232,7 +232,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <template v-if="installer">
           <a
             :href="installer.url"
-            class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-medium hover:opacity-90 transition"
+            class="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3 font-medium hover:opacity-90 transition"
             @click="onDownload(installer, 'installer')"
           >
             <Icon name="mdi:microsoft-windows" class="w-5 h-5" />
@@ -242,7 +242,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
           <a
             v-if="portable"
             :href="portable.url"
-            class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-5 py-3 font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+            class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
             @click="onDownload(portable, 'portable')"
           >
             <Icon name="mdi:folder-zip-outline" class="w-5 h-5" />
@@ -253,7 +253,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <a
           v-else
           :href="`${TRANSLATOR_RELEASES_URL}/latest`"
-          class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-medium hover:opacity-90 transition"
+          class="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3 font-medium hover:opacity-90 transition"
         >
           <Icon name="mdi:microsoft-windows" class="w-5 h-5" />
           Download for Windows
@@ -261,14 +261,14 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         </a>
       </div>
 
-      <p class="mt-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      <p class="mt-4 text-sm text-fg-muted leading-relaxed">
         Windows 10 or 11, 64-bit. Needs the WebView2 Runtime, which is already part of Windows 11.
         The installer writes into your user profile, so no administrator rights are required; the portable
         build is a single file that runs from anywhere.
       </p>
-      <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      <p class="mt-2 text-sm text-fg-muted leading-relaxed">
         Neither build is code-signed, so SmartScreen warns on the first launch — choose
-        <strong class="font-medium text-slate-700 dark:text-slate-200">More info → Run anyway</strong>.
+        <strong class="font-medium text-fg">More info → Run anyway</strong>.
         Every release ships a checksum file if you would rather verify the download first.
       </p>
 
@@ -276,14 +276,14 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <a
           v-if="checksums"
           :href="checksums.url"
-          class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-accent-500 transition-colors"
+          class="inline-flex items-center gap-1.5 text-fg-muted hover:text-accent-500 transition-colors"
         >
           <Icon name="mdi:file-check-outline" class="w-4 h-4" /> SHA256SUMS.txt
         </a>
-        <a :href="TRANSLATOR_RELEASES_URL" class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-accent-500 transition-colors">
+        <a :href="TRANSLATOR_RELEASES_URL" class="inline-flex items-center gap-1.5 text-fg-muted hover:text-accent-500 transition-colors">
           <Icon name="mdi:history" class="w-4 h-4" /> All releases
         </a>
-        <a :href="TRANSLATOR_REPO_URL" class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-accent-500 transition-colors">
+        <a :href="TRANSLATOR_REPO_URL" class="inline-flex items-center gap-1.5 text-fg-muted hover:text-accent-500 transition-colors">
           <Icon name="fa:github" class="w-4 h-4" /> Source on GitHub
         </a>
       </div>
@@ -295,7 +295,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <!-- No width/height attributes: a fixed pixel width overflows the
              viewport on phones. The 16:9 box scales with the column instead. -->
         <iframe
-          class="block w-full aspect-video rounded-xl border-0"
+          class="block w-full aspect-video border-0"
           src="https://www.youtube.com/embed/YXh629Osrf8?si=gIaL6Q-S3VO94i0F"
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -312,16 +312,16 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <div
           v-for="(s, i) in steps"
           :key="s.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
           <div class="flex items-center gap-2">
             <span class="font-spacemono text-xs text-accent-500">0{{ i + 1 }}</span>
             <Icon :name="s.icon" class="w-5 h-5 text-accent-500" />
           </div>
-          <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="mt-3 font-semibold text-fg">
             {{ s.title }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ s.text }}
           </p>
         </div>
@@ -335,15 +335,15 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         <div
           v-for="f in features"
           :key="f.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 p-5"
+          class="border border-line p-5"
         >
           <div class="flex items-center gap-2">
             <Icon :name="f.icon" class="w-5 h-5 text-accent-500" />
-            <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+            <h3 class="font-semibold text-fg">
               {{ f.title }}
             </h3>
           </div>
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-2 text-sm text-fg-muted leading-relaxed">
             {{ f.text }}
           </p>
         </div>
@@ -353,21 +353,21 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     <!-- Install -->
     <section class="mt-14">
       <span class="eyebrow">Installing it</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Three steps, once
       </h2>
       <ol class="mt-5 space-y-4">
         <li
           v-for="(s, i) in installSteps"
           :key="s.name"
-          class="flex gap-4 rounded-xl border border-slate-200 dark:border-slate-800 p-5"
+          class="flex gap-4 border border-line p-5"
         >
           <span class="font-spacemono text-sm text-accent-500 shrink-0">0{{ i + 1 }}</span>
           <div class="min-w-0">
-            <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+            <h3 class="font-semibold text-fg">
               {{ s.name }}
             </h3>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p class="mt-1 text-sm text-fg-muted leading-relaxed">
               {{ s.text }}
             </p>
           </div>
@@ -378,10 +378,10 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     <!-- Cost -->
     <section class="mt-14">
       <span class="eyebrow">What it costs</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         The app is free — you pay OpenAI for tokens
       </h2>
-      <p class="mt-3 max-w-3xl text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 max-w-3xl text-fg-muted leading-relaxed">
         There is no subscription, no licence and no account here. The app talks to OpenAI with the key you
         paste on the first run, so translation is billed to you directly, at OpenAI's rates. Pick the model in
         the settings; the cheapest one handles ordinary text perfectly well.
@@ -389,27 +389,27 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
       <div class="mt-5 overflow-x-auto">
         <table class="w-full text-sm border-collapse">
           <thead>
-            <tr class="text-left border-b border-slate-200 dark:border-slate-800">
-              <th class="py-2 pr-4 font-semibold text-slate-900 dark:text-slate-100">
+            <tr class="text-left border-b border-line">
+              <th class="py-2 pr-4 font-semibold text-fg">
                 Model
               </th>
-              <th class="py-2 pr-4 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
+              <th class="py-2 pr-4 font-semibold text-fg whitespace-nowrap">
                 $ / 1M tokens (in · out)
               </th>
-              <th class="py-2 font-semibold text-slate-900 dark:text-slate-100">
+              <th class="py-2 font-semibold text-fg">
                 When to use it
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="m in models" :key="m.name" class="border-b border-slate-100 dark:border-slate-900">
-              <td class="py-2 pr-4 font-spacemono text-slate-700 dark:text-slate-200 whitespace-nowrap">
+            <tr v-for="m in models" :key="m.name" class="border-b border-line">
+              <td class="py-2 pr-4 font-spacemono text-fg whitespace-nowrap">
                 {{ m.name }}
               </td>
-              <td class="py-2 pr-4 font-spacemono text-slate-500 dark:text-slate-400 whitespace-nowrap">
+              <td class="py-2 pr-4 font-spacemono text-fg-muted whitespace-nowrap">
                 {{ m.price }}
               </td>
-              <td class="py-2 text-slate-500 dark:text-slate-400">
+              <td class="py-2 text-fg-muted">
                 {{ m.when }}
               </td>
             </tr>
@@ -424,24 +424,24 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     <!-- Privacy -->
     <section class="mt-14">
       <span class="eyebrow">Where your data goes</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         The key never leaves the Rust side
       </h2>
       <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          <Icon name="mdi:shield-key-outline" class="shrink-0 mt-0.5 w-5 h-5 text-emerald-500" aria-hidden="true" />
+        <div class="flex items-start gap-3 border border-line p-4 text-sm text-fg-muted leading-relaxed">
+          <Icon name="mdi:shield-key-outline" class="shrink-0 mt-0.5 w-5 h-5 text-ok" aria-hidden="true" />
           <span>Your API key lives in the <strong class="font-medium">Windows Credential Manager</strong>, not in a config file. The app's web layer is granted no HTTP, clipboard or keyring permission at all — it only ever learns whether a key exists.</span>
         </div>
-        <div class="flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          <Icon name="mdi:cloud-upload-outline" class="shrink-0 mt-0.5 w-5 h-5 text-emerald-500" aria-hidden="true" />
+        <div class="flex items-start gap-3 border border-line p-4 text-sm text-fg-muted leading-relaxed">
+          <Icon name="mdi:cloud-upload-outline" class="shrink-0 mt-0.5 w-5 h-5 text-ok" aria-hidden="true" />
           <span>Clipboard content leaves your machine only when you trigger a translation, and only to OpenAI. Nothing is sent anywhere else, and this website is not involved once the app is installed.</span>
         </div>
-        <div class="flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          <Icon name="mdi:database-off-outline" class="shrink-0 mt-0.5 w-5 h-5 text-emerald-500" aria-hidden="true" />
+        <div class="flex items-start gap-3 border border-line p-4 text-sm text-fg-muted leading-relaxed">
+          <Icon name="mdi:database-off-outline" class="shrink-0 mt-0.5 w-5 h-5 text-ok" aria-hidden="true" />
           <span>No history is kept. The 200-entry cache is in memory and gone when you quit; hiding the window drops the session and whatever it was showing.</span>
         </div>
-        <div class="flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-          <Icon name="mdi:eye-off-outline" class="shrink-0 mt-0.5 w-5 h-5 text-emerald-500" aria-hidden="true" />
+        <div class="flex items-start gap-3 border border-line p-4 text-sm text-fg-muted leading-relaxed">
+          <Icon name="mdi:eye-off-outline" class="shrink-0 mt-0.5 w-5 h-5 text-ok" aria-hidden="true" />
           <span>No telemetry, no analytics, no account. The whole source is on GitHub if you would rather read it than take my word for it.</span>
         </div>
       </div>
@@ -450,33 +450,33 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     <!-- Settings reference -->
     <section class="mt-14">
       <span class="eyebrow">Settings</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Everything you can change
       </h2>
       <div class="mt-5 overflow-x-auto">
         <table class="w-full text-sm border-collapse">
           <thead>
-            <tr class="text-left border-b border-slate-200 dark:border-slate-800">
-              <th class="py-2 pr-4 font-semibold text-slate-900 dark:text-slate-100">
+            <tr class="text-left border-b border-line">
+              <th class="py-2 pr-4 font-semibold text-fg">
                 Setting
               </th>
-              <th class="py-2 pr-4 font-semibold text-slate-900 dark:text-slate-100">
+              <th class="py-2 pr-4 font-semibold text-fg">
                 Default
               </th>
-              <th class="py-2 font-semibold text-slate-900 dark:text-slate-100">
+              <th class="py-2 font-semibold text-fg">
                 Notes
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row in settingsRows" :key="row.setting" class="border-b border-slate-100 dark:border-slate-900 align-top">
-              <td class="py-2 pr-4 text-slate-700 dark:text-slate-200 whitespace-nowrap">
+            <tr v-for="row in settingsRows" :key="row.setting" class="border-b border-line align-top">
+              <td class="py-2 pr-4 text-fg whitespace-nowrap">
                 {{ row.setting }}
               </td>
-              <td class="py-2 pr-4 font-spacemono text-slate-500 dark:text-slate-400">
+              <td class="py-2 pr-4 font-spacemono text-fg-muted">
                 {{ row.value }}
               </td>
-              <td class="py-2 text-slate-500 dark:text-slate-400 leading-relaxed">
+              <td class="py-2 text-fg-muted leading-relaxed">
                 {{ row.note }}
               </td>
             </tr>
@@ -486,28 +486,28 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     </section>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Why a hotkey overlay instead of a browser tab
       </h2>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Translating something on a web page costs five actions: copy, switch windows, find the tab, paste,
         read, switch back. Each one is small and all of them together are why people stop bothering and guess
         at the meaning instead. A resident widget collapses that into one keystroke, and because the window
         hides the moment it loses focus, there is no sixth action to close it.
       </p>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Windows 11 has no supported way to embed a control in the taskbar — the Windows 10 toolbars and
         deskbands are gone with no public replacement. So the window is positioned from the working area of
         whichever monitor your cursor is on, which puts it just above the taskbar and gets multi-monitor and
         per-monitor DPI right without any configuration.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Translating what you cannot select
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         A lot of the text you actually need translated cannot be copied: an error dialog, a game menu, a
         restaurant board in a photo, a scan someone sent you. Copying a picture to the clipboard and pressing
         the same hotkey sends the image itself, and the model reads the text off it and translates that —
@@ -516,20 +516,20 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
         you the screenshot and copying a sentence gives you the sentence.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Why you bring your own API key
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         A middleman relay would mean a subscription, an account, and your clipboard passing through someone
         else's server. Pointing the app at your own OpenAI key removes all three: the request goes from your
         machine to OpenAI and back, you see exactly what you spend, and there is no service that can go
         away and take the app with it.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What it is not
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         It is an early build — version numbers still start with a zero. There is no auto-updater, no
         translation history, no offline mode, and four target languages rather than forty. It is 64-bit
         Windows only, and the binaries are unsigned. If any of that is a dealbreaker, this is the wrong tool
@@ -543,14 +543,14 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>
@@ -558,7 +558,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     </section>
 
     <!-- Footer strip -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+    <section class="mt-14 border-t border-line pt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fg-muted">
       <a :href="TRANSLATOR_REPO_URL" class="inline-flex items-center gap-1.5 hover:text-accent-500 transition-colors">
         <Icon name="fa:github" class="w-4 h-4" /> Rovniy/windows-translater
       </a>

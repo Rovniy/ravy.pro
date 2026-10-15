@@ -27,7 +27,7 @@ const { accessibleServices } = useAccess()
         v-for="tool in accessibleServices"
         :key="tool.key"
         :to="tool.path"
-        class="inline-flex items-center gap-2 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+        class="inline-flex items-center gap-2 border border-line bg-panel-raised px-3 py-2 text-sm font-medium text-fg hover:border-accent-400 hover:text-accent-ink transition-colors"
       >
         <Icon :name="tool.icon" size="16" aria-hidden="true" />
         {{ tool.name }}

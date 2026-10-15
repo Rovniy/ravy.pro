@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<{
 // The arrow slides along its own axis, so the hint matches the direction it points.
 const iconMotion = computed(() =>
   props.icon === 'mdi:arrow-down'
-    ? 'group-hover:translate-y-0.5'
+    ? ''
     : 'group-hover:translate-x-1',
 )
 
@@ -36,18 +36,19 @@ const { trackCta } = useAnalytics()
 <template>
   <div
     v-reveal
-    class="group flex flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 px-5 py-4 transition-all duration-200 hover:border-accent-400 dark:hover:border-accent-500 hover:bg-white/70 dark:hover:bg-slate-800/40"
+    class="group relative flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-2 border-line-strong bg-panel pl-7 pr-5 py-5 transition-colors duration-200 hover:border-accent"
   >
+    <span class="absolute left-0 inset-y-0 w-2 hazard" aria-hidden="true" />
     <div class="min-w-0">
       <NuxtLink
         :to="props.anchor"
-        class="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-slate-100 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+        class="inline-flex items-center gap-1.5 font-display font-extrabold uppercase text-2xl leading-none text-fg hover:text-accent-ink transition-colors"
         @click="trackCta('inquiry', props.location)"
       >
         {{ props.label }}
         <Icon :name="props.icon" class="w-4 h-4 transition-transform duration-200" :class="iconMotion" aria-hidden="true" />
       </NuxtLink>
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-1 text-sm text-fg-muted">
         {{ props.note }}
       </p>
     </div>
@@ -58,7 +59,7 @@ const { trackCta } = useAnalytics()
       :href="props.telegramHref"
       target="_blank"
       rel="noopener noreferrer"
-      class="inline-flex items-center gap-1.5 shrink-0 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors"
+      class="inline-flex items-center gap-1.5 shrink-0 font-display font-bold text-base uppercase tracking-[0.06em] text-accent-ink hover:text-fg transition-colors"
     >
       <Icon name="fa:telegram" class="w-3.5 h-3.5" aria-hidden="true" />
       {{ props.telegramLabel }}

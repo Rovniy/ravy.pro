@@ -17,7 +17,7 @@ const story = computed(() =>
   <NuxtLink
     v-if="story"
     :to="story"
-    class="group inline-flex items-center gap-1.5 font-spacemono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+    class="group inline-flex items-center gap-1.5 font-spacemono text-micro uppercase tracking-wider text-fg-muted hover:text-accent-ink transition-colors"
   >
     <Icon name="mdi:notebook-outline" class="w-3.5 h-3.5" aria-hidden="true" />
     How and why I built this

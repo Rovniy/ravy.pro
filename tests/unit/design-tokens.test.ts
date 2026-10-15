@@ -1,7 +1,6 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { LEGACY_VIOLATIONS } from './design-tokens.legacy'
 
 /*
  * The design system's guard rail. Everything below is outside the system:
@@ -9,11 +8,6 @@ import { LEGACY_VIOLATIONS } from './design-tokens.legacy'
  * gradients, the cursor spotlight, the old teal/emerald brand, rounded
  * corners (the system cuts corners; only `rounded-full` survives, for status
  * dots and avatars) and soft shadows (depth comes from panel layers).
- *
- * Files written before the system are listed in design-tokens.legacy.ts with
- * the number of violations they had. That number may only go down: a file
- * that gains one fails, and a file that loses some fails until its entry is
- * lowered (or removed at zero) — the same ratchet as the coverage thresholds.
  */
 
 const ROOT = join(__dirname, '..', '..')
@@ -24,8 +18,8 @@ const RULES: Array<{ name: string, pattern: RegExp }> = [
   { name: 'gradient', pattern: /\bbg-(?:gradient|linear|radial)-to-\w+/g },
   { name: 'spotlight', pattern: /\bv-spotlight\b/g },
   { name: 'old brand hue', pattern: /\b(?:teal|emerald)-\d{2,3}\b/g },
-  { name: 'rounded corner', pattern: /\brounded(?:-[trblse]{1,2})?(?:-(?:sm|md|lg|xl|2xl|3xl))?(?![\w-])|\brounded(?:-[trblse]{1,2})?-(?:sm|md|lg|xl|2xl|3xl)\b/g },
-  { name: 'soft shadow', pattern: /\bshadow(?:-(?:sm|md|lg|xl|2xl|inner))?(?![\w-])|\bshadow-(?:slate|black|white|accent|teal|emerald|amber)-/g },
+  { name: 'rounded corner', pattern: /(?<![\w-])(?:[\w-]+:)*rounded(?:-[trblse]{1,2})?(?:-(?:sm|md|lg|xl|2xl|3xl))?(?=[\s"'`]|$)/g },
+  { name: 'soft shadow', pattern: /(?<![\w-])(?:[\w-]+:)*shadow(?:-(?!none(?:[\s"'`]|$))[^\s"'`]+)?(?=[\s"'`]|$)/g },
 ]
 
 function vueFiles(dir: string): string[] {
@@ -40,8 +34,11 @@ function vueFiles(dir: string): string[] {
   return out
 }
 
+// A line that holds a library value which only looks like a utility (a QR
+// dot style called 'rounded') opts out with a `design-tokens-allow` comment.
 function countViolations(source: string): number {
-  return RULES.reduce((n, rule) => n + (source.match(rule.pattern)?.length ?? 0), 0)
+  const checked = source.split('\n').filter(line => !line.includes('design-tokens-allow')).join('\n')
+  return RULES.reduce((n, rule) => n + (checked.match(rule.pattern)?.length ?? 0), 0)
 }
 
 function scan(): Map<string, number> {
@@ -64,24 +61,11 @@ describe('design tokens', () => {
     expect(countViolations('class="bg-gradient-to-r from-teal-400"')).toBe(2)
     expect(countViolations('class="rounded-full text-micro bg-panel"')).toBe(0)
     expect(countViolations('class="rounded rounded-t-lg"')).toBe(2)
+    expect(countViolations('class="dark:shadow-black/30 hover:shadow-(color:--brand)/20 shadow-none"')).toBe(2)
+    expect(countViolations('dotsType: "extra-rounded", class="transition-shadow"')).toBe(0)
   })
 
-  it('no file outside the legacy list breaks the system', () => {
-    const offenders = [...counts].filter(([file]) => !(file in LEGACY_VIOLATIONS))
-    expect(offenders).toEqual([])
-  })
-
-  it('legacy files only ever lose violations', () => {
-    const grew: string[] = []
-    const shrank: string[] = []
-    for (const [file, allowed] of Object.entries(LEGACY_VIOLATIONS)) {
-      const now = counts.get(file) ?? 0
-      if (now > allowed)
-        grew.push(`${file}: ${now} > ${allowed}`)
-      else if (now < allowed)
-        shrank.push(`${file}: now ${now}, lower the entry from ${allowed}${now === 0 ? ' (delete it)' : ''}`)
-    }
-    expect(grew, 'gained off-system classes').toEqual([])
-    expect(shrank, 'ratchet: update design-tokens.legacy.ts').toEqual([])
+  it('no component, page or layout breaks the system', () => {
+    expect([...counts]).toEqual([])
   })
 })

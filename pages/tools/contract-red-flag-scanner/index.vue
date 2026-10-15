@@ -393,23 +393,23 @@ watch(
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 max-w-3xl">
         <span class="eyebrow">Contracts · creator & brand deals</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           Spot the red flags before you sign
         </h1>
-        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
           Paste an influencer or brand contract and get a free risk check in seconds — overall risk, jurisdiction,
           and how many traps it hides. Unlock the full clause-by-clause report when you need the details.
         </p>
         <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Not legal advice</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free risk check, no account</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Full report {{ priceLabel }}</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Not legal advice</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Free risk check, no account</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Full report {{ priceLabel }}</span>
         </p>
       </div>
       <ToolRatingWidget />
     </header>
 
-    <div v-if="checkoutCancelled" class="mt-6 rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">
+    <div v-if="checkoutCancelled" class="mt-6 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 text-sm text-amber-800 dark:text-amber-200">
       Checkout was cancelled — your scan is still here. You can unlock the full report whenever you're ready.
     </div>
 
@@ -418,23 +418,23 @@ watch(
       <div
         v-for="(s, i) in steps"
         :key="s.title"
-        class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+        class="border border-line bg-panel p-5"
       >
         <div class="flex items-center gap-2">
           <span class="font-spacemono text-xs text-accent-500">0{{ i + 1 }}</span>
           <Icon :name="s.icon" class="w-5 h-5 text-accent-500" />
         </div>
-        <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
+        <h3 class="mt-3 font-semibold text-fg">
           {{ s.title }}
         </h3>
-        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p class="mt-1 text-sm text-fg-muted leading-relaxed">
           {{ s.text }}
         </p>
       </div>
     </div>
 
     <!-- Input -->
-    <div class="mt-8 rounded-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 bg-white dark:bg-slate-900">
+    <div class="mt-8 border border-line p-4 sm:p-5 bg-panel">
       <div class="mb-4 space-y-3">
         <input
           ref="fileInputRef"
@@ -458,14 +458,14 @@ watch(
         <button
           type="button"
           :disabled="isRunning"
-          class="w-full rounded-lg border-2 border-dashed p-4 sm:p-5 text-left transition-colors disabled:opacity-60"
-          :class="isDragging ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20' : 'border-slate-300 dark:border-slate-700 hover:border-accent-400'"
+          class="w-full border-2 border-dashed p-4 sm:p-5 text-left transition-colors disabled:opacity-60"
+          :class="isDragging ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20' : 'border-line-strong hover:border-accent-400'"
           @click="openFilePicker"
           @drop="onDrop"
           @dragover="onDragOver"
           @dragleave="onDragLeave"
         >
-          <p class="text-base font-medium text-slate-900 dark:text-slate-100">
+          <p class="text-base font-medium text-fg">
             Drag and drop your contract here
           </p>
           <p class="mt-1 text-sm text-slate-500">
@@ -476,7 +476,7 @@ watch(
         <button
           type="button"
           :disabled="isRunning"
-          class="sm:hidden w-full inline-flex items-center justify-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-base font-medium hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-60"
+          class="sm:hidden w-full inline-flex items-center justify-center gap-2 border border-line-strong px-4 py-2 text-base font-medium hover:bg-panel-raised disabled:opacity-60"
           @click="openPhotoPicker"
         >
           <Icon name="mdi:camera" size="18" />
@@ -492,9 +492,9 @@ watch(
           <span>{{ inputStage }}</span>
         </div>
 
-        <div v-if="photoPages.length" class="pt-2 border-t border-slate-200 dark:border-slate-800">
+        <div v-if="photoPages.length" class="pt-2 border-t border-line">
           <div class="flex items-center justify-between mb-2">
-            <p class="text-sm text-slate-600 dark:text-slate-400">
+            <p class="text-sm text-fg-muted">
               Photos selected: {{ photoPages.length }}
             </p>
             <button type="button" class="text-sm underline" @click="clearPhotos">
@@ -505,18 +505,18 @@ watch(
             <div
               v-for="(photo, idx) in photoPages"
               :key="`${photo.name}-${idx}`"
-              class="relative rounded-md overflow-hidden border border-slate-200 dark:border-slate-700"
+              class="relative overflow-hidden border border-line"
             >
               <img :src="photo.base64" :alt="`Contract page ${idx + 1}`" class="w-full h-20 object-cover">
               <button
                 type="button"
-                class="absolute top-1 right-1 inline-flex items-center justify-center size-6 bg-black/60 text-white rounded-full"
+                class="absolute top-1 right-1 inline-flex items-center justify-center size-6 bg-black/60 text-white"
                 :aria-label="`Remove page ${idx + 1}`"
                 @click="removePhoto(idx)"
               >
                 <Icon name="mdi:close" size="14" aria-hidden="true" />
               </button>
-              <span class="absolute bottom-1 left-1 text-[10px] px-1 rounded bg-black/60 text-white">
+              <span class="absolute bottom-1 left-1 text-micro px-1 bg-black/60 text-white">
                 {{ idx + 1 }}
               </span>
             </div>
@@ -525,13 +525,13 @@ watch(
       </div>
 
       <label class="block text-base">
-        <span class="block mb-1 font-medium text-slate-900 dark:text-slate-100">Contract text</span>
+        <span class="block mb-1 font-medium text-fg">Contract text</span>
         <textarea
           v-model="contractText"
           rows="12"
           placeholder="Paste your contract text here..."
           :disabled="isRunning"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-[16px] focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
       </label>
 
@@ -539,7 +539,7 @@ watch(
         <button
           type="button"
           :disabled="!hasInput || isRunning"
-          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-base font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-fg text-bg px-4 py-2 text-base font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           @click="runScan"
         >
           <Icon :name="isRunning ? 'svg-spinners:180-ring' : 'mdi:shield-search'" size="16" />
@@ -560,11 +560,11 @@ watch(
       </p>
 
       <div v-if="teaser && isRunning" class="mt-4">
-        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+        <div class="flex items-center justify-between text-xs text-fg-muted mb-1">
           <span>Status: {{ teaser.step }}</span>
           <span>{{ teaser.progress }}%</span>
         </div>
-        <div class="h-2 rounded bg-slate-200 dark:bg-slate-800 overflow-hidden">
+        <div class="h-2 bg-panel-raised overflow-hidden">
           <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${teaser.progress}%` }" />
         </div>
       </div>
@@ -585,7 +585,7 @@ watch(
     />
 
     <!-- Scan error -->
-    <section v-else-if="teaser?.status === 'error'" class="mt-8 rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-5">
+    <section v-else-if="teaser?.status === 'error'" class="mt-8 border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-4 sm:p-5">
       <h2 class="text-lg font-semibold text-red-700 dark:text-red-300">
         Scan failed
       </h2>
@@ -610,34 +610,34 @@ watch(
     </section>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Why creator contracts need a red-flag check
       </h2>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What counts as a red flag?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Brand and influencer agreements often bury risk in dense language: perpetual or unlimited usage rights,
         broad exclusivity that blocks other deals, one-sided termination, vague approval loops, morality clauses,
         IP assignment of your own content, and payment terms that quietly push payout out by months. A red flag is
         any clause that shifts risk or cost onto you in a way a non-lawyer can easily miss.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What the free risk check shows
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         The free check gives you the overall risk level, the likely governing jurisdiction, a short plain-language
         summary, and the number of red flags found by severity — enough to decide whether the deal needs a closer look.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What the full report adds
       </h3>
-      <ul class="mt-2 space-y-1.5 text-slate-600 dark:text-slate-300 leading-relaxed list-disc pl-5">
+      <ul class="mt-2 space-y-1.5 text-fg-muted leading-relaxed list-disc pl-5">
         <li>Each red flag with the exact clause quote and why it is risky</li>
         <li>What the clause means for you as the creator</li>
         <li>A concrete suggested fix or safer wording</li>
@@ -651,14 +651,14 @@ watch(
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>

@@ -34,49 +34,31 @@ const formattedLink = computed(() => {
 </script>
 
 <template>
-  <div class="w-[1200px] h-[630px] flex flex-col justify-center bg-[#020420]">
-    <svg
-      class="absolute right-0 top-0"
-      width="629"
-      height="593"
-      viewBox="0 0 629 593"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g filter="url(#filter0_f_199_94966)">
-        <path d="M628.5 -578L639.334 -94.4223L806.598 -548.281L659.827 -87.387L965.396 -462.344L676.925 -74.0787L1087.69 -329.501L688.776 -55.9396L1160.22 -164.149L694.095 -34.9354L1175.13 15.7948L692.306 -13.3422L1130.8 190.83L683.602 6.50012L1032.04 341.989L668.927 22.4412L889.557 452.891L649.872 32.7537L718.78 511.519L628.5 36.32L538.22 511.519L607.128 32.7537L367.443 452.891L588.073 22.4412L224.955 341.989L573.398 6.50012L126.198 190.83L564.694 -13.3422L81.8734 15.7948L562.905 -34.9354L96.7839 -164.149L568.224 -55.9396L169.314 -329.501L580.075 -74.0787L291.604 -462.344L597.173 -87.387L450.402 -548.281L617.666 -94.4223L628.5 -578Z" fill="#00DC82" />
-      </g>
-      <defs>
-        <filter
-          id="filter0_f_199_94966"
-          x="0.873535"
-          y="-659"
-          width="1255.25"
-          height="1251.52"
-          filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
-        >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation="40.5" result="effect1_foregroundBlur_199_94966" />
-        </filter>
-      </defs>
-    </svg>
+  <!-- Satori takes inline styles, not the site's Tailwind scale (and it drops
+       border utilities), so sizes and borders are style attributes. -->
+  <div class="w-[1200px] h-[630px] flex flex-col justify-center bg-[#0b0d11] relative">
+    <div class="absolute top-0 right-[180px] w-[260px] h-[630px] bg-[#ffc21a]" style="transform: skewX(-10deg)" />
 
-    <div class="w-[600px] pl-[100px]">
-      <p v-if="headline" class="uppercase text-[32px] text-[#00DC82] mb-4 font-semibold">
-        {{ headline }}
-      </p>
-      <h1 class="w-[600px] m-0 text-[50px] font-semibold mb-4 text-white flex items-center">
-        <span>{{ formattedTitle }} </span>
+    <div class="w-[620px] pl-[90px] flex flex-col">
+      <div v-if="headline" class="flex mb-[22px]">
+        <div class="px-[18px] py-[6px] bg-[#ffc21a] text-[#111318] uppercase font-bold" style="font-size: 26px; letter-spacing: 3px; transform: skewX(-10deg)">
+          {{ headline }}
+        </div>
+      </div>
+      <h1 class="w-[600px] m-0 font-bold mb-[18px] text-[#eef0f4] leading-tight" style="font-size: 52px">
+        {{ formattedTitle }}
       </h1>
-      <p class="text-[25px] text-[#E4E4E7] leading-tight">
+      <p class="m-0 text-[#a3aab7] leading-tight" style="font-size: 26px">
         {{ formattedDescription }}
       </p>
     </div>
 
-    <div v-if="formattedLink" class="absolute top-[200px] right-[70px]">
-      <img :src="formattedLink" :alt="title" class="w-96 h-52 rounded-lg object-cover">
+    <div v-if="formattedLink" class="absolute top-[195px] right-[70px] flex p-[3px] bg-[#444b58]">
+      <img :src="formattedLink" :alt="title" class="w-96 h-52 object-cover">
+    </div>
+
+    <div class="absolute left-[90px] bottom-[48px] text-[#7b8291] uppercase" style="font-size: 22px; letter-spacing: 3px">
+      ravy.pro
     </div>
   </div>
 </template>

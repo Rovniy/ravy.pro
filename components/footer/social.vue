@@ -4,11 +4,11 @@ import { footerData, navbarData, socialNetworks } from '~/data'
 
 <template>
   <div>
-    <p class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+    <p class="text-xl font-bold tracking-tight text-fg">
       {{ navbarData.homeTitle }}
     </p>
 
-    <p class="mt-4 max-w-xs text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+    <p class="mt-4 max-w-xs text-sm leading-relaxed text-fg-muted">
       {{ footerData.aboutAuthor }}
     </p>
 
@@ -19,7 +19,7 @@ import { footerData, navbarData, socialNetworks } from '~/data'
         :to="item.href"
         target="_blank"
         :aria-label="item.name"
-        class="w-11 h-11 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+        class="w-11 h-11 flex items-center justify-center text-fg-muted hover:bg-accent-500/10 hover:text-accent-ink transition-colors"
       >
         <Icon :name="item.icon" size="18" aria-hidden="true" />
       </NuxtLink>

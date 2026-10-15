@@ -101,7 +101,7 @@ const compactToken = computed(() => {
 })
 
 const STATUS_META: Record<string, { label: string, icon: string, classes: string }> = {
-  'valid': { label: 'Valid', icon: 'mdi:check-circle', classes: 'text-emerald-600 dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10' },
+  'valid': { label: 'Valid', icon: 'mdi:check-circle', classes: 'text-ok border-ok/30 bg-ok/10' },
   'expired': { label: 'Expired', icon: 'mdi:close-circle', classes: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/10' },
   'not-yet-valid': { label: 'Not yet valid', icon: 'mdi:alert', classes: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10' },
   'no-expiry': { label: 'No expiry', icon: 'mdi:information', classes: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10' },
@@ -249,7 +249,7 @@ async function verify() {
 }
 
 const VERIFY_META: Record<Exclude<VerifyState, 'idle' | 'verifying'>, { label: string, icon: string, classes: string }> = {
-  verified: { label: 'Signature verified', icon: 'mdi:shield-check', classes: 'text-emerald-600 dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10' },
+  verified: { label: 'Signature verified', icon: 'mdi:shield-check', classes: 'text-ok border-ok/30 bg-ok/10' },
   invalid: { label: 'Invalid signature', icon: 'mdi:shield-alert', classes: 'text-rose-600 dark:text-rose-400 border-rose-500/30 bg-rose-500/10' },
   unable: { label: 'Unable to verify', icon: 'mdi:alert', classes: 'text-amber-600 dark:text-amber-400 border-amber-500/30 bg-amber-500/10' },
 }
@@ -265,10 +265,10 @@ function stringify(value: unknown): string {
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
-        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">
           JWT Decoder &amp; Verifier
         </h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p class="text-sm text-fg-muted mt-1">
           Decode a JSON Web Token, read its claims, and verify its signature.
         </p>
       </div>
@@ -276,8 +276,8 @@ function stringify(value: unknown): string {
     </header>
 
     <!-- Privacy banner -->
-    <div class="mb-8 flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300">
-      <Icon name="mdi:shield-check" size="20" class="shrink-0 mt-0.5 text-emerald-500" aria-hidden="true" />
+    <div class="mb-8 flex items-start gap-3 border border-line p-4 text-sm text-fg-muted">
+      <Icon name="mdi:shield-check" size="20" class="shrink-0 mt-0.5 text-ok" aria-hidden="true" />
       <p>Everything runs in your browser. Your token, secret, and keys never leave this page.</p>
     </div>
 
@@ -286,10 +286,10 @@ function stringify(value: unknown): string {
       <div class="flex items-center justify-between mb-2">
         <label for="jwt-input" class="text-sm font-medium">Encoded token</label>
         <div class="flex items-center gap-3 text-xs">
-          <button type="button" class="underline text-slate-600 dark:text-slate-300 hover:cursor-pointer" @click="loadSample">
+          <button type="button" class="underline text-fg-muted hover:cursor-pointer" @click="loadSample">
             Load sample
           </button>
-          <button type="button" class="underline text-slate-600 dark:text-slate-300 hover:cursor-pointer" @click="clearToken">
+          <button type="button" class="underline text-fg-muted hover:cursor-pointer" @click="clearToken">
             Clear
           </button>
         </div>
@@ -300,11 +300,11 @@ function stringify(value: unknown): string {
         rows="5"
         spellcheck="false"
         placeholder="Paste a JWT here (header.payload.signature)…"
-        class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono text-sm break-all focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+        class="w-full border border-line-strong bg-panel px-3 py-2 font-mono text-sm break-all focus:outline-none focus:ring-2 focus:ring-accent-500/60"
       />
 
       <!-- Colored token preview -->
-      <div v-if="decoded.partCount >= 2" class="mt-3 rounded-md border border-slate-200 dark:border-slate-800 p-3 font-mono text-sm break-all bg-slate-50 dark:bg-slate-900/50">
+      <div v-if="decoded.partCount >= 2" class="mt-3 border border-line p-3 font-mono text-sm break-all bg-panel-raised">
         <span class="text-rose-500">{{ decoded.raw.header }}</span>
         <span class="text-slate-400">.</span>
         <span class="text-fuchsia-500">{{ decoded.raw.payload }}</span>
@@ -318,23 +318,23 @@ function stringify(value: unknown): string {
     <!-- Status + algorithm pills -->
     <div v-if="decoded.ok" class="mb-6 flex flex-wrap items-center gap-2 text-sm">
       <ClientOnly>
-        <span class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-medium" :class="statusMeta.classes">
+        <span class="inline-flex items-center gap-1.5 border px-3 py-1 font-medium" :class="statusMeta.classes">
           <Icon :name="statusMeta.icon" size="16" aria-hidden="true" />
           {{ statusMeta.label }}
         </span>
       </ClientOnly>
-      <span v-if="algInfo.alg" class="inline-flex items-center gap-1.5 rounded-full border border-slate-300 dark:border-slate-700 px-3 py-1 font-medium text-slate-700 dark:text-slate-200">
+      <span v-if="algInfo.alg" class="inline-flex items-center gap-1.5 border border-line-strong px-3 py-1 font-medium text-fg">
         <Icon name="mdi:key-variant" size="16" aria-hidden="true" />
         {{ algInfo.alg }}
       </span>
-      <span v-if="algInfo.warning" class="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-medium text-amber-600 dark:text-amber-400">
+      <span v-if="algInfo.warning" class="inline-flex items-center gap-1.5 border border-amber-500/30 bg-amber-500/10 px-3 py-1 font-medium text-amber-600 dark:text-amber-400">
         <Icon name="mdi:alert" size="16" aria-hidden="true" />
         {{ algInfo.warning }}
       </span>
     </div>
 
     <!-- Decode errors (when not ok) -->
-    <div v-if="!decoded.ok && token.trim()" class="mb-6 rounded-md border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-600 dark:text-rose-400">
+    <div v-if="!decoded.ok && token.trim()" class="mb-6 border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-600 dark:text-rose-400">
       <p v-for="err in decoded.errors" :key="err.part">
         <span class="font-medium capitalize">{{ err.part }}:</span> {{ err.message }}
       </p>
@@ -342,7 +342,7 @@ function stringify(value: unknown): string {
 
     <!-- Header + Payload panels -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="rounded-md border border-slate-200 dark:border-slate-800 p-4">
+      <div class="border border-line p-4">
         <div class="flex items-center justify-between mb-2">
           <h2 class="inline-flex items-center gap-1.5 text-sm font-semibold text-rose-500">
             <Icon name="mdi:code-json" size="16" aria-hidden="true" />
@@ -351,14 +351,14 @@ function stringify(value: unknown): string {
           <button
             v-if="headerJson"
             type="button"
-            class="inline-flex items-center gap-1 text-xs underline text-slate-600 dark:text-slate-300 hover:cursor-pointer"
+            class="inline-flex items-center gap-1 text-xs underline text-fg-muted hover:cursor-pointer"
             @click="copyText(headerJson, 'header')"
           >
-            <Icon :name="copied === 'header' ? 'mdi:check' : 'mdi:content-copy'" size="14" :class="copied === 'header' ? 'text-emerald-500' : ''" />
+            <Icon :name="copied === 'header' ? 'mdi:check' : 'mdi:content-copy'" size="14" :class="copied === 'header' ? 'text-ok' : ''" />
             {{ copied === 'header' ? 'Copied' : 'Copy' }}
           </button>
         </div>
-        <pre v-if="headerJson" class="font-mono text-xs overflow-auto text-slate-900 dark:text-slate-100">{{ headerJson }}</pre>
+        <pre v-if="headerJson" class="font-mono text-xs overflow-auto text-fg">{{ headerJson }}</pre>
         <p v-else-if="partError('header')" class="text-xs text-rose-500">
           {{ partError('header') }}
         </p>
@@ -367,7 +367,7 @@ function stringify(value: unknown): string {
         </p>
       </div>
 
-      <div class="rounded-md border border-slate-200 dark:border-slate-800 p-4">
+      <div class="border border-line p-4">
         <div class="flex items-center justify-between mb-2">
           <h2 class="inline-flex items-center gap-1.5 text-sm font-semibold text-fuchsia-500">
             <Icon name="mdi:code-json" size="16" aria-hidden="true" />
@@ -376,14 +376,14 @@ function stringify(value: unknown): string {
           <button
             v-if="payloadJson"
             type="button"
-            class="inline-flex items-center gap-1 text-xs underline text-slate-600 dark:text-slate-300 hover:cursor-pointer"
+            class="inline-flex items-center gap-1 text-xs underline text-fg-muted hover:cursor-pointer"
             @click="copyText(payloadJson, 'payload')"
           >
-            <Icon :name="copied === 'payload' ? 'mdi:check' : 'mdi:content-copy'" size="14" :class="copied === 'payload' ? 'text-emerald-500' : ''" />
+            <Icon :name="copied === 'payload' ? 'mdi:check' : 'mdi:content-copy'" size="14" :class="copied === 'payload' ? 'text-ok' : ''" />
             {{ copied === 'payload' ? 'Copied' : 'Copy' }}
           </button>
         </div>
-        <pre v-if="payloadJson" class="font-mono text-xs overflow-auto text-slate-900 dark:text-slate-100">{{ payloadJson }}</pre>
+        <pre v-if="payloadJson" class="font-mono text-xs overflow-auto text-fg">{{ payloadJson }}</pre>
         <p v-else-if="partError('payload')" class="text-xs text-rose-500">
           {{ partError('payload') }}
         </p>
@@ -395,7 +395,7 @@ function stringify(value: unknown): string {
 
     <!-- Claims interpretation -->
     <ClientOnly>
-      <section v-if="decoded.ok && claims.length" class="mt-8 rounded-md border border-slate-200 dark:border-slate-800 p-4">
+      <section v-if="decoded.ok && claims.length" class="mt-8 border border-line p-4">
         <h2 class="text-sm font-semibold mb-3">
           Claims
         </h2>
@@ -403,25 +403,25 @@ function stringify(value: unknown): string {
         <!-- Time claims with friendly absolute + relative time -->
         <dl v-if="timeClaims.length" class="mb-4 space-y-1.5 text-sm">
           <div v-for="t in timeClaims" :key="t.claim" class="flex flex-wrap gap-x-2">
-            <dt class="font-medium text-slate-700 dark:text-slate-200">
+            <dt class="font-medium text-fg">
               {{ CLAIM_LABEL[t.claim] }}
             </dt>
-            <dd class="text-slate-600 dark:text-slate-400">
+            <dd class="text-fg-muted">
               {{ t.absolute }} ({{ t.relative }})
             </dd>
           </div>
         </dl>
 
         <!-- All claims with standard-claim descriptions -->
-        <dl class="space-y-2 text-sm border-t border-slate-200 dark:border-slate-800 pt-3">
+        <dl class="space-y-2 text-sm border-t border-line pt-3">
           <div v-for="c in claims" :key="c.key" class="grid grid-cols-[8rem_1fr] gap-x-3 gap-y-0.5">
-            <dt class="font-mono text-slate-700 dark:text-slate-200">
+            <dt class="font-mono text-fg">
               {{ c.key }}
-              <span v-if="c.name" class="block text-[11px] font-sans font-normal text-slate-400">{{ c.name }}</span>
+              <span v-if="c.name" class="block text-micro font-sans font-normal text-slate-400">{{ c.name }}</span>
             </dt>
             <dd class="min-w-0">
-              <span class="font-mono break-all text-slate-900 dark:text-slate-100">{{ stringify(c.value) }}</span>
-              <span v-if="c.description" class="block text-[11px] text-slate-400">{{ c.description }}</span>
+              <span class="font-mono break-all text-fg">{{ stringify(c.value) }}</span>
+              <span v-if="c.description" class="block text-micro text-slate-400">{{ c.description }}</span>
             </dd>
           </div>
         </dl>
@@ -429,7 +429,7 @@ function stringify(value: unknown): string {
     </ClientOnly>
 
     <!-- Verify signature -->
-    <section v-if="decoded.ok" class="mt-8 rounded-md border border-slate-200 dark:border-slate-800 p-4">
+    <section v-if="decoded.ok" class="mt-8 border border-line p-4">
       <button
         type="button"
         class="flex w-full items-center justify-between text-sm font-semibold hover:cursor-pointer"
@@ -451,7 +451,7 @@ function stringify(value: unknown): string {
             type="text"
             spellcheck="false"
             placeholder="your-256-bit-secret"
-            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono"
+            class="w-full border border-line-strong bg-panel px-3 py-2 font-mono"
           >
         </template>
 
@@ -470,11 +470,11 @@ function stringify(value: unknown): string {
             rows="6"
             spellcheck="false"
             :placeholder="keyFormat === 'pem' ? '-----BEGIN PUBLIC KEY-----\n…' : '{ &quot;kty&quot;: &quot;RSA&quot;, … }'"
-            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-mono text-xs"
+            class="w-full border border-line-strong bg-panel px-3 py-2 font-mono text-xs"
           />
         </template>
 
-        <p v-else class="text-slate-500 dark:text-slate-400">
+        <p v-else class="text-fg-muted">
           This token's algorithm (<code class="font-mono">{{ algInfo.alg ?? 'none' }}</code>) cannot be verified.
         </p>
 
@@ -484,7 +484,7 @@ function stringify(value: unknown): string {
           </UiButton>
           <span
             v-if="verifyState !== 'idle' && verifyState !== 'verifying'"
-            class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 font-medium"
+            class="inline-flex items-center gap-1.5 border px-3 py-1 font-medium"
             :class="VERIFY_META[verifyState].classes"
           >
             <Icon :name="VERIFY_META[verifyState].icon" size="16" aria-hidden="true" />
@@ -492,23 +492,23 @@ function stringify(value: unknown): string {
           </span>
         </div>
 
-        <p v-if="verifyError" class="text-xs text-slate-500 dark:text-slate-400 break-words">
+        <p v-if="verifyError" class="text-xs text-fg-muted break-words">
           {{ verifyError }}
         </p>
       </div>
     </section>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Decoding and verifying JSON Web Tokens
       </h2>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What is a JWT made of?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         A JSON Web Token (JWT) is three base64url-encoded parts separated by dots: a
         <span class="text-rose-500 font-medium">header</span> that names the signing algorithm, a
         <span class="text-fuchsia-500 font-medium">payload</span> of claims such as
@@ -518,10 +518,10 @@ function stringify(value: unknown): string {
         payload locally, interprets the standard claims, and shows the token's expiry status.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         How is decoding different from verifying?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Decoding only reads the encoded header and payload — anyone can do it, and it proves nothing
         about authenticity. Verifying checks the signature against a secret or public key, which
         confirms the token was issued by a trusted party and has not been altered. Signature
@@ -530,10 +530,10 @@ function stringify(value: unknown): string {
         valid token still verifies, with expiry reported separately.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Which algorithms and keys can it verify?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         HMAC tokens (<code class="font-spacemono">HS256</code>,
         <code class="font-spacemono">HS384</code>, <code class="font-spacemono">HS512</code>) are
         verified with the shared secret used to sign them. RSA
@@ -543,10 +543,10 @@ function stringify(value: unknown): string {
         supplied as PEM or JWK.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Is it safe to inspect sensitive tokens?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Yes. Everything runs in your browser. Your token, secret, and keys are never uploaded or
         stored, so you can safely inspect production or otherwise sensitive tokens. You can also
         prefill the decoder by passing a token in the <code class="font-spacemono">?token=</code>
@@ -555,14 +555,14 @@ function stringify(value: unknown): string {
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>

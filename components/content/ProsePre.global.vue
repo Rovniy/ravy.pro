@@ -96,13 +96,11 @@ async function copy() {
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: rgb(226 232 240); /* slate-200 */
-  background: rgb(30 41 59 / 0.7); /* slate-800/70 */
-  border: 1px solid rgb(255 255 255 / 0.15);
-  border-radius: 0.375rem;
+  color: var(--ui-fg);
+  background: var(--ui-panel-raised);
+  border: 1px solid var(--ui-line-strong);
   cursor: pointer;
   opacity: 0;
-  backdrop-filter: blur(4px);
   transition: opacity 0.15s, background-color 0.15s, color 0.15s;
 }
 

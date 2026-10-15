@@ -45,7 +45,7 @@ useHead({
   <div class="gd-container font-spacegrotesk">
     <a
       href="#main-content"
-      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-accent-600 focus:px-4 focus:py-2 focus:text-white focus:outline-2 focus:outline-offset-2 focus:outline-accent-500"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-accent-600 focus:px-4 focus:py-2 focus:text-white focus:outline-2 focus:outline-offset-2 focus:outline-accent-500"
     >
       Skip to content
     </a>
@@ -81,7 +81,7 @@ useHead({
     -->
     <UiThemeToggle
       icon-size="18"
-      class="theme-fab fixed bottom-3 left-3 sm:bottom-6 sm:left-6 z-40 print:hidden inline-flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full border border-slate-200/70 dark:border-white/10 bg-white/70 dark:bg-slate-950/70 sm:bg-white/80 sm:dark:bg-slate-950/80 backdrop-blur-xl shadow-md sm:shadow-lg shadow-slate-950/5 dark:shadow-black/20 hover:border-accent-400 dark:hover:border-accent-500/60 after:content-[''] after:absolute after:-inset-1.5 sm:after:hidden"
+      class="theme-fab fixed bottom-3 left-3 sm:bottom-6 sm:left-6 z-40 print:hidden inline-flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 border border-line-strong bg-panel text-fg-muted hover:border-accent hover:text-fg after:content-[''] after:absolute after:-inset-1.5 sm:after:hidden"
     />
 
     <!-- The ⌘K palette: not in the initial bundle, mounted on first open. -->

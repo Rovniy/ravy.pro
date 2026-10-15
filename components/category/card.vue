@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { tagColorClass } from '@/utils/helper'
-
 interface Props {
   title: string
   count: number
@@ -15,10 +13,9 @@ withDefaults(defineProps<Props>(), {
 <template>
   <NuxtLink
     :to="`/categories/${title.toLocaleLowerCase()}`"
-    class="group inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold capitalize transition-transform duration-300 hover:scale-[1.05] focus-visible:scale-[1.05]"
-    :class="tagColorClass(title.toLowerCase())"
+    class="group inline-flex items-center gap-2 px-4 py-2 border border-line-strong bg-panel font-display font-bold text-lg uppercase tracking-[0.04em] text-fg hover:border-accent hover:text-accent-ink transition-colors"
   >
     <span>#{{ title }}</span>
-    <span class="font-spacemono text-xs font-normal opacity-60">{{ count }}</span>
+    <span class="font-spacemono text-xs font-normal text-fg-subtle tabular-nums">{{ count }}</span>
   </NuxtLink>
 </template>

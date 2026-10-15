@@ -37,7 +37,7 @@ function statusMeta(r: SteamAuditPublicRecord): { label: string, tone: string } 
     case 'done':
       return r.classification?.mustDisclose
         ? { label: 'Disclosure required', tone: 'text-rose-600 dark:text-rose-400' }
-        : { label: 'No disclosure needed', tone: 'text-emerald-600 dark:text-emerald-400' }
+        : { label: 'No disclosure needed', tone: 'text-ok' }
     case 'error':
       return { label: 'Failed', tone: 'text-rose-600 dark:text-rose-400' }
     case 'awaiting_payment':
@@ -51,15 +51,15 @@ onMounted(load)
 </script>
 
 <template>
-  <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
+  <section class="border border-line p-6 bg-panel">
     <div class="flex items-center justify-between gap-3">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
+      <h2 class="text-xl font-semibold text-fg">
         Steam AI Disclosure
       </h2>
       <button
         type="button"
         :disabled="loading"
-        class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised disabled:opacity-50 hover:cursor-pointer"
         @click="load"
       >
         <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:refresh'" size="14" />
@@ -79,7 +79,7 @@ onMounted(load)
       <p class="text-sm text-slate-500">
         No audits yet.
       </p>
-      <NuxtLink to="/tools/steam-ai-disclosure" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-600 dark:text-accent-400 hover:underline">
+      <NuxtLink to="/tools/steam-ai-disclosure" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-ink hover:underline">
         <Icon name="mdi:arrow-right" class="w-4 h-4" /> Run a Steam AI disclosure check
       </NuxtLink>
     </div>
@@ -88,13 +88,13 @@ onMounted(load)
       <article
         v-for="item in items"
         :key="item.record.id"
-        class="rounded-md border border-slate-200 dark:border-slate-700 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+        class="border border-line p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
         <div>
-          <p class="font-medium text-slate-900 dark:text-slate-100">
+          <p class="font-medium text-fg">
             {{ item.record.gameName || 'Untitled game' }}
           </p>
-          <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400 font-spacemono">
+          <p class="mt-0.5 text-xs text-fg-muted font-spacemono">
             {{ formatDate(item.record.createdAt) }} · v{{ item.record.rulesetVersion }}
           </p>
           <p class="mt-1 text-sm font-medium" :class="statusMeta(item.record).tone">
@@ -103,7 +103,7 @@ onMounted(load)
         </div>
         <NuxtLink
           :to="`/tools/steam-ai-disclosure/result/${item.record.id}?t=${item.token}`"
-          class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800"
+          class="shrink-0 inline-flex items-center gap-1.5 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised"
         >
           <Icon name="mdi:open-in-new" class="w-4 h-4" />
           Open result

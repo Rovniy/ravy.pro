@@ -17,36 +17,35 @@ const notes = computed(() => (data.value ?? []).slice(0, 4))
 </script>
 
 <template>
-  <section v-if="notes.length" class="py-14 px-6">
+  <section v-if="notes.length" class="py-14">
     <UiSectionHeader eyebrow="Today I Learned" title="Short notes" to="/til" link-label="All notes" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <NuxtLink
-        v-for="(note, i) in notes"
+      <UiCard
+        v-for="note in notes"
         :key="note.path"
-        v-spotlight
-        v-reveal="(i % 2) * 90"
         :to="note.path"
-        class="group relative flex flex-col rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-400 dark:hover:border-accent-500/60 hover:shadow-lg hover:shadow-accent-500/10"
+        cut="sm"
+        padding="sm"
         @click="trackCta(note.path, 'home_til')"
       >
-        <span class="flex flex-wrap items-center gap-x-3 gap-y-1 font-spacemono text-xs text-slate-500 dark:text-slate-400">
-          <time :datetime="note.createdAt">{{ formatBlogDate(note.createdAt) }}</time>
-          <span v-for="id in note.topics" :key="id" class="text-accent-600 dark:text-accent-400">
+        <span class="flex flex-wrap items-center gap-x-3 gap-y-1 font-spacemono text-xs text-fg-subtle">
+          <time :datetime="note.createdAt" class="tabular-nums">{{ formatBlogDate(note.createdAt) }}</time>
+          <span v-for="id in note.topics" :key="id" class="text-accent-ink">
             #{{ tilTopic(id)?.name ?? id }}
           </span>
         </span>
-        <span class="mt-2 font-bold leading-snug text-slate-900 dark:text-slate-100 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors">
+        <span class="mt-2 text-lg font-semibold leading-snug text-fg">
           {{ note.title }}
         </span>
-        <span class="mt-2 grow text-sm leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-3">
+        <span class="mt-2 grow text-sm leading-relaxed text-fg-muted line-clamp-3">
           {{ note.excerpt }}
         </span>
-        <span class="mt-4 inline-flex items-center gap-1 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400">
+        <span class="mt-4 inline-flex items-center gap-1 font-display font-bold text-base uppercase tracking-[0.06em] text-accent-ink">
           Read note
-          <Icon name="mdi:arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+          <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
         </span>
-      </NuxtLink>
+      </UiCard>
     </div>
   </section>
 </template>

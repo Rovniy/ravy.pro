@@ -20,18 +20,16 @@ const failed = ref(false)
 </script>
 
 <template>
-  <NuxtLink
-    v-spotlight
-    :to="to"
-    class="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-400 dark:hover:border-accent-500/60 hover:shadow-lg hover:shadow-accent-500/10"
-    @click="emit('click')"
-  >
-    <div class="relative aspect-video overflow-hidden bg-gradient-to-br from-accent-600/30 via-slate-800 to-emerald-700/30">
+  <UiCard :to="to" padding="none" @click="emit('click')">
+    <div class="relative aspect-video overflow-hidden bg-panel-raised">
+      <!-- Fallback ground while the image loads or if it fails: a slanted
+           accent band, the same mark the hero uses. -->
+      <div class="absolute inset-y-0 -left-[10%] w-[70%] bg-accent/15 -skew-x-10" aria-hidden="true" />
       <img
         v-if="!failed"
         :src="image"
         :alt="imageAlt"
-        class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-expo motion-safe:group-hover:scale-105"
+        class="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
         decoding="async"
         @error="failed = true"
@@ -41,22 +39,22 @@ const failed = ref(false)
       </div>
     </div>
     <div class="flex grow flex-col p-5">
-      <p v-if="kicker" class="eyebrow">
+      <p v-if="kicker" class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle">
         {{ kicker }}
       </p>
-      <p class="mt-1 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <p class="mt-1 font-display font-extrabold uppercase text-2xl leading-none text-fg">
         {{ title }}
       </p>
-      <p class="mt-1.5 grow text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+      <p class="mt-2 grow text-sm leading-relaxed text-fg-muted">
         {{ tagline }}
       </p>
-      <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3">
-        <span class="font-spacemono text-[11px] text-slate-500 dark:text-slate-400 truncate">{{ meta }}</span>
-        <span class="inline-flex items-center gap-1 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400">
+      <div class="mt-4 pt-3 border-t border-line flex items-center justify-between gap-3">
+        <span class="font-spacemono text-micro text-fg-subtle truncate">{{ meta }}</span>
+        <span class="inline-flex items-center gap-1 font-display font-bold text-base uppercase tracking-[0.06em] text-accent-ink">
           Open
-          <Icon name="mdi:arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+          <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
         </span>
       </div>
     </div>
-  </NuxtLink>
+  </UiCard>
 </template>

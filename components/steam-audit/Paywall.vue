@@ -38,23 +38,23 @@ const previewCards = computed(() => {
 </script>
 
 <template>
-  <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+  <div class="border border-line bg-panel overflow-hidden">
     <div class="grid grid-cols-1 md:grid-cols-2">
       <!-- Offer -->
-      <div class="p-6 sm:p-7 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-800">
+      <div class="p-6 sm:p-7 border-b md:border-b-0 md:border-r border-line">
         <span class="eyebrow">{{ free ? 'Admin access · no payment' : 'Unlock your disclosure pack' }}</span>
-        <h3 class="mt-2 text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h3 class="mt-2 text-xl font-bold tracking-tight text-fg">
           Ship the form with confidence
         </h3>
-        <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-1.5 text-sm text-fg-muted">
           {{ free
             ? 'You’re signed in as the admin — generate the full pack for free, no checkout.'
             : 'Your verdict above is free. Unlock the ready-to-paste texts and the defensible paper trail.' }}
         </p>
 
         <ul class="mt-5 space-y-2.5">
-          <li v-for="b in benefits" :key="b" class="flex items-start gap-2.5 text-sm text-slate-700 dark:text-slate-200">
-            <Icon name="mdi:check-circle" class="w-5 h-5 shrink-0 text-emerald-500" />
+          <li v-for="b in benefits" :key="b" class="flex items-start gap-2.5 text-sm text-fg">
+            <Icon name="mdi:check-circle" class="w-5 h-5 shrink-0 text-ok" />
             <span>{{ b }}</span>
           </li>
         </ul>
@@ -62,7 +62,7 @@ const previewCards = computed(() => {
         <button
           type="button"
           :disabled="loading"
-          class="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition"
+          class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-fg text-bg px-5 py-3 font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition"
           @click="$emit('unlock')"
         >
           <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:lock-open-variant'" class="w-5 h-5" />
@@ -82,19 +82,19 @@ const previewCards = computed(() => {
       </div>
 
       <!-- Blurred preview -->
-      <div class="relative p-6 sm:p-7 bg-slate-50 dark:bg-slate-950/40">
+      <div class="relative p-6 sm:p-7 bg-panel-raised">
         <div class="space-y-4" aria-hidden="true">
-          <div v-for="card in previewCards" :key="card.field" class="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3">
-            <div class="font-spacemono text-[11px] text-slate-400 mb-2">
+          <div v-for="card in previewCards" :key="card.field" class="border border-line bg-panel p-3">
+            <div class="font-spacemono text-micro text-slate-400 mb-2">
               {{ card.field }}
             </div>
             <div class="space-y-1.5 select-none blur-[5px]">
-              <div v-for="n in card.lines" :key="n" class="h-2.5 rounded bg-slate-200 dark:bg-slate-700" :style="{ width: `${70 + (n * 37) % 30}%` }" />
+              <div v-for="n in card.lines" :key="n" class="h-2.5 bg-line" :style="{ width: `${70 + (n * 37) % 30}%` }" />
             </div>
           </div>
         </div>
         <div class="absolute inset-0 grid place-items-center">
-          <span class="flex items-center gap-1.5 rounded-full bg-slate-900/80 dark:bg-white/90 text-white dark:text-slate-900 px-3 py-1 text-xs font-spacemono">
+          <span class="flex items-center gap-1.5 bg-fg/90 text-bg px-3 py-1 text-xs font-spacemono">
             <Icon name="mdi:lock" class="w-3.5 h-3.5" />
             {{ free ? 'Unlocks instantly' : 'Unlocks after checkout' }}
           </span>

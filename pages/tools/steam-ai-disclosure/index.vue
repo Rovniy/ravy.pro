@@ -129,17 +129,17 @@ async function startCheckout() {
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 max-w-3xl">
         <span class="eyebrow">Steam · AI content disclosure</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           Get your Steam AI disclosure right in 10 minutes
         </h1>
-        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
           Valve now reviews — and can delist — games over a wrong AI disclosure. Answer a few plain-language
           questions and get exactly what to put in the Steamworks form, plus a dated paper trail.
         </p>
         <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Not legal advice</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Matches Valve policy v{{ RULESET_VERSION }}</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Free verdict, no account</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Not legal advice</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Matches Valve policy v{{ RULESET_VERSION }}</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Free verdict, no account</span>
         </p>
         <ToolStoryLink class="mt-3" />
       </div>
@@ -152,16 +152,16 @@ async function startCheckout() {
         <div
           v-for="(s, i) in steps"
           :key="s.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
           <div class="flex items-center gap-2">
             <span class="font-spacemono text-xs text-accent-500">0{{ i + 1 }}</span>
             <Icon :name="s.icon" class="w-5 h-5 text-accent-500" />
           </div>
-          <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="mt-3 font-semibold text-fg">
             {{ s.title }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ s.text }}
           </p>
         </div>
@@ -170,13 +170,13 @@ async function startCheckout() {
       <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-3 font-medium hover:opacity-90 hover:cursor-pointer transition"
+          class="inline-flex items-center gap-2 bg-fg text-bg px-6 py-3 font-medium hover:opacity-90 hover:cursor-pointer transition"
           @click="startWizard"
         >
           <Icon name="mdi:rocket-launch-outline" class="w-5 h-5" />
           Check your game — free
         </button>
-        <p class="text-sm text-slate-500 dark:text-slate-400">
+        <p class="text-sm text-fg-muted">
           Takes ~3 minutes · you only pay if you want the ready-to-paste pack.
         </p>
       </div>
@@ -199,12 +199,12 @@ async function startCheckout() {
       <SteamAuditVerdictPanel :classification="classification" />
 
       <label class="block max-w-md">
-        <span class="block mb-1 text-sm font-medium text-slate-700 dark:text-slate-200">Game name <span class="text-slate-400 font-normal">(optional, used in your disclosure)</span></span>
+        <span class="block mb-1 text-sm font-medium text-fg">Game name <span class="text-slate-400 font-normal">(optional, used in your disclosure)</span></span>
         <input
           v-model="gameName"
           type="text"
           placeholder="e.g. Tiny Boo: Homecoming"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         >
       </label>
 
@@ -234,16 +234,16 @@ async function startCheckout() {
     </section>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Steam's AI content disclosure, explained
       </h2>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What is the Steam AI content disclosure?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Before a game goes live on Steam, Valve requires developers to complete the
         <strong>Steamworks Content Survey</strong>, which includes a dedicated
         <strong>Generative AI Content</strong> section. A January 2026 update clarified that the
@@ -251,10 +251,10 @@ async function startCheckout() {
           players</em> — not behind-the-scenes efficiency tools used during development.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Pre-Generated vs Live-Generated AI content
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         <strong>Pre-Generated</strong> is AI-assisted content created during development that ships in
         the build — art, textures, models, animation, music, sound, voice, or writing.
         <strong>Live-Generated</strong> is content an AI produces at runtime, while the game is
@@ -262,10 +262,10 @@ async function startCheckout() {
         the guardrails that prevent the AI from generating illegal content.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Do you need to disclose AI in your Steam game?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         You must disclose when AI-generated content ships and is seen, heard, or read by players. You
         generally do not need to disclose AI used purely as a development or efficiency tool — for
         example, an AI coding assistant whose output is not player-facing content — or placeholder
@@ -273,10 +273,10 @@ async function startCheckout() {
         players, Valve's guidance is to disclose.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What this tool produces
       </h3>
-      <ul class="mt-2 space-y-1.5 text-slate-600 dark:text-slate-300 leading-relaxed list-disc pl-5">
+      <ul class="mt-2 space-y-1.5 text-fg-muted leading-relaxed list-disc pl-5">
         <li>Paste-ready text for the Steamworks <strong>Pre-Generated AI Content</strong> field</li>
         <li>Paste-ready <strong>Live-Generated</strong> text plus a guardrails statement, when runtime AI applies</li>
         <li>A calm, player-facing <strong>store-page disclosure</strong> worded to reduce community backlash</li>
@@ -289,14 +289,14 @@ async function startCheckout() {
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>

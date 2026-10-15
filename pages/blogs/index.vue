@@ -142,7 +142,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <div class="container max-w-5xl mx-auto text-slate-600 dark:text-slate-300">
+  <div class="container max-w-5xl mx-auto text-fg-muted">
     <ArchiveHero />
 
     <div class="px-6 mt-2 mb-8">
@@ -153,13 +153,13 @@ defineOgImage('Blog', {
           placeholder="Search by title, description, or tag…"
           aria-label="Search posts by title, description, or tag"
           type="text"
-          class="block w-full pl-9 pr-11 py-2.5 bg-white/80 dark:bg-slate-900/70 backdrop-blur dark:placeholder-slate-500 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 focus:shadow-lg focus:shadow-accent-500/10 transition-all"
+          class="block w-full pl-9 pr-11 py-2.5 bg-panel dark:placeholder-slate-500 text-fg-muted border border-line focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 transition-all"
         >
         <button
           v-if="searchTest"
           type="button"
           aria-label="Clear search"
-          class="absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 rounded-full text-slate-400 hover:text-accent-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors hover:cursor-pointer"
+          class="absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 text-slate-400 hover:text-accent-500 hover:bg-panel-raised transition-colors hover:cursor-pointer"
           @click="searchTest = ''"
         >
           <Icon name="mdi:close" size="16" aria-hidden="true" />
@@ -168,7 +168,7 @@ defineOgImage('Blog', {
 
       <p
         v-if="searchTest.trim() || activeTag || onlyPopular"
-        class="mt-2.5 font-spacemono text-xs text-slate-500 dark:text-slate-400"
+        class="mt-2.5 font-spacemono text-xs text-fg-muted"
         aria-live="polite"
       >
         {{ searchData.length }} {{ searchData.length === 1 ? 'post' : 'posts' }} found
@@ -179,10 +179,10 @@ defineOgImage('Blog', {
         <button
           type="button"
           :aria-pressed="!activeTag && !onlyPopular"
-          class="rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
+          class="px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="!activeTag && !onlyPopular
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+            : 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
           @click="router.push({ query: { ...route.query, tag: undefined, popular: undefined, page: undefined } })"
         >
           All
@@ -190,10 +190,10 @@ defineOgImage('Blog', {
         <button
           type="button"
           :aria-pressed="onlyPopular"
-          class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
+          class="inline-flex items-center gap-1.5 px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="onlyPopular
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+            : 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
           @click="togglePopular"
         >
           <Icon name="mdi:fire" size="14" aria-hidden="true" />
@@ -204,10 +204,10 @@ defineOgImage('Blog', {
           :key="t.tag"
           type="button"
           :aria-pressed="activeTag === t.tag"
-          class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm border transition-all hover:cursor-pointer"
+          class="inline-flex items-center gap-1.5 px-3 py-1 text-sm border transition-all hover:cursor-pointer"
           :class="activeTag === t.tag
-            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950 shadow-md shadow-accent-500/25'
-            : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
+            ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
+            : 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-500 hover:-translate-y-px'"
           @click="toggleTag(t.tag)"
         >
           {{ t.tag }}
@@ -247,19 +247,19 @@ defineOgImage('Blog', {
         :disabled="pageNumber <= 1"
         type="button"
         aria-label="Previous page"
-        class="w-11 h-11 flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 enabled:hover:shadow-md enabled:hover:shadow-accent-500/10 transition-all"
+        class="w-11 h-11 flex items-center justify-center border border-line-strong disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 transition-all"
         @click="onPreviousPageClick"
       >
         <Icon name="mdi:chevron-left" size="20" aria-hidden="true" />
       </button>
-      <span class="text-sm text-slate-500 dark:text-slate-400 tabular-nums" aria-live="polite">
+      <span class="text-sm text-fg-muted tabular-nums" aria-live="polite">
         {{ pageNumber }} / {{ totalPage }}
       </span>
       <button
         :disabled="pageNumber >= totalPage"
         type="button"
         aria-label="Next page"
-        class="w-11 h-11 flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 enabled:hover:shadow-md enabled:hover:shadow-accent-500/10 transition-all"
+        class="w-11 h-11 flex items-center justify-center border border-line-strong disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:cursor-pointer enabled:hover:border-accent-400 enabled:hover:text-accent-500 transition-all"
         @click="onNextPageClick"
       >
         <Icon name="mdi:chevron-right" size="20" aria-hidden="true" />

@@ -172,7 +172,7 @@ onMounted(load)
   </div>
 
   <div v-else class="pb-28">
-    <p v-if="errorMsg" class="mb-4 rounded-md border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+    <p v-if="errorMsg" class="mb-4 border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-300">
       {{ errorMsg }}
     </p>
 
@@ -185,7 +185,7 @@ onMounted(load)
           v-model="form.title"
           type="text"
           placeholder="How to … in …"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         >
         <span class="mt-1 block text-xs text-slate-500">The title, phrased the way someone would search for it. In English.</span>
       </label>
@@ -199,7 +199,7 @@ onMounted(load)
           v-model="form.slug"
           type="text"
           :disabled="!isNew"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-spacemono text-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
           @input="slugTouched = true"
         >
         <span class="mt-1 block font-spacemono text-xs" :class="form.slug && !slugOk ? 'text-red-500' : 'text-slate-500'">/til/{{ form.slug || '…' }}</span>
@@ -212,10 +212,10 @@ onMounted(load)
             v-for="t in TIL_TOPICS"
             :key="t.id"
             type="button"
-            class="rounded-full border px-3 py-1 text-sm transition-colors hover:cursor-pointer"
+            class="border px-3 py-1 text-sm transition-colors hover:cursor-pointer"
             :class="form.topics.includes(t.id)
               ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-              : 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300'"
+              : 'border-line-strong text-fg-muted'"
             :aria-pressed="form.topics.includes(t.id)"
             @click="toggleTopic(t.id)"
           >
@@ -230,13 +230,13 @@ onMounted(load)
           <button
             v-if="!form.markdown.trim()"
             type="button"
-            class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white hover:cursor-pointer"
+            class="text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer"
             @click="form.markdown = TEMPLATE"
           >
             Insert template
           </button>
           <span class="ml-auto font-spacemono text-xs" :class="form.markdown.length > NOTE_MAX_CHARS ? 'text-red-500' : 'text-slate-400'">{{ form.markdown.length }}/{{ NOTE_MAX_CHARS }}</span>
-          <button type="button" class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white hover:cursor-pointer" @click="showPreview = !showPreview">
+          <button type="button" class="text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer" @click="showPreview = !showPreview">
             {{ showPreview ? 'Hide preview' : 'Preview' }}
           </button>
         </div>
@@ -244,21 +244,21 @@ onMounted(load)
           v-model="form.markdown"
           rows="12"
           spellcheck="true"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-spacemono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
         <p v-if="excerpt" class="mt-1 text-xs text-slate-500">
           <span class="font-semibold">Search snippet:</span> {{ excerpt }}
         </p>
       </div>
 
-      <ul v-if="warnings.length" class="rounded-md border border-amber-300/70 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200 space-y-1">
+      <ul v-if="warnings.length" class="border border-amber-300/70 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200 space-y-1">
         <li v-for="w in warnings" :key="w" class="flex gap-2">
           <Icon name="mdi:lightbulb-on-outline" size="16" class="mt-0.5 shrink-0" aria-hidden="true" />
           {{ w }}
         </li>
       </ul>
 
-      <section v-if="showPreview" class="rounded-md border border-slate-200 dark:border-slate-800 p-4">
+      <section v-if="showPreview" class="border border-line p-4">
         <h2 class="mb-2 text-lg font-bold">
           {{ form.title || 'Untitled' }}
         </h2>
@@ -268,11 +268,11 @@ onMounted(load)
       </section>
 
       <label class="inline-flex items-center gap-2 text-sm">
-        <input v-model="form.published" type="checkbox" class="rounded border-slate-300 dark:border-slate-700">
+        <input v-model="form.published" type="checkbox" class="border-line-strong">
         Published
       </label>
 
-      <section v-if="livePublished && !dirty" class="rounded-md border border-accent-500/30 bg-accent-500/5 p-4">
+      <section v-if="livePublished && !dirty" class="border border-accent-500/30 bg-accent-500/5 p-4">
         <h2 class="mb-1 text-sm font-semibold">
           Share it
         </h2>
@@ -281,7 +281,7 @@ onMounted(load)
         </p>
         <div class="grid gap-3 sm:grid-cols-2">
           <div v-for="item in [{ kind: 'linkedin' as const, label: 'LinkedIn', text: linkedin, href: linkedInShareUrl(linkedin) }, { kind: 'x' as const, label: 'X', text: x, href: xShareUrl(x) }]" :key="item.kind">
-            <pre class="h-36 overflow-auto whitespace-pre-wrap rounded border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 text-xs">{{ item.text }}</pre>
+            <pre class="h-36 overflow-auto whitespace-pre-wrap border border-line bg-panel p-2 text-xs">{{ item.text }}</pre>
             <div class="mt-2 flex gap-3 text-xs">
               <button type="button" class="underline hover:cursor-pointer" @click="copy(item.kind, item.text)">
                 {{ copied === item.kind ? 'Copied' : `Copy for ${item.label}` }}
@@ -293,14 +293,14 @@ onMounted(load)
       </section>
     </div>
 
-    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur px-4 py-3">
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-panel px-4 py-3">
       <div class="mx-auto flex max-w-4xl items-center gap-3">
-        <span class="min-w-0 flex-1 truncate text-xs text-slate-500 dark:text-slate-400">
+        <span class="min-w-0 flex-1 truncate text-xs text-fg-muted">
           <template v-if="dirty">Unsaved changes</template>
           <template v-else-if="savedAt">Saved at {{ savedAt }}</template>
           <template v-else>{{ form.published ? 'Published' : 'Draft' }}</template>
         </span>
-        <NuxtLink v-if="!isNew && livePublished" :to="notePath(form.slug)" target="_blank" class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white">
+        <NuxtLink v-if="!isNew && livePublished" :to="notePath(form.slug)" target="_blank" class="text-xs underline text-slate-500 hover:text-fg">
           View
         </NuxtLink>
         <button v-if="!isNew" type="button" :disabled="deleting" class="text-xs underline text-red-600 dark:text-red-400 disabled:opacity-40 hover:cursor-pointer" @click="onDelete">
@@ -309,7 +309,7 @@ onMounted(load)
         <button
           type="button"
           :disabled="saving"
-          class="shrink-0 rounded-md bg-slate-900 dark:bg-white px-5 py-2 text-sm font-medium text-white dark:text-slate-900 disabled:opacity-50 hover:opacity-90 hover:cursor-pointer"
+          class="shrink-0 bg-fg px-5 py-2 text-sm font-medium text-bg disabled:opacity-50 hover:opacity-90 hover:cursor-pointer"
           @click="onSave"
         >
           {{ saving ? 'Saving…' : 'Save' }}

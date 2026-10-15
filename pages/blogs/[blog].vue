@@ -213,7 +213,7 @@ defineOgImage('Blog', {
         />
         <div
           class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg
-          prose-h1:no-underline mx-auto prose-slate dark:prose-invert prose-img:rounded-lg prose-img:mx-auto prose-img:block"
+          prose-h1:no-underline mx-auto prose-slate dark:prose-invert prose-img:mx-auto prose-img:block"
         >
           <!--
             No `:components` map here any more. It used to pass a local Image.vue
@@ -238,14 +238,14 @@ defineOgImage('Blog', {
           :key="network"
           :network="network"
           :url="`${seoData.mySite}${path}`"
-          class="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
           :hashtags="hashTags"
           :aria-label="`Share on ${network}`"
         />
       </div>
 
-      <section v-if="related?.length" class="col-span-12 mt-10 pt-6 border-t border-slate-200 dark:border-slate-800">
-        <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+      <section v-if="related?.length" class="col-span-12 mt-10 pt-6 border-t border-line">
+        <h2 class="text-lg font-bold text-fg mb-4">
           Related posts
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -264,11 +264,11 @@ defineOgImage('Blog', {
         </div>
       </section>
 
-      <nav v-if="surround?.prev || surround?.next" class="col-span-12 mt-10 pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-4">
+      <nav v-if="surround?.prev || surround?.next" class="col-span-12 mt-10 pt-6 border-t border-line grid grid-cols-2 gap-4">
         <NuxtLink
           v-if="surround?.prev"
           :to="surround.prev.path"
-          class="group flex flex-col gap-1 text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+          class="group flex flex-col gap-1 text-sm text-fg-muted hover:text-fg transition-colors"
         >
           <span class="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide">
             <Icon name="mdi:arrow-left" size="14" />
@@ -281,7 +281,7 @@ defineOgImage('Blog', {
         <NuxtLink
           v-if="surround?.next"
           :to="surround.next.path"
-          class="group flex flex-col gap-1 text-sm text-right text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+          class="group flex flex-col gap-1 text-sm text-right text-fg-muted hover:text-fg transition-colors"
         >
           <span class="flex items-center justify-end gap-1 text-xs font-semibold uppercase tracking-wide">
             Next

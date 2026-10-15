@@ -23,27 +23,27 @@ useHead({
 </template>
 
 <style>
-/* Explicit property list (not `all`) so nothing else accidentally animates,
-   and a lighter blur — blur(1rem) forces the GPU to re-rasterize the whole
-   page layer every frame of the transition. */
+/* Explicit property list (not `all`) so nothing else accidentally animates.
+   A quick fade plus a small horizontal slide: the HUD swapping screens. No
+   blur, which forces the GPU to re-rasterize the whole page every frame. */
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.15s, filter 0.15s;
+  transition: opacity 0.15s, transform 0.15s;
 }
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
-  filter: blur(6px);
+  transform: translateX(-8px);
 }
 
 .layout-enter-active,
 .layout-leave-active {
-  transition: opacity 0.15s, filter 0.15s;
+  transition: opacity 0.15s, transform 0.15s;
 }
 .layout-enter-from,
 .layout-leave-to {
   opacity: 0;
-  filter: blur(6px);
+  transform: translateX(-8px);
 }
 
 html.dark{

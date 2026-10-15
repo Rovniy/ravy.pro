@@ -60,8 +60,8 @@ onBeforeUnmount(() => {
 
 <template>
   <div v-if="links.length" class="lg:col-span-3 sticky top-28 max-h-[70vh] hidden lg:flex flex-col justify-self-end pointer-events-none">
-    <div class="border dark:border-slate-800 rounded-xl p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto pointer-events-auto">
-      <p class="font-spacemono text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3 pb-2 border-b dark:border-slate-800">
+    <div class="border dark:border-slate-800 p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto pointer-events-auto">
+      <p class="font-spacemono text-xs font-bold uppercase tracking-widest text-fg-subtle mb-3 pb-2 border-b dark:border-slate-800">
         On this page
       </p>
 
@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
             class="flex items-center text-xs py-1 pl-2 border-l-2 transition-all duration-200"
             :class="activeId === link.id
               ? 'border-accent-500 text-accent-500 dark:text-accent-400 font-semibold'
-              : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'"
+              : 'border-transparent text-fg-muted hover:text-slate-900 dark:hover:text-slate-200 hover:border-line-strong'"
           >
             {{ link.text }}
           </NuxtLink>
@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
               class="flex items-center text-xs py-1 pl-5 border-l-2 transition-all duration-200"
               :class="activeId === child.id
                 ? 'border-accent-500 text-accent-500 dark:text-accent-400 font-semibold'
-                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'"
+                : 'border-transparent text-fg-muted hover:text-slate-900 dark:hover:text-slate-200 hover:border-line-strong'"
             >
               {{ child.text }}
             </NuxtLink>

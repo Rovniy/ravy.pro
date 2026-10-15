@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
+
 /**
  * Mono label chip. `accent` is the slanted loud badge (audience, "featured");
  * `neutral` is a plain outlined tag (topics, categories); the status tones mean
@@ -6,7 +8,7 @@
  */
 const props = withDefaults(defineProps<{
   tone?: 'neutral' | 'accent' | 'ok' | 'warn' | 'danger'
-  to?: string
+  to?: RouteLocationRaw
 }>(), {
   tone: 'neutral',
 })

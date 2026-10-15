@@ -9,10 +9,10 @@ import { categoryPage } from '~/data'
         <p class="eyebrow mb-3">
           Topics
         </p>
-        <h1 class="font-bold leading-tight tracking-tight text-4xl md:text-5xl mb-4 text-slate-900 dark:text-white">
+        <h1 class="font-display font-extrabold uppercase leading-none text-5xl md:text-6xl mb-4 text-fg">
           {{ categoryPage.title }}
         </h1>
-        <p class="max-w-md text-slate-600 dark:text-slate-300">
+        <p class="max-w-md text-fg-muted">
           {{ categoryPage.description }}
         </p>
       </div>

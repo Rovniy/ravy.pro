@@ -3,6 +3,13 @@ import { homePage, socialNetworks } from '~/data'
 
 const { hero } = homePage
 
+// The name is set on two lines, the surname in the accent: split on the last
+// space so a middle name would stay with the first line.
+const nameLines = computed(() => {
+  const at = hero.name.lastIndexOf(' ')
+  return at === -1 ? [hero.name, ''] : [hero.name.slice(0, at), hero.name.slice(at + 1)]
+})
+
 // One orchestrated moment: the staggered entrance, played once after hydration.
 // SSR renders the content already visible (hero-step defaults to opacity 1), so
 // the LCP H1 paints with the initial HTML. Reduced-motion is handled in CSS.
@@ -15,225 +22,106 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <!-- Pulled up under the fixed glass header (the layout adds pt-[--header-h]),
-       so the hero glow/grid backdrop fills the strip behind the translucent pill
-       instead of leaving a flat seam there. The matching padding keeps content put. -->
-  <section class="hero-section relative overflow-hidden -mt-[var(--header-h)] pt-[var(--header-h)]">
-    <div class="hero-bg-grid" aria-hidden="true" />
-    <div class="hero-blob hero-blob-a" aria-hidden="true" />
-    <div class="hero-blob hero-blob-b" aria-hidden="true" />
-
-    <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-10 py-20 md:py-28 lg:py-32 min-h-[calc(100vh-var(--header-h))] flex items-center">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
-        <div class="lg:col-span-7 hero-text" :class="{ 'is-mounted': mounted }">
-          <p class="hero-step delay-0 eyebrow mb-5">
-            {{ hero.greeting }}
+  <!-- A character-select screen: name, class tabs and record on the left, the
+       portrait in a cut frame on the right. No glow, no blobs: the structure
+       carries it. -->
+  <section class="relative border-b border-line" :class="{ 'is-mounted': mounted }">
+    <LayoutContainer class="py-14 md:py-20 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-stretch">
+        <div class="lg:col-span-7 min-w-0">
+          <p class="hero-step delay-0 mb-5 inline-flex items-center gap-2.5 font-spacemono text-xs uppercase tracking-[0.12em] text-ok">
+            <span class="w-2 h-2 bg-ok" aria-hidden="true" />
+            {{ hero.status }}
           </p>
 
-          <h1 class="hero-step delay-1 hero-h1 font-bold leading-[1.05] tracking-tight text-6xl md:text-7xl lg:text-8xl mb-6 bg-gradient-to-r from-accent-600 to-emerald-600 dark:from-accent-400 dark:to-emerald-400 bg-clip-text">
-            {{ hero.name }}
+          <h1 class="hero-step delay-1 mb-7 font-display italic font-extrabold uppercase text-display text-fg">
+            {{ nameLines[0] }}
+            <span v-if="nameLines[1]" class="block text-accent-ink">{{ nameLines[1] }}</span>
           </h1>
 
-          <p class="hero-step delay-2 font-spacemono text-sm md:text-base mb-8 flex flex-wrap items-center gap-x-2.5 gap-y-1">
-            <template v-for="(role, i) in hero.roles" :key="role">
-              <span class="text-slate-700 dark:text-slate-300">{{ role }}</span>
-              <span v-if="i < hero.roles.length - 1" class="text-accent-500 dark:text-accent-400" aria-hidden="true">·</span>
-            </template>
-          </p>
+          <ul class="hero-step delay-2 mb-7 flex flex-wrap gap-2" aria-label="Roles">
+            <li
+              v-for="(role, i) in hero.roles"
+              :key="role"
+              class="skew-box px-3.5 py-1.5 font-display font-semibold text-base uppercase tracking-[0.06em] before:border"
+              :class="i === 0 ? 'text-fg before:border-accent before:bg-accent/15' : 'text-fg-muted before:border-line-strong'"
+            >
+              {{ role }}
+            </li>
+          </ul>
 
-          <p class="hero-step delay-3 max-w-xl text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+          <p class="hero-step delay-3 max-w-xl mb-8 text-lg md:text-xl leading-relaxed text-fg-muted">
             {{ hero.tagline }}
           </p>
 
-          <!-- Evidence directly before the ask. Shares delay-3 with the tagline
-               so the entrance sequence needs no renumbering — the two read as one
-               text layer anyway. -->
-          <p class="hero-step delay-3 max-w-xl font-spacemono text-xs md:text-sm text-slate-500 dark:text-slate-400 mb-10 flex flex-wrap items-center gap-x-2 gap-y-1">
-            <template v-for="(fact, i) in hero.proof" :key="fact">
-              <span>{{ fact }}</span>
-              <span v-if="i < hero.proof.length - 1" class="text-accent-500/70 dark:text-accent-400/70" aria-hidden="true">·</span>
-            </template>
-          </p>
-
-          <div class="hero-step delay-4 flex flex-wrap gap-4 mb-6">
-            <NuxtLink
-              :to="hero.ctaPrimary.href"
-              class="cta-primary group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base text-white bg-accent-600 hover:bg-accent-700 dark:text-slate-950 dark:bg-accent-400 dark:hover:bg-accent-300 shadow-lg shadow-accent-500/25 hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
-              @click="trackCta('hero_primary', 'hero')"
-            >
-              <span class="cta-shine" aria-hidden="true" />
+          <div class="hero-step delay-4 mb-8 flex flex-wrap items-center gap-x-5 gap-y-4">
+            <UiButton :to="hero.ctaPrimary.href" @click="trackCta('hero_primary', 'hero')">
               {{ hero.ctaPrimary.label }}
-              <Icon name="mdi:arrow-right" size="20" aria-hidden="true" class="group-hover:translate-x-1 transition-transform" />
-            </NuxtLink>
-
-            <NuxtLink
-              :to="hero.ctaSecondary.href"
-              class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-base border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-400 hover:border-accent-500/40 transition-colors duration-300"
-              @click="trackCta('hero_secondary', 'hero')"
-            >
+              <Icon name="mdi:arrow-right" size="20" aria-hidden="true" />
+            </UiButton>
+            <UiButton variant="secondary" :to="hero.ctaSecondary.href" @click="trackCta('hero_secondary', 'hero')">
               {{ hero.ctaSecondary.label }}
-            </NuxtLink>
+            </UiButton>
           </div>
 
           <!-- The whole site behind one field: opens the ⌘K palette, and each
-               chip opens it pre-filled. Shares delay-4 with the CTAs. -->
-          <CommandTrigger variant="hero" :suggestions="hero.searchSuggestions" class="hero-step delay-4 mb-10" />
+               chip opens it pre-filled. -->
+          <CommandTrigger variant="hero" :suggestions="hero.searchSuggestions" class="hero-step delay-4 max-w-xl" />
+        </div>
 
-          <div class="hero-step delay-5 flex flex-wrap items-center gap-5">
-            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-spacemono uppercase tracking-wider border border-emerald-500/20">
-              <span class="relative flex h-2 w-2">
-                <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping motion-reduce:animate-none" />
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              {{ hero.status }}
-            </span>
-
-            <div class="flex flex-wrap gap-1">
-              <NuxtLink
-                v-for="item in socialNetworks"
-                :key="item.name"
-                :to="item.href"
-                target="_blank"
-                :aria-label="item.name"
-                class="w-11 h-11 -my-1 flex items-center justify-center rounded-full text-slate-500 dark:text-slate-400 hover:bg-accent-500/10 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
-              >
-                <Icon :name="item.icon" size="15" aria-hidden="true" />
-              </NuxtLink>
+        <div class="hero-step delay-2 lg:col-span-5 hidden md:block">
+          <div class="relative h-full min-h-80 max-w-md lg:max-w-none mx-auto">
+            <!-- The slanted accent slab sits behind the frame's right half. -->
+            <div class="absolute -inset-y-3 right-[12%] w-[38%] bg-accent -skew-x-10" aria-hidden="true" />
+            <div class="frame cut relative h-full">
+              <div class="frame-inner cut relative overflow-hidden">
+                <div class="hazard absolute inset-x-0 top-0 h-2.5 z-10" aria-hidden="true" />
+                <NuxtImg
+                  src="/photos/a_rovnyi_lumy.webp"
+                  alt="Andrei Rovnyi"
+                  height="512"
+                  width="512"
+                  class="w-full h-full object-cover"
+                  sizes="sm:312px md:448px lg:512px"
+                  densities="x1 x2"
+                  loading="eager"
+                  fetchpriority="high"
+                />
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="lg:col-span-5 hidden md:flex justify-center items-center relative h-[312px] lg:h-[312px] xl:h-[512px]">
-          <div class="group relative">
-            <div class="hero-photo-glow" aria-hidden="true" />
-            <NuxtImg
-              src="/photos/a_rovnyi_lumy.webp"
-              alt="Andrei Rovnyi"
-              height="512"
-              width="512"
-              class="relative rounded-2xl ring-1 ring-slate-200 dark:ring-slate-800 shadow-xl shadow-slate-900/5 dark:shadow-black/30 transition-transform duration-500 motion-safe:group-hover:scale-[1.015] motion-safe:group-hover:-rotate-1"
-              sizes="sm:312px md:312px lg:512px"
-              densities="x1 x2"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </div>
-        </div>
       </div>
-    </div>
+
+      <!-- The record: evidence directly under the ask, read like a stat panel. -->
+      <div class="hero-step delay-5 mt-12 grid grid-cols-2 md:grid-cols-4 border-t border-line">
+        <p
+          v-for="fact in hero.proof"
+          :key="fact"
+          class="py-4 pr-4 font-spacemono text-xs uppercase tracking-[0.1em] text-fg-muted"
+        >
+          <span class="block mb-2 w-4 h-0.5 bg-accent" aria-hidden="true" />
+          {{ fact }}
+        </p>
+      </div>
+
+      <div class="hero-step delay-5 mt-4 -ml-3 flex flex-wrap gap-1">
+        <NuxtLink
+          v-for="item in socialNetworks"
+          :key="item.name"
+          :to="item.href"
+          target="_blank"
+          :aria-label="item.name"
+          class="w-11 h-11 flex items-center justify-center text-fg-muted hover:text-accent-ink hover:bg-panel-raised transition-colors"
+        >
+          <Icon :name="item.icon" size="16" aria-hidden="true" />
+        </NuxtLink>
+      </div>
+    </LayoutContainer>
   </section>
 </template>
 
 <style scoped>
-.hero-section {
-  position: relative;
-  isolation: isolate;
-  background: radial-gradient(ellipse at top left, rgba(45, 212, 191, 0.09), transparent 50%),
-              radial-gradient(ellipse at bottom right, rgba(52, 211, 153, 0.08), transparent 55%);
-}
-
-/* Faint engineering grid — the only ambient backdrop. */
-.hero-bg-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-:global(.dark) .hero-bg-grid {
-  background-image:
-    linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
-}
-
-/* Ambient light — two slow-drifting accent blobs behind the grid. Transform-only
-   animation (composited, no repaint); the blur is static so it rasterizes once. */
-.hero-blob {
-  position: absolute;
-  width: 30rem;
-  height: 30rem;
-  border-radius: 9999px;
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
-  will-change: transform;
-}
-.hero-blob-a {
-  top: -8rem;
-  left: -7rem;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.16), transparent 65%);
-  animation: hero-blob-a 26s ease-in-out infinite alternate;
-}
-.hero-blob-b {
-  bottom: -9rem;
-  right: -6rem;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.14), transparent 65%);
-  animation: hero-blob-b 32s ease-in-out infinite alternate;
-}
-:global(.dark) .hero-blob-a {
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.22), transparent 65%);
-}
-:global(.dark) .hero-blob-b {
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.18), transparent 65%);
-}
-@keyframes hero-blob-a {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to   { transform: translate3d(4rem, 3rem, 0) scale(1.18); }
-}
-@keyframes hero-blob-b {
-  from { transform: translate3d(0, 0, 0) scale(1.12); }
-  to   { transform: translate3d(-4.5rem, -3rem, 0) scale(0.94); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-blob { animation: none; }
-}
-
-/* Portrait backlight — soft dual-hue glow that intensifies slightly on hover. */
-.hero-photo-glow {
-  position: absolute;
-  inset: -1.75rem;
-  border-radius: 2.5rem;
-  background:
-    radial-gradient(55% 55% at 28% 22%, rgba(45, 212, 191, 0.28), transparent 72%),
-    radial-gradient(55% 55% at 74% 82%, rgba(52, 211, 153, 0.24), transparent 72%);
-  filter: blur(28px);
-  opacity: 0.75;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-.group:hover .hero-photo-glow {
-  opacity: 1;
-}
-
-/* Shine sweep across the primary CTA. The transition lives only on the hover
-   state, so the highlight sweeps once and resets instantly on mouseleave. */
-.cta-primary {
-  position: relative;
-  overflow: hidden;
-}
-.cta-shine {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 40%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  transform: translateX(-160%) skewX(-18deg);
-  pointer-events: none;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .cta-primary:hover .cta-shine {
-    transition: transform 0.8s var(--ease-expo);
-    transform: translateX(360%) skewX(-18deg);
-  }
-}
-
 /* SSR default: visible. The LCP element (the H1) must paint with the initial
    HTML — gating it on hydration adds 1-3s to LCP on mobile. */
 .hero-step {
@@ -241,37 +129,24 @@ const { trackCta } = useAnalytics()
   transform: none;
 }
 
-/* Animate IN once after JS hydrates: a transient state back to the steady
-   state, so the staggered reveal plays but the resting layout is unchanged. */
+/* After hydration each layer slides in from the left with a hard wipe, a HUD
+   loading in rather than a soft fade. */
 .is-mounted .hero-step {
-  animation: hero-in 0.7s ease both;
+  animation: hero-in 0.45s var(--ease-expo) both;
 }
-.is-mounted .hero-step.delay-0 { animation-delay: 0ms; }
-.is-mounted .hero-step.delay-1 { animation-delay: 120ms; }
-.is-mounted .hero-step.delay-2 { animation-delay: 240ms; }
-.is-mounted .hero-step.delay-3 { animation-delay: 360ms; }
-.is-mounted .hero-step.delay-4 { animation-delay: 480ms; }
-.is-mounted .hero-step.delay-5 { animation-delay: 600ms; }
+.is-mounted .delay-0 { animation-delay: 0ms; }
+.is-mounted .delay-1 { animation-delay: 70ms; }
+.is-mounted .delay-2 { animation-delay: 140ms; }
+.is-mounted .delay-3 { animation-delay: 210ms; }
+.is-mounted .delay-4 { animation-delay: 280ms; }
+.is-mounted .delay-5 { animation-delay: 350ms; }
 
 @keyframes hero-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateX(-16px); clip-path: inset(-2rem 100% -2rem -2rem); }
+  to   { opacity: 1; transform: none; clip-path: inset(-2rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .is-mounted .hero-step { animation: none; }
-}
-
-/* Gradient text fallback: Lighthouse reads computed `color` (which is
-   `transparent` for bg-clip-text gradients) and flags contrast. Set a
-   high-contrast color first; bg-clip wins visually via -webkit-text-fill. */
-.hero-h1 {
-  color: #0f172a;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-:global(.dark) .hero-h1 {
-  color: #f1f5f9;
 }
 </style>

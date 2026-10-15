@@ -44,15 +44,15 @@ onMounted(load)
 </script>
 
 <template>
-  <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
+  <section class="border border-line p-6 bg-panel">
     <div class="flex items-center justify-between gap-3">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
+      <h2 class="text-xl font-semibold text-fg">
         Red-Flag Scanner history
       </h2>
       <button
         type="button"
         :disabled="loading"
-        class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised disabled:opacity-50 hover:cursor-pointer"
         @click="load"
       >
         <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:refresh'" size="14" />
@@ -72,7 +72,7 @@ onMounted(load)
       <p class="text-sm text-slate-500">
         No scans yet.
       </p>
-      <NuxtLink to="/tools/contract-red-flag-scanner" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-600 dark:text-accent-400 hover:underline">
+      <NuxtLink to="/tools/contract-red-flag-scanner" class="mt-2 inline-flex items-center gap-1.5 text-sm text-accent-ink hover:underline">
         <Icon name="mdi:arrow-right" class="w-4 h-4" /> Scan a contract
       </NuxtLink>
     </div>
@@ -81,23 +81,23 @@ onMounted(load)
       <article
         v-for="item in items"
         :key="item.teaser.id"
-        class="rounded-md border border-slate-200 dark:border-slate-700 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+        class="border border-line p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
       >
         <div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 font-spacemono">
+          <p class="text-xs text-fg-muted font-spacemono">
             {{ formatDate(item.teaser.createdAt) }}
           </p>
-          <p v-if="item.teaser.overallRiskScore" class="mt-1 text-sm text-slate-700 dark:text-slate-300">
+          <p v-if="item.teaser.overallRiskScore" class="mt-1 text-sm text-fg-muted">
             Overall risk: <span class="font-medium capitalize">{{ item.teaser.overallRiskScore.score }}</span>
             <span v-if="item.teaser.redFlagCounts" class="text-slate-500">· {{ item.teaser.redFlagCounts.total }} red flag(s)</span>
           </p>
-          <p class="mt-1 text-sm font-medium" :class="item.teaser.paid ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">
+          <p class="mt-1 text-sm font-medium" :class="item.teaser.paid ? 'text-ok' : 'text-amber-600 dark:text-amber-400'">
             {{ item.teaser.paid ? 'Unlocked' : 'Not unlocked' }}
           </p>
         </div>
         <NuxtLink
           :to="resultLink(item)"
-          class="shrink-0 inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800"
+          class="shrink-0 inline-flex items-center gap-1.5 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised"
         >
           <Icon name="mdi:open-in-new" class="w-4 h-4" />
           {{ item.teaser.paid ? 'Open report' : 'View / unlock' }}

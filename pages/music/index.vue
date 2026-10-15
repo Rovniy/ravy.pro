@@ -29,19 +29,18 @@ const { trackCta } = useAnalytics()
       <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
         Projects
       </NuxtLink>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+      <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         {{ copy.heading }}
       </h1>
-      <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
         {{ copy.description }}
       </p>
     </header>
 
     <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
       <ProjectCard
-        v-for="(project, i) in MUSIC_PROJECTS"
+        v-for="project in MUSIC_PROJECTS"
         :key="project.slug"
-        v-reveal="i * 90"
         :to="musicPath(project)"
         :title="project.name"
         :tagline="project.tagline"
@@ -55,7 +54,7 @@ const { trackCta } = useAnalytics()
 
     <section class="mt-14 max-w-3xl">
       <span class="eyebrow">How it is made</span>
-      <p class="mt-3 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 text-fg-muted leading-relaxed">
         Both projects are made with generative AI, and I say so openly. I write the concepts and the stories, direct the sound, and pick, edit and release every track myself.
         <NuxtLink to="/blogs/how-i-started-making-music-with-ai" class="underline decoration-slate-400/40 hover:text-accent-500">
           How I started making music with AI

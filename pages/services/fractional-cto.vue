@@ -37,7 +37,7 @@ const { trackCta } = useAnalytics()
 </script>
 
 <template>
-  <div class="text-slate-600 dark:text-slate-300">
+  <div class="text-fg-muted">
     <div class="container max-w-5xl mx-auto">
       <!-- Hero. Plain on purpose, same reasoning as the mentorship page.
            Section rhythm matches it too: bottom padding only (pb-16), so the
@@ -46,17 +46,17 @@ const { trackCta } = useAnalytics()
         <p class="eyebrow mb-2">
           {{ c.hero.eyebrow }}
         </p>
-        <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 class="text-5xl sm:text-6xl font-display font-extrabold uppercase text-fg leading-none">
           {{ c.hero.title }}
         </h1>
-        <p class="mt-5 max-w-3xl text-base leading-relaxed text-slate-600 dark:text-slate-400">
+        <p class="mt-5 max-w-3xl text-base leading-relaxed text-fg-muted">
           {{ c.hero.lede }}
         </p>
 
         <div class="mt-7 flex flex-wrap items-center gap-3">
           <a
             :href="c.hero.ctaPrimary.to"
-            class="inline-flex items-center gap-2 rounded-md bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 px-5 py-2.5 text-sm font-semibold ring-1 ring-accent-400/30 shadow-sm hover:shadow-md transition-all"
+            class="inline-flex items-center gap-2 bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 px-5 py-2.5 text-sm font-semibold ring-1 ring-accent-400/30 transition-all"
             @click="trackCta('fractional-cto-fit-call', 'fractional_cto_hero')"
           >
             {{ c.hero.ctaPrimary.label }}
@@ -64,7 +64,7 @@ const { trackCta } = useAnalytics()
           </a>
           <a
             :href="c.hero.ctaSecondary.to"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors"
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-ink hover:text-accent-ink transition-colors"
             @click="trackCta('fractional-cto-audit', 'fractional_cto_hero')"
           >
             {{ c.hero.ctaSecondary.label }}
@@ -75,8 +75,8 @@ const { trackCta } = useAnalytics()
 
       <!-- Fact strip: four verifiable numbers instead of adjectives. -->
       <section class="px-6 pb-16">
-        <div class="border-t border-slate-200 dark:border-slate-800 pt-6">
-          <p class="font-spacemono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+        <div class="border-t border-line pt-6">
+          <p class="font-spacemono text-micro uppercase tracking-wider text-fg-muted">
             <template v-for="(fact, i) in c.facts" :key="fact">
               <span v-if="i > 0" class="text-accent-500" aria-hidden="true"> · </span>{{ fact }}
             </template>
@@ -89,25 +89,25 @@ const { trackCta } = useAnalytics()
         <UiSectionHeader :eyebrow="c.fit.eyebrow" :title="c.fit.title" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div v-reveal class="rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-6">
-            <p class="font-semibold text-slate-900 dark:text-slate-100">
+          <div v-reveal class="border border-line bg-panel p-6">
+            <p class="font-semibold text-fg">
               {{ c.fit.yes.title }}
             </p>
             <ul class="mt-4 space-y-3">
-              <li v-for="item in c.fit.yes.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                <Icon name="mdi:check" class="mt-0.5 w-4 h-4 shrink-0 text-emerald-500" aria-hidden="true" />
+              <li v-for="item in c.fit.yes.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
+                <Icon name="mdi:check" class="mt-0.5 w-4 h-4 shrink-0 text-ok" aria-hidden="true" />
                 {{ item }}
               </li>
             </ul>
           </div>
 
           <!-- Slate, not rose — same reasoning as the mentorship page. -->
-          <div v-reveal="90" class="rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-6">
-            <p class="font-semibold text-slate-900 dark:text-slate-100">
+          <div class="border border-line bg-panel p-6">
+            <p class="font-semibold text-fg">
               {{ c.fit.no.title }}
             </p>
             <ul class="mt-4 space-y-3">
-              <li v-for="item in c.fit.no.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              <li v-for="item in c.fit.no.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
                 <Icon name="mdi:close" class="mt-0.5 w-4 h-4 shrink-0 text-slate-400" aria-hidden="true" />
                 {{ item }}
               </li>
@@ -120,20 +120,20 @@ const { trackCta } = useAnalytics()
         <UiSectionHeader :eyebrow="c.steps.eyebrow" :title="c.steps.title" />
 
         <ol class="grid grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-8">
-          <li v-for="(step, i) in c.steps.items" :key="step.n" v-reveal="(i % 3) * 70" class="flex gap-4">
+          <li v-for="step in c.steps.items" :key="step.n" class="flex gap-4">
             <span class="shrink-0 font-spacemono text-sm text-accent-500 pt-0.5" aria-hidden="true">
               {{ step.n }}
             </span>
             <div class="min-w-0">
               <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                <p class="font-semibold text-slate-900 dark:text-slate-100">
+                <p class="font-semibold text-fg">
                   {{ step.title }}
                 </p>
-                <span class="rounded-full border border-slate-200 dark:border-slate-700 px-2.5 py-0.5 font-spacemono text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <span class="border border-line px-2.5 py-0.5 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
                   {{ step.duration }}
                 </span>
               </div>
-              <p class="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+              <p class="mt-2 text-sm leading-relaxed text-fg-muted">
                 {{ step.text }}
               </p>
             </div>
@@ -147,41 +147,39 @@ const { trackCta } = useAnalytics()
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
           <div
-            v-for="(pkg, i) in c.packages.items"
+            v-for="pkg in c.packages.items"
             :key="pkg.id"
-            v-spotlight
-            v-reveal="(i % 3) * 90"
-            class="flex flex-col rounded-2xl border bg-white dark:bg-slate-900 p-6"
+            class="flex flex-col border bg-panel p-6"
             :class="pkg.emphasized
-              ? 'border-accent-400/60 dark:border-accent-500/50 ring-1 ring-accent-400/30 shadow-md'
-              : 'border-slate-200/80 dark:border-white/10'"
+              ? 'border-accent-400/60 dark:border-accent-500/50 ring-1 ring-accent-400/30'
+              : 'border-line'"
           >
             <div class="flex items-center justify-between gap-3">
-              <p class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">
+              <p class="text-lg font-bold tracking-tight text-fg">
                 {{ pkg.name }}
               </p>
-              <span v-if="pkg.emphasized" class="rounded-full bg-accent-500/10 text-accent-600 dark:text-accent-400 px-2.5 py-0.5 font-spacemono text-[10px] uppercase tracking-wider">
+              <span v-if="pkg.emphasized" class="bg-accent-500/10 text-accent-ink px-2.5 py-0.5 font-spacemono text-micro uppercase tracking-wider">
                 Default
               </span>
             </div>
-            <p class="mt-2 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400">
+            <p class="mt-2 font-spacemono text-micro uppercase tracking-wider text-accent-ink">
               {{ pkg.priceLine }}
             </p>
-            <p class="mt-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+            <p class="mt-3 text-sm leading-relaxed text-fg-muted">
               {{ pkg.lede }}
             </p>
             <ul class="mt-4 space-y-2.5 flex-1">
-              <li v-for="item in pkg.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+              <li v-for="item in pkg.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
                 <Icon name="mdi:check" class="mt-0.5 w-4 h-4 shrink-0 text-accent-500" aria-hidden="true" />
                 {{ item }}
               </li>
             </ul>
             <a
               href="#fit-call"
-              class="mt-6 inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold transition-all"
+              class="mt-6 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition-all"
               :class="pkg.emphasized
-                ? 'bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 ring-1 ring-accent-400/30 shadow-sm hover:shadow-md'
-                : 'border border-slate-300 dark:border-slate-700 hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400'"
+                ? 'bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300 ring-1 ring-accent-400/30'
+                : 'border border-line-strong hover:border-accent-400 hover:text-accent-ink'"
               @click="trackCta(`fractional-cto-${pkg.id}`, 'fractional_cto_packages')"
             >
               {{ pkg.cta }}
@@ -190,23 +188,23 @@ const { trackCta } = useAnalytics()
           </div>
         </div>
 
-        <p class="mt-8 max-w-3xl font-spacemono text-[11px] text-slate-500 dark:text-slate-400">
+        <p class="mt-8 max-w-3xl font-spacemono text-micro text-fg-muted">
           {{ c.packages.footnote }}
         </p>
       </section>
 
       <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="c.deliverables.eyebrow" :title="c.deliverables.title" />
-        <p class="-mt-4 mb-8 max-w-2xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p class="-mt-4 mb-8 max-w-2xl text-sm leading-relaxed text-fg-muted">
           {{ c.deliverables.lede }}
         </p>
 
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5">
           <div v-for="item in c.deliverables.items" :key="item.name">
-            <dt class="text-sm font-semibold text-slate-900 dark:text-slate-100">
+            <dt class="text-sm font-semibold text-fg">
               {{ item.name }}
             </dt>
-            <dd class="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+            <dd class="mt-1.5 text-sm leading-relaxed text-fg-muted">
               {{ item.text }}
             </dd>
           </div>
@@ -220,13 +218,13 @@ const { trackCta } = useAnalytics()
         <UiSectionHeader :eyebrow="c.track.eyebrow" :title="c.track.title" />
 
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 max-w-4xl">
-          <li v-for="item in c.track.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+          <li v-for="item in c.track.items" :key="item" class="flex items-start gap-2.5 text-sm leading-relaxed text-fg-muted">
             <Icon name="mdi:check" class="mt-0.5 w-4 h-4 shrink-0 text-accent-500" aria-hidden="true" />
             {{ item }}
           </li>
         </ul>
 
-        <p class="mt-6 max-w-3xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+        <p class="mt-6 max-w-3xl text-sm leading-relaxed text-fg-muted">
           {{ c.track.note }}
         </p>
 
@@ -234,7 +232,7 @@ const { trackCta } = useAnalytics()
           <span
             v-for="item in c.track.stack"
             :key="item"
-            class="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-1 font-spacemono text-[11px] text-slate-500 dark:text-slate-400"
+            class="border border-line px-3 py-1 font-spacemono text-micro text-fg-muted"
           >
             {{ item }}
           </span>
@@ -242,7 +240,7 @@ const { trackCta } = useAnalytics()
 
         <NuxtLink
           :to="c.track.link.to"
-          class="group mt-6 inline-flex items-center gap-1.5 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors"
+          class="group mt-6 inline-flex items-center gap-1.5 font-spacemono text-micro uppercase tracking-wider text-accent-ink hover:text-accent-ink transition-colors"
         >
           {{ c.track.link.label }}
           <Icon name="mdi:arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
@@ -254,7 +252,7 @@ const { trackCta } = useAnalytics()
       <section class="pb-16 px-6">
         <UiSectionHeader :eyebrow="c.availability.eyebrow" :title="c.availability.title" />
         <div class="max-w-3xl space-y-4">
-          <p v-for="para in c.availability.paragraphs" :key="para" class="text-base leading-relaxed text-slate-600 dark:text-slate-400">
+          <p v-for="para in c.availability.paragraphs" :key="para" class="text-base leading-relaxed text-fg-muted">
             {{ para }}
           </p>
         </div>
@@ -269,7 +267,7 @@ const { trackCta } = useAnalytics()
           lock-service
           location="fractional_cto"
         />
-        <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-4 text-sm text-fg-muted">
           {{ c.finalCta.note }}
         </p>
       </section>
@@ -279,10 +277,10 @@ const { trackCta } = useAnalytics()
 
         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
           <div v-for="item in c.faq.items" :key="item.question">
-            <dt class="font-semibold text-slate-900 dark:text-slate-100">
+            <dt class="font-semibold text-fg">
               {{ item.question }}
             </dt>
-            <dd class="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+            <dd class="mt-2 text-sm leading-relaxed text-fg-muted">
               {{ item.answer }}
             </dd>
           </div>

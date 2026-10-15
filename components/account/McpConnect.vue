@@ -169,12 +169,12 @@ onMounted(() => {
 
 <template>
   <div class="space-y-6">
-    <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 space-y-4">
+    <section class="border border-line p-6 bg-panel space-y-4">
       <div>
-        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+        <h2 class="text-lg font-semibold text-fg">
           Blog MCP server
         </h2>
-        <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+        <p class="mt-1 text-sm text-fg-muted">
           Lets an AI assistant read, write and publish posts on this blog as you. It can list and read posts (drafts included),
           create and edit them, upload images, and publish or unpublish. It cannot delete — that stays in
           <NuxtLink to="/studio" class="underline hover:no-underline">
@@ -184,10 +184,10 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-2">
-        <code class="flex-1 min-w-0 truncate rounded-md bg-slate-100 dark:bg-slate-800 px-3 py-2 text-sm">{{ mcpUrl }}</code>
+        <code class="flex-1 min-w-0 truncate bg-panel-raised px-3 py-2 text-sm">{{ mcpUrl }}</code>
         <button
           type="button"
-          class="inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:cursor-pointer"
+          class="inline-flex items-center gap-1.5 border border-line-strong px-3 py-2 text-sm hover:cursor-pointer"
           @click="copy(mcpUrl, 'url')"
         >
           <Icon :name="copiedKey === 'url' ? 'mdi:check' : 'mdi:content-copy'" size="16" />
@@ -199,8 +199,8 @@ onMounted(() => {
       </p>
     </section>
 
-    <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
-      <h3 class="text-sm font-medium text-slate-900 dark:text-slate-100 mb-3">
+    <section class="border border-line p-6 bg-panel">
+      <h3 class="text-sm font-medium text-fg mb-3">
         Connect a client
       </h3>
       <div class="flex flex-wrap gap-2 mb-5" role="tablist">
@@ -210,32 +210,32 @@ onMounted(() => {
           type="button"
           role="tab"
           :aria-selected="selected === g.key"
-          class="rounded-full border px-3 py-1 text-sm hover:cursor-pointer transition-colors"
+          class="border px-3 py-1 text-sm hover:cursor-pointer transition-colors"
           :class="selected === g.key
             ? 'border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900'
-            : 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-slate-500'"
+            : 'border-line-strong text-fg-muted hover:border-slate-500'"
           @click="selected = g.key"
         >
           {{ g.label }}
         </button>
       </div>
 
-      <p v-if="guide.note" class="mb-4 text-sm text-slate-500 dark:text-slate-400">
+      <p v-if="guide.note" class="mb-4 text-sm text-fg-muted">
         {{ guide.note }}
       </p>
 
       <ol class="space-y-4">
         <li v-for="(step, i) in guide.steps" :key="`${guide.key}-${i}`" class="flex gap-3">
-          <span class="flex-none w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-mono flex items-center justify-center text-slate-600 dark:text-slate-300">{{ i + 1 }}</span>
+          <span class="flex-none w-6 h-6 bg-panel-raised text-xs font-mono flex items-center justify-center text-fg-muted">{{ i + 1 }}</span>
           <div class="min-w-0 flex-1 space-y-2">
-            <p class="text-sm text-slate-700 dark:text-slate-300">
+            <p class="text-sm text-fg-muted">
               {{ step.text }}
             </p>
             <div v-if="step.code" class="relative">
-              <pre class="overflow-x-auto rounded-md bg-slate-100 dark:bg-slate-800 p-3 pr-12 text-xs"><code>{{ step.code }}</code></pre>
+              <pre class="overflow-x-auto bg-panel-raised p-3 pr-12 text-xs"><code>{{ step.code }}</code></pre>
               <button
                 type="button"
-                class="absolute top-2 right-2 rounded p-1 text-slate-500 hover:text-slate-900 dark:hover:text-white hover:cursor-pointer"
+                class="absolute top-2 right-2 p-1 text-slate-500 hover:text-fg hover:cursor-pointer"
                 :aria-label="`Copy step ${i + 1}`"
                 @click="copy(step.code, `${guide.key}-${i}`)"
               >
@@ -247,8 +247,8 @@ onMounted(() => {
       </ol>
     </section>
 
-    <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 space-y-3">
-      <h3 class="text-sm font-medium text-slate-900 dark:text-slate-100">
+    <section class="border border-line p-6 bg-panel space-y-3">
+      <h3 class="text-sm font-medium text-fg">
         Connected clients
       </h3>
       <p v-if="loading" class="text-sm text-slate-500">
@@ -257,7 +257,7 @@ onMounted(() => {
       <p v-else-if="!clients.length" class="text-sm text-slate-500">
         Nothing connected yet.
       </p>
-      <ul v-else class="divide-y divide-slate-200 dark:divide-slate-800 text-sm">
+      <ul v-else class="divide-y divide-line text-sm">
         <li v-for="c in clients" :key="c.clientId" class="flex justify-between gap-4 py-2">
           <span class="truncate">{{ c.clientName }}</span>
           <span class="flex-none font-mono text-xs text-slate-500">signed in {{ c.lastIssuedAt.slice(0, 16).replace('T', ' ') }} UTC</span>
@@ -267,7 +267,7 @@ onMounted(() => {
         v-if="clients.length"
         type="button"
         :disabled="revoking"
-        class="rounded-md border border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 px-3 py-1.5 text-sm hover:cursor-pointer disabled:opacity-50"
+        class="border border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 px-3 py-1.5 text-sm hover:cursor-pointer disabled:opacity-50"
         @click="disconnectAll"
       >
         Disconnect all

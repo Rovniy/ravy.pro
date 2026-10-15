@@ -16,13 +16,13 @@ const { trackCta } = useAnalytics()
         <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
           Projects · Animation
         </NuxtLink>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           {{ s.title }}
         </h1>
-        <p class="mt-3 text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
+        <p class="mt-3 text-lg text-fg leading-relaxed">
           {{ s.tagline }}
         </p>
-        <p class="mt-3 text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base text-fg-muted leading-relaxed">
           {{ s.description }}
         </p>
         <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -30,7 +30,7 @@ const { trackCta } = useAnalytics()
             :href="s.channelUrl"
             target="_blank"
             rel="noopener"
-            class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 font-medium hover:opacity-90 transition"
+            class="inline-flex items-center gap-2 bg-fg text-bg px-5 py-3 font-medium hover:opacity-90 transition"
             @click="trackCta(s.channelUrl, 'animation_hero')"
           >
             <Icon name="simple-icons:youtube" class="w-5 h-5" aria-hidden="true" />
@@ -39,7 +39,7 @@ const { trackCta } = useAnalytics()
           </a>
           <NuxtLink
             :to="s.game"
-            class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-5 py-3 font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+            class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
           >
             <Icon name="mdi:gamepad-variant-outline" class="w-5 h-5" aria-hidden="true" />
             The game
@@ -50,7 +50,7 @@ const { trackCta } = useAnalytics()
         <img
           :src="s.hero.src"
           :alt="s.hero.alt"
-          class="w-full aspect-video object-cover rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-800"
+          class="w-full aspect-video object-cover border border-line bg-slate-800"
           decoding="async"
         >
       </div>
@@ -59,7 +59,7 @@ const { trackCta } = useAnalytics()
     <!-- Episodes -->
     <section class="mt-14">
       <span class="eyebrow">{{ s.season.name }}</span>
-      <p class="mt-3 max-w-3xl text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 max-w-3xl text-fg-muted leading-relaxed">
         {{ s.season.text }}
       </p>
       <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -72,13 +72,13 @@ const { trackCta } = useAnalytics()
             :event="EVENTS.VIDEO_PLAY"
             :event-params="{ project: s.slug, item: ep.code }"
           />
-          <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+          <p class="mt-2 text-sm text-fg-muted">
             {{ ep.logline }}
           </p>
         </div>
       </div>
       <p class="mt-6 text-sm">
-        <a :href="s.channelUrl" target="_blank" rel="noopener" class="text-accent-600 dark:text-accent-400 hover:underline">
+        <a :href="s.channelUrl" target="_blank" rel="noopener" class="text-accent-ink hover:underline">
           All episodes and Shorts on the channel →
         </a>
       </p>
@@ -91,12 +91,12 @@ const { trackCta } = useAnalytics()
         <div
           v-for="d in s.decisions"
           :key="d.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
-          <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="font-semibold text-fg">
             {{ d.title }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ d.text }}
           </p>
         </div>
@@ -111,7 +111,7 @@ const { trackCta } = useAnalytics()
         :alt="s.characterSheet.alt"
         :width="s.characterSheet.width"
         :height="s.characterSheet.height"
-        class="mt-4 w-full h-auto rounded-xl border border-slate-200 dark:border-slate-800"
+        class="mt-4 w-full h-auto border border-line"
         loading="lazy"
         decoding="async"
       >
@@ -124,14 +124,14 @@ const { trackCta } = useAnalytics()
         <li
           v-for="(step, i) in s.pipeline"
           :key="step.name"
-          class="flex gap-4 rounded-xl border border-slate-200 dark:border-slate-800 p-5"
+          class="flex gap-4 border border-line p-5"
         >
           <span class="font-spacemono text-sm text-accent-500 shrink-0">0{{ i + 1 }}</span>
           <div class="min-w-0">
-            <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+            <h3 class="font-semibold text-fg">
               {{ step.name }}
             </h3>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p class="mt-1 text-sm text-fg-muted leading-relaxed">
               {{ step.text }}
             </p>
           </div>
@@ -141,7 +141,7 @@ const { trackCta } = useAnalytics()
         <span
           v-for="tool in s.tools"
           :key="tool"
-          class="rounded-full border border-slate-200 dark:border-slate-700 px-2.5 py-1 font-spacemono text-[11px] text-slate-600 dark:text-slate-300"
+          class="border border-line px-2.5 py-1 font-spacemono text-micro text-fg-muted"
         >{{ tool }}</span>
       </div>
     </section>

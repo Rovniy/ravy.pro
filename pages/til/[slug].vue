@@ -69,10 +69,10 @@ onMounted(() => {
 
 <template>
   <div v-if="note" class="px-6 container max-w-3xl mx-auto py-10 sm:py-14">
-    <nav aria-label="Breadcrumb" class="mb-6 font-spacemono text-xs text-slate-500 dark:text-slate-400">
+    <nav aria-label="Breadcrumb" class="mb-6 font-spacemono text-xs text-fg-muted">
       <ol class="flex flex-wrap items-center gap-1.5">
         <li>
-          <NuxtLink to="/til" class="hover:text-accent-600 dark:hover:text-accent-400">
+          <NuxtLink to="/til" class="hover:text-accent-ink">
             TIL
           </NuxtLink>
         </li>
@@ -81,7 +81,7 @@ onMounted(() => {
             /
           </li>
           <li>
-            <NuxtLink :to="tilTopicPath(primary.id)" class="hover:text-accent-600 dark:hover:text-accent-400">
+            <NuxtLink :to="tilTopicPath(primary.id)" class="hover:text-accent-ink">
               {{ primary.name }}
             </NuxtLink>
           </li>
@@ -94,10 +94,10 @@ onMounted(() => {
         <p class="eyebrow mb-3">
           Today I learned
         </p>
-        <h1 class="text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-fg">
           {{ note.title }}
         </h1>
-        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-spacemono text-xs text-slate-500 dark:text-slate-400">
+        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-spacemono text-xs text-fg-muted">
           <span>
             <time :datetime="note.createdAt">{{ formatBlogDate(note.createdAt) }}</time>
             <template v-if="updated"> · updated <time :datetime="note.lastUpdated">{{ formatBlogDate(note.lastUpdated) }}</time></template>
@@ -106,19 +106,19 @@ onMounted(() => {
             v-for="t in topics"
             :key="t.id"
             :to="tilTopicPath(t.id)"
-            class="text-accent-600 dark:text-accent-400 hover:underline"
+            class="text-accent-ink hover:underline"
           >
             #{{ t.name }}
           </NuxtLink>
         </div>
       </header>
 
-      <div class="prose prose-slate dark:prose-invert sm:prose-lg max-w-none prose-pre:max-w-full prose-img:rounded-lg">
+      <div class="prose prose-slate dark:prose-invert sm:prose-lg max-w-none prose-pre:max-w-full">
         <ContentRenderer :value="{ body: note.body }" />
       </div>
     </article>
 
-    <div class="mt-10 pt-6 border-t border-slate-200 dark:border-slate-800">
+    <div class="mt-10 pt-6 border-t border-line">
       <TilShare :slug="note.slug" :url="url" :title="note.title" :excerpt="note.excerpt" :topics="note.topics" />
     </div>
 
@@ -127,25 +127,25 @@ onMounted(() => {
     </div>
 
     <section v-if="note.related.length" class="mt-12">
-      <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+      <h2 class="text-lg font-bold text-fg mb-4">
         Related notes
       </h2>
-      <ul class="divide-y divide-slate-200 dark:divide-slate-800 border-y border-slate-200 dark:border-slate-800">
+      <ul class="divide-y divide-line border-y border-line">
         <li v-for="r in note.related" :key="r.slug">
           <NuxtLink :to="r.path" class="group flex items-baseline justify-between gap-4 py-3">
-            <span class="font-medium text-slate-800 dark:text-slate-200 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors">{{ r.title }}</span>
-            <time :datetime="r.createdAt" class="shrink-0 font-spacemono text-xs text-slate-500 dark:text-slate-400">{{ formatBlogDate(r.createdAt) }}</time>
+            <span class="font-medium text-fg group-hover:text-accent-ink transition-colors">{{ r.title }}</span>
+            <time :datetime="r.createdAt" class="shrink-0 font-spacemono text-xs text-fg-muted">{{ formatBlogDate(r.createdAt) }}</time>
           </NuxtLink>
         </li>
       </ul>
     </section>
 
     <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-      <NuxtLink v-if="primary" :to="tilTopicPath(primary.id)" class="inline-flex items-center gap-1 text-accent-600 dark:text-accent-400 hover:underline">
+      <NuxtLink v-if="primary" :to="tilTopicPath(primary.id)" class="inline-flex items-center gap-1 text-accent-ink hover:underline">
         All {{ primary.name }} notes
         <Icon name="mdi:arrow-right" size="16" aria-hidden="true" />
       </NuxtLink>
-      <NuxtLink v-if="primary?.category" :to="`/categories/${primary.category}`" class="inline-flex items-center gap-1 text-slate-600 dark:text-slate-300 hover:text-accent-600 dark:hover:text-accent-400">
+      <NuxtLink v-if="primary?.category" :to="`/categories/${primary.category}`" class="inline-flex items-center gap-1 text-fg-muted hover:text-accent-ink">
         Longer posts on this
         <Icon name="mdi:arrow-right" size="16" aria-hidden="true" />
       </NuxtLink>

@@ -59,14 +59,14 @@ onMounted(() => {
     back to the compact one-row player and leaves the rest of the frame empty.
     A border on the wrapper would eat those 2px, so the Spotify variant has
     none, and once loaded it drops its own background so nothing shows past
-    the player's rounded corners. `color-scheme: normal` on the iframe matters
+    the corners of the player. `color-scheme: normal` on the iframe matters
     too: in dark mode the page's scheme differs from the embed's, and the
     browser then paints an opaque white backdrop behind the whole frame.
   -->
   <div
-    class="relative w-full overflow-hidden rounded-xl"
+    class="relative w-full overflow-hidden"
     :class="[
-      variant === 'video' ? 'aspect-video border border-slate-200 dark:border-slate-800' : 'h-[352px]',
+      variant === 'video' ? 'aspect-video border border-line' : 'h-[352px]',
       active && variant === 'spotify' ? 'bg-transparent' : 'bg-slate-900',
     ]"
   >
@@ -74,7 +74,7 @@ onMounted(() => {
       v-if="active"
       :src="iframeSrc"
       :title="title"
-      class="absolute inset-0 w-full h-full border-0 rounded-xl"
+      class="absolute inset-0 w-full h-full border-0"
       style="color-scheme: normal"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       allowfullscreen
@@ -98,15 +98,15 @@ onMounted(() => {
       >
       <span
         v-else
-        class="absolute inset-0 bg-gradient-to-br from-accent-600/40 via-slate-900 to-emerald-700/30"
+        class="absolute inset-0 bg-panel-raised"
         aria-hidden="true"
       />
       <span class="absolute inset-0 grid place-items-center">
-        <span class="grid place-items-center w-16 h-16 rounded-full bg-white/90 text-slate-900 shadow-xl transition-transform duration-200 group-hover:scale-110">
+        <span class="grid place-items-center w-16 h-16 bg-white/90 text-slate-900 transition-transform duration-200">
           <Icon name="mdi:play" class="w-32 h-32 text-4xl translate-x-0.5" aria-hidden="true" />
         </span>
       </span>
-      <span class="absolute left-0 right-0 bottom-0 px-4 py-3 text-left text-sm font-semibold text-white bg-gradient-to-t from-black/70 to-transparent">
+      <span class="scrim-b absolute left-0 right-0 bottom-0 px-4 pt-8 pb-3 text-left text-sm font-semibold text-white">
         {{ title }}
       </span>
     </button>

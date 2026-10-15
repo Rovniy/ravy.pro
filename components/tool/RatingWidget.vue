@@ -80,9 +80,9 @@ const averageText = computed(() => displayAverage.value != null ? displayAverage
 const ratingLabel = computed(() =>
   summary.value ? `Rated ${summary.value.average} out of 5 based on ${summary.value.count} votes` : '')
 
-const BUTTON_BASE = 'inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-accent-500/60 disabled:opacity-60 disabled:active:scale-100'
+const BUTTON_BASE = 'inline-flex items-center gap-1.5 border px-2.5 py-1 text-xs transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-accent-500/60 disabled:opacity-60 disabled:active:scale-100'
 const BUTTON_ACTIVE = 'border-accent-400 text-accent-600 dark:border-accent-500/60 dark:text-accent-400 bg-accent-50 dark:bg-accent-950/50'
-const BUTTON_IDLE = 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 hover:-translate-y-px'
+const BUTTON_IDLE = 'border-line text-fg-muted hover:border-accent-400 hover:text-accent-ink hover:-translate-y-px'
 </script>
 
 <template>
@@ -91,7 +91,7 @@ const BUTTON_IDLE = 'border-slate-200 dark:border-slate-800 text-slate-500 dark:
     <template v-if="summary">
       <div class="flex flex-wrap items-center sm:justify-end gap-x-2 gap-y-0.5">
         <span class="relative inline-flex" role="img" :aria-label="ratingLabel">
-          <span class="flex text-slate-300 dark:text-slate-600">
+          <span class="flex text-line-strong">
             <Icon v-for="i in 5" :key="`bg-${i}`" name="mdi:star" class="w-4 h-4" aria-hidden="true" />
           </span>
           <span
@@ -104,9 +104,9 @@ const BUTTON_IDLE = 'border-slate-200 dark:border-slate-800 text-slate-500 dark:
         </span>
         <span
           class="font-semibold tabular-nums transition-all duration-200"
-          :class="bump ? 'scale-125 text-accent-600 dark:text-accent-400' : 'text-slate-900 dark:text-slate-100'"
+          :class="bump ? 'scale-125 text-accent-ink' : 'text-fg'"
         >{{ averageText }}</span>
-        <span class="text-xs text-slate-500 dark:text-slate-400">{{ summary.count.toLocaleString('en-US') }} votes</span>
+        <span class="text-xs text-fg-muted">{{ summary.count.toLocaleString('en-US') }} votes</span>
       </div>
       <div class="flex items-center gap-2">
         <button
@@ -149,8 +149,8 @@ const BUTTON_IDLE = 'border-slate-200 dark:border-slate-800 text-slate-500 dark:
     <!-- Loading skeleton (same footprint as the loaded state → no CLS);
          after a failed fetch nothing renders — the feature degrades silently. -->
     <div v-else-if="pending" class="flex flex-col items-start sm:items-end gap-1.5 animate-pulse" aria-hidden="true">
-      <div class="h-5 w-40 rounded bg-slate-200 dark:bg-slate-800" />
-      <div class="h-6 w-32 rounded bg-slate-200 dark:bg-slate-800" />
+      <div class="h-5 w-40 bg-panel-raised" />
+      <div class="h-6 w-32 bg-panel-raised" />
     </div>
   </div>
 </template>

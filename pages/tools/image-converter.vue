@@ -466,7 +466,7 @@ onBeforeUnmount(() => {
 const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: string }> = {
   queued: { icon: 'mdi:clock-outline', classes: 'text-slate-400', label: 'Queued' },
   converting: { icon: 'svg-spinners:180-ring', classes: 'text-accent-500', label: 'Converting' },
-  done: { icon: 'mdi:check-circle', classes: 'text-emerald-500', label: 'Done' },
+  done: { icon: 'mdi:check-circle', classes: 'text-ok', label: 'Done' },
   error: { icon: 'mdi:alert-circle', classes: 'text-rose-500', label: 'Error' },
 }
 </script>
@@ -475,10 +475,10 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
-        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">
           Image Converter
         </h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p class="text-sm text-fg-muted mt-1">
           Convert images between PNG, JPEG, and WebP. Drop files, get downloads.
         </p>
       </div>
@@ -486,27 +486,27 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     </header>
 
     <!-- Privacy banner -->
-    <div class="mb-6 flex items-start gap-3 rounded-md border border-slate-200 dark:border-slate-800 p-4 text-sm text-slate-600 dark:text-slate-300">
-      <Icon name="mdi:shield-check" size="20" class="shrink-0 mt-0.5 text-emerald-500" aria-hidden="true" />
+    <div class="mb-6 flex items-start gap-3 border border-line p-4 text-sm text-fg-muted">
+      <Icon name="mdi:shield-check" size="20" class="shrink-0 mt-0.5 text-ok" aria-hidden="true" />
       <p>Everything runs in your browser. Your images never leave this page.</p>
     </div>
 
     <!-- Top controls -->
-    <div class="sticky top-0 z-10 mb-6 rounded-md border border-slate-200 dark:border-slate-800 bg-white/85 dark:bg-slate-950/85 backdrop-blur p-4">
+    <div class="sticky top-0 z-10 mb-6 border border-line bg-panel p-4">
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <div>
-          <span class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Convert to</span>
-          <div class="inline-flex rounded-md border border-slate-300 dark:border-slate-700 p-0.5">
+          <span class="block text-xs font-medium text-fg-muted mb-1.5">Convert to</span>
+          <div class="inline-flex border border-line-strong p-0.5">
             <button
               v-for="f in FORMATS"
               :key="f.id"
               type="button"
               :disabled="f.id === 'webp' && !webpSupported"
               :title="f.id === 'webp' && !webpSupported ? 'Your browser can\'t encode WebP' : undefined"
-              class="px-3 py-1.5 text-sm font-medium rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer"
+              class="px-3 py-1.5 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer"
               :class="targetFormat === f.id
-                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                ? 'bg-fg text-bg'
+                : 'text-fg-muted hover:bg-panel-raised'"
               @click="selectFormat(f.id)"
             >
               {{ f.label }}
@@ -515,7 +515,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         </div>
 
         <div v-if="activeFormat.lossy" class="min-w-[200px]">
-          <label for="quality" class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
+          <label for="quality" class="block text-xs font-medium text-fg-muted mb-1.5">
             Quality — {{ Math.round(quality * 100) }}%
           </label>
           <input
@@ -532,14 +532,14 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         </div>
 
         <div>
-          <span class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">Color profile</span>
-          <div class="inline-flex rounded-md border border-slate-300 dark:border-slate-700 p-0.5">
+          <span class="block text-xs font-medium text-fg-muted mb-1.5">Color profile</span>
+          <div class="inline-flex border border-line-strong p-0.5">
             <button
               type="button"
-              class="px-3 py-1.5 text-sm font-medium rounded transition-colors hover:cursor-pointer"
+              class="px-3 py-1.5 text-sm font-medium transition-colors hover:cursor-pointer"
               :class="colorMode === 'srgb'
-                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                ? 'bg-fg text-bg'
+                : 'text-fg-muted hover:bg-panel-raised'"
               title="Color-manage to standard sRGB (best for the web)"
               @click="selectColorMode('srgb')"
             >
@@ -547,10 +547,10 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
             </button>
             <button
               type="button"
-              class="px-3 py-1.5 text-sm font-medium rounded transition-colors hover:cursor-pointer"
+              class="px-3 py-1.5 text-sm font-medium transition-colors hover:cursor-pointer"
               :class="colorMode === 'preserve'
-                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                ? 'bg-fg text-bg'
+                : 'text-fg-muted hover:bg-panel-raised'"
               title="Keep the original embedded ICC profile (JPEG/PNG)"
               @click="selectColorMode('preserve')"
             >
@@ -564,10 +564,10 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     <!-- Dropzone -->
     <button
       type="button"
-      class="w-full rounded-lg border-2 border-dashed p-10 text-center transition-colors hover:cursor-pointer"
+      class="w-full border-2 border-dashed p-10 text-center transition-colors hover:cursor-pointer"
       :class="isDragging
         ? 'border-accent-500 bg-accent-50/60 dark:bg-accent-900/20'
-        : 'border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600'"
+        : 'border-line-strong hover:border-slate-400 dark:hover:border-slate-600'"
       aria-label="Add images: drag and drop, click to browse, or paste from clipboard"
       @click="openPicker"
       @drop="onDrop"
@@ -575,10 +575,10 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       @dragleave="onDragLeave"
     >
       <Icon name="mdi:image-plus-outline" size="36" class="mx-auto text-slate-400" aria-hidden="true" />
-      <p class="mt-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+      <p class="mt-3 text-sm font-medium text-fg">
         Drag &amp; drop images here
       </p>
-      <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+      <p class="mt-1 text-xs text-fg-muted">
         or click to browse · paste from clipboard · PNG, JPEG, WebP
       </p>
     </button>
@@ -604,7 +604,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       <UiButton variant="ghost" @click="clearAll">
         Clear
       </UiButton>
-      <span class="text-sm text-slate-500 dark:text-slate-400" aria-live="polite">{{ queueLabel }}</span>
+      <span class="text-sm text-fg-muted" aria-live="polite">{{ queueLabel }}</span>
     </div>
 
     <!-- Results grid -->
@@ -612,32 +612,32 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
       <div
         v-for="item in items"
         :key="item.id"
-        class="relative rounded-md border border-slate-200 dark:border-slate-800 p-4"
+        class="relative border border-line p-4"
       >
         <button
           type="button"
-          class="absolute right-2 top-2 rounded p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer"
+          class="absolute right-2 top-2 p-1 text-slate-400 hover:bg-panel-raised hover:cursor-pointer"
           aria-label="Remove"
           @click="removeItem(item.id)"
         >
           <Icon name="mdi:close" size="16" aria-hidden="true" />
         </button>
 
-        <img :src="item.thumbUrl" :alt="item.name" class="h-32 w-full rounded object-cover bg-slate-100 dark:bg-slate-800">
+        <img :src="item.thumbUrl" :alt="item.name" class="h-32 w-full object-cover bg-panel-raised">
 
-        <p class="mt-3 truncate text-sm font-medium text-slate-800 dark:text-slate-100" :title="item.name">
+        <p class="mt-3 truncate text-sm font-medium text-fg" :title="item.name">
           {{ item.name }}
         </p>
 
-        <div class="mt-1 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <div class="mt-1 flex items-center gap-2 text-xs text-fg-muted">
           <span>{{ formatBytes(item.originalSize) }}</span>
           <template v-if="item.status === 'done' && item.outSize !== undefined">
             <Icon name="mdi:arrow-right" size="12" aria-hidden="true" />
-            <span class="text-slate-700 dark:text-slate-200">{{ formatBytes(item.outSize) }}</span>
+            <span class="text-fg">{{ formatBytes(item.outSize) }}</span>
             <span
-              class="rounded-full px-1.5 py-0.5 font-medium"
+              class="px-1.5 py-0.5 font-medium"
               :class="savingsPercent(item.originalSize, item.outSize) >= 0
-                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                ? 'bg-ok/10 text-ok'
                 : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'"
             >
               {{ savingsPercent(item.originalSize, item.outSize) >= 0
@@ -649,7 +649,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 
         <p
           v-if="item.status === 'done' && item.profileName"
-          class="mt-1 flex items-center gap-1 text-[11px] text-slate-400 truncate"
+          class="mt-1 flex items-center gap-1 text-micro text-slate-400 truncate"
           :title="`${item.profileName}${item.colorNote ? ` — ${item.colorNote}` : ''}`"
         >
           <Icon name="mdi:palette-outline" size="12" class="shrink-0" aria-hidden="true" />
@@ -664,7 +664,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
           <button
             v-if="item.status === 'done'"
             type="button"
-            class="inline-flex items-center gap-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-2.5 py-1.5 text-xs font-medium hover:opacity-90 hover:cursor-pointer"
+            class="inline-flex items-center gap-1 bg-fg text-bg px-2.5 py-1.5 text-xs font-medium hover:opacity-90 hover:cursor-pointer"
             @click="downloadItem(item)"
           >
             <Icon name="mdi:download" size="14" aria-hidden="true" />
@@ -678,35 +678,35 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     </div>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Converting images in your browser, explained
       </h2>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         How does this image converter work?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         It converts images between <strong>PNG</strong>, <strong>JPEG</strong>, and <strong>WebP</strong> entirely
         on your device. Each file is decoded and re-encoded locally with the browser's
         <strong>Canvas API</strong> — the images are <em>never uploaded to a server</em>. Pick a target format,
         add one or many files, and download them individually or all at once as a ZIP.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Are my images private?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Yes. Because conversion happens in the browser, nothing is sent anywhere — no upload, no account, no
         server-side processing. The files stay on your machine for the whole conversion, which makes the tool
         suitable for sensitive or unreleased images.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Which formats and options are supported?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         You can convert between PNG, JPEG, and WebP in any direction. A quality slider tunes the trade-off between
         file size and fidelity for the lossy formats (JPEG and WebP); PNG is lossless, so the slider is hidden when
         it is selected. JPEG output paints a white background so transparent areas don't turn black. Animated
@@ -714,20 +714,20 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
         cannot encode GIF, so converting one would silently break it.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         How are ICC color profiles handled?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Wide-gamut images are color-managed with Little CMS. <strong>Convert to sRGB</strong> maps Display P3,
         Adobe RGB, and similar profiles to standard sRGB so colors stay accurate on the web. <strong>Preserve
           original</strong> re-embeds the source profile — JPEG via APP2, PNG via iCCP. WebP can't embed a profile,
         so it falls back to sRGB.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Can I batch-convert many images?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Yes. Drop, click, or paste any number of files and they run through a sequential queue with a per-file
         status. Each card shows the size before and after conversion, and you can download results one by one or
         bundle them all with <strong>Download all (ZIP)</strong>. There is no hard file-size or count limit — the
@@ -736,14 +736,14 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
+
 /**
  * The one button. `primary` is the accent parallelogram (one per view),
  * `secondary` the outlined parallelogram, `ghost` a quiet action, `link` plain
@@ -8,7 +10,7 @@
 const props = withDefaults(defineProps<{
   variant?: 'primary' | 'secondary' | 'ghost' | 'link'
   size?: 'sm' | 'md'
-  to?: string
+  to?: RouteLocationRaw
   /** For a NuxtLink to an external URL. */
   target?: string
   type?: 'button' | 'submit'

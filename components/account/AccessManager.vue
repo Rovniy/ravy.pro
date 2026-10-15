@@ -77,20 +77,20 @@ onMounted(load)
 </script>
 
 <template>
-  <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900">
+  <section class="border border-line p-6 bg-panel">
     <div class="flex items-center justify-between gap-3">
       <div>
-        <h2 class="text-xl font-semibold text-slate-900 dark:text-slate-100">
+        <h2 class="text-xl font-semibold text-fg">
           Access management
         </h2>
-        <p class="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-0.5 text-sm text-fg-muted">
           Grant gated tools to specific people by email. You always have full access.
         </p>
       </div>
       <button
         type="button"
         :disabled="loading"
-        class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised disabled:opacity-50 hover:cursor-pointer"
         @click="load"
       >
         <Icon :name="loading ? 'svg-spinners:180-ring' : 'mdi:refresh'" size="14" />
@@ -104,11 +104,11 @@ onMounted(load)
         v-model="newEmail"
         type="email"
         placeholder="person@example.com"
-        class="flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+        class="flex-1 border border-line-strong bg-panel px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
       >
       <button
         type="submit"
-        class="inline-flex items-center justify-center gap-1.5 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="inline-flex items-center justify-center gap-1.5 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
       >
         <Icon name="mdi:account-plus-outline" class="w-4 h-4" />
         Add
@@ -126,13 +126,13 @@ onMounted(load)
       No accounts yet. Add an email above to grant access.
     </div>
 
-    <ul v-else class="mt-4 divide-y divide-slate-200 dark:divide-slate-800">
+    <ul v-else class="mt-4 divide-y divide-line">
       <li v-for="account in accounts" :key="account.email" class="py-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="min-w-0">
-          <p class="font-medium text-slate-900 dark:text-slate-100 truncate">
+          <p class="font-medium text-fg truncate">
             {{ account.email }}
           </p>
-          <p class="text-xs" :class="account.hasSignedIn ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'">
+          <p class="text-xs" :class="account.hasSignedIn ? 'text-ok' : 'text-slate-400'">
             {{ account.hasSignedIn ? 'Has signed in' : 'Not signed in yet' }}
           </p>
         </div>
@@ -141,12 +141,12 @@ onMounted(load)
           <label
             v-for="tool in tools"
             :key="tool.key"
-            class="inline-flex items-center gap-1.5 text-sm text-slate-700 dark:text-slate-200 hover:cursor-pointer"
+            class="inline-flex items-center gap-1.5 text-sm text-fg hover:cursor-pointer"
           >
             <input
               type="checkbox"
               :checked="(draft[account.email] ?? []).includes(tool.key)"
-              class="rounded border-slate-300 dark:border-slate-600 text-accent-500 focus:ring-accent-500/60"
+              class="border-line-strong text-accent-500 focus:ring-accent-500/60"
               @change="toggle(account.email, tool.key)"
             >
             {{ tool.name }}
@@ -154,7 +154,7 @@ onMounted(load)
           <button
             type="button"
             :disabled="!isDirty(account) || savingEmail === account.email"
-            class="inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer"
+            class="inline-flex items-center gap-1.5 border border-line-strong px-3 py-1.5 text-sm hover:bg-panel-raised disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer"
             @click="save(account.email)"
           >
             <Icon :name="savingEmail === account.email ? 'svg-spinners:180-ring' : 'mdi:content-save-outline'" size="14" />

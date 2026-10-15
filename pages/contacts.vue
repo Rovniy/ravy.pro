@@ -57,7 +57,7 @@ defineOgImage('Blog', {
 </script>
 
 <template>
-  <div class="text-slate-600 dark:text-slate-300">
+  <div class="text-fg-muted">
     <div class="container max-w-md mx-auto px-6 py-14">
       <div class="flex flex-col items-center text-center">
         <NuxtImg
@@ -65,12 +65,12 @@ defineOgImage('Blog', {
           :alt="baseData.me.name"
           width="96"
           height="96"
-          class="w-24 h-24 rounded-full object-cover ring-2 ring-accent-500/40 shadow-md"
+          class="w-24 h-24 object-cover ring-2 ring-accent-500/40"
         />
-        <h1 class="mt-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 class="mt-4 text-3xl font-display font-extrabold uppercase text-fg leading-none">
           {{ baseData.me.name }}
         </h1>
-        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-1 text-sm text-fg-muted">
           {{ contactsPage.content.description }}
         </p>
       </div>
@@ -83,23 +83,23 @@ defineOgImage('Blog', {
             :target="isExternal(item.href) ? '_blank' : undefined"
             :rel="isExternal(item.href) ? 'noopener' : undefined"
             :style="{ '--brand': item.brand }"
-            class="group flex items-center gap-4 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 bg-linear-to-r from-(--brand)/10 to-transparent to-65% p-4 shadow-sm hover:border-(--brand)/60 hover:shadow-md hover:shadow-(color:--brand)/20 transition-all"
+            class="group flex items-center gap-4 border border-line bg-panel border-l-4 border-l-(--brand) p-4 hover:border-(--brand) transition-colors"
             @click="track('contact_click', { method: item.method })"
           >
             <span
               :style="{ background: item.brandGradient || item.brand }"
-              class="flex items-center justify-center w-10 h-10 shrink-0 rounded-full text-white ring-1 ring-black/10 dark:ring-white/15 shadow-sm group-hover:scale-105 transition-transform"
+              class="flex items-center justify-center w-10 h-10 shrink-0 text-white ring-1 ring-line transition-transform"
             >
               <Icon :name="item.icon" size="20" aria-hidden="true" />
             </span>
             <span class="min-w-0 flex-1">
-              <span class="block text-sm font-semibold text-slate-900 dark:text-slate-100">{{ item.name }}</span>
-              <span class="block truncate text-sm text-slate-500 dark:text-slate-400 group-hover:text-(--brand) transition-colors">{{ item.handle }}</span>
+              <span class="block text-sm font-semibold text-fg">{{ item.name }}</span>
+              <span class="block truncate text-sm text-fg-muted group-hover:text-(--brand) transition-colors">{{ item.handle }}</span>
             </span>
             <Icon
               name="mdi:open-in-new"
               size="16"
-              class="shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-(--brand) transition-colors"
+              class="shrink-0 text-fg-subtle group-hover:text-(--brand) transition-colors"
               aria-hidden="true"
             />
           </a>
@@ -108,18 +108,18 @@ defineOgImage('Blog', {
             v-else
             type="button"
             :style="{ '--brand': item.brand }"
-            class="group flex w-full items-center gap-4 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 bg-linear-to-r from-(--brand)/10 to-transparent to-65% p-4 text-left shadow-sm hover:border-(--brand)/60 hover:shadow-md hover:shadow-(color:--brand)/20 transition-all"
+            class="group flex w-full items-center gap-4 border border-line bg-panel border-l-4 border-l-(--brand) p-4 text-left hover:border-(--brand) transition-colors"
             @click="copyHandle(item)"
           >
             <span
               :style="{ background: item.brandGradient || item.brand }"
-              class="flex items-center justify-center w-10 h-10 shrink-0 rounded-full text-white ring-1 ring-black/10 dark:ring-white/15 shadow-sm group-hover:scale-105 transition-transform"
+              class="flex items-center justify-center w-10 h-10 shrink-0 text-white ring-1 ring-line transition-transform"
             >
               <Icon :name="item.icon" size="20" aria-hidden="true" />
             </span>
             <span class="min-w-0 flex-1">
-              <span class="block text-sm font-semibold text-slate-900 dark:text-slate-100">{{ item.name }}</span>
-              <span class="block truncate text-sm text-slate-500 dark:text-slate-400 group-hover:text-(--brand) transition-colors">{{ item.handle }}</span>
+              <span class="block text-sm font-semibold text-fg">{{ item.name }}</span>
+              <span class="block truncate text-sm text-fg-muted group-hover:text-(--brand) transition-colors">{{ item.handle }}</span>
             </span>
             <span
               v-if="copiedName === item.name"
@@ -129,7 +129,7 @@ defineOgImage('Blog', {
               v-else
               name="mdi:content-copy"
               size="16"
-              class="shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-(--brand) transition-colors"
+              class="shrink-0 text-fg-subtle group-hover:text-(--brand) transition-colors"
               aria-hidden="true"
             />
           </button>

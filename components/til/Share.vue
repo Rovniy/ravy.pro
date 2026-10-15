@@ -36,7 +36,7 @@ async function copyLink() {
     <span class="eyebrow mr-1">Share</span>
     <button
       type="button"
-      class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors hover:cursor-pointer"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-line text-fg-muted hover:border-accent-400 hover:text-accent-ink transition-colors hover:cursor-pointer"
       @click="copyLink"
     >
       <Icon :name="copied ? 'mdi:check' : 'mdi:link-variant'" size="14" aria-hidden="true" />
@@ -46,7 +46,7 @@ async function copyLink() {
       :href="linkedin"
       target="_blank"
       rel="noopener"
-      class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-line text-fg-muted hover:border-accent-400 hover:text-accent-ink transition-colors"
       @click="track(EVENTS.TIL_SHARE, { slug, network: 'linkedin' })"
     >
       <Icon name="fa:linkedin" size="14" aria-hidden="true" />
@@ -56,7 +56,7 @@ async function copyLink() {
       :href="x"
       target="_blank"
       rel="noopener"
-      class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+      class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-line text-fg-muted hover:border-accent-400 hover:text-accent-ink transition-colors"
       @click="track(EVENTS.TIL_SHARE, { slug, network: 'x' })"
     >
       <Icon name="fa:twitter" size="14" aria-hidden="true" />

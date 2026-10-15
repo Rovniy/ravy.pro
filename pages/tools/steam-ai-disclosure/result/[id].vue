@@ -206,7 +206,7 @@ onBeforeUnmount(stopPolling)
     </NuxtLink>
 
     <!-- Load / auth error -->
-    <div v-if="loadError" class="mt-6 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 p-6">
+    <div v-if="loadError" class="mt-6 border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 p-6">
       <h1 class="text-xl font-bold text-rose-700 dark:text-rose-300 flex items-center gap-2">
         <Icon name="mdi:alert-circle-outline" class="w-6 h-6" /> Can't open this result
       </h1>
@@ -216,7 +216,7 @@ onBeforeUnmount(stopPolling)
     </div>
 
     <!-- Generation error — payment is safe, offer a free retry -->
-    <div v-else-if="isError" class="mt-6 rounded-xl border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-6">
+    <div v-else-if="isError" class="mt-6 border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-6">
       <h1 class="text-xl font-bold text-amber-800 dark:text-amber-200 flex items-center gap-2">
         <Icon name="mdi:wrench-outline" class="w-6 h-6" /> Generation hit a snag
       </h1>
@@ -227,7 +227,7 @@ onBeforeUnmount(stopPolling)
       <button
         type="button"
         :disabled="retrying"
-        class="mt-4 inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition"
+        class="mt-4 inline-flex items-center gap-2 bg-fg text-bg px-5 py-2.5 font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition"
         @click="retry"
       >
         <Icon :name="retrying ? 'svg-spinners:180-ring' : 'mdi:refresh'" class="w-5 h-5" />
@@ -239,26 +239,26 @@ onBeforeUnmount(stopPolling)
     </div>
 
     <!-- Loading / generating -->
-    <div v-else-if="initialLoading || isGenerating" class="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 text-center">
+    <div v-else-if="initialLoading || isGenerating" class="mt-6 border border-line bg-panel p-8 text-center">
       <Icon name="svg-spinners:180-ring" class="w-10 h-10 mx-auto text-accent-500" />
-      <h1 class="mt-4 text-xl font-bold text-slate-900 dark:text-slate-100">
+      <h1 class="mt-4 text-xl font-bold text-fg">
         {{ status === 'awaiting_payment' ? 'Confirming your payment…' : 'Writing your disclosure pack…' }}
       </h1>
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-1 text-sm text-fg-muted">
         {{ record?.step || 'This usually takes a few seconds.' }}
       </p>
-      <div v-if="record" class="mt-5 max-w-xs mx-auto h-2 rounded bg-slate-200 dark:bg-slate-800 overflow-hidden">
+      <div v-if="record" class="mt-5 max-w-xs mx-auto h-2 bg-panel-raised overflow-hidden">
         <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${record.progress}%` }" />
       </div>
 
-      <div v-if="slowGenerating" class="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800">
-        <p class="text-sm text-slate-500 dark:text-slate-400">
+      <div v-if="slowGenerating" class="mt-6 pt-5 border-t border-line">
+        <p class="text-sm text-fg-muted">
           Taking longer than usual. Your payment is safe — you can retry without being charged again.
         </p>
         <button
           type="button"
           :disabled="retrying"
-          class="mt-3 inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 hover:cursor-pointer transition"
+          class="mt-3 inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm hover:bg-panel-raised disabled:opacity-50 hover:cursor-pointer transition"
           @click="retry"
         >
           <Icon :name="retrying ? 'svg-spinners:180-ring' : 'mdi:refresh'" class="w-4 h-4" />
@@ -270,27 +270,27 @@ onBeforeUnmount(stopPolling)
     <!-- Done -->
     <div v-else-if="isDone && record && record.result" class="mt-6 space-y-6">
       <header>
-        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-          <Icon name="mdi:check-decagram" class="w-7 h-7 text-emerald-500" />
+        <h1 class="text-3xl sm:text-4xl font-display font-extrabold uppercase text-fg flex items-center gap-2.5 leading-none">
+          <Icon name="mdi:check-decagram" class="w-7 h-7 text-ok" />
           Your disclosure pack is ready
         </h1>
-        <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-1.5 text-sm text-fg-muted">
           Copy each block into the matching Steamworks field, then download your dated protocol.
         </p>
       </header>
 
       <!-- Save your link -->
-      <div class="rounded-xl border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
         <Icon name="mdi:bookmark-outline" class="w-5 h-5 text-accent-500 shrink-0" />
-        <p class="text-sm text-slate-600 dark:text-slate-300 flex-1">
+        <p class="text-sm text-fg-muted flex-1">
           Save this private link to return to your pack anytime — we also emailed it to you.
         </p>
         <button
           type="button"
-          class="shrink-0 inline-flex items-center justify-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer transition"
+          class="shrink-0 inline-flex items-center justify-center gap-1.5 border border-line-strong bg-panel px-3 py-1.5 text-sm hover:bg-panel-raised hover:cursor-pointer transition"
           @click="copyLink"
         >
-          <Icon :name="copiedLink ? 'mdi:check' : 'mdi:link-variant'" class="w-4 h-4" :class="copiedLink ? 'text-emerald-500' : ''" />
+          <Icon :name="copiedLink ? 'mdi:check' : 'mdi:link-variant'" class="w-4 h-4" :class="copiedLink ? 'text-ok' : ''" />
           {{ copiedLink ? 'Link copied' : 'Copy link' }}
         </button>
       </div>

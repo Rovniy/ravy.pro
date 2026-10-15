@@ -76,31 +76,27 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
 <template>
   <header
     ref="headerRef"
-    class="fixed inset-x-0 top-0 z-10 px-4 sm:px-6 pt-3"
+    class="fixed inset-x-0 top-0 z-10 bg-bg border-b transition-colors duration-300"
+    :class="scrolled ? 'border-line-strong' : 'border-line'"
   >
-    <div
-      class="flex px-4 sm:px-5 container max-w-5xl justify-between mx-auto items-center rounded-2xl border backdrop-blur-xl transition-all duration-300"
-      :class="scrolled
-        ? 'py-2 bg-white/85 dark:bg-slate-950/85 border-slate-200/70 dark:border-white/10 shadow-lg shadow-slate-950/5 dark:shadow-black/20'
-        : 'py-2.5 bg-white/70 dark:bg-slate-950/70 border-slate-200/60 dark:border-white/5 shadow-sm shadow-slate-950/5'"
-    >
+    <LayoutContainer class="flex h-[var(--header-h)] justify-between items-center">
       <ul class="flex items-baseline space-x-5">
-        <li class="text-base lg:text-2xl font-bold">
-          <NuxtLink to="/" class="nav-link nav-brand inline-flex items-center gap-2.5" @click="navClick('home')">
-            <span class="logo-dot w-2 h-2 rounded-full bg-gradient-to-br from-accent-400 to-emerald-500 shadow-[0_0_8px] shadow-accent-400/60" aria-hidden="true" />
+        <li class="font-display font-extrabold italic uppercase text-2xl lg:text-3xl leading-none">
+          <NuxtLink to="/" class="nav-link nav-brand inline-flex items-center gap-2.5 text-fg" @click="navClick('home')">
+            <span class="w-3 h-5 bg-accent -skew-x-10" aria-hidden="true" />
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
       </ul>
 
-      <ul class="flex items-center space-x-3 lg:space-x-6 text-sm lg:text-lg font-semibold">
+      <ul class="flex items-center space-x-3 lg:space-x-6 font-display font-bold uppercase tracking-[0.06em] text-base lg:text-lg">
         <li class="hidden lg:block">
-          <NuxtLink to="/blogs" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs')">
+          <NuxtLink to="/blogs" class="nav-link hover:text-fg" @click="navClick('blogs')">
             Blogs
           </NuxtLink>
         </li>
         <li class="hidden lg:block">
-          <NuxtLink to="/til" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" title="Today I Learned: short notes" @click="navClick('til')">
+          <NuxtLink to="/til" class="nav-link hover:text-fg" title="Today I Learned: short notes" @click="navClick('til')">
             TIL
           </NuxtLink>
         </li>
@@ -108,17 +104,17 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           <MainToolsMenu />
         </li>
         <li class="hidden lg:block">
-          <NuxtLink to="/projects" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('projects')">
+          <NuxtLink to="/projects" class="nav-link hover:text-fg" @click="navClick('projects')">
             Projects
           </NuxtLink>
         </li>
         <li class="hidden lg:block">
-          <NuxtLink to="/services" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('services')">
+          <NuxtLink to="/services" class="nav-link hover:text-fg" @click="navClick('services')">
             Services
           </NuxtLink>
         </li>
         <li class="hidden lg:block" title="About Me">
-          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about')">
+          <NuxtLink to="/about" aria-label="About me" class="nav-link hover:text-fg" @click="navClick('about')">
             About
           </NuxtLink>
         </li>
@@ -137,7 +133,7 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           <button
             ref="mobileToggleRef"
             type="button"
-            class="inline-flex items-center justify-center w-11 h-11 -my-1 -mr-3 hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
+            class="inline-flex items-center justify-center w-11 h-11 -my-1 -mr-3 hover:text-fg hover:cursor-pointer"
             :aria-expanded="isMobileOpen"
             aria-controls="mobile-nav"
             aria-label="Toggle navigation menu"
@@ -147,7 +143,7 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
           </button>
         </li>
       </ul>
-    </div>
+    </LayoutContainer>
 
     <Transition
       enter-active-class="transition duration-200 ease-out"
@@ -161,41 +157,41 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
         v-if="isMobileOpen"
         id="mobile-nav"
         ref="mobileNavRef"
-        class="lg:hidden absolute left-4 right-4 sm:left-6 sm:right-6 top-full mt-2 rounded-2xl overflow-hidden bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border border-slate-200/70 dark:border-white/10 shadow-xl shadow-slate-950/10 dark:shadow-black/30"
+        class="lg:hidden absolute inset-x-0 top-full overflow-hidden bg-panel border-b border-line-strong"
         aria-label="Mobile navigation"
         @keydown="onMobileNavKeydown"
       >
-        <ul class="px-6 py-3 flex flex-col text-base font-semibold max-h-[calc(100dvh-7rem)] overflow-y-auto overscroll-contain">
+        <ul class="px-6 py-3 flex flex-col font-display font-bold uppercase tracking-[0.06em] text-lg max-h-[calc(100dvh-var(--header-h))] overflow-y-auto overscroll-contain">
           <li>
-            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('blogs', 'mobile')">
+            <NuxtLink to="/blogs" class="nav-link block py-3 hover:text-fg" @click="navClick('blogs', 'mobile')">
               Blogs
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/til" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('til', 'mobile')">
+            <NuxtLink to="/til" class="nav-link block py-3 hover:text-fg" @click="navClick('til', 'mobile')">
               TIL notes
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/projects" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('projects', 'mobile')">
+            <NuxtLink to="/projects" class="nav-link block py-3 hover:text-fg" @click="navClick('projects', 'mobile')">
               Projects
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/services" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('services', 'mobile')">
+            <NuxtLink to="/services" class="nav-link block py-3 hover:text-fg" @click="navClick('services', 'mobile')">
               Services
             </NuxtLink>
           </li>
           <li>
-            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick('about', 'mobile')">
+            <NuxtLink to="/about" aria-label="About me" class="nav-link block py-3 hover:text-fg" @click="navClick('about', 'mobile')">
               About me
             </NuxtLink>
           </li>
-          <li class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <li class="mt-2 pt-3 border-t border-line font-spacemono font-normal text-micro tracking-[0.12em] text-fg-subtle">
             Tools
           </li>
           <li v-for="item in publicServices" :key="item.path">
-            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick(item.path, 'mobile')">
+            <NuxtLink :to="item.path" class="nav-link block py-3 hover:text-fg" @click="navClick(item.path, 'mobile')">
               {{ item.name }}
             </NuxtLink>
           </li>
@@ -204,9 +200,9 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
                Access management itself lives on /account (Access tab). -->
           <ClientOnly>
             <li v-for="item in accessibleServices" :key="item.path">
-              <NuxtLink :to="item.path" class="nav-link flex items-center gap-2 py-3 hover:text-accent-600 dark:hover:text-accent-400" @click="navClick(item.path, 'mobile')">
+              <NuxtLink :to="item.path" class="nav-link flex items-center gap-2 py-3 hover:text-fg" @click="navClick(item.path, 'mobile')">
                 {{ item.name }}
-                <span class="font-spacemono text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">private</span>
+                <span class="font-spacemono text-micro uppercase tracking-wider text-fg-subtle">private</span>
               </NuxtLink>
             </li>
           </ClientOnly>
@@ -222,7 +218,9 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
 @reference "../../assets/css/tailwind.css";
 
 .nav-link {
-  @apply relative rounded-sm transition-colors;
+  position: relative;
+  color: var(--ui-fg-muted);
+  transition: color 0.15s;
 }
 
 .nav-link:focus {
@@ -234,55 +232,40 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
 }
 
 .nav-link.router-link-active {
-  @apply text-accent-600 dark:text-accent-400;
+  color: var(--ui-fg);
 }
 
-/* Animated gradient underline — grows from the left on hover, stays on the
-   exact-active link. The brand link opts out (a logo doesn't carry nav state). */
+/* Active/hover marker: a slanted accent bar that wipes in from the left.
+   The brand link opts out (a logo doesn't carry nav state). */
 .nav-link:not(.nav-brand)::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -2px;
-  height: 2px;
+  bottom: -6px;
+  height: 3px;
   width: 100%;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, var(--color-accent-500), var(--color-emerald-400));
-  transform: scaleX(0);
+  background: var(--ui-accent);
+  transform: skewX(var(--skew)) scaleX(0);
   transform-origin: left;
-  transition: transform 0.3s var(--ease-expo);
+  transition: transform 0.25s var(--ease-expo);
 }
 @media (hover: hover) {
   .nav-link:not(.nav-brand):hover::after {
-    transform: scaleX(1);
+    transform: skewX(var(--skew)) scaleX(1);
   }
 }
 .nav-link:not(.nav-brand).router-link-exact-active::after {
-  transform: scaleX(1);
+  transform: skewX(var(--skew)) scaleX(1);
 }
 
-/* In the mobile sheet links are full-width block rows — a full-width bar reads
-   as a divider, so shrink the underline to a short accent tick instead. */
+/* In the mobile sheet links are full-width block rows: a full-width bar reads
+   as a divider, so shrink the marker to a short tick instead. */
 #mobile-nav .nav-link::after {
   width: 2.25rem;
   bottom: 0.45rem;
 }
 
-/* The brand dot breathes — a slow glow pulse that signals "live" without
-   demanding attention. */
-@media (prefers-reduced-motion: no-preference) {
-  .logo-dot {
-    animation: logo-breathe 4s ease-in-out infinite;
-  }
-}
-@keyframes logo-breathe {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 8px color-mix(in oklab, var(--color-accent-400) 60%, transparent);
-  }
-  50% {
-    transform: scale(1.25);
-    box-shadow: 0 0 14px color-mix(in oklab, var(--color-accent-400) 90%, transparent);
-  }
+.nav-brand {
+  color: var(--ui-fg);
 }
 </style>

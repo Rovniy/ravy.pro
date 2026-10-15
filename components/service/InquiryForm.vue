@@ -101,29 +101,29 @@ async function submit() {
   }
 }
 
-const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2.5 text-base text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 disabled:opacity-60'
+const fieldClasses = 'w-full border border-line-strong bg-panel px-4 py-2.5 text-base text-fg placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 disabled:opacity-60'
 </script>
 
 <template>
-  <div class="rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-6 sm:p-8">
+  <div class="border border-line bg-panel p-6 sm:p-8">
     <!-- Success replaces the form entirely: no duplicate sends, and no
          "did that actually work?" ambiguity. -->
-    <div v-if="status === 'success'" class="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-6">
-      <p class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100">
-        <Icon name="mdi:check-circle-outline" class="w-5 h-5 text-emerald-500" aria-hidden="true" />
+    <div v-if="status === 'success'" class="border border-ok/30 bg-ok/5 p-6">
+      <p class="flex items-center gap-2 text-lg font-bold text-fg">
+        <Icon name="mdi:check-circle-outline" class="w-5 h-5 text-ok" aria-hidden="true" />
         Got it. I'll reply within 24 hours.
       </p>
-      <p class="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+      <p class="mt-2 text-sm leading-relaxed text-fg-muted">
         I read every inquiry myself, so the answer comes from me and not a template. If it's faster for you, message me on Telegram and mention your name — I'll match it to this form.
       </p>
-      <p class="mt-4 font-spacemono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+      <p class="mt-4 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
         Sent · {{ selectedLabel }} · reply in 24 h
       </p>
       <a
         :href="telegramHref"
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-5 inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+        class="mt-5 inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-ink transition-colors"
       >
         <Icon name="fa:telegram" class="w-4 h-4" aria-hidden="true" />
         Message on Telegram
@@ -131,13 +131,13 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
     </div>
 
     <template v-else>
-      <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="text-2xl font-bold tracking-tight text-fg">
         {{ props.heading }}
       </h2>
-      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-fg-muted">
         {{ props.lede }}
       </p>
-      <p v-if="props.facts?.length" class="mt-3 font-spacemono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+      <p v-if="props.facts?.length" class="mt-3 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
         <template v-for="(fact, i) in props.facts" :key="fact">
           <span v-if="i > 0" class="text-accent-500" aria-hidden="true"> · </span>{{ fact }}
         </template>
@@ -145,7 +145,7 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
 
       <form class="mt-6 max-w-xl space-y-4" @submit.prevent="submit">
         <div v-if="!props.lockService">
-          <label for="inquiry-service" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          <label for="inquiry-service" class="block text-sm font-medium text-fg-muted mb-1.5">
             What this is about
           </label>
           <select id="inquiry-service" v-model="selected" :class="fieldClasses" :disabled="status === 'loading'">
@@ -154,12 +154,12 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
             </option>
           </select>
         </div>
-        <p v-else class="font-spacemono text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
-          Inquiry about: <span class="text-accent-600 dark:text-accent-400">{{ selectedLabel }}</span>
+        <p v-else class="font-spacemono text-micro uppercase tracking-wider text-fg-muted">
+          Inquiry about: <span class="text-accent-ink">{{ selectedLabel }}</span>
         </p>
 
         <div>
-          <label for="inquiry-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          <label for="inquiry-name" class="block text-sm font-medium text-fg-muted mb-1.5">
             Your name
           </label>
           <input
@@ -175,7 +175,7 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
         </div>
 
         <div>
-          <label for="inquiry-contact" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          <label for="inquiry-contact" class="block text-sm font-medium text-fg-muted mb-1.5">
             Where should I reply
           </label>
           <input
@@ -189,13 +189,13 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
             :disabled="status === 'loading'"
             :class="fieldClasses"
           >
-          <p id="inquiry-contact-hint" class="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <p id="inquiry-contact-hint" class="mt-1.5 text-xs text-fg-muted">
             Telegram, WhatsApp, or email. Whichever you actually read.
           </p>
         </div>
 
         <div>
-          <label for="inquiry-message" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          <label for="inquiry-message" class="block text-sm font-medium text-fg-muted mb-1.5">
             Where you are right now <span class="text-slate-400 font-normal">(optional)</span>
           </label>
           <textarea
@@ -222,16 +222,16 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
           class="absolute -left-[9999px] w-px h-px opacity-0"
         >
 
-        <label class="flex items-start gap-2.5 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+        <label class="flex items-start gap-2.5 text-xs leading-relaxed text-fg-muted">
           <input
             v-model="consent"
             type="checkbox"
-            class="mt-0.5 h-4 w-4 shrink-0 rounded-sm border-slate-300 dark:border-slate-600 text-accent-600 focus:ring-2 focus:ring-accent-500/60"
+            class="mt-0.5 h-4 w-4 shrink-0 border-line-strong text-accent-600 focus:ring-2 focus:ring-accent-500/60"
             :disabled="status === 'loading'"
           >
           <span>
             I agree that Andrei Rovnyi (XPLOIT FZE) may use the contact details above to reply to this inquiry, as described in the
-            <NuxtLink to="/docs/privacy-policy" class="underline decoration-slate-400/50 hover:text-accent-600 dark:hover:text-accent-400">Privacy Policy</NuxtLink>.
+            <NuxtLink to="/docs/privacy-policy" class="underline decoration-slate-400/50 hover:text-accent-ink">Privacy Policy</NuxtLink>.
           </span>
         </label>
 
@@ -255,14 +255,14 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
             :href="telegramHref"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+            class="inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-ink transition-colors"
           >
             <Icon name="fa:telegram" class="w-4 h-4" aria-hidden="true" />
             Message on Telegram instead
           </a>
         </div>
 
-        <p class="text-xs text-slate-500 dark:text-slate-400">
+        <p class="text-xs text-fg-muted">
           No newsletter, no shared data, and no calls unless you ask for one.
         </p>
       </form>

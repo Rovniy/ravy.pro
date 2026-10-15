@@ -58,7 +58,7 @@ function ratingFor(path: string) {
 </script>
 
 <template>
-  <div class="text-slate-600 dark:text-slate-300">
+  <div class="text-fg-muted">
     <MainHero />
 
     <!--
@@ -69,111 +69,98 @@ function ratingFor(path: string) {
     -->
     <MainServices />
 
-    <div class="container max-w-5xl mx-auto">
+    <LayoutContainer>
       <LazyMainRecent hydrate-on-visible />
 
       <!-- Newest TIL notes; renders nothing until the first one is published. -->
       <LazyMainTil hydrate-on-visible />
 
-      <section class="py-14 px-6">
-        <UiSectionHeader eyebrow="Utilities" title="Tools" />
+      <section class="py-14">
+        <UiSectionHeader eyebrow="Utilities" title="Tools" to="/tools" link-label="All tools" />
 
         <!-- Two content tiers, two visual weights. Flagship products lead as
-             rich cards (audience chip, full pitch, pricing facts, verb CTA);
-             quick utilities follow as a compact grab-and-go strip. -->
+             rich cards (audience tag, full pitch, facts, verb CTA); quick
+             utilities follow as a compact grab-and-go strip. -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <NuxtLink
-            v-for="(tool, i) in featuredTools"
+          <UiCard
+            v-for="tool in featuredTools"
             :key="tool.path"
-            v-spotlight
-            v-reveal="i * 90"
             :to="tool.path"
-            class="group relative flex flex-col rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-400 dark:hover:border-accent-500/60 hover:shadow-lg hover:shadow-accent-500/10"
             @click="trackCta(tool.path, 'home_tools')"
           >
             <div class="flex items-start justify-between gap-4">
-              <span class="grid place-items-center w-12 h-12 rounded-xl bg-accent-50 text-accent-600 ring-1 ring-accent-100 dark:bg-accent-950/50 dark:text-accent-400 dark:ring-accent-900/60 transition-transform duration-300 ease-expo motion-safe:group-hover:scale-110 motion-safe:group-hover:-rotate-3">
+              <span class="grid place-items-center w-12 h-12 bg-panel-raised text-accent-ink border border-line">
                 <Icon :name="tool.icon" class="w-6 h-6" aria-hidden="true" />
               </span>
-              <span
-                v-if="tool.tag"
-                class="mt-0.5 shrink-0 rounded-full border border-slate-200 dark:border-slate-700 px-2.5 py-1 font-spacemono text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400"
-              >
+              <UiTag v-if="tool.tag" tone="accent">
                 {{ tool.tag }}
-              </span>
+              </UiTag>
             </div>
 
             <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1">
-              <p class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">
+              <p class="font-display font-extrabold uppercase text-3xl leading-none text-fg">
                 {{ tool.name }}
               </p>
               <ToolRatingBadge :summary="ratingFor(tool.path)" />
             </div>
 
-            <p class="mt-2 grow text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+            <p class="mt-3 grow text-sm leading-relaxed text-fg-muted">
               {{ tool.blurb }}
             </p>
 
-            <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              <span v-if="tool.meta" class="font-spacemono text-[11px] text-slate-500 dark:text-slate-400">
+            <div class="mt-5 pt-4 border-t border-line flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <span v-if="tool.meta" class="font-spacemono text-micro text-fg-subtle">
                 {{ tool.meta }}
               </span>
-              <span class="inline-flex items-center gap-1 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400">
+              <span class="inline-flex items-center gap-1 font-display font-bold text-base uppercase tracking-[0.06em] text-accent-ink">
                 {{ tool.action || 'Open' }}
-                <Icon name="mdi:arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+                <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
               </span>
             </div>
-          </NuxtLink>
+          </UiCard>
         </div>
 
-        <p class="eyebrow mt-8 mb-3">
+        <p class="mt-8 mb-3 font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle">
           Quick utilities
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <NuxtLink
-            v-for="(tool, i) in quickTools"
+          <UiCard
+            v-for="tool in quickTools"
             :key="tool.path"
-            v-spotlight
-            v-reveal="(i % 4) * 70"
             :to="tool.path"
-            class="group relative flex items-start gap-3.5 rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white dark:bg-slate-900 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-400 dark:hover:border-accent-500/60 hover:shadow-lg hover:shadow-accent-500/10"
+            cut="sm"
+            padding="sm"
             @click="trackCta(tool.path, 'home_tools')"
           >
-            <span class="shrink-0 grid place-items-center w-10 h-10 rounded-xl bg-accent-50 text-accent-600 ring-1 ring-accent-100 dark:bg-accent-950/50 dark:text-accent-400 dark:ring-accent-900/60 transition-transform duration-300 ease-expo motion-safe:group-hover:scale-110 motion-safe:group-hover:-rotate-3">
-              <Icon :name="tool.icon" class="w-5 h-5" aria-hidden="true" />
+            <span class="flex items-center gap-3">
+              <Icon :name="tool.icon" class="w-5 h-5 shrink-0 text-accent-ink" aria-hidden="true" />
+              <span class="min-w-0 flex-1 font-semibold text-fg truncate">{{ tool.name }}</span>
             </span>
-            <span class="min-w-0 flex-1">
-              <span class="flex items-center justify-between gap-2">
-                <span class="font-semibold text-slate-900 dark:text-slate-100 truncate">{{ tool.name }}</span>
-                <Icon name="mdi:arrow-right" class="w-4 h-4 shrink-0 text-slate-300 dark:text-slate-600 group-hover:text-accent-500 transition-all duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
-              </span>
-              <ToolRatingBadge :summary="ratingFor(tool.path)" class="mt-0.5" />
-              <span class="mt-1 block text-xs leading-relaxed text-slate-500 dark:text-slate-400 line-clamp-2">{{ tool.blurb }}</span>
-            </span>
-          </NuxtLink>
+            <ToolRatingBadge :summary="ratingFor(tool.path)" class="mt-1.5" />
+            <span class="mt-1.5 block text-xs leading-relaxed text-fg-muted line-clamp-2">{{ tool.blurb }}</span>
+          </UiCard>
         </div>
 
         <!-- Suggest-a-tool: a slim full-width strip, not a fake tool card. -->
         <a
-          v-reveal
           :href="suggestToolUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="group mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 px-5 py-4 transition-all duration-200 hover:border-accent-400 dark:hover:border-accent-500 hover:bg-white/70 dark:hover:bg-slate-800/40"
+          class="group mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border border-dashed border-line-strong px-5 py-4 transition-colors duration-200 hover:border-accent hover:bg-panel"
         >
           <span class="flex items-center gap-3.5 min-w-0">
-            <span class="shrink-0 grid place-items-center w-9 h-9 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 text-slate-400 transition-all duration-300 ease-expo group-hover:border-accent-400 group-hover:text-accent-500 motion-safe:group-hover:rotate-90">
+            <span class="shrink-0 grid place-items-center w-9 h-9 border border-dashed border-line-strong text-fg-subtle transition-colors group-hover:border-accent group-hover:text-accent-ink">
               <Icon name="mdi:plus" class="w-5 h-5" aria-hidden="true" />
             </span>
             <span class="min-w-0">
-              <span class="block font-semibold text-slate-900 dark:text-slate-100">Suggest a tool</span>
-              <span class="block text-sm text-slate-500 dark:text-slate-400">Tell me what to build — it might ship next</span>
+              <span class="block font-semibold text-fg">Suggest a tool</span>
+              <span class="block text-sm text-fg-muted">Tell me what to build. It might ship next.</span>
             </span>
           </span>
-          <span class="inline-flex items-center gap-1.5 font-spacemono text-[11px] uppercase tracking-wider text-accent-600 dark:text-accent-400">
-            <Icon name="fa:telegram" class="w-3.5 h-3.5" aria-hidden="true" />
+          <span class="inline-flex items-center gap-1.5 font-display font-bold text-base uppercase tracking-[0.06em] text-accent-ink">
+            <Icon name="fa:telegram" class="w-4 h-4" aria-hidden="true" />
             Telegram
-            <Icon name="mdi:arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+            <Icon name="mdi:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
           </span>
         </a>
       </section>
@@ -187,7 +174,7 @@ function ratingFor(path: string) {
         behind a wall of photos. Distinct `location` from the Services band so the
         two can be compared — if this strip converts nothing, cut it.
       -->
-      <section class="pt-4 pb-14 px-6">
+      <section class="pt-4 pb-14">
         <ServiceCtaBlock
           label="Something to build, review, or ship?"
           note="Tell me what you need and I'll reply within 24 hours — mentorship, consulting, or engineering help for your team."
@@ -203,6 +190,6 @@ function ratingFor(path: string) {
            into view — it's the last thing on the page and the heaviest in
            images, so it has no business competing with the hero. -->
       <LazyMainInstagram hydrate-on-visible />
-    </div>
+    </LayoutContainer>
   </div>
 </template>

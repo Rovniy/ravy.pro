@@ -183,7 +183,7 @@ onMounted(fetchState)
     </NuxtLink>
 
     <!-- Load / auth error -->
-    <div v-if="mode === 'error'" class="mt-6 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 p-6">
+    <div v-if="mode === 'error'" class="mt-6 border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 p-6">
       <h1 class="text-xl font-bold text-rose-700 dark:text-rose-300 flex items-center gap-2">
         <Icon name="mdi:alert-circle-outline" class="w-6 h-6" /> Can't open this report
       </h1>
@@ -193,12 +193,12 @@ onMounted(fetchState)
     </div>
 
     <!-- Loading -->
-    <div v-else-if="mode === 'loading'" class="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 text-center">
+    <div v-else-if="mode === 'loading'" class="mt-6 border border-line bg-panel p-8 text-center">
       <Icon name="svg-spinners:180-ring" class="w-10 h-10 mx-auto text-accent-500" />
-      <h1 class="mt-4 text-xl font-bold text-slate-900 dark:text-slate-100">
+      <h1 class="mt-4 text-xl font-bold text-fg">
         Opening your report…
       </h1>
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-1 text-sm text-fg-muted">
         This usually takes a few seconds.
       </p>
     </div>
@@ -206,10 +206,10 @@ onMounted(fetchState)
     <!-- Unpaid → teaser + unlock for this exact scan -->
     <div v-else-if="mode === 'paywall' && teaser" class="mt-6 space-y-4">
       <header>
-        <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 class="text-3xl font-display font-extrabold uppercase text-fg leading-none">
           Unlock this report
         </h1>
-        <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-1.5 text-sm text-fg-muted">
           You've already scanned this contract — unlock the full report to see every flagged clause and how to fix it.
         </p>
       </header>
@@ -225,27 +225,27 @@ onMounted(fetchState)
     <!-- Done -->
     <div v-else-if="mode === 'report' && result" class="mt-6 space-y-6">
       <header>
-        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-          <Icon name="mdi:check-decagram" class="w-7 h-7 text-emerald-500" />
+        <h1 class="text-3xl sm:text-4xl font-display font-extrabold uppercase text-fg flex items-center gap-2.5 leading-none">
+          <Icon name="mdi:check-decagram" class="w-7 h-7 text-ok" />
           Your red-flag report is ready
         </h1>
-        <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+        <p class="mt-1.5 text-sm text-fg-muted">
           Every flagged clause, why it matters, and how to fix it.
         </p>
       </header>
 
       <!-- Save your link -->
-      <div class="rounded-xl border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+      <div class="border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/20 p-4 flex flex-col sm:flex-row sm:items-center gap-3">
         <Icon name="mdi:bookmark-outline" class="w-5 h-5 text-accent-500 shrink-0" />
-        <p class="text-sm text-slate-600 dark:text-slate-300 flex-1">
+        <p class="text-sm text-fg-muted flex-1">
           Save this private link to return to your report anytime — we also emailed it to you.
         </p>
         <button
           type="button"
-          class="shrink-0 inline-flex items-center justify-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 hover:cursor-pointer transition"
+          class="shrink-0 inline-flex items-center justify-center gap-1.5 border border-line-strong bg-panel px-3 py-1.5 text-sm hover:bg-panel-raised hover:cursor-pointer transition"
           @click="copyLink"
         >
-          <Icon :name="copiedLink ? 'mdi:check' : 'mdi:link-variant'" class="w-4 h-4" :class="copiedLink ? 'text-emerald-500' : ''" />
+          <Icon :name="copiedLink ? 'mdi:check' : 'mdi:link-variant'" class="w-4 h-4" :class="copiedLink ? 'text-ok' : ''" />
           {{ copiedLink ? 'Link copied' : 'Copy link' }}
         </button>
       </div>
@@ -256,7 +256,7 @@ onMounted(fetchState)
         <button
           type="button"
           :disabled="isSharing"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-base hover:bg-slate-100 dark:hover:bg-slate-800"
+          class="inline-flex items-center gap-2 border border-line-strong px-3 py-2 text-base hover:bg-panel-raised"
           :class="isSharing ? 'opacity-70 cursor-not-allowed' : ''"
           @click="shareReport"
         >

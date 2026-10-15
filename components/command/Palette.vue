@@ -416,10 +416,10 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
       @close="close"
       @click="onBackdrop"
     >
-      <div class="cmdk-panel flex flex-col overflow-hidden rounded-none sm:rounded-2xl border border-slate-200/80 dark:border-white/10 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl shadow-2xl shadow-slate-950/20 dark:shadow-black/50">
+      <div class="cmdk-panel flex flex-col overflow-hidden border border-line bg-panel">
         <!-- Input -->
-        <div class="shrink-0 flex items-center gap-3 px-4 sm:px-5 border-b border-slate-200/80 dark:border-white/10">
-          <Icon name="mdi:magnify" class="w-5 h-5 shrink-0 text-accent-600 dark:text-accent-400" aria-hidden="true" />
+        <div class="shrink-0 flex items-center gap-3 px-4 sm:px-5 border-b border-line">
+          <Icon name="mdi:magnify" class="w-5 h-5 shrink-0 text-accent-ink" aria-hidden="true" />
           <input
             ref="inputRef"
             v-model="query"
@@ -435,50 +435,50 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
             autocapitalize="off"
             spellcheck="false"
             enterkeyhint="go"
-            class="flex-1 min-w-0 h-14 sm:h-16 bg-transparent text-base sm:text-lg text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 border-0 px-0 outline-none focus:outline-none focus:ring-0 focus:shadow-none"
+            class="flex-1 min-w-0 h-14 sm:h-16 bg-transparent text-base sm:text-lg text-fg placeholder:text-fg-subtle border-0 px-0 outline-none focus:outline-none focus:ring-0"
             @keydown="onKeydown"
           >
           <button
             type="button"
-            class="cmdk-kbd hidden sm:inline-flex hover:text-accent-600 dark:hover:text-accent-400"
+            class="cmdk-kbd hidden sm:inline-flex hover:text-accent-ink"
             aria-label="Close search"
             @click="close"
           >
             Esc
           </button>
-          <button type="button" class="sm:hidden -mr-2 p-2 text-sm font-medium text-slate-500 dark:text-slate-400" @click="close">
+          <button type="button" class="sm:hidden -mr-2 p-2 text-sm font-medium text-fg-muted" @click="close">
             Cancel
           </button>
         </div>
 
         <!-- Scope chips -->
-        <div class="shrink-0 flex gap-1.5 px-3 sm:px-4 py-2 overflow-x-auto border-b border-slate-200/60 dark:border-white/5 [scrollbar-width:none]" role="toolbar" aria-label="Filter results">
+        <div class="shrink-0 flex gap-1.5 px-3 sm:px-4 py-2 overflow-x-auto border-b border-line [scrollbar-width:none]" role="toolbar" aria-label="Filter results">
           <button
             v-for="s in SCOPES"
             :key="s.id"
             type="button"
             tabindex="-1"
-            class="shrink-0 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors"
+            class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium transition-colors"
             :class="effective.scope === s.id
               ? 'bg-accent-600 text-white dark:bg-accent-400 dark:text-slate-950'
-              : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5'"
+              : 'text-fg-muted hover:bg-slate-100 dark:hover:bg-white/5'"
             :aria-pressed="effective.scope === s.id"
             @click="scope = s.id; inputRef?.focus()"
           >
             {{ s.label }}
-            <span v-if="scopeCounts[s.id] !== undefined" class="font-spacemono text-[10px] opacity-70">{{ scopeCounts[s.id] }}</span>
+            <span v-if="scopeCounts[s.id] !== undefined" class="font-spacemono text-micro opacity-70">{{ scopeCounts[s.id] }}</span>
           </button>
         </div>
 
         <!-- Results -->
         <div id="cmdk-list" ref="listRef" role="listbox" aria-label="Results" class="cmdk-list flex-1 overflow-y-auto overscroll-contain px-2 py-2">
-          <p v-if="search.correctedQuery" class="px-3 pt-1 pb-2 text-xs text-slate-500 dark:text-slate-400">
+          <p v-if="search.correctedQuery" class="px-3 pt-1 pb-2 text-xs text-fg-muted">
             <Icon name="mdi:auto-fix" class="w-3.5 h-3.5 -mt-0.5 mr-1 inline text-accent-500" aria-hidden="true" />
-            Showing results for <span class="font-semibold text-slate-700 dark:text-slate-200">{{ search.correctedQuery }}</span>
+            Showing results for <span class="font-semibold text-fg">{{ search.correctedQuery }}</span>
           </p>
 
           <div v-for="(section, si) in sections" :key="section.key" role="group" :aria-labelledby="`cmdk-group-${section.key}`" class="mb-1">
-            <p :id="`cmdk-group-${section.key}`" class="px-3 pt-2 pb-1 font-spacemono text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            <p :id="`cmdk-group-${section.key}`" class="px-3 pt-2 pb-1 font-spacemono text-micro uppercase tracking-wider text-fg-subtle">
               <Icon v-if="section.key === 'recent'" name="mdi:history" class="w-3 h-3 -mt-0.5 mr-0.5 inline" aria-hidden="true" />
               {{ section.label }}
               <span v-if="section.key === 'post' && postsState === 'loading'" class="normal-case tracking-normal">· loading</span>
@@ -489,14 +489,14 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
               :key="`${section.key}:${hit.item.id}`"
               role="option"
               :aria-selected="active === offsets[si]! + hi"
-              class="cmdk-row group relative flex flex-wrap sm:flex-nowrap items-center gap-x-3 gap-y-2 rounded-xl px-3 py-2.5 cursor-pointer select-none"
+              class="cmdk-row group relative flex flex-wrap sm:flex-nowrap items-center gap-x-3 gap-y-2 px-3 py-2.5 cursor-pointer select-none"
               :class="active === offsets[si]! + hi ? 'bg-accent-500/10 dark:bg-accent-400/10' : ''"
               @mousemove="onRowPointer(offsets[si]! + hi)"
               @click="onRowClick(offsets[si]! + hi, $event)"
             >
               <span
-                class="relative shrink-0 w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center border border-slate-200/80 dark:border-white/10 bg-slate-50 dark:bg-slate-900"
-                :class="active === offsets[si]! + hi ? 'text-accent-600 dark:text-accent-400' : 'text-slate-500 dark:text-slate-400'"
+                class="relative shrink-0 w-10 h-10 overflow-hidden flex items-center justify-center border border-line bg-slate-50 dark:bg-slate-900"
+                :class="active === offsets[si]! + hi ? 'text-accent-ink' : 'text-fg-muted'"
               >
                 <NuxtImg
                   v-if="hit.item.image && !brokenImages.has(hit.item.image)"
@@ -515,13 +515,13 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
               </span>
 
               <span class="min-w-0 flex-1">
-                <span class="block truncate text-[15px] font-medium text-slate-900 dark:text-slate-100">
+                <span class="block truncate text-base font-medium text-fg">
                   <template v-for="(part, pi) in highlightParts(hit.item.title, hit.ranges)" :key="pi">
-                    <mark v-if="part.match" class="bg-transparent text-accent-600 dark:text-accent-400 font-semibold">{{ part.text }}</mark>
+                    <mark v-if="part.match" class="bg-transparent text-accent-ink font-semibold">{{ part.text }}</mark>
                     <template v-else>{{ part.text }}</template>
                   </template>
                 </span>
-                <span v-if="hit.item.subtitle" class="block truncate text-xs text-slate-500 dark:text-slate-400">{{ hit.item.subtitle }}</span>
+                <span v-if="hit.item.subtitle" class="block truncate text-xs text-fg-muted">{{ hit.item.subtitle }}</span>
               </span>
 
               <!-- Actions: visible on the highlighted row (and on hover), always reachable by pointer. -->
@@ -532,20 +532,20 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
                   :key="action.label"
                   type="button"
                   tabindex="-1"
-                  class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors"
                   :class="ai === 0
                     ? 'bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300'
-                    : 'border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:border-accent-500/60 hover:text-accent-600 dark:hover:text-accent-400'"
+                    : 'border border-line text-fg hover:border-accent-500/60 hover:text-accent-ink'"
                   @click.stop="run(hit.item, action, { newTab: $event.metaKey || $event.ctrlKey })"
                 >
                   <Icon v-if="copiedKey === actionKey(hit.item, action)" name="mdi:check" class="w-3.5 h-3.5" aria-hidden="true" />
                   <Icon v-else-if="action.icon" :name="action.icon" class="w-3.5 h-3.5" aria-hidden="true" />
                   {{ copiedKey === actionKey(hit.item, action) ? 'Copied' : action.label }}
-                  <kbd v-if="ai === 0" class="hidden sm:inline font-spacemono text-[10px] opacity-80" aria-hidden="true">↵</kbd>
-                  <kbd v-else-if="ai === 1" class="hidden sm:inline font-spacemono text-[10px] opacity-60" aria-hidden="true">{{ modKey }}↵</kbd>
+                  <kbd v-if="ai === 0" class="hidden sm:inline font-spacemono text-micro opacity-80" aria-hidden="true">↵</kbd>
+                  <kbd v-else-if="ai === 1" class="hidden sm:inline font-spacemono text-micro opacity-60" aria-hidden="true">{{ modKey }}↵</kbd>
                 </button>
               </span>
-              <span v-if="active !== offsets[si]! + hi" class="hidden sm:inline group-hover:hidden shrink-0 font-spacemono text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              <span v-if="active !== offsets[si]! + hi" class="hidden sm:inline group-hover:hidden shrink-0 font-spacemono text-micro uppercase tracking-wider text-fg-subtle">
                 {{ TYPE_LABEL[hit.item.type].replace(/s$/, '').replace('Quick action', 'Action') }}
               </span>
             </div>
@@ -553,17 +553,17 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
 
           <!-- Nothing found -->
           <div v-if="!rows.length" class="px-4 py-10 text-center">
-            <p class="text-slate-700 dark:text-slate-200">
+            <p class="text-fg">
               Nothing for <span class="font-semibold">“{{ effective.text.trim() }}”</span>
             </p>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            <p class="mt-1 text-sm text-fg-muted">
               Try another word, or ask me directly.
             </p>
             <div class="mt-5 flex flex-wrap justify-center gap-2">
-              <a :href="askHref" class="inline-flex items-center gap-1.5 rounded-lg bg-accent-600 px-3 py-2 text-sm font-semibold text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300" @click="close">
+              <a :href="askHref" class="inline-flex items-center gap-1.5 bg-accent-600 px-3 py-2 text-sm font-semibold text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300" @click="close">
                 <Icon name="mdi:email-fast-outline" class="w-4 h-4" aria-hidden="true" /> Ask Andrei
               </a>
-              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:border-accent-500/60" @click="query = ''; scope = 'all'; inputRef?.focus()">
+              <button type="button" class="inline-flex items-center gap-1.5 border border-line px-3 py-2 text-sm font-semibold text-fg hover:border-accent-500/60" @click="query = ''; scope = 'all'; inputRef?.focus()">
                 Clear search
               </button>
             </div>
@@ -571,7 +571,7 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
         </div>
 
         <!-- Footer -->
-        <div class="shrink-0 hidden sm:flex items-center justify-between gap-4 px-5 py-2.5 border-t border-slate-200/80 dark:border-white/10 text-[11px] text-slate-500 dark:text-slate-400">
+        <div class="shrink-0 hidden sm:flex items-center justify-between gap-4 px-5 py-2.5 border-t border-line text-micro text-fg-muted">
           <div class="flex items-center gap-4">
             <span class="inline-flex items-center gap-1.5"><kbd class="cmdk-kbd">↑</kbd><kbd class="cmdk-kbd">↓</kbd> navigate</span>
             <span class="inline-flex items-center gap-1.5"><kbd class="cmdk-kbd">↵</kbd> open</span>
@@ -603,8 +603,7 @@ const askHref = computed(() => `mailto:${baseData.me.email}?subject=${encodeURIC
   color: inherit;
 }
 .cmdk-dialog::backdrop {
-  background: rgb(2 6 23 / 0.45);
-  backdrop-filter: blur(4px);
+  background: rgb(0 0 0 / 0.6);
 }
 .cmdk-panel {
   height: 100%;

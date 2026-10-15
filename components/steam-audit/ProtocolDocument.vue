@@ -99,10 +99,10 @@ function downloadPdf() {
 </script>
 
 <template>
-  <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-    <header class="flex items-start justify-between gap-3 px-5 py-4 border-b border-slate-100 dark:border-slate-800">
+  <div class="border border-line bg-panel overflow-hidden">
+    <header class="flex items-start justify-between gap-3 px-5 py-4 border-b border-line">
       <div>
-        <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+        <h3 class="font-semibold text-fg">
           Compliance protocol
         </h3>
         <p class="mt-0.5 eyebrow">
@@ -111,7 +111,7 @@ function downloadPdf() {
       </div>
       <button
         type="button"
-        class="shrink-0 inline-flex items-center gap-1.5 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-3.5 py-1.5 text-sm font-medium hover:opacity-90 hover:cursor-pointer transition"
+        class="shrink-0 inline-flex items-center gap-1.5 bg-fg text-bg px-3.5 py-1.5 text-sm font-medium hover:opacity-90 hover:cursor-pointer transition"
         @click="downloadPdf"
       >
         <Icon name="mdi:file-download-outline" class="w-4 h-4" />
@@ -122,7 +122,7 @@ function downloadPdf() {
     <div class="px-5 py-4 overflow-x-auto">
       <table class="w-full text-sm border-collapse">
         <thead>
-          <tr class="text-left text-slate-500 dark:text-slate-400">
+          <tr class="text-left text-fg-muted">
             <th class="py-2 pr-3 font-medium">
               Category
             </th>
@@ -135,14 +135,14 @@ function downloadPdf() {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="c in record.classification.perCategory" :key="c.id" class="border-t border-slate-100 dark:border-slate-800 align-top">
-            <td class="py-2 pr-3 text-slate-700 dark:text-slate-200">
+          <tr v-for="c in record.classification.perCategory" :key="c.id" class="border-t border-line align-top">
+            <td class="py-2 pr-3 text-fg">
               {{ c.label }}
             </td>
-            <td class="py-2 pr-3 text-slate-500 dark:text-slate-400 font-spacemono text-xs">
+            <td class="py-2 pr-3 text-fg-muted font-spacemono text-xs">
               {{ ANSWER_LABEL[c.answer] }}
             </td>
-            <td class="py-2 text-slate-700 dark:text-slate-200">
+            <td class="py-2 text-fg">
               {{ OUTCOME_LABEL[c.outcome] }}
             </td>
           </tr>

@@ -28,16 +28,16 @@ async function onSignIn() {
     Loading…
   </div>
 
-  <div v-else-if="!isAuthed" class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
+  <div v-else-if="!isAuthed" class="border border-line p-6 bg-panel-raised">
     <h2 class="text-lg font-semibold mb-2">
       Sign in required
     </h2>
-    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+    <p class="text-sm text-fg-muted mb-4">
       This area is restricted.
     </p>
     <button
       type="button"
-      class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+      class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
       @click="onSignIn"
     >
       <Icon name="mdi:google" class="w-4 h-4" />
@@ -48,7 +48,7 @@ async function onSignIn() {
     </p>
   </div>
 
-  <div v-else-if="!canUse" class="rounded-lg border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
+  <div v-else-if="!canUse" class="border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 p-6">
     <h2 class="text-lg font-semibold mb-2 text-red-700 dark:text-red-300">
       Access denied
     </h2>

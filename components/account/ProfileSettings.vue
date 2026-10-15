@@ -50,13 +50,13 @@ onMounted(load)
 
 <template>
   <!-- The signed-in email is shown once, in the page header above the tabs. -->
-  <section class="rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900 space-y-5">
+  <section class="border border-line p-6 bg-panel space-y-5">
     <div>
-      <label class="block mb-1 text-sm font-medium text-slate-900 dark:text-slate-100">Response language</label>
+      <label class="block mb-1 text-sm font-medium text-fg">Response language</label>
       <select
         v-model="language"
         :disabled="loading || saving"
-        class="w-full max-w-xs rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+        class="w-full max-w-xs border border-line-strong bg-panel px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
       >
         <option value="en">
           English
@@ -74,7 +74,7 @@ onMounted(load)
       <button
         type="button"
         :disabled="loading || saving"
-        class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50 hover:cursor-pointer"
         @click="save"
       >
         <Icon :name="saving ? 'svg-spinners:180-ring' : 'mdi:content-save-outline'" size="16" />
@@ -82,7 +82,7 @@ onMounted(load)
       </button>
     </div>
 
-    <p v-if="status" class="text-sm text-emerald-600 dark:text-emerald-400">
+    <p v-if="status" class="text-sm text-ok">
       {{ status }}
     </p>
     <p v-if="error" class="text-sm text-rose-600 dark:text-rose-400">

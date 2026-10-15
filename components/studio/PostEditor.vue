@@ -226,7 +226,7 @@ onMounted(load)
       @change="onFileChosen"
     >
 
-    <p v-if="errorMsg" class="mb-4 rounded-md border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-300">
+    <p v-if="errorMsg" class="mb-4 border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-sm text-red-700 dark:text-red-300">
       {{ errorMsg }}
     </p>
 
@@ -236,7 +236,7 @@ onMounted(load)
         <input
           v-model="form.title"
           type="text"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         >
       </label>
 
@@ -249,7 +249,7 @@ onMounted(load)
           v-model="form.slug"
           type="text"
           :disabled="!isNew"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-spacemono text-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
           @input="slugTouched = true"
         >
         <span class="mt-1 block font-spacemono text-xs text-slate-500">/blogs/{{ form.slug || '…' }}</span>
@@ -260,7 +260,7 @@ onMounted(load)
         <textarea
           v-model="form.description"
           rows="2"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
         <span class="mt-1 block text-xs text-slate-500">Used as the meta description, the card blurb and the alt text fallback.</span>
       </label>
@@ -272,10 +272,10 @@ onMounted(load)
             v-for="tag in BlogPostTag"
             :key="tag"
             type="button"
-            class="rounded-full border px-3 py-1 text-sm transition-colors hover:cursor-pointer"
+            class="border px-3 py-1 text-sm transition-colors hover:cursor-pointer"
             :class="form.tags.includes(tag)
               ? 'border-accent-600 bg-accent-600 text-white dark:border-accent-400 dark:bg-accent-400 dark:text-slate-950'
-              : 'border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300'"
+              : 'border-line-strong text-fg-muted'"
             :aria-pressed="form.tags.includes(tag)"
             @click="toggleTag(tag)"
           >
@@ -287,18 +287,18 @@ onMounted(load)
       <div class="grid gap-4 sm:grid-cols-2">
         <div>
           <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">Cover image</span>
-          <img v-if="form.image" :src="form.image" alt="" class="mb-2 h-28 w-full rounded-md object-cover border border-slate-200 dark:border-slate-800">
+          <img v-if="form.image" :src="form.image" alt="" class="mb-2 h-28 w-full object-cover border border-line">
           <div class="flex gap-2">
             <input
               v-model="form.image"
               type="text"
               placeholder="/media/blog/…"
-              class="min-w-0 flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-spacemono text-xs focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+              class="min-w-0 flex-1 border border-line-strong bg-panel px-3 py-2 font-spacemono text-xs focus:outline-none focus:ring-2 focus:ring-accent-500/60"
             >
             <button
               type="button"
               :disabled="!canUpload || uploading"
-              class="shrink-0 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-xs disabled:opacity-40 hover:cursor-pointer"
+              class="shrink-0 border border-line-strong px-3 py-2 text-xs disabled:opacity-40 hover:cursor-pointer"
               @click="pickFile('cover')"
             >
               Upload
@@ -308,18 +308,18 @@ onMounted(load)
 
         <div>
           <span class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500">OpenGraph image</span>
-          <img v-if="form.ogImage" :src="form.ogImage" alt="" class="mb-2 h-28 w-full rounded-md object-cover border border-slate-200 dark:border-slate-800">
+          <img v-if="form.ogImage" :src="form.ogImage" alt="" class="mb-2 h-28 w-full object-cover border border-line">
           <div class="flex gap-2">
             <input
               v-model="form.ogImage"
               type="text"
               placeholder="defaults to the cover"
-              class="min-w-0 flex-1 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-spacemono text-xs focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+              class="min-w-0 flex-1 border border-line-strong bg-panel px-3 py-2 font-spacemono text-xs focus:outline-none focus:ring-2 focus:ring-accent-500/60"
             >
             <button
               type="button"
               :disabled="!canUpload || uploading"
-              class="shrink-0 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-xs disabled:opacity-40 hover:cursor-pointer"
+              class="shrink-0 border border-line-strong px-3 py-2 text-xs disabled:opacity-40 hover:cursor-pointer"
               @click="pickFile('og')"
             >
               Upload
@@ -330,15 +330,15 @@ onMounted(load)
 
       <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         <label class="inline-flex items-center gap-2">
-          <input v-model="form.published" type="checkbox" class="rounded border-slate-300 dark:border-slate-700">
+          <input v-model="form.published" type="checkbox" class="border-line-strong">
           Published
         </label>
         <label class="inline-flex items-center gap-2">
-          <input v-model="form.trending" type="checkbox" class="rounded border-slate-300 dark:border-slate-700">
+          <input v-model="form.trending" type="checkbox" class="border-line-strong">
           Trending
         </label>
         <label class="inline-flex items-center gap-2">
-          <input v-model="form.noindex" type="checkbox" class="rounded border-slate-300 dark:border-slate-700">
+          <input v-model="form.noindex" type="checkbox" class="border-line-strong">
           Hide from search engines
         </label>
       </div>
@@ -349,14 +349,14 @@ onMounted(load)
           <button
             type="button"
             :disabled="!canUpload || uploading"
-            class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 hover:cursor-pointer"
+            class="text-xs underline text-slate-500 hover:text-fg disabled:opacity-40 hover:cursor-pointer"
             @click="pickFile('inline')"
           >
             {{ uploading ? 'Uploading…' : 'Insert image' }}
           </button>
           <button
             type="button"
-            class="ml-auto text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white hover:cursor-pointer"
+            class="ml-auto text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer"
             @click="showPreview = !showPreview"
           >
             {{ showPreview ? 'Hide preview' : 'Show preview' }}
@@ -370,11 +370,11 @@ onMounted(load)
           v-model="form.markdown"
           rows="22"
           spellcheck="false"
-          class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 font-spacemono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+          class="w-full border border-line-strong bg-panel px-3 py-2 font-spacemono text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-accent-500/60"
         />
       </div>
 
-      <section v-if="showPreview" class="rounded-md border border-slate-200 dark:border-slate-800 p-4">
+      <section v-if="showPreview" class="border border-line p-4">
         <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
           Preview
         </h2>
@@ -385,7 +385,7 @@ onMounted(load)
              so what is shown here is what ships. -->
         <div
           v-else-if="previewBody"
-          class="prose prose-sm sm:prose-base prose-slate dark:prose-invert max-w-none prose-img:rounded-lg"
+          class="prose prose-sm sm:prose-base prose-slate dark:prose-invert max-w-none"
         >
           <ContentRenderer :value="{ body: previewBody }" />
         </div>
@@ -397,9 +397,9 @@ onMounted(load)
 
     <!-- Sticky action bar: on a phone the form is long and the save button
          should never be a scroll away. -->
-    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur px-4 py-3">
+    <div class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-panel px-4 py-3">
       <div class="mx-auto flex max-w-4xl items-center gap-3">
-        <span class="min-w-0 flex-1 truncate text-xs text-slate-500 dark:text-slate-400">
+        <span class="min-w-0 flex-1 truncate text-xs text-fg-muted">
           <template v-if="dirty">Unsaved changes</template>
           <template v-else-if="savedAt">Saved at {{ savedAt }}</template>
           <template v-else>{{ form.published ? 'Published' : 'Draft' }}</template>
@@ -409,7 +409,7 @@ onMounted(load)
           v-if="!isNew && form.published"
           :to="`/blogs/${form.slug}`"
           target="_blank"
-          class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white"
+          class="text-xs underline text-slate-500 hover:text-fg"
         >
           View
         </NuxtLink>
@@ -427,7 +427,7 @@ onMounted(load)
         <button
           type="button"
           :disabled="saving"
-          class="shrink-0 rounded-md bg-slate-900 dark:bg-white px-5 py-2 text-sm font-medium text-white dark:text-slate-900 disabled:opacity-50 hover:opacity-90 hover:cursor-pointer"
+          class="shrink-0 bg-fg px-5 py-2 text-sm font-medium text-bg disabled:opacity-50 hover:opacity-90 hover:cursor-pointer"
           @click="onSave"
         >
           {{ saving ? 'Saving…' : 'Save' }}

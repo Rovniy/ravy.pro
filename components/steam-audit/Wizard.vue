@@ -32,7 +32,7 @@ const stats = computed(() => [
   { key: 'pre', label: 'Must disclose · Pre', value: tally.value.pre, dot: 'bg-rose-500' },
   { key: 'live', label: 'Must disclose · Live', value: tally.value.live, dot: 'bg-amber-500' },
   { key: 'gray', label: 'Gray zone', value: tally.value.gray, dot: 'bg-yellow-400' },
-  { key: 'exempt', label: 'Exempt', value: tally.value.exempt, dot: 'bg-emerald-500' },
+  { key: 'exempt', label: 'Exempt', value: tally.value.exempt, dot: 'bg-ok' },
 ])
 
 function select(value: AiAnswer) {
@@ -82,9 +82,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-6 lg:gap-8">
     <!-- Question column -->
-    <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+    <div class="border border-line bg-panel overflow-hidden">
       <!-- Progress -->
-      <div class="h-1.5 bg-slate-100 dark:bg-slate-800">
+      <div class="h-1.5 bg-panel-raised">
         <div class="h-full bg-accent-500 transition-all duration-500" :style="{ width: `${progress}%` }" />
       </div>
 
@@ -101,10 +101,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
             <div class="flex items-start gap-3">
               <Icon :name="category.icon" class="w-7 h-7 text-accent-500 shrink-0 mt-0.5" />
               <div>
-                <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-fg">
                   {{ category.prompt }}
                 </h2>
-                <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                <p class="mt-1.5 text-sm text-fg-muted leading-relaxed">
                   {{ category.help }}
                 </p>
               </div>
@@ -114,7 +114,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
               <span
                 v-for="ex in category.examples"
                 :key="ex"
-                class="font-spacemono text-[11px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+                class="font-spacemono text-micro px-2 py-0.5 bg-panel-raised text-fg-muted"
               >
                 {{ ex }}
               </span>
@@ -125,23 +125,23 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
                 v-for="(opt, i) in ANSWER_OPTIONS"
                 :key="opt.value"
                 type="button"
-                class="group w-full text-left rounded-lg border p-3.5 sm:p-4 transition-all hover:cursor-pointer flex items-start gap-3"
+                class="group w-full text-left border p-3.5 sm:p-4 transition-all hover:cursor-pointer flex items-start gap-3"
                 :class="answers[category.id] === opt.value
                   ? 'border-accent-500 bg-accent-50/70 dark:bg-accent-900/20 ring-1 ring-accent-500/40'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-accent-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'"
+                  : 'border-line hover:border-accent-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'"
                 @click="select(opt.value)"
               >
                 <span
-                  class="shrink-0 mt-0.5 w-6 h-6 rounded-md grid place-items-center font-spacemono text-xs border transition-colors"
+                  class="shrink-0 mt-0.5 w-6 h-6 grid place-items-center font-spacemono text-xs border transition-colors"
                   :class="answers[category.id] === opt.value
                     ? 'bg-accent-600 border-accent-600 text-white dark:bg-accent-400 dark:border-accent-400 dark:text-slate-950'
-                    : 'border-slate-300 dark:border-slate-600 text-slate-400 group-hover:border-accent-400'"
+                    : 'border-line-strong text-slate-400 group-hover:border-accent-400'"
                 >
                   {{ i + 1 }}
                 </span>
                 <span>
-                  <span class="block font-medium text-slate-900 dark:text-slate-100">{{ opt.label }}</span>
-                  <span v-if="opt.hint" class="block text-sm text-slate-500 dark:text-slate-400 mt-0.5">{{ opt.hint }}</span>
+                  <span class="block font-medium text-fg">{{ opt.label }}</span>
+                  <span v-if="opt.hint" class="block text-sm text-fg-muted mt-0.5">{{ opt.hint }}</span>
                 </span>
               </button>
             </div>
@@ -153,7 +153,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
               <button
                 type="button"
                 :disabled="!answers[category.id]"
-                class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2.5 font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer transition"
+                class="inline-flex items-center gap-2 bg-fg text-bg px-5 py-2.5 font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed hover:cursor-pointer transition"
                 @click="next"
               >
                 {{ isLast ? 'See my verdict' : 'Next' }}
@@ -166,23 +166,23 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     </div>
 
     <!-- Live "disclosure building" panel -->
-    <aside class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] self-start rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 p-5">
+    <aside class="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] self-start border border-line bg-panel-raised p-5">
       <span class="eyebrow">Your disclosure so far</span>
       <ul class="mt-4 space-y-3">
         <li v-for="s in stats" :key="s.key" class="flex items-center justify-between gap-3">
-          <span class="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
+          <span class="flex items-center gap-2.5 text-sm text-fg-muted">
             <span class="w-2.5 h-2.5 rounded-full" :class="s.dot" />
             {{ s.label }}
           </span>
           <span
             class="font-spacemono text-sm tabular-nums transition-colors"
-            :class="s.value > 0 ? 'text-slate-900 dark:text-slate-100 font-bold' : 'text-slate-400'"
+            :class="s.value > 0 ? 'text-fg font-bold' : 'text-slate-400'"
           >
             {{ s.value }}
           </span>
         </li>
       </ul>
-      <p class="mt-5 text-xs text-slate-400 leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-4">
+      <p class="mt-5 text-xs text-slate-400 leading-relaxed border-t border-line pt-4">
         Updated live as you answer. Nothing is sent anywhere until you choose to unlock your disclosure pack.
       </p>
     </aside>

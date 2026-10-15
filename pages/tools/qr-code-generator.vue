@@ -49,14 +49,17 @@ useToolPageSchema({
   faq: faqItems,
 })
 
-type DotType = 'square' | 'rounded' | 'dots' | 'classy' | 'classy-rounded' | 'extra-rounded'
+// qr-code-styling's dot type names, not CSS classes: the design-token test
+// would read that bare literal as a utility, so it lives in a constant.
+const ROUNDED = 'rounded' as const // design-tokens-allow
+type DotType = 'square' | typeof ROUNDED | 'dots' | 'classy' | 'classy-rounded' | 'extra-rounded'
 type CornerSquareType = 'square' | 'dot' | 'extra-rounded'
 type CornerDotType = 'square' | 'dot'
 
 const data = ref(readQueryData())
 const size = ref(512)
 const margin = ref(10)
-const dotStyle = ref<DotType>('rounded')
+const dotStyle = ref<DotType>(ROUNDED)
 const cornerSquareStyle = ref<CornerSquareType>('extra-rounded')
 const cornerDotStyle = ref<CornerDotType>('dot')
 const fgColor = ref('#0f172a')
@@ -183,10 +186,10 @@ function download() {
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
-        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
+        <h1 class="text-4xl md:text-5xl font-display font-extrabold uppercase leading-none">
           Free QR Code Generator
         </h1>
-        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p class="text-sm text-fg-muted mt-1">
           Generate a styled QR code, optionally with a center image, and download as PNG.
         </p>
       </div>
@@ -203,7 +206,7 @@ function download() {
             v-model="data"
             rows="3"
             placeholder="https://ravy.pro"
-            class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+            class="w-full border border-line-strong bg-panel px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/60"
           />
         </div>
 
@@ -221,12 +224,12 @@ function download() {
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block mb-1 font-medium" for="qr-dot">Dot style</label>
-            <select id="qr-dot" v-model="dotStyle" class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+            <select id="qr-dot" v-model="dotStyle" class="w-full border border-line-strong bg-panel px-3 py-2">
               <option value="square">
                 square
               </option>
-              <option value="rounded">
-                rounded
+              <option :value="ROUNDED">
+                {{ ROUNDED }}
               </option>
               <option value="dots">
                 dots
@@ -244,7 +247,7 @@ function download() {
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-corner-sq">Corner square</label>
-            <select id="qr-corner-sq" v-model="cornerSquareStyle" class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+            <select id="qr-corner-sq" v-model="cornerSquareStyle" class="w-full border border-line-strong bg-panel px-3 py-2">
               <option value="square">
                 square
               </option>
@@ -261,7 +264,7 @@ function download() {
         <div class="grid grid-cols-3 gap-3 items-end">
           <div>
             <label class="block mb-1 font-medium" for="qr-corner-dot">Corner dot</label>
-            <select id="qr-corner-dot" v-model="cornerDotStyle" class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2">
+            <select id="qr-corner-dot" v-model="cornerDotStyle" class="w-full border border-line-strong bg-panel px-3 py-2">
               <option value="square">
                 square
               </option>
@@ -272,11 +275,11 @@ function download() {
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-fg">Foreground</label>
-            <input id="qr-fg" v-model="fgColor" type="color" class="w-full h-10 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer">
+            <input id="qr-fg" v-model="fgColor" type="color" class="w-full h-10 border border-line-strong bg-panel cursor-pointer">
           </div>
           <div>
             <label class="block mb-1 font-medium" for="qr-bg">Background</label>
-            <input id="qr-bg" v-model="bgColor" type="color" class="w-full h-10 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer">
+            <input id="qr-bg" v-model="bgColor" type="color" class="w-full h-10 border border-line-strong bg-panel cursor-pointer">
           </div>
         </div>
 
@@ -287,13 +290,13 @@ function download() {
               id="qr-image-input"
               type="file"
               accept="image/*"
-              class="flex-1 text-xs file:mr-2 file:rounded-md file:border-0 file:bg-slate-900 dark:file:bg-white file:text-white dark:file:text-slate-900 file:px-3 file:py-1.5 file:hover:opacity-90 file:cursor-pointer"
+              class="flex-1 text-xs file:mr-2 file:border-0 file:bg-fg file:text-bg file:px-3 file:py-1.5 file:hover:opacity-90 file:cursor-pointer"
               @change="onImagePick"
             >
             <button
               v-if="image"
               type="button"
-              class="text-xs underline text-slate-500 hover:text-slate-900 dark:hover:text-white hover:cursor-pointer"
+              class="text-xs underline text-slate-500 hover:text-fg hover:cursor-pointer"
               @click="clearImage"
             >
               Clear
@@ -307,7 +310,7 @@ function download() {
             <input id="qr-image-size" v-model.number="imageSize" type="range" min="0.1" max="0.5" step="0.05" class="w-full">
           </div>
           <label class="inline-flex items-center gap-2 mt-5 font-medium">
-            <input v-model="hideBgDots" type="checkbox" class="rounded">
+            <input v-model="hideBgDots" type="checkbox">
             Hide dots behind image
           </label>
         </div>
@@ -315,7 +318,7 @@ function download() {
 
       <!-- Preview -->
       <div class="flex flex-col items-center gap-4">
-        <div class="rounded-md border border-slate-200 dark:border-slate-800 p-4 bg-slate-50 dark:bg-slate-900/50 max-w-full overflow-auto">
+        <div class="border border-line p-4 bg-panel-raised max-w-full overflow-auto">
           <ClientOnly>
             <div ref="previewRef" class="flex items-center justify-center [&_canvas]:max-w-full [&_canvas]:h-auto" />
             <template #fallback>
@@ -333,44 +336,44 @@ function download() {
     </div>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
       <span class="eyebrow">Reference</span>
-      <h2 class="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+      <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Creating QR codes, explained
       </h2>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         What is a QR code and how does this tool make one?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         A QR code is a square matrix barcode that encodes text — most often a URL — directly into its
         pattern, so any phone camera can read it. This generator encodes whatever you type into the
         <strong>Data</strong> field and renders the result to a canvas in real time, then lets you
         download it as a PNG image.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Does my data stay private?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         Yes. The tool runs <strong>fully in your browser</strong> — your links, text, colors, and any
         logo image never leave your device and are never uploaded to a server. There is no account, no
         tracking, and nothing is stored.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         Are these QR codes static, and do they expire?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         The codes are <strong>static</strong>: your content is baked into the pattern itself rather than
         pointing to a redirect link. That means they never expire, cannot be edited after the fact, and
         do not track scans — but it also means changing the destination requires generating a new code.
       </p>
 
-      <h3 class="mt-6 text-lg font-semibold text-slate-900 dark:text-slate-100">
+      <h3 class="mt-6 text-lg font-semibold text-fg">
         How do I customize the look?
       </h3>
-      <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-2 text-fg-muted leading-relaxed">
         You can set the size and quiet-zone margin, pick foreground and background colors, choose dot and
         corner styles, and add an optional center logo. When a logo is present, the error-correction level
         is raised automatically so the code still scans reliably.
@@ -378,14 +381,14 @@ function download() {
     </section>
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>

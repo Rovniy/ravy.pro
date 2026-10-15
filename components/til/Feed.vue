@@ -25,7 +25,7 @@ defineProps<{
     <header class="mb-8">
       <p class="eyebrow mb-3">
         <template v-if="topic">
-          <NuxtLink to="/til" class="hover:text-accent-600 dark:hover:text-accent-400">
+          <NuxtLink to="/til" class="hover:text-accent-ink">
             Today I learned
           </NuxtLink> / {{ topic.name }}
         </template>
@@ -33,10 +33,10 @@ defineProps<{
           Notes · {{ feed.total }}
         </template>
       </p>
-      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight bg-gradient-to-r from-accent-600 to-emerald-600 dark:from-accent-400 dark:to-emerald-400 bg-clip-text text-transparent">
+      <h1 class="font-display font-extrabold uppercase text-5xl sm:text-6xl leading-none text-fg">
         {{ topic ? `${topic.name} notes` : tilPage.title }}
       </h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-fg-muted">
         {{ topic ? topic.description : tilPage.intro }}
       </p>
       <div class="mt-6">
@@ -47,31 +47,31 @@ defineProps<{
     <div v-if="feed.notes.length" class="flex flex-col gap-5">
       <TilNoteCard v-for="note in feed.notes" :key="note.slug" :note="note" />
     </div>
-    <div v-else class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 px-6 py-12 text-center">
-      <p class="text-slate-700 dark:text-slate-200">
+    <div v-else class="border border-dashed border-line-strong px-6 py-12 text-center">
+      <p class="text-fg">
         No notes here yet.
       </p>
-      <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-1 text-sm text-fg-muted">
         Subscribe to the RSS feed to get the first one.
       </p>
     </div>
 
     <section v-if="feed.archive.length" class="mt-12">
-      <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-4">
+      <h2 class="text-lg font-bold text-fg mb-4">
         Earlier notes
       </h2>
-      <ul class="divide-y divide-slate-200 dark:divide-slate-800 border-y border-slate-200 dark:border-slate-800">
+      <ul class="divide-y divide-line border-y border-line">
         <li v-for="note in feed.archive" :key="note.slug">
           <NuxtLink :to="note.path" class="group flex items-baseline justify-between gap-4 py-3">
-            <span class="font-medium text-slate-800 dark:text-slate-200 group-hover:text-accent-600 dark:group-hover:text-accent-400 transition-colors">{{ note.title }}</span>
-            <time :datetime="note.createdAt" class="shrink-0 font-spacemono text-xs text-slate-500 dark:text-slate-400">{{ formatBlogDate(note.createdAt) }}</time>
+            <span class="font-medium text-fg group-hover:text-accent-ink transition-colors">{{ note.title }}</span>
+            <time :datetime="note.createdAt" class="shrink-0 font-spacemono text-xs text-fg-muted">{{ formatBlogDate(note.createdAt) }}</time>
           </NuxtLink>
         </li>
       </ul>
     </section>
 
     <div v-if="topic?.category" class="mt-8">
-      <NuxtLink :to="`/categories/${topic.category}`" class="inline-flex items-center gap-1 text-sm text-accent-600 dark:text-accent-400 hover:underline">
+      <NuxtLink :to="`/categories/${topic.category}`" class="inline-flex items-center gap-1 text-sm text-accent-ink hover:underline">
         Longer blog posts on this
         <Icon name="mdi:arrow-right" size="16" aria-hidden="true" />
       </NuxtLink>

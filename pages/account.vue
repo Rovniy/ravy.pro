@@ -89,10 +89,10 @@ function selectTab(key: string) {
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
     <div class="flex items-start justify-between gap-x-6">
       <div class="min-w-0 flex-1">
-        <h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 class="text-4xl font-display font-extrabold uppercase text-fg leading-none">
           Account
         </h1>
-        <p v-if="state.ready && isAuthed && state.user?.email" class="mt-1.5 font-spacemono text-xs text-slate-500 dark:text-slate-400 truncate">
+        <p v-if="state.ready && isAuthed && state.user?.email" class="mt-1.5 font-spacemono text-xs text-fg-muted truncate">
           {{ state.user.email }}
         </p>
       </div>
@@ -101,7 +101,7 @@ function selectTab(key: string) {
         v-if="state.ready && isAuthed"
         type="button"
         :disabled="signingOut"
-        class="shrink-0 inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-600 dark:hover:text-accent-400 disabled:opacity-50 hover:cursor-pointer transition-colors"
+        class="shrink-0 inline-flex items-center gap-2 border border-line-strong px-4 py-2 text-sm font-medium hover:border-accent-400 hover:text-accent-ink disabled:opacity-50 hover:cursor-pointer transition-colors"
         @click="onSignOut"
       >
         <Icon :name="signingOut ? 'svg-spinners:180-ring' : 'mdi:logout'" size="16" aria-hidden="true" />
@@ -113,13 +113,13 @@ function selectTab(key: string) {
       Loading…
     </div>
 
-    <div v-else-if="!isAuthed" class="mt-6 rounded-xl border border-slate-200 dark:border-slate-800 p-6 bg-slate-50 dark:bg-slate-900/50">
-      <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">
+    <div v-else-if="!isAuthed" class="mt-6 border border-line p-6 bg-panel-raised">
+      <p class="text-sm text-fg-muted mb-4">
         Sign in to see your service history and settings.
       </p>
       <button
         type="button"
-        class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
+        class="inline-flex items-center gap-2 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90 hover:cursor-pointer"
         @click="signIn"
       >
         <Icon name="mdi:google" class="w-4 h-4" />

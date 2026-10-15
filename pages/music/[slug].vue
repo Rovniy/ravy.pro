@@ -51,16 +51,16 @@ const total = trackTotal(project)
         <NuxtLink to="/music" class="eyebrow hover:text-accent-500 transition-colors">
           Music · {{ project.genres.join(' · ') }}
         </NuxtLink>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           {{ project.name }}
         </h1>
-        <p class="mt-3 text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
+        <p class="mt-3 text-lg text-fg leading-relaxed">
           {{ project.tagline }}
         </p>
-        <p class="mt-3 italic text-slate-500 dark:text-slate-400">
+        <p class="mt-3 italic text-fg-muted">
           “{{ project.motto }}”
         </p>
-        <p class="mt-4 flex gap-2 rounded-lg border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/30 px-4 py-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+        <p class="mt-4 flex gap-2 border border-accent-200 dark:border-accent-900/60 bg-accent-50/60 dark:bg-accent-950/30 px-4 py-3 text-sm text-fg-muted leading-relaxed">
           <Icon name="mdi:robot-outline" class="w-5 h-5 shrink-0 text-accent-500" aria-hidden="true" />
           <span>{{ project.aiDisclosure }}</span>
         </p>
@@ -85,25 +85,25 @@ const total = trackTotal(project)
     <section class="mt-14 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div class="lg:col-span-2">
         <span class="eyebrow">What it is</span>
-        <div class="mt-4 space-y-4 text-slate-600 dark:text-slate-300 leading-relaxed">
+        <div class="mt-4 space-y-4 text-fg-muted leading-relaxed">
           <p v-for="para in project.concept" :key="para">
             {{ para }}
           </p>
         </div>
       </div>
-      <aside v-if="project.characters?.length" class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+      <aside v-if="project.characters?.length" class="border border-line bg-panel p-5">
         <span class="eyebrow">The characters</span>
         <dl class="mt-3 space-y-3">
           <div v-for="c in project.characters" :key="c.name">
-            <dt class="font-semibold text-slate-900 dark:text-slate-100">
+            <dt class="font-semibold text-fg">
               {{ c.name }}
             </dt>
-            <dd class="text-sm text-slate-500 dark:text-slate-400">
+            <dd class="text-sm text-fg-muted">
               {{ c.role }}
             </dd>
           </div>
         </dl>
-        <p class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+        <p class="mt-4 pt-3 border-t border-line text-xs text-fg-muted">
           Author: Ravy. Idea, story and sound.
         </p>
       </aside>
@@ -113,7 +113,7 @@ const total = trackTotal(project)
     <section class="mt-14">
       <div class="flex flex-wrap items-baseline justify-between gap-2">
         <span class="eyebrow">Discography</span>
-        <span class="font-spacemono text-xs text-slate-500 dark:text-slate-400">
+        <span class="font-spacemono text-xs text-fg-muted">
           {{ project.releases.length }} {{ project.releases.length === 1 ? 'album' : 'albums' }}<template v-if="total"> · {{ total }} tracks</template>
         </span>
       </div>
@@ -121,10 +121,10 @@ const total = trackTotal(project)
         <li
           v-for="release in shownReleases"
           :key="release.title"
-          class="flex gap-4 rounded-xl border bg-white dark:bg-slate-900 p-4 transition-colors"
-          :class="current?.title === release.title ? 'border-accent-400 dark:border-accent-600' : 'border-slate-200 dark:border-slate-800'"
+          class="flex gap-4 border bg-panel p-4 transition-colors"
+          :class="current?.title === release.title ? 'border-accent-400 dark:border-accent-600' : 'border-line'"
         >
-          <div class="shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gradient-to-br from-accent-600/40 via-slate-800 to-emerald-700/30">
+          <div class="shrink-0 w-24 h-24 overflow-hidden bg-panel-raised">
             <NuxtImg
               v-if="!failedCovers.has(release.title)"
               :src="release.cover"
@@ -141,22 +141,22 @@ const total = trackTotal(project)
             />
           </div>
           <div class="min-w-0">
-            <p class="font-semibold text-slate-900 dark:text-slate-100 leading-snug">
+            <p class="font-semibold text-fg leading-snug">
               {{ release.title }}
             </p>
-            <p class="font-spacemono text-[11px] text-slate-500 dark:text-slate-400">
+            <p class="font-spacemono text-micro text-fg-muted">
               {{ releaseMonth(release.date) }}<template v-if="release.trackCount">
                 · {{ release.trackCount }} tracks
               </template>
             </p>
-            <p v-if="release.theme" class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-snug">
+            <p v-if="release.theme" class="mt-1 text-sm text-fg-muted leading-snug">
               {{ release.theme }}
             </p>
             <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs font-medium">
               <button
                 v-if="release.spotifyAlbumId"
                 type="button"
-                class="inline-flex items-center gap-1 text-accent-600 dark:text-accent-400 hover:underline cursor-pointer"
+                class="inline-flex items-center gap-1 text-accent-ink hover:underline cursor-pointer"
                 @click="choose(release)"
               >
                 <Icon name="mdi:play" class="w-3.5 h-3.5" aria-hidden="true" /> Play here
@@ -167,7 +167,7 @@ const total = trackTotal(project)
                 :href="link.url"
                 target="_blank"
                 rel="noopener"
-                class="text-slate-500 dark:text-slate-400 hover:text-accent-500"
+                class="text-fg-muted hover:text-accent-500"
               >{{ platformLabel(link) }}</a>
             </div>
           </div>
@@ -176,7 +176,7 @@ const total = trackTotal(project)
       <button
         v-if="!showAll"
         type="button"
-        class="mt-4 inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500 cursor-pointer"
+        class="mt-4 inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500 cursor-pointer"
         @click="showAll = true"
       >
         <Icon name="mdi:chevron-down" class="w-4 h-4" aria-hidden="true" /> Show all {{ project.releases.length }} albums
@@ -184,10 +184,10 @@ const total = trackTotal(project)
     </section>
 
     <!-- Platforms -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Listen everywhere</span>
       <ProjectLinkButtons class="mt-4" compact :links="project.platforms" :project="project.slug" />
-      <p class="mt-6 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-6 text-sm text-fg-muted">
         Official site: <a :href="project.website" target="_blank" rel="noopener" class="underline hover:text-accent-500">{{ project.website.replace(/^https?:\/\//, '') }}</a>
       </p>
     </section>
@@ -195,7 +195,7 @@ const total = trackTotal(project)
     <ProjectRelatedPosts :tag="project.blogTag" title="Writing about it" />
 
     <div class="mt-14">
-      <NuxtLink to="/music" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500">
+      <NuxtLink to="/music" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500">
         <Icon name="mdi:arrow-left" class="w-4 h-4" aria-hidden="true" /> All music
       </NuxtLink>
     </div>

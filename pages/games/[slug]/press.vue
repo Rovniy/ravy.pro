@@ -87,10 +87,10 @@ async function downloadZip() {
       <NuxtLink :to="gamePath(game)" class="eyebrow hover:text-accent-500 transition-colors">
         Games · {{ game.title }}
       </NuxtLink>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+      <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         {{ game.title }} press kit
       </h1>
-      <p class="mt-3 max-w-3xl text-lg text-slate-700 dark:text-slate-200 leading-relaxed">
+      <p class="mt-3 max-w-3xl text-lg text-fg leading-relaxed">
         Facts, copy and images for writing about {{ game.title }}. Quote the text as is and use the images in your coverage.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -100,7 +100,7 @@ async function downloadZip() {
         </UiButton>
         <a
           :href="mailto"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-slate-800 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          class="inline-flex items-center gap-2 border border-line-strong bg-panel px-4 py-2 text-sm font-medium text-fg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
         >
           <Icon name="mdi:email-outline" class="w-5 h-5" aria-hidden="true" /> Press contact
         </a>
@@ -113,12 +113,12 @@ async function downloadZip() {
     <!-- Fact sheet -->
     <section class="mt-12">
       <span class="eyebrow">Fact sheet</span>
-      <dl class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+      <dl class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 border border-line bg-panel p-5 sm:p-6">
         <div v-for="fact in facts" :key="fact.label">
-          <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          <dt class="text-xs font-semibold uppercase tracking-wide text-fg-muted">
             {{ fact.label }}
           </dt>
-          <dd class="mt-1 text-slate-800 dark:text-slate-200">
+          <dd class="mt-1 text-fg">
             {{ fact.value }}
           </dd>
         </div>
@@ -128,29 +128,29 @@ async function downloadZip() {
 
     <!-- Descriptions -->
     <section class="mt-14 grid grid-cols-1 lg:grid-cols-5 gap-6">
-      <div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+      <div class="lg:col-span-2 border border-line bg-panel p-5 sm:p-6">
         <div class="flex items-center justify-between gap-4">
           <span class="eyebrow">Short description</span>
-          <button type="button" class="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-accent-500" @click="copy('short')">
-            <Icon v-if="copied === 'short'" name="mdi:check" class="w-4 h-4 text-emerald-500" aria-hidden="true" />
+          <button type="button" class="inline-flex items-center gap-1 text-xs text-fg-muted hover:text-accent-500" @click="copy('short')">
+            <Icon v-if="copied === 'short'" name="mdi:check" class="w-4 h-4 text-ok" aria-hidden="true" />
             <Icon v-else name="mdi:content-copy" class="w-4 h-4" aria-hidden="true" />
             {{ copied === 'short' ? 'Copied' : 'Copy' }}
           </button>
         </div>
-        <p class="mt-3 text-slate-700 dark:text-slate-200 leading-relaxed">
+        <p class="mt-3 text-fg leading-relaxed">
           {{ game.press.short }}
         </p>
       </div>
-      <div class="lg:col-span-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+      <div class="lg:col-span-3 border border-line bg-panel p-5 sm:p-6">
         <div class="flex items-center justify-between gap-4">
           <span class="eyebrow">Long description</span>
-          <button type="button" class="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-accent-500" @click="copy('long')">
-            <Icon v-if="copied === 'long'" name="mdi:check" class="w-4 h-4 text-emerald-500" aria-hidden="true" />
+          <button type="button" class="inline-flex items-center gap-1 text-xs text-fg-muted hover:text-accent-500" @click="copy('long')">
+            <Icon v-if="copied === 'long'" name="mdi:check" class="w-4 h-4 text-ok" aria-hidden="true" />
             <Icon v-else name="mdi:content-copy" class="w-4 h-4" aria-hidden="true" />
             {{ copied === 'long' ? 'Copied' : 'Copy' }}
           </button>
         </div>
-        <p v-for="para in game.press.long" :key="para" class="mt-3 text-slate-700 dark:text-slate-200 leading-relaxed">
+        <p v-for="para in game.press.long" :key="para" class="mt-3 text-fg leading-relaxed">
           {{ para }}
         </p>
       </div>
@@ -169,7 +169,7 @@ async function downloadZip() {
           :event-params="{ project: game.slug, item: 'trailer' }"
         />
       </div>
-      <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">
+      <p class="mt-3 text-sm text-fg-muted">
         Embed or link it from YouTube:
         <a :href="`https://www.youtube.com/watch?v=${game.trailerYoutubeId}`" class="underline hover:text-accent-500" target="_blank" rel="noopener">youtube.com/watch?v={{ game.trailerYoutubeId }}</a>
       </p>
@@ -183,7 +183,7 @@ async function downloadZip() {
           <a
             :href="file.path"
             :download="file.name"
-            class="block overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-900"
+            class="block overflow-hidden border border-line bg-panel-raised"
           >
             <NuxtImg
               :src="file.path"
@@ -192,10 +192,10 @@ async function downloadZip() {
               densities="x1 x2"
               format="webp"
               loading="lazy"
-              class="w-full aspect-video object-contain transition-transform group-hover:scale-[1.02]"
+              class="w-full aspect-video object-contain transition-transform"
             />
           </a>
-          <a :href="file.path" :download="file.name" class="mt-2 inline-flex items-center gap-1 font-spacemono text-[11px] text-slate-500 dark:text-slate-400 hover:text-accent-500">
+          <a :href="file.path" :download="file.name" class="mt-2 inline-flex items-center gap-1 font-spacemono text-micro text-fg-muted hover:text-accent-500">
             <Icon name="mdi:download" class="w-3.5 h-3.5" aria-hidden="true" /> {{ file.name }}
           </a>
         </li>
@@ -203,9 +203,9 @@ async function downloadZip() {
     </section>
 
     <!-- Contact -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Contact</span>
-      <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6 text-slate-700 dark:text-slate-200 leading-relaxed">
+      <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-6 text-fg leading-relaxed">
         <p>
           Press, creators and partners: <a :href="mailto" class="underline hover:text-accent-500">{{ email }}</a>.
           Interviews, questions about the game and the studio, and requests for anything that is not on this page.
@@ -223,7 +223,7 @@ async function downloadZip() {
     </section>
 
     <div class="mt-14">
-      <NuxtLink :to="gamePath(game)" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 hover:text-accent-500">
+      <NuxtLink :to="gamePath(game)" class="inline-flex items-center gap-1.5 font-spacemono text-xs uppercase tracking-wider text-fg-muted hover:text-accent-500">
         <Icon name="mdi:arrow-left" class="w-4 h-4" aria-hidden="true" /> {{ game.title }}
       </NuxtLink>
     </div>

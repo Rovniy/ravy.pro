@@ -121,17 +121,17 @@ function copyInstall() {
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1 max-w-3xl">
         <span class="eyebrow">JavaScript · open-source library</span>
-        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+        <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           tabs-broadcast
         </h1>
-        <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
           Send events between the open tabs of your web app, and let exactly one of them do the work
           that must not run twice. A tiny TypeScript library over the BroadcastChannel API.
         </p>
         <p class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 eyebrow">
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> MIT</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> Zero dependencies</span>
-          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-emerald-500" /> TypeScript, Nuxt module</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> MIT</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> Zero dependencies</span>
+          <span class="flex items-center gap-1.5"><Icon name="mdi:check" class="w-3.5 h-3.5 text-ok" /> TypeScript, Nuxt module</span>
         </p>
         <ToolStoryLink class="mt-3" />
       </div>
@@ -139,11 +139,11 @@ function copyInstall() {
     </header>
 
     <!-- Links -->
-    <section class="mt-8 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6">
+    <section class="mt-8 border border-line bg-panel p-5 sm:p-6">
       <div class="flex flex-wrap items-center gap-3">
         <button
           type="button"
-          class="inline-flex items-center gap-2 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 font-spacemono text-sm hover:opacity-90 transition"
+          class="inline-flex items-center gap-2 bg-fg text-bg px-5 py-3 font-spacemono text-sm hover:opacity-90 transition"
           :aria-label="`Copy: ${INSTALL_COMMAND}`"
           @click="copyInstall"
         >
@@ -153,27 +153,27 @@ function copyInstall() {
         </button>
         <NuxtLink
           :to="DEMO_PATH"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-5 py-3 font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
         >
           <Icon name="mdi:play-circle-outline" class="w-5 h-5" />
           Live demo
         </NuxtLink>
         <a
           :href="NPM_URL"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-5 py-3 font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
         >
           <Icon name="mdi:npm" class="w-5 h-5" />
           npm
         </a>
         <a
           :href="REPO_URL"
-          class="inline-flex items-center gap-2 rounded-md border border-slate-300 dark:border-slate-700 px-5 py-3 font-medium text-slate-700 dark:text-slate-200 hover:border-accent-500 transition"
+          class="inline-flex items-center gap-2 border border-line-strong px-5 py-3 font-medium text-fg hover:border-accent-500 transition"
         >
           <Icon name="fa:github" class="w-5 h-5" />
           Source on GitHub
         </a>
       </div>
-      <p class="mt-4 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      <p class="mt-4 text-sm text-fg-muted leading-relaxed">
         Open the demo in two or three tabs to see messages travel between them and the primary tab move when you close it.
         Using Nuxt? Install <a :href="NUXT_MODULE_URL" class="text-accent-500 hover:underline"><code class="font-spacemono text-xs">tabs-broadcast-nuxt</code></a> instead.
       </p>
@@ -201,13 +201,13 @@ function copyInstall() {
         <div
           v-for="h in highlights"
           :key="h.title"
-          class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5"
+          class="border border-line bg-panel p-5"
         >
           <Icon :name="h.icon" class="w-5 h-5 text-accent-500" />
-          <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100">
+          <h3 class="mt-3 font-semibold text-fg">
             {{ h.title }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ h.text }}
           </p>
         </div>
@@ -221,20 +221,20 @@ function copyInstall() {
         <li
           v-for="(s, i) in quickStart"
           :key="s.name"
-          class="flex gap-4 rounded-xl border border-slate-200 dark:border-slate-800 p-5"
+          class="flex gap-4 border border-line p-5"
         >
           <span class="font-spacemono text-sm text-accent-500 shrink-0">0{{ i + 1 }}</span>
           <div class="min-w-0">
-            <h3 class="font-semibold text-slate-900 dark:text-slate-100">
+            <h3 class="font-semibold text-fg">
               {{ s.name }}
             </h3>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <p class="mt-1 text-sm text-fg-muted leading-relaxed">
               {{ s.text }}
             </p>
           </div>
         </li>
       </ol>
-      <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-950">
+      <div class="mt-4 overflow-x-auto border border-line bg-slate-950">
         <pre class="p-5 font-spacemono text-xs sm:text-sm leading-relaxed text-slate-200"><code>{{ QUICK_START_CODE }}</code></pre>
       </div>
     </section>
@@ -242,14 +242,14 @@ function copyInstall() {
     <ProjectRelatedPosts tag="tabs-broadcast" title="Writing about it" :limit="6" />
 
     <!-- FAQ -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">FAQ</span>
       <dl class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
         <div v-for="item in faqItems" :key="item.question">
-          <dt class="font-semibold text-slate-900 dark:text-slate-100">
+          <dt class="font-semibold text-fg">
             {{ item.question }}
           </dt>
-          <dd class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <dd class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.answer }}
           </dd>
         </div>
@@ -257,7 +257,7 @@ function copyInstall() {
     </section>
 
     <!-- Footer strip -->
-    <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
+    <section class="mt-14 border-t border-line pt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-fg-muted">
       <a :href="REPO_URL" class="inline-flex items-center gap-1.5 hover:text-accent-500 transition-colors">
         <Icon name="fa:github" class="w-4 h-4" /> Rovniy/tabs-broadcast
       </a>

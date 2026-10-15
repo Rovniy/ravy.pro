@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
+
 /**
  * A bordered panel with the 45° corner cut (`.frame` + `.cut` in tailwind.css).
  * With `to` the whole card is a link: hover and keyboard focus turn the border
  * accent. No lift, scale or rotate — the border colour is the only response.
  */
 const props = withDefaults(defineProps<{
-  to?: string
+  to?: RouteLocationRaw
   target?: string
   /** `sm` for compact cards and controls, `md` for content cards. */
   cut?: 'sm' | 'md'

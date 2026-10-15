@@ -246,7 +246,7 @@
 }
 
 /* Kill page/layout transitions on mobile and for reduced-motion users.
-   The 0.15s blur transition (app.vue) adds measurable INP regression on
+   The 0.15s slide transition (app.vue) adds measurable INP regression on
    slow phones and costs LCP on first navigation. Desktop keeps the brand
    touch. */
 @media (max-width: 768px), (prefers-reduced-motion: reduce) {
@@ -269,8 +269,7 @@
     min-width: 1.5rem;
     height: 1.5rem;
     padding: 0 0.375rem;
-    border-radius: 0.375rem;
-    border: 1px solid rgb(148 163 184 / 0.35);
+    border: 1px solid var(--ui-line-strong);
     font-family: var(--font-spacemono);
     font-size: 11px;
     line-height: 1;
@@ -287,83 +286,78 @@
  * defaults (which carry 0 specificity), so these win cleanly.
  */
 @layer components {
-  /* Links — the one accent, underlined with breathing room. */
+  /* Links: accent ink, underlined with breathing room. */
   .prose a {
-    color: var(--color-accent-600);
+    color: var(--ui-accent-ink);
     text-decoration-line: underline;
-    text-decoration-color: color-mix(in oklab, var(--color-accent-600) 35%, transparent);
+    text-decoration-color: color-mix(in oklab, var(--ui-accent-ink) 40%, transparent);
+    text-decoration-thickness: 2px;
     text-underline-offset: 3px;
     font-weight: 500;
     transition: color 0.15s, text-decoration-color 0.15s;
   }
   .prose a:hover {
-    color: var(--color-accent-500);
-    text-decoration-color: var(--color-accent-500);
+    color: var(--ui-fg);
+    text-decoration-color: var(--ui-accent);
   }
-  .dark .prose a { color: var(--color-accent-400); }
-  .dark .prose a:hover { color: var(--color-accent-300); }
 
-  /* Headings — tighter, heavier, and clear of the sticky header on anchor jump. */
+  /* Headings: still Space Grotesk in prose (the reading zone is quiet), tight
+     and heavy, clear of the sticky header on anchor jump. */
   .prose :is(h1, h2, h3, h4) {
+    color: var(--ui-fg);
     font-weight: 700;
     letter-spacing: -0.02em;
     scroll-margin-top: calc(var(--header-h) + 1rem);
   }
+  .prose h2 {
+    padding-left: 0.75rem;
+    border-left: 4px solid var(--ui-accent);
+  }
 
-  /* Lead — first paragraph reads as an intro. */
+  /* Lead: the first paragraph reads as an intro. */
   .prose > p:first-of-type {
     font-size: 1.125em;
     line-height: 1.7;
-    color: var(--color-slate-600);
+    color: var(--ui-fg);
   }
-  .dark .prose > p:first-of-type { color: var(--color-slate-300); }
 
-  /* Blockquote — slate rule accented with the brand accent, no decorative quote glyphs. */
+  /* Blockquote: accent rule, no decorative quote glyphs. */
   .prose blockquote {
-    border-left-color: var(--color-accent-400);
+    border-left-color: var(--ui-accent);
+    border-left-width: 4px;
+    background-color: var(--ui-panel);
+    padding: 0.25em 1em;
     font-style: normal;
     font-weight: 400;
-    color: var(--color-slate-600);
-  }
-  .dark .prose blockquote {
-    border-left-color: var(--color-accent-500);
-    color: var(--color-slate-300);
+    color: var(--ui-fg-muted);
   }
   .prose blockquote p:first-of-type::before,
   .prose blockquote p:last-of-type::after { content: none; }
 
-  /* Code — the data layer. Inline code gets a subtle slate chip; both inline
-     and block code render in Space Mono. The default backtick quotes are off. */
+  /* Code: the data layer. Inline code is a panel chip; both inline and block
+     code render in Space Mono. The default backtick quotes are off. */
   .prose code, .prose pre {
     font-family: var(--font-spacemono);
     font-size: 0.875em;
   }
   .prose :not(pre) > code {
-    background-color: var(--color-slate-100);
-    color: var(--color-slate-800);
-    padding: 0.15em 0.4em;
-    border-radius: 0.375rem;
+    background-color: var(--ui-panel-raised);
+    color: var(--ui-fg);
+    border: 1px solid var(--ui-line);
+    padding: 0.1em 0.4em;
     font-weight: 400;
-  }
-  .dark .prose :not(pre) > code {
-    background-color: var(--color-slate-800);
-    color: var(--color-slate-100);
   }
   .prose :not(pre) > code::before,
   .prose :not(pre) > code::after { content: none; }
   .prose pre {
-    border: 1px solid var(--color-slate-200);
-    border-radius: 0.75rem;
+    border: 1px solid var(--ui-line);
+    border-radius: 0;
   }
-  .dark .prose pre { border-color: var(--color-slate-800); }
 
-  /* Tables — header band + hairline rows. */
-  .prose thead { border-bottom-color: var(--color-slate-300); }
-  .prose thead th { background-color: var(--color-slate-100); }
-  .dark .prose thead { border-bottom-color: var(--color-slate-700); }
-  .dark .prose thead th { background-color: var(--color-slate-800); }
-  .prose tbody tr { border-bottom-color: var(--color-slate-200); }
-  .dark .prose tbody tr { border-bottom-color: var(--color-slate-800); }
+  /* Tables: header band + hairline rows. */
+  .prose thead { border-bottom-color: var(--ui-line-strong); }
+  .prose thead th { background-color: var(--ui-panel-raised); color: var(--ui-fg); }
+  .prose tbody tr { border-bottom-color: var(--ui-line); }
 
   /*
    * Embeds. Markdown posts carry hand-written <iframe>s (YouTube), and those
@@ -380,17 +374,12 @@
     height: auto;
     aspect-ratio: 16 / 9;
     border: 0;
-    border-radius: 0.75rem;
   }
 
   /* Divider + images. */
-  .prose hr { border-color: var(--color-slate-200); }
-  .dark .prose hr { border-color: var(--color-slate-800); }
+  .prose hr { border-color: var(--ui-line); }
   .prose img {
-    box-shadow: 0 0 0 1px var(--color-slate-200);
-  }
-  .dark .prose img {
-    box-shadow: 0 0 0 1px var(--color-slate-800);
+    box-shadow: 0 0 0 1px var(--ui-line);
   }
 }
 
@@ -401,12 +390,11 @@
 @layer components {
   .eyebrow {
     font-family: var(--font-spacemono);
-    font-size: 0.75rem;
+    font-size: var(--text-micro);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-slate-500);
+    color: var(--ui-fg-subtle);
   }
-  .dark .eyebrow { color: var(--color-slate-400); }
 }
 
 /*
@@ -498,50 +486,29 @@
 }
 
 /*
- * Scroll reveal — driven by the `v-reveal` directive (plugins/fx.ts). The
- * directive adds `.reveal` only on the client after checking reduced-motion,
- * so SSR/no-JS users always see content. `--reveal-delay` staggers grids.
+ * Scroll reveal — driven by the `v-reveal` directive (plugins/fx.ts), used on
+ * whole sections only. The section wipes in left to right through clip-path,
+ * a fast hard-edged move in place of a soft fade. The directive adds `.reveal`
+ * only on the client after checking reduced-motion, so SSR/no-JS users always
+ * see content.
  */
 @layer components {
   .reveal {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-      opacity 0.8s var(--ease-expo),
-      transform 0.8s var(--ease-expo);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.6s var(--ease-expo);
     transition-delay: var(--reveal-delay, 0ms);
   }
   .reveal.is-revealed {
-    opacity: 1;
-    transform: none;
+    clip-path: inset(0 0 0 0);
   }
 }
 
 /*
- * Cursor spotlight — driven by the `v-spotlight` directive (plugins/fx.ts),
- * which feeds --spot-x/--spot-y on mousemove. A soft accent-tinted radial
- * highlight follows the pointer across the card surface. Overlay is
- * pointer-events: none so card links/buttons are unaffected.
+ * Scrim — the one gradient in the system: darkens the bottom of a photo so
+ * white text on it stays readable. Never decorative.
  */
 @layer components {
-  .spotlight {
-    position: relative;
-  }
-  .spotlight::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    background: radial-gradient(
-      340px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-      color-mix(in oklab, var(--color-accent-400) 14%, transparent),
-      transparent 70%
-    );
-  }
-  .spotlight:hover::after {
-    opacity: 1;
+  .scrim-b {
+    background-image: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.12) 55%, transparent);
   }
 }

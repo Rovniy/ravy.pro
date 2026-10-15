@@ -1,14 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { daysSince, formatBlogDate, makeFirstCharUpper, tagColorClass } from '../../utils/helper'
+import { daysSince, formatBlogDate, makeFirstCharUpper } from '../../utils/helper'
 
 describe('utils/helper', () => {
   it('makeFirstCharUpper handles empty and regular text', () => {
     expect(makeFirstCharUpper('')).toBe('')
     expect(makeFirstCharUpper('hello')).toBe('Hello')
-  })
-
-  it('tagColorClass is deterministic', () => {
-    expect(tagColorClass('nuxt')).toBe(tagColorClass('nuxt'))
   })
 
   it('formatBlogDate handles invalid', () => {

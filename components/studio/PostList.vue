@@ -73,7 +73,7 @@ onMounted(refresh)
     <div class="flex flex-wrap items-center gap-2 mb-5">
       <NuxtLink
         to="/studio/new"
-        class="inline-flex items-center gap-1.5 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 text-sm font-medium hover:opacity-90"
+        class="inline-flex items-center gap-1.5 bg-fg text-bg px-4 py-2 text-sm font-medium hover:opacity-90"
       >
         <Icon name="mdi:plus" size="16" />
         New post
@@ -83,12 +83,12 @@ onMounted(refresh)
         v-model="query"
         type="search"
         placeholder="Filter by title, slug or tag…"
-        class="flex-1 min-w-[12rem] rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
+        class="flex-1 min-w-[12rem] border border-line-strong bg-panel px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60"
       >
 
       <button
         type="button"
-        class="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white underline hover:cursor-pointer"
+        class="text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer"
         :disabled="loading"
         @click="refresh"
       >
@@ -100,7 +100,7 @@ onMounted(refresh)
       {{ errorMsg }}
     </p>
 
-    <p v-if="!loading" class="mb-3 font-spacemono text-xs text-slate-500 dark:text-slate-400">
+    <p v-if="!loading" class="mb-3 font-spacemono text-xs text-fg-muted">
       {{ posts.length }} posts · {{ draftCount }} draft{{ draftCount === 1 ? '' : 's' }}
     </p>
 
@@ -108,7 +108,7 @@ onMounted(refresh)
       Loading posts…
     </div>
 
-    <ul v-else class="divide-y divide-slate-100 dark:divide-slate-800/60 border-y border-slate-100 dark:border-slate-800/60">
+    <ul v-else class="divide-y divide-line border-y border-line">
       <li v-for="post in filtered" :key="post.slug">
         <NuxtLink
           :to="`/studio/${post.slug}`"
@@ -120,10 +120,10 @@ onMounted(refresh)
             :title="post.published ? 'Published' : 'Draft'"
           />
           <span class="min-w-0 flex-1">
-            <span class="block font-medium text-slate-900 dark:text-slate-100 group-hover:text-accent-500 transition-colors">
+            <span class="block font-medium text-fg group-hover:text-accent-500 transition-colors">
               {{ post.title }}
             </span>
-            <span class="block font-spacemono text-xs text-slate-500 dark:text-slate-400 truncate">
+            <span class="block font-spacemono text-xs text-fg-muted truncate">
               /{{ post.slug }} · {{ formatDate(post.createdAt) }}
               <template v-if="post.tags.length"> · {{ post.tags.join(', ') }}</template>
               <template v-if="post.noindex"> · noindex</template>
@@ -137,19 +137,19 @@ onMounted(refresh)
       </li>
     </ul>
 
-    <div class="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/60">
+    <div class="mt-8 pt-4 border-t border-line">
       <button
         type="button"
-        class="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white underline hover:cursor-pointer"
+        class="text-xs text-slate-500 hover:text-fg underline hover:cursor-pointer"
         :disabled="reindexing"
         @click="onReindex"
       >
         {{ reindexing ? 'Rebuilding…' : 'Rebuild index' }}
       </button>
-      <span class="ml-2 text-xs text-slate-500 dark:text-slate-400">
+      <span class="ml-2 text-xs text-fg-muted">
         Only needed if the public list disagrees with this one.
       </span>
-      <p v-if="reindexMsg" class="mt-2 text-xs text-slate-600 dark:text-slate-300">
+      <p v-if="reindexMsg" class="mt-2 text-xs text-fg-muted">
         {{ reindexMsg }}
       </p>
     </div>

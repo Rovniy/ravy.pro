@@ -50,10 +50,10 @@ const { trackCta } = useAnalytics()
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
     <header class="max-w-3xl">
       <span class="eyebrow">Creative work</span>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+      <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         {{ copy.heading }}
       </h1>
-      <p class="mt-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+      <p class="mt-3 text-base sm:text-lg text-fg-muted leading-relaxed">
         {{ copy.description }}
       </p>
     </header>
@@ -62,9 +62,8 @@ const { trackCta } = useAnalytics()
       <UiSectionHeader eyebrow="XPLOIT" title="Games" to="/games" link-label="All games" />
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <ProjectCard
-          v-for="(game, i) in GAMES"
+          v-for="game in GAMES"
           :key="game.slug"
-          v-reveal="(i % 3) * 90"
           :to="gamePath(game)"
           :title="game.title"
           :tagline="game.tagline"
@@ -85,9 +84,8 @@ const { trackCta } = useAnalytics()
       <UiSectionHeader eyebrow="AI music" title="Music" to="/music" link-label="All music" />
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <ProjectCard
-          v-for="(project, i) in MUSIC_PROJECTS"
+          v-for="project in MUSIC_PROJECTS"
           :key="project.slug"
-          v-reveal="i * 90"
           :to="musicPath(project)"
           :title="project.name"
           :tagline="project.tagline"
@@ -123,19 +121,19 @@ const { trackCta } = useAnalytics()
           v-for="item in openSource"
           :key="item.name"
           :to="item.to"
-          class="group rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 transition hover:border-accent-400 dark:hover:border-accent-600"
+          class="group border border-line bg-panel p-5 transition hover:border-accent"
         >
           <Icon :name="item.icon" class="w-5 h-5 text-accent-500" aria-hidden="true" />
-          <h3 class="mt-3 font-semibold text-slate-900 dark:text-slate-100 group-hover:text-accent-600 dark:group-hover:text-accent-400">
+          <h3 class="mt-3 font-semibold text-fg group-hover:text-accent-ink">
             {{ item.name }}
           </h3>
-          <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p class="mt-1 text-sm text-fg-muted leading-relaxed">
             {{ item.text }}
           </p>
         </NuxtLink>
       </div>
       <p class="mt-4 text-sm">
-        <a href="https://github.com/Rovniy" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-accent-500">
+        <a href="https://github.com/Rovniy" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-fg-muted hover:text-accent-500">
           <Icon name="fa:github" class="w-4 h-4" aria-hidden="true" /> More on GitHub
         </a>
       </p>

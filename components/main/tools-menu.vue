@@ -39,7 +39,7 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
   <div ref="menuRef" class="relative">
     <button
       type="button"
-      class="services-trigger inline-flex items-center gap-1 rounded-sm hover:text-accent-600 dark:hover:text-accent-400 hover:cursor-pointer"
+      class="services-trigger inline-flex items-center gap-1 uppercase text-fg-muted hover:text-fg hover:cursor-pointer"
       :aria-expanded="isOpen"
       aria-controls="tools-menu-list"
       @click="toggle"
@@ -64,14 +64,14 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
       <div
         v-if="isOpen"
         id="tools-menu-list"
-        class="absolute right-0 top-full mt-2 w-70 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-lg py-1 z-20"
+        class="absolute right-0 top-full mt-4 w-70 border border-line-strong bg-panel py-1 z-20 font-spacegrotesk normal-case tracking-normal"
       >
         <!-- The hub, first. The dropdown trigger is a button (a disclosure, not
              a link), so before this row the /tools page had no navigation link
              anywhere on the site. -->
         <NuxtLink
           to="/tools"
-          class="services-item px-4 py-2 text-sm sm:text-base font-semibold hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3 mb-1 pb-2.5 border-b border-slate-200 dark:border-slate-800"
+          class="services-item px-4 py-2 text-sm sm:text-base font-semibold hover:bg-panel-raised hover:text-fg text-fg-muted flex items-center gap-3 mb-1 pb-2.5 border-b border-line"
         >
           <Icon name="mdi:apps" size="1.4em" aria-hidden="true" />
           All tools
@@ -81,9 +81,9 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
           v-for="item in sortedList"
           :key="item.path"
           :to="item.path"
-          class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3"
+          class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-panel-raised hover:text-fg text-fg-muted flex items-center gap-3"
         >
-          <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400" />
+          <Icon :name="item.icon" size="1.4em" aria-hidden="true" class="text-accent-ink" />
           {{ item.name }}
         </NuxtLink>
 
@@ -94,12 +94,12 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
             v-for="(item, i) in accessibleServices"
             :key="item.path"
             :to="item.path"
-            class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-accent-600 dark:hover:text-accent-400 flex items-center gap-3"
-            :class="i === 0 ? 'mt-1 pt-2.5 border-t border-slate-200 dark:border-slate-800' : ''"
+            class="services-item px-4 py-2 text-sm sm:text-base font-medium hover:bg-panel-raised hover:text-fg text-fg-muted flex items-center gap-3"
+            :class="i === 0 ? 'mt-1 pt-2.5 border-t border-line' : ''"
           >
             <Icon :name="item.icon" size="1.4em" aria-hidden="true" />
             <span class="flex-1">{{ item.name }}</span>
-            <span class="font-spacemono text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500">
+            <span class="font-spacemono text-micro uppercase tracking-wider text-fg-subtle">
               private
             </span>
           </NuxtLink>
@@ -125,10 +125,10 @@ const sortedList = computed(() => [...publicServices].sort((a, b) => a.name.loca
 }
 
 .services-item:focus-visible {
-  @apply bg-slate-200 dark:bg-slate-800 text-accent-600 dark:text-accent-400;
+  @apply bg-panel-raised text-fg;
 }
 
 .services-item.router-link-active {
-  @apply text-accent-600 dark:text-accent-400 bg-slate-100 dark:bg-slate-900;
+  @apply text-fg bg-panel-raised;
 }
 </style>
