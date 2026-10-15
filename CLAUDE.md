@@ -213,7 +213,18 @@ Event taxonomy: `tool_view`, `tool_action` (`tool_id`+`action`), `tool_download`
 
 ### Styling
 
-Tailwind CSS v4 (via `@tailwindcss/postcss`) with dark mode as default (`colorMode.defaultValue: 'dark'` in nuxt.config.ts). Dark mode toggled via class. Custom font is Space Grotesk. Page transitions use a 0.4s blur effect configured in nuxt.config.ts.
+Tailwind CSS v4 (via `@tailwindcss/postcss`) with dark mode as default (`colorMode.defaultValue: 'dark'` in nuxt.config.ts). Dark mode toggled via class. Page transitions use a 0.4s blur effect configured in nuxt.config.ts.
+
+#### Design system (hero-shooter UI, in the Marvel Rivals / Apex Legends register)
+
+All of it lives in `assets/css/tailwind.css`. The site is being migrated to it in stages; the old look (teal, gradients, glow, rounded cards) is what it replaces.
+
+- **Colour.** Semantic tokens with one class for both themes: `bg-bg`, `bg-panel`, `bg-panel-raised`, `border-line`, `border-line-strong`, `text-fg`, `text-fg-muted`, `text-fg-subtle`, `bg-accent` + `text-accent-fg`, `text-accent-ink` (accent as *text*), `text-ok` / `text-warn` / `text-danger`. Depth comes from panel layers, never from shadow or blur. There is one accent, "Rivals yellow" (`accent-400` = `#FFC21A`); its `accent-*` scale is hand-tuned so `accent-600/700` are readable as text on white. Status colours are only for status.
+- **Type.** Three roles: `font-display` (Barlow Condensed: headings, section titles, stat numbers, button labels; uppercase; italic 800 only for the hero H1), `font-spacegrotesk` (running text), `font-spacemono` (labels, dates, data; `text-micro` + uppercase + tracking). Use the type scale and never `text-[Npx]`.
+- **Shape.** Four moves: the 45° corner cut (`.cut`, `.cut-sm`), the bordered cut panel (`.frame` > `.frame-inner`), the parallelogram (`.skew-box`, slant on `::before`, `--skew: -10deg`) and the `.hazard` stripes (section markers and the primary CTA only). There are no rounded corners except `rounded-full` on status dots. `clip-path` clips `outline`, so a frame shows focus by turning its border accent, and a skew-box rings its `::before`. Keep both when you build something new.
+- **Loud vs quiet.** Home, `/games`, `/projects` and `/music` get the full treatment: slanted markers, italic display and accent tags. Blog, TIL, tools, services, account and studio use the quiet variant (`<UiSectionHeader quiet>`): the same tokens and panels, with no slant and no italics, so prose reads like an article.
+- **Primitives** (`components/ui/`): `UiButton` (`primary | secondary | ghost | link`, `sm | md`, `to` renders a NuxtLink; one `primary` per view), `UiCard` (cut frame, `to` makes it a link, border-only hover), `UiTag` (`neutral | accent | ok | warn | danger`), `UiStat`, `UiSectionHeader` (`quiet`, and `index` only for a real sequence) and `LayoutContainer` (`max-w-6xl`, `narrow` = 3xl). Build from these instead of hand-rolling classes.
+- **Guard rail.** `tests/unit/design-tokens.test.ts` fails on pixel font sizes, gradients, `v-spotlight`, teal/emerald, rounded corners and soft shadows in `components/`, `pages/` and `layouts/`. Pre-system files are listed with their counts in `tests/unit/design-tokens.legacy.ts`. That list is a ratchet: when you clean a file, lower its number or delete its entry. Never raise a number.
 
 ### OG Images
 

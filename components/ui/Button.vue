@@ -1,28 +1,50 @@
 <script setup lang="ts">
+/**
+ * The one button. `primary` is the accent parallelogram (one per view),
+ * `secondary` the outlined parallelogram, `ghost` a quiet action, `link` plain
+ * accent text. Renders a NuxtLink when `to` is set, a <button> otherwise.
+ * The slant lives on ::before (`.skew-box`), so the label stays upright.
+ */
 const props = withDefaults(defineProps<{
-  variant?: 'primary' | 'accent' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'link'
+  size?: 'sm' | 'md'
+  to?: string
+  /** For a NuxtLink to an external URL. */
+  target?: string
   type?: 'button' | 'submit'
   disabled?: boolean
 }>(), {
   variant: 'primary',
+  size: 'md',
   type: 'button',
   disabled: false,
 })
 
+const NuxtLink = resolveComponent('NuxtLink')
+
 const variantClasses: Record<NonNullable<typeof props.variant>, string> = {
-  primary: 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90',
-  accent: 'bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-400 dark:text-slate-950 dark:hover:bg-accent-300',
-  ghost: 'border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800',
+  primary: 'text-accent-fg before:bg-accent hover:before:translate-x-1 active:before:translate-x-0.5 active:before:translate-y-0.5',
+  secondary: 'text-fg before:border-2 before:border-line-strong hover:before:border-fg hover:before:bg-panel-raised',
+  ghost: 'text-fg-muted hover:text-fg hover:before:bg-panel-raised',
+  link: 'text-accent-ink hover:underline underline-offset-4',
+}
+
+const sizeClasses: Record<NonNullable<typeof props.size>, string> = {
+  sm: 'px-4 py-2 text-base gap-1.5',
+  md: 'px-6 py-3 text-lg gap-2',
 }
 </script>
 
 <template>
-  <button
-    :type="props.type"
-    :disabled="props.disabled"
-    class="inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none hover:cursor-pointer"
-    :class="variantClasses[props.variant]"
+  <component
+    :is="props.to ? NuxtLink : 'button'"
+    :to="props.to"
+    :target="props.to ? props.target : undefined"
+    :type="props.to ? undefined : props.type"
+    :disabled="props.to ? undefined : props.disabled"
+    class="skew-box inline-flex items-center justify-center font-display font-bold uppercase leading-none tracking-[0.06em] whitespace-nowrap cursor-pointer select-none transition-colors disabled:opacity-50 disabled:pointer-events-none"
+    :class="[variantClasses[props.variant], props.variant === 'link' ? 'text-base gap-1.5' : sizeClasses[props.size]]"
   >
     <slot />
-  </button>
+  </component>
 </template>

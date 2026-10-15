@@ -94,7 +94,7 @@ async function downloadZip() {
         Facts, copy and images for writing about {{ game.title }}. Quote the text as is and use the images in your coverage.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-3">
-        <UiButton variant="accent" :disabled="zipping" @click="downloadZip">
+        <UiButton :disabled="zipping" @click="downloadZip">
           <Icon name="mdi:folder-zip-outline" class="w-5 h-5" aria-hidden="true" />
           {{ zipping ? 'Preparing…' : `Download all (ZIP, ${files.length + 1} files)` }}
         </UiButton>

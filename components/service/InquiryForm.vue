@@ -242,7 +242,7 @@ const fieldClasses = 'w-full rounded-md border border-slate-300 dark:border-slat
         </p>
 
         <div class="flex flex-wrap items-center gap-3 pt-1">
-          <UiButton variant="accent" type="submit" :disabled="status === 'loading'">
+          <UiButton type="submit" :disabled="status === 'loading'">
             <Icon v-if="status === 'loading'" name="svg-spinners:180-ring" size="16" aria-hidden="true" />
             <Icon v-else name="mdi:send-outline" size="16" aria-hidden="true" />
             {{ status === 'loading' ? 'Sending…' : 'Send the inquiry' }}

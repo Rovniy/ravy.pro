@@ -601,6 +601,7 @@ export default defineNuxtConfig({
     fonts: [
       { family: 'Space Grotesk', fallbacks: ['Inter', 'sans-serif'] },
       { family: 'Space Mono', fallbacks: ['ui-monospace', 'monospace'] },
+      { family: 'Barlow Condensed', fallbacks: ['Arial Narrow', 'sans-serif'] },
     ],
   },
 

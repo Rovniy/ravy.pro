@@ -72,9 +72,58 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/*
+ * Barlow Condensed — the display face (headings, section titles, stat numbers,
+ * button labels). Condensed, heavy, uppercase: the hero-shooter UI register.
+ * Never used for running text. Latin subset from @fontsource/barlow-condensed.
+ */
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/barlow-condensed-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/barlow-condensed-700.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/barlow-condensed-800.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: italic;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/barlow-condensed-800-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @theme {
   --font-spacegrotesk: "Space Grotesk", sans-serif;
   --font-spacemono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+
+  /* The type scale. `micro` is the mono label size — use `text-micro`, never
+     `text-[11px]`/`text-[10px]`. `display` is the hero H1. */
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.4;
+  --text-display: clamp(4rem, 10vw, 8rem);
+  --text-display--line-height: 0.86;
 
   /* Signature easing — a long expo tail that makes motion feel engineered
      rather than default. Use for reveals, hovers, and any element entrance. */
@@ -82,26 +131,90 @@
 }
 
 /*
- * Brand accent — semantic alias so the accent hue is swappable in one place.
- * Every component uses `accent-*` classes; only this block knows the hue is teal.
- * `inline` resolves the referenced values at build time.
+ * Brand accent — "Rivals yellow". Every component uses `accent-*` classes;
+ * only this block knows the hue. The scale is hand-tuned rather than borrowed
+ * from Tailwind's amber: 400 is the signature #FFC21A (fills in dark mode,
+ * with dark text on top), and 600/700 are dark enough to be *text* on a light
+ * surface (≥4.5:1 on white) — a bright yellow can't be.
+ */
+@theme {
+  --color-accent-50: #fff8e1;
+  --color-accent-100: #ffefb8;
+  --color-accent-200: #ffe38a;
+  --color-accent-300: #ffd65a;
+  --color-accent-400: #ffc21a;
+  --color-accent-500: #f0a800;
+  --color-accent-600: #8f6500;
+  --color-accent-700: #765300;
+  --color-accent-800: #5c4000;
+  --color-accent-900: #3f2c00;
+  --color-accent-950: #261a00;
+}
+
+/*
+ * Semantic surface/text tokens. Components use `bg-bg`, `bg-panel`,
+ * `bg-panel-raised`, `border-line`, `border-line-strong`, `text-fg`,
+ * `text-fg-muted`, `text-fg-subtle`, `text-accent-ink`, `bg-accent`,
+ * `text-accent-fg` — one class, both themes, no `dark:` pair.
+ * Depth comes from these panel layers, never from blur or soft shadows.
  */
 @theme inline {
-  --color-accent-50: var(--color-teal-50);
-  --color-accent-100: var(--color-teal-100);
-  --color-accent-200: var(--color-teal-200);
-  --color-accent-300: var(--color-teal-300);
-  --color-accent-400: var(--color-teal-400);
-  --color-accent-500: var(--color-teal-500);
-  --color-accent-600: var(--color-teal-600);
-  --color-accent-700: var(--color-teal-700);
-  --color-accent-800: var(--color-teal-800);
-  --color-accent-900: var(--color-teal-900);
-  --color-accent-950: var(--color-teal-950);
+  --color-bg: var(--ui-bg);
+  --color-panel: var(--ui-panel);
+  --color-panel-raised: var(--ui-panel-raised);
+  --color-line: var(--ui-line);
+  --color-line-strong: var(--ui-line-strong);
+  --color-fg: var(--ui-fg);
+  --color-fg-muted: var(--ui-fg-muted);
+  --color-fg-subtle: var(--ui-fg-subtle);
+  --color-accent: var(--ui-accent);
+  --color-accent-fg: var(--ui-accent-fg);
+  --color-accent-ink: var(--ui-accent-ink);
+  --color-ok: var(--ui-ok);
+  --color-warn: var(--ui-warn);
+  --color-danger: var(--ui-danger);
 }
 
 :root {
   --header-h: 4.5rem;
+
+  /* Shape tokens: the 45° corner cut and the parallelogram skew. */
+  --cut-sm: 8px;
+  --cut-md: 16px;
+  --skew: -10deg;
+
+  /* Light theme (secondary). */
+  --ui-bg: #eceef2;
+  --ui-panel: #ffffff;
+  --ui-panel-raised: #f5f6f8;
+  --ui-line: #d3d7df;
+  --ui-line-strong: #9aa1ae;
+  --ui-fg: #12151b;
+  --ui-fg-muted: #4a5160;
+  --ui-fg-subtle: #626a79;
+  --ui-accent: var(--color-accent-400);
+  --ui-accent-fg: #12151b;
+  --ui-accent-ink: var(--color-accent-700);
+  --ui-ok: #138a47;
+  --ui-warn: #a35f00;
+  --ui-danger: #c42b22;
+}
+
+.dark {
+  --ui-bg: #0b0d11;
+  --ui-panel: #14171d;
+  --ui-panel-raised: #1c2028;
+  --ui-line: #2a2f39;
+  --ui-line-strong: #444b58;
+  --ui-fg: #eef0f4;
+  --ui-fg-muted: #a3aab7;
+  --ui-fg-subtle: #7b8291;
+  --ui-accent: var(--color-accent-400);
+  --ui-accent-fg: #111318;
+  --ui-accent-ink: var(--color-accent-400);
+  --ui-ok: #3ccf7a;
+  --ui-warn: #ffb020;
+  --ui-danger: #ff5a4f;
 }
 
 @layer base {
@@ -121,7 +234,7 @@
 
   ::selection {
     background-color: var(--color-accent-400);
-    color: #fff;
+    color: #111318;
   }
 
   /* Visible focus ring on every interactive element. Tailwind 4 doesn't
@@ -294,6 +407,94 @@
     color: var(--color-slate-500);
   }
   .dark .eyebrow { color: var(--color-slate-400); }
+}
+
+/*
+ * Shape language — the four moves the whole UI is built from. Anything else
+ * (rounded corners, soft shadows, gradients, glow) is out of the system and
+ * caught by tests/unit/design-tokens.test.ts.
+ *
+ * .cut       45° cut on the top-right and bottom-left corners. `--cut` sets
+ *            the size (defaults to --cut-md); `.cut-sm` is the control size.
+ * .frame     a bordered cut panel. clip-path clips `border` and `outline`, so
+ *            the border is the outer layer's background showing through 1px of
+ *            padding, and the child `.frame-inner` is the surface, cut the same
+ *            way. On an interactive frame (a link or button) hover and keyboard
+ *            focus turn that border accent — the focus indicator that survives
+ *            the clip. Put `.cut` on both layers.
+ * .skew-box  parallelogram: the skew lives on ::before so text stays upright
+ *            and the focus outline can ring the slanted shape.
+ * .hazard    diagonal accent stripes — section markers and the primary CTA only.
+ */
+@layer components {
+  .cut {
+    --cut: var(--cut-md);
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--cut)) 0,
+      100% var(--cut),
+      100% 100%,
+      var(--cut) 100%,
+      0 calc(100% - var(--cut))
+    );
+  }
+  .cut-sm { --cut: var(--cut-sm); }
+
+  .frame {
+    display: block;
+    padding: 1px;
+    background-color: var(--ui-line);
+    transition: background-color 0.2s var(--ease-expo);
+  }
+  .frame-inner {
+    height: 100%;
+    background-color: var(--ui-panel);
+  }
+  :is(a, button).frame:hover,
+  .frame:has(> .frame-inner a:hover),
+  :is(a, button).frame:focus-visible,
+  .frame:focus-within {
+    background-color: var(--ui-accent);
+  }
+  :is(a, button).frame:focus-visible,
+  .frame:has(:focus-visible) {
+    outline: none;
+    padding: 2px;
+  }
+
+  .skew-box {
+    position: relative;
+    isolation: isolate;
+  }
+  .skew-box::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform: skewX(var(--skew));
+    transition:
+      transform 0.2s var(--ease-expo),
+      translate 0.2s var(--ease-expo),
+      background-color 0.2s var(--ease-expo),
+      border-color 0.2s var(--ease-expo);
+  }
+  .skew-box:focus-visible { outline: none; }
+  .skew-box:focus-visible::before {
+    outline: 2px solid var(--ui-fg);
+    outline-offset: 3px;
+  }
+
+  .hazard {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--ui-accent) 0 6px,
+      transparent 6px 12px
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .frame, .skew-box::before { transition: none; }
+  }
 }
 
 /*
