@@ -149,7 +149,14 @@ export const publicServices: PublicService[] = [
   { name: 'Credit Card Generator', path: '/tools/credit-card-generator', icon: 'mdi:credit-card-outline', blurb: 'Luhn-valid test card numbers for QA.', story: '/blogs/why-i-built-a-credit-card-generator-tool-for-developers' },
   { name: 'JWT Decoder', path: '/tools/jwt-decoder', icon: 'mdi:shield-key-outline', blurb: 'Decode and verify JWTs in your browser.' },
   { name: 'Image Converter', path: '/tools/image-converter', icon: 'mdi:image-sync-outline', blurb: 'Convert PNG, JPEG and WebP locally.' },
+  { name: 'tabs-broadcast', path: '/tools/tabs-broadcast', icon: 'mdi:tab', blurb: 'npm library for messaging between browser tabs.' },
 ]
+
+/**
+ * Static pages under a tool that aren't tools themselves (a live demo).
+ * Prerendered and cached like the tool pages, and listed in the sitemap.
+ */
+export const TOOL_SUB_PAGE_PATHS = ['/tools/tabs-broadcast/demo']
 
 export const footerData = {
   author: baseData.me.name,

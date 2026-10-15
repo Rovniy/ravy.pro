@@ -15,6 +15,7 @@ describe('toolIdFromPath', () => {
     expect(toolIdFromPath('/tools/contract-red-flag-scanner')).toBe('contract-scanner')
     expect(toolIdFromPath('/tools/xploit-translator')).toBe('xploit-translator')
     expect(toolIdFromPath('/tools/xploit-game-ui')).toBe('xploit-game-ui')
+    expect(toolIdFromPath('/tools/tabs-broadcast')).toBe('tabs-broadcast')
   })
 
   it('ignores trailing slashes, query strings, and nested paths', () => {

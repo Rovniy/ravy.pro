@@ -7,7 +7,7 @@ import { HUB_COPY } from '~/data/projects'
 const copy = HUB_COPY.projects
 
 // Open source lives on GitHub and npm, not in a registry of its own: three
-// entries, two of which already have a page under /tools.
+// entries, each with its page under /tools.
 const openSource = [
   {
     name: 'XPLOIT Game UI',
@@ -23,7 +23,7 @@ const openSource = [
   },
   {
     name: 'tabs-broadcast',
-    to: '/blogs/tabs-broadcast',
+    to: '/tools/tabs-broadcast',
     text: 'A small npm library for messaging between browser tabs, built for high-load interfaces.',
     icon: 'mdi:tab',
   },

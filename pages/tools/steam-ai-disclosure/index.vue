@@ -65,6 +65,7 @@ const checkoutError = ref('')
 
 const { track } = useAnalytics()
 const TOOL_ID = 'steam-ai-disclosure'
+const VIDEO_ID = '7Jq2TNEEULA'
 
 function startWizard() {
   checkoutError.value = ''
@@ -216,6 +217,21 @@ async function startCheckout() {
         @unlock="startCheckout"
       />
     </div>
+
+    <!-- Video -->
+    <section class="mt-14">
+      <span class="eyebrow">Video</span>
+      <div class="mt-4">
+        <UiEmbedFacade
+          :src="`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`"
+          title="Steam AI Disclosure: get the Steamworks AI form right"
+          :poster="`https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`"
+          poster-alt="Steam AI Disclosure video thumbnail"
+          :event="EVENTS.VIDEO_PLAY"
+          :event-params="{ tool_id: TOOL_ID, item: 'overview' }"
+        />
+      </div>
+    </section>
 
     <!-- Reference / SEO content -->
     <section class="mt-14 border-t border-slate-200 dark:border-slate-800 pt-8 max-w-3xl">

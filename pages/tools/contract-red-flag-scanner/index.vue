@@ -82,6 +82,7 @@ const checkoutCancelled = computed(() => route.query.checkout === 'cancelled')
 
 const { track } = useAnalytics()
 const TOOL_ID = 'contract-scanner'
+const VIDEO_ID = 'XBc5MQ0UNFo'
 
 const hasInput = computed(() => contractText.value.trim().length > 0 || photoPages.value.length > 0)
 const isRunning = computed(() => {
@@ -591,6 +592,21 @@ watch(
       <p class="mt-2 text-sm text-red-700/90 dark:text-red-300/90">
         {{ teaser.error || 'Unknown error during document analysis.' }}
       </p>
+    </section>
+
+    <!-- Video -->
+    <section class="mt-14">
+      <span class="eyebrow">Video</span>
+      <div class="mt-4">
+        <UiEmbedFacade
+          :src="`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`"
+          title="Contract Red-Flag Scanner: check a creator contract before you sign"
+          :poster="`https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`"
+          poster-alt="Contract Red-Flag Scanner video thumbnail"
+          :event="EVENTS.VIDEO_PLAY"
+          :event-params="{ tool_id: TOOL_ID, item: 'overview' }"
+        />
+      </div>
     </section>
 
     <!-- Reference / SEO content -->

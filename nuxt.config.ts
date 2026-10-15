@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 // Explicit import: Nuxt 4's split tsconfig (project references) leaves the
 // `defineNuxtConfig` global unresolved in some IDE type contexts.
 import { defineNuxtConfig } from 'nuxt/config'
-import { baseData, navbarData, publicServices, seoData } from './data'
+import { baseData, navbarData, publicServices, seoData, TOOL_SUB_PAGE_PATHS } from './data'
 import { GTM_CONSENT_DEFAULTS, GTM_NOSCRIPT_HTML } from './data/gtm'
 import { PROJECT_PAGE_PATHS } from './data/project-routes'
 import { PLATFORM_META } from './data/projects'
@@ -324,6 +324,7 @@ export default defineNuxtConfig({
         '/services/mentorship',
         '/tools',
         ...TOOL_PAGE_PATHS,
+        ...TOOL_SUB_PAGE_PATHS,
         ...DOCS_ROUTES,
         // /projects, /games/**, /music/**, /animation/** — derived from the
         // registries in data/, so a new game or album needs no edit here.
@@ -388,7 +389,7 @@ export default defineNuxtConfig({
       // hold them, and every single view is forwarded to the origin.
       '/tools': { headers: CONTENT_CACHE_HEADERS },
       // Derived from `publicServices`, so a new tool needs no edit here.
-      ...Object.fromEntries(TOOL_PAGE_PATHS.map(path => [path, { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS }])),
+      ...Object.fromEntries([...TOOL_PAGE_PATHS, ...TOOL_SUB_PAGE_PATHS].map(path => [path, { ssr: true, prerender: true, headers: CONTENT_CACHE_HEADERS }])),
       '/tools/contract-red-flag-scanner/result/**': { ssr: true, prerender: false },
       '/tools/steam-ai-disclosure/result/**': { ssr: true, prerender: false },
       // Creative-work pages. Static registry data, so prerendered and CDN-cached

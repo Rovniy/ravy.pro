@@ -89,6 +89,7 @@ export const TOOL_IDS = [
   'contract-scanner',
   'xploit-translator',
   'xploit-game-ui',
+  'tabs-broadcast',
 ] as const
 
 export type ToolId = (typeof TOOL_IDS)[number]
@@ -116,5 +117,7 @@ export function toolIdFromPath(path: string): ToolId | null {
     return 'xploit-translator'
   if (p.includes('/tools/xploit-game-ui'))
     return 'xploit-game-ui'
+  if (p.includes('/tools/tabs-broadcast'))
+    return 'tabs-broadcast'
   return null
 }

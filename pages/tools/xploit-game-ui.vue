@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useAnalytics } from '~/composables/useAnalytics'
+import { EVENTS } from '~/data/analytics'
 
 definePageMeta({ layout: 'default' })
 
@@ -11,6 +12,7 @@ const REPO_URL = 'https://github.com/Rovniy/xploit_game_ui'
 // the newest one, so this page never needs a rebuild when a version ships.
 const RELEASES_URL = `${REPO_URL}/releases/latest`
 const DOCS_URL = `${REPO_URL}/blob/main/docs/css-support.md`
+const VIDEO_ID = 'Gxxdqlw0YLY'
 
 const highlights = [
   {
@@ -143,6 +145,21 @@ function onDownload() {
         The plugin ships as a Unity package tarball (<code class="font-spacemono text-xs">.tgz</code>) attached to the latest GitHub release.
         Requires Unity 6000.2 or newer on Windows 11 x64, with the graphics API set to Direct3D 12.
       </p>
+    </section>
+
+    <!-- Video -->
+    <section class="mt-14">
+      <span class="eyebrow">Video</span>
+      <div class="mt-4">
+        <UiEmbedFacade
+          :src="`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`"
+          title="XPLOIT Game UI: HTML, CSS and JavaScript UI in Unity"
+          :poster="`https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`"
+          poster-alt="XPLOIT Game UI video thumbnail"
+          :event="EVENTS.VIDEO_PLAY"
+          :event-params="{ tool_id: TOOL_ID, item: 'overview' }"
+        />
+      </div>
     </section>
 
     <!-- What it is -->

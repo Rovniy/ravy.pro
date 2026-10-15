@@ -3,7 +3,7 @@
 import { queryCollection } from '@nuxt/content/server'
 import { listMeta } from '~~/server/utils/blog-store'
 import { listNotes } from '~~/server/utils/til-store'
-import { publicServices, seoData } from '~/data'
+import { publicServices, seoData, TOOL_SUB_PAGE_PATHS } from '~/data'
 import { OFFERING_PAGE_PATHS } from '~/data/offerings'
 import { projectSitemapEntries } from '~/data/project-routes'
 import { tilTopicPath } from '~/data/til'
@@ -38,6 +38,8 @@ export default defineEventHandler(async (event) => {
   for (const tool of publicServices) {
     urls.push({ loc: tool.path })
   }
+  for (const path of TOOL_SUB_PAGE_PATHS)
+    urls.push({ loc: path })
 
   // Docs carry a real `lastUpdated` in frontmatter, which is more truthful than
   // the build timestamp `autoLastmod` would otherwise supply.

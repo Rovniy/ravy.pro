@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to, _) => {
   }
 
   const redirects: IRedirects = {
-    '/projects/tabs-broadcast/': '/blogs/tabs-broadcast',
+    '/projects/tabs-broadcast/': '/tools/tabs-broadcast',
     '/projects/boo-stories/': '/categories/tiny-boo',
     '/boo-stories-privacy-policy/': '/docs/tiny-boo-privacy-policy',
     '/qr-code': '/tools/qr-code-generator',
