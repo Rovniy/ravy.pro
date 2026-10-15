@@ -48,7 +48,7 @@ const { trackCta } = useAnalytics()
 
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
-    <header class="max-w-3xl">
+    <header>
       <span class="eyebrow">Creative work</span>
       <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         {{ copy.heading }}

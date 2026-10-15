@@ -18,7 +18,7 @@ const { trackCta } = useAnalytics()
 
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
-    <header class="max-w-3xl">
+    <header>
       <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
         Projects
       </NuxtLink>

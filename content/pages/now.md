@@ -40,7 +40,7 @@ The fastest way to a yes or a no is a short message on [Telegram](https://t.me/x
 * Not taking free "quick calls" that are actually consulting — the first consulting call is free anyway, book that instead.
 * Not writing production code for hire. I lead engineers; I don't replace them.
 
-<div class="not-prose flex flex-wrap gap-3 my-8">
-  <a href="/services" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold shadow-sm hover:shadow-md ring-1 ring-sky-400/30 transition-all">Work with me</a>
-  <a href="/about" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:border-sky-400 hover:text-sky-500 dark:hover:text-sky-400 text-sm font-semibold transition-all">More about me</a>
+<div class="not-prose flex flex-wrap gap-4 my-8">
+  <a href="/services" class="skew-box btn btn-primary">Work with me</a>
+  <a href="/about" class="skew-box btn btn-secondary">More about me</a>
 </div>

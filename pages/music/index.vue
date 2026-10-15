@@ -25,7 +25,7 @@ const { trackCta } = useAnalytics()
 
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
-    <header class="max-w-3xl">
+    <header>
       <NuxtLink to="/projects" class="eyebrow hover:text-accent-500 transition-colors">
         Projects
       </NuxtLink>
@@ -52,7 +52,7 @@ const { trackCta } = useAnalytics()
       />
     </div>
 
-    <section class="mt-14 max-w-3xl">
+    <section class="mt-14">
       <span class="eyebrow">How it is made</span>
       <p class="mt-3 text-fg-muted leading-relaxed">
         Both projects are made with generative AI, and I say so openly. I write the concepts and the stories, direct the sound, and pick, edit and release every track myself.

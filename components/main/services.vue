@@ -42,7 +42,7 @@ function linkFor(offering: typeof OFFERINGS[number]) {
         >
           <div class="flex items-start justify-between gap-3">
             <span class="grid place-items-center w-12 h-12 bg-accent text-accent-fg">
-              <Icon :name="offering.icon" class="w-6 h-6" aria-hidden="true" />
+              <Icon :name="offering.icon" class="w-7 h-7" aria-hidden="true" />
             </span>
             <span class="mt-1 text-right font-spacemono text-micro uppercase tracking-[0.1em] text-fg-subtle">
               {{ offering.tag }}

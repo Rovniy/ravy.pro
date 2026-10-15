@@ -376,7 +376,7 @@ generate()
     </div>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Reference</span>
       <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Test credit card numbers, explained

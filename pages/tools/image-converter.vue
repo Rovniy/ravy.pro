@@ -492,7 +492,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     </div>
 
     <!-- Top controls -->
-    <div class="sticky top-0 z-10 mb-6 border border-line bg-panel p-4">
+    <div class="sticky top-[var(--header-h)] z-[5] mb-6 border border-line bg-panel p-4">
       <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
         <div>
           <span class="block text-xs font-medium text-fg-muted mb-1.5">Convert to</span>
@@ -678,7 +678,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
     </div>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Reference</span>
       <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Converting images in your browser, explained

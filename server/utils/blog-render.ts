@@ -2,7 +2,7 @@
 // registered by @nuxtjs/mdc, which this project only gets transitively through
 // @nuxt/content, and an auto-import that appears by accident is not a contract.
 import { createMarkdownParser } from '@nuxtjs/mdc/runtime'
-// The generated Shiki highlighter (dracula + the configured langs), called
+// The generated Shiki highlighter (ayu-dark + the configured langs), called
 // in-process. Without it the rehype plugin falls back to `$fetch`ing
 // `/api/_mdc/highlight`, a route @nuxt/content never registers — every fenced
 // block then silently rendered as plain, unhighlighted text.

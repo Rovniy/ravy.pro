@@ -44,7 +44,7 @@ defineOgImage('Blog', {
         <h1 class="text-5xl sm:text-6xl font-display font-extrabold uppercase text-fg leading-none">
           {{ m.hero.title }}
         </h1>
-        <p class="mt-5 max-w-3xl text-base leading-relaxed text-fg-muted">
+        <p class="mt-5 text-base leading-relaxed text-fg-muted">
           {{ m.hero.lede }}
         </p>
         <p class="mt-5 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
@@ -137,7 +137,7 @@ defineOgImage('Blog', {
       <section class="pb-16">
         <UiSectionHeader :eyebrow="m.author.eyebrow" :title="m.author.title" />
 
-        <div class="max-w-3xl space-y-4">
+        <div class="space-y-4">
           <p v-for="para in m.author.paragraphs" :key="para" class="text-base leading-relaxed text-fg-muted">
             {{ para }}
           </p>
@@ -216,7 +216,7 @@ defineOgImage('Blog', {
            and comparable to a recruiter fee. -->
       <section class="pb-16">
         <UiSectionHeader :eyebrow="m.terms.eyebrow" :title="m.terms.title" />
-        <p class="-mt-4 mb-8 max-w-3xl text-base leading-relaxed text-fg-muted">
+        <p class="-mt-4 mb-8 text-base leading-relaxed text-fg-muted">
           {{ m.terms.lede }}
         </p>
 
@@ -277,7 +277,7 @@ defineOgImage('Blog', {
            incentive. No photos, no pull-quotes — these are anonymised. -->
       <section class="pb-16">
         <UiSectionHeader :eyebrow="m.cases.eyebrow" :title="m.cases.title" />
-        <p class="-mt-4 mb-8 max-w-3xl text-sm leading-relaxed text-fg-muted">
+        <p class="-mt-4 mb-8 text-sm leading-relaxed text-fg-muted">
           {{ m.cases.lede }}
         </p>
 
@@ -307,7 +307,7 @@ defineOgImage('Blog', {
           </div>
         </div>
 
-        <p class="mt-8 max-w-3xl text-xs leading-relaxed text-fg-muted">
+        <p class="mt-8 text-xs leading-relaxed text-fg-muted">
           {{ m.cases.disclaimer }}
         </p>
       </section>
@@ -337,7 +337,7 @@ defineOgImage('Blog', {
           </div>
         </dl>
 
-        <p class="mt-10 max-w-3xl text-sm leading-relaxed text-fg-muted">
+        <p class="mt-10 text-sm leading-relaxed text-fg-muted">
           {{ m.market.note }}
         </p>
       </section>
@@ -369,7 +369,7 @@ defineOgImage('Blog', {
       <!-- Real fine print, honestly formatted: not styled to be overlooked, not
            inflated into a warning box. -->
       <section class="pb-16">
-        <p class="border-t border-line pt-6 max-w-3xl text-xs leading-relaxed text-fg-muted">
+        <p class="border-t border-line pt-6 text-xs leading-relaxed text-fg-muted">
           {{ m.honestyNote }}
           <NuxtLink :to="m.terms.fullTerms.to" class="underline decoration-slate-400/50 hover:text-accent-ink">
             Full payment terms

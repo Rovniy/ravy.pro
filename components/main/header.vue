@@ -76,7 +76,7 @@ function navClick(item: string, location: 'header' | 'mobile' = 'header') {
 <template>
   <header
     ref="headerRef"
-    class="fixed inset-x-0 top-0 z-10 bg-bg border-b transition-colors duration-300"
+    class="fixed inset-x-0 top-0 z-30 bg-bg border-b transition-colors duration-300"
     :class="scrolled ? 'border-line-strong' : 'border-line'"
   >
     <LayoutContainer class="flex h-[var(--header-h)] justify-between items-center">

@@ -68,7 +68,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="note" class="px-6 container max-w-3xl mx-auto py-10 sm:py-14">
+  <div v-if="note" class="mx-auto w-full max-w-6xl px-6 lg:px-10 py-10 sm:py-14">
     <nav aria-label="Breadcrumb" class="mb-6 font-spacemono text-xs text-fg-muted">
       <ol class="flex flex-wrap items-center gap-1.5">
         <li>

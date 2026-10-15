@@ -38,7 +38,7 @@ async function subscribe() {
   <div class="grid gap-4 sm:grid-cols-2 sm:items-center">
     <div>
       <p class="flex items-center gap-2 text-sm font-bold tracking-tight text-fg">
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent-500" />
+        <span class="inline-block w-1.5 h-3 bg-accent -skew-x-10" />
         {{ footerData.newsletter.title }}
       </p>
       <p class="mt-2 text-sm leading-relaxed text-fg-muted">
@@ -47,18 +47,22 @@ async function subscribe() {
     </div>
 
     <form class="flex flex-col gap-2" @submit.prevent="subscribe">
-      <div class="flex flex-col sm:flex-row gap-2">
+      <div class="flex flex-col sm:flex-row gap-3">
         <label for="newsletter-email" class="sr-only">Email address</label>
-        <input
-          id="newsletter-email"
-          v-model="email"
-          type="email"
-          required
-          autocomplete="email"
-          placeholder="you@example.com"
-          :disabled="status === 'loading'"
-          class="flex-1 border border-line-strong bg-panel px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 disabled:opacity-60"
-        >
+        <!-- Slanted like the button beside it: the plate is the wrapper's
+             ::before (.skew-field), the input itself is transparent. -->
+        <span class="skew-box skew-field flex-1">
+          <input
+            id="newsletter-email"
+            v-model="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="you@example.com"
+            :disabled="status === 'loading'"
+            class="w-full bg-transparent border-0 px-4 py-2.5 text-sm text-fg placeholder:text-fg-subtle focus:outline-none focus:ring-0 disabled:opacity-60"
+          >
+        </span>
         <button
           type="submit"
           :disabled="status === 'loading'"
@@ -72,7 +76,7 @@ async function subscribe() {
       <p
         v-if="message"
         class="text-xs"
-        :class="status === 'error' ? 'text-rose-600 dark:text-rose-400' : 'text-ok '"
+        :class="status === 'error' ? 'text-danger' : 'text-ok'"
         aria-live="polite"
       >
         {{ message }}

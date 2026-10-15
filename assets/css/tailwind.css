@@ -239,6 +239,19 @@
     color: #111318;
   }
 
+  /* Native controls follow the site theme: the open <select> list is drawn
+     by the OS from these colours, not from the field's classes. */
+  :root { color-scheme: light; }
+  .dark { color-scheme: dark; }
+  select option,
+  select optgroup {
+    background-color: var(--ui-panel);
+    color: var(--ui-fg);
+  }
+  select option:checked {
+    background-color: var(--ui-panel-raised);
+  }
+
   /* Visible focus ring on every interactive element. Tailwind 4 doesn't
      ship one by default; without it Lighthouse a11y flags keyboard nav. */
   :focus-visible {
@@ -474,6 +487,7 @@
       transform 0.2s var(--ease-expo),
       translate 0.2s var(--ease-expo),
       box-shadow 0.2s var(--ease-expo),
+      filter 0.2s var(--ease-expo),
       background-color 0.2s var(--ease-expo),
       border-color 0.2s var(--ease-expo);
   }
@@ -540,6 +554,50 @@
 
   .btn-link { color: var(--ui-accent-ink); padding-inline: 0; }
   .btn-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /*
+   * Share buttons (nuxt-social-share). The module sets --color-brand on each
+   * link; the brand colour fills the slanted plate, with the same hard drop as
+   * .btn-primary. X's brand is black, so its plate also gets a border to stay
+   * visible on the dark theme.
+   */
+  .share-btn.social-share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: auto;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    border-radius: 0;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--text-base);
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .share-btn.social-share-button:hover { background-color: transparent; }
+  .share-btn::before {
+    background-color: var(--color-brand);
+    box-shadow: 4px 4px 0 0 color-mix(in oklab, var(--color-brand) 40%, transparent);
+  }
+  .share-btn:hover::before { translate: 3px 0; filter: brightness(1.12); }
+  .share-btn:active::before { translate: 3px 3px; box-shadow: 0 0 0 0 transparent; }
+  .share-btn.social-share-button--twitter::before { border: 1px solid var(--ui-line-strong); }
+  .share-btn .social-share-button__icon { font-size: 1.15em; }
+  .share-btn .social-share-button__label { padding: 0; }
+
+  /* A text field on the same slanted plate as the buttons. Wrap the input:
+     <span class="skew-box skew-field"><input class="bg-transparent border-0"></span>.
+     Focus inside turns the plate's border accent. */
+  .skew-field { display: flex; }
+  .skew-field::before {
+    border: 2px solid var(--ui-line-strong);
+    background-color: var(--ui-panel);
+  }
+  .skew-field:hover::before { border-color: var(--ui-fg-subtle); }
+  .skew-field:focus-within::before { border-color: var(--ui-accent); }
 
   .hazard {
     background-image: repeating-linear-gradient(

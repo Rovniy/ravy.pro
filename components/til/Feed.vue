@@ -21,7 +21,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="px-6 container max-w-3xl mx-auto py-10 sm:py-14">
+  <div class="mx-auto w-full max-w-6xl px-6 lg:px-10 py-10 sm:py-14">
     <header class="mb-8">
       <p class="eyebrow mb-3">
         <template v-if="topic">

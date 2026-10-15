@@ -49,7 +49,7 @@ const { trackCta } = useAnalytics()
         <h1 class="text-5xl sm:text-6xl font-display font-extrabold uppercase text-fg leading-none">
           {{ c.hero.title }}
         </h1>
-        <p class="mt-5 max-w-3xl text-base leading-relaxed text-fg-muted">
+        <p class="mt-5 text-base leading-relaxed text-fg-muted">
           {{ c.hero.lede }}
         </p>
 
@@ -188,7 +188,7 @@ const { trackCta } = useAnalytics()
           </div>
         </div>
 
-        <p class="mt-8 max-w-3xl font-spacemono text-micro text-fg-muted">
+        <p class="mt-8 font-spacemono text-micro text-fg-muted">
           {{ c.packages.footnote }}
         </p>
       </section>
@@ -224,7 +224,7 @@ const { trackCta } = useAnalytics()
           </li>
         </ul>
 
-        <p class="mt-6 max-w-3xl text-sm leading-relaxed text-fg-muted">
+        <p class="mt-6 text-sm leading-relaxed text-fg-muted">
           {{ c.track.note }}
         </p>
 
@@ -251,7 +251,7 @@ const { trackCta } = useAnalytics()
            professionalism on the page and would surface on the first call anyway. -->
       <section class="pb-16">
         <UiSectionHeader :eyebrow="c.availability.eyebrow" :title="c.availability.title" />
-        <div class="max-w-3xl space-y-4">
+        <div class="space-y-4">
           <p v-for="para in c.availability.paragraphs" :key="para" class="text-base leading-relaxed text-fg-muted">
             {{ para }}
           </p>

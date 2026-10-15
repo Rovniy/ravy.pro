@@ -194,7 +194,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
   <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
-      <div class="min-w-0 max-w-3xl">
+      <div class="min-w-0">
         <span class="eyebrow">Windows · desktop app</span>
         <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           XPLOIT Translator
@@ -381,7 +381,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
       <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         The app is free — you pay OpenAI for tokens
       </h2>
-      <p class="mt-3 max-w-3xl text-fg-muted leading-relaxed">
+      <p class="mt-3 text-fg-muted leading-relaxed">
         There is no subscription, no licence and no account here. The app talks to OpenAI with the key you
         paste on the first run, so translation is billed to you directly, at OpenAI's rates. Pick the model in
         the settings; the cheapest one handles ordinary text perfectly well.
@@ -486,7 +486,7 @@ function onDownload(asset: ReleaseAsset, variant: 'installer' | 'portable') {
     </section>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Reference</span>
       <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Why a hotkey overlay instead of a browser tab

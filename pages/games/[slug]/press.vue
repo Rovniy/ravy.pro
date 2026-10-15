@@ -90,7 +90,7 @@ async function downloadZip() {
       <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
         {{ game.title }} press kit
       </h1>
-      <p class="mt-3 max-w-3xl text-lg text-fg leading-relaxed">
+      <p class="mt-3 text-lg text-fg leading-relaxed">
         Facts, copy and images for writing about {{ game.title }}. Quote the text as is and use the images in your coverage.
       </p>
       <div class="mt-6 flex flex-wrap items-center gap-3">

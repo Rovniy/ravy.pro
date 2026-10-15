@@ -119,7 +119,7 @@ const { trackCta } = useAnalytics()
     </section>
 
     <LayoutContainer class="py-12">
-      <div class="prose prose-sm sm:prose-base md:prose-lg prose-slate dark:prose-invert max-w-3xl prose-img:mx-auto prose-img:block">
+      <div class="prose prose-sm sm:prose-base md:prose-lg prose-slate dark:prose-invert max-w-none prose-img:mx-auto prose-img:block">
         <ContentRenderer v-if="data" :value="data" />
       </div>
     </LayoutContainer>

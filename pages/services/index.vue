@@ -81,7 +81,7 @@ const cardClasses = 'group relative flex flex-col border border-line bg-panel p-
           >
             <div class="flex items-start justify-between gap-4">
               <span class="grid place-items-center w-12 h-12 bg-panel-raised text-accent-ink border border-line transition-transform duration-300 ease-expo">
-                <Icon :name="offering.icon" class="w-6 h-6" aria-hidden="true" />
+                <Icon :name="offering.icon" class="w-7 h-7" aria-hidden="true" />
               </span>
               <div class="flex flex-wrap items-center justify-end gap-2">
                 <span class="border border-line px-2.5 py-1 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
@@ -123,7 +123,7 @@ const cardClasses = 'group relative flex flex-col border border-line bg-panel p-
           >
             <div class="flex items-start justify-between gap-4">
               <span class="grid place-items-center w-12 h-12 bg-panel-raised text-accent-ink border border-line transition-transform duration-300 ease-expo">
-                <Icon :name="offering.icon" class="w-6 h-6" aria-hidden="true" />
+                <Icon :name="offering.icon" class="w-7 h-7" aria-hidden="true" />
               </span>
               <span class="mt-0.5 shrink-0 border border-line px-2.5 py-1 font-spacemono text-micro uppercase tracking-wider text-fg-muted">
                 {{ offering.tag }}

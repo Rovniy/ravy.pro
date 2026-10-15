@@ -186,68 +186,84 @@ defineOgImage('Blog', {
   link: data.value.ogImage || data.value.image,
   url: data.value.ogImage || data.value.image,
 })
+
+const SHARE_NETWORKS = [
+  { id: 'linkedin', label: 'LinkedIn' },
+  { id: 'twitter', label: 'X' },
+  { id: 'telegram', label: 'Telegram' },
+  { id: 'facebook', label: 'Facebook' },
+  { id: 'email', label: 'Email' },
+]
 </script>
 
 <template>
   <div>
     <BlogReadingProgress :slug="path" />
 
-    <div class="px-6 container max-w-5xl mx-auto sm:grid grid-cols-12 gap-x-12">
-      <!--
+    <LayoutContainer>
+      <!-- The article and its table of contents share one grid row of their
+           own: a sticky element is bounded by its container, so this keeps the
+           rail from sliding over the share bar and Related posts below. -->
+      <div class="lg:grid grid-cols-12 gap-x-12">
+        <!--
         `<article>` around the post, not a bare div: without it the only
         <article> elements on the page were the three related-post *cards*, so
         the markup asserted the sidebar cards were articles and the post itself
         was not. The JSON-LD said BlogPosting all along — this makes the HTML
         agree with it.
       -->
-      <article class="col-span-12 lg:col-span-9">
-        <BlogHeader
-          :title="data.title"
-          :image="data.image"
-          :alt="data.alt"
-          :created-at="data.createdAt"
-          :last-updated="data.lastUpdated"
-          :description="data.description"
-          :tags="data.tags"
-          :reading-time="readingTime"
-        />
-        <div
-          class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg
-          prose-h1:no-underline mx-auto prose-slate dark:prose-invert prose-img:mx-auto prose-img:block"
-        >
-          <!--
+        <article class="col-span-12 lg:col-span-9">
+          <BlogHeader
+            :title="data.title"
+            :image="data.image"
+            :alt="data.alt"
+            :created-at="data.createdAt"
+            :last-updated="data.lastUpdated"
+            :description="data.description"
+            :tags="data.tags"
+            :reading-time="readingTime"
+          />
+          <div
+            class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg
+          prose-h1:no-underline max-w-none prose-slate dark:prose-invert prose-img:mx-auto prose-img:block"
+          >
+            <!--
             No `:components` map here any more. It used to pass a local Image.vue
             hoping to control in-article images, but ContentRenderer maps by
             rendered tag name (`img`), so that component was never reached and
             the images stayed eager and full-size. Sizing now lives where MDC
             actually looks: components/content/ProseImg.global.vue.
           -->
-          <ContentRenderer v-if="articles" :value="articles">
-            <template #empty>
-              <p>No content found.</p>
-            </template>
-          </ContentRenderer>
-        </div>
-      </article>
+            <ContentRenderer v-if="articles" :value="articles">
+              <template #empty>
+                <p>No content found.</p>
+              </template>
+            </ContentRenderer>
+          </div>
+        </article>
 
-      <BlogToc :articles="articles" />
-
-      <div class="col-span-12 flex flex-row flex-wrap md:flex-nowrap mt-10 gap-2">
-        <LazySocialShare
-          v-for="network in ['facebook', 'twitter', 'linkedin', 'telegram', 'email']"
-          :key="network"
-          :network="network"
-          :url="`${seoData.mySite}${path}`"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-slate-700 hover:bg-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700 transition-colors"
-          :hashtags="hashTags"
-          :aria-label="`Share on ${network}`"
-        />
+        <BlogToc :articles="articles" />
       </div>
 
-      <section v-if="related?.length" class="col-span-12 mt-10 pt-6 border-t border-line">
-        <h2 class="text-lg font-bold text-fg mb-4">
-          Related posts
-        </h2>
+      <div class="mt-12 flex flex-wrap items-center gap-x-4 gap-y-3">
+        <span class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle mr-1">Share</span>
+        <LazySocialShare
+          v-for="network in SHARE_NETWORKS"
+          :key="network.id"
+          :network="network.id"
+          :url="`${seoData.mySite}${path}`"
+          class="skew-box share-btn"
+          :hashtags="hashTags"
+          :aria-label="`Share on ${network.label}`"
+        >
+          <template #label>
+            {{ network.label }}
+          </template>
+        </LazySocialShare>
+      </div>
+
+      <section v-if="related?.length" class="mt-14">
+        <UiSectionHeader quiet eyebrow="Keep reading" title="Related posts" />
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <BlogCard
             v-for="post in related"
@@ -264,7 +280,7 @@ defineOgImage('Blog', {
         </div>
       </section>
 
-      <nav v-if="surround?.prev || surround?.next" class="col-span-12 mt-10 pt-6 border-t border-line grid grid-cols-2 gap-4">
+      <nav v-if="surround?.prev || surround?.next" class="mt-10 mb-6 pt-6 border-t border-line grid grid-cols-2 gap-4">
         <NuxtLink
           v-if="surround?.prev"
           :to="surround.prev.path"
@@ -290,6 +306,6 @@ defineOgImage('Blog', {
           <span class="font-medium line-clamp-2">{{ surround.next.title }}</span>
         </NuxtLink>
       </nav>
-    </div>
+    </LayoutContainer>
   </div>
 </template>

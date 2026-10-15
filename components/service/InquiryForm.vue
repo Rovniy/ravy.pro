@@ -101,7 +101,7 @@ async function submit() {
   }
 }
 
-const fieldClasses = 'w-full border border-line-strong bg-panel px-4 py-2.5 text-base text-fg placeholder:text-fg-subtle focus:outline-none focus:ring-2 focus:ring-accent-500/60 focus:border-accent-400 disabled:opacity-60'
+const fieldClasses = 'w-full border border-line-strong bg-bg px-4 py-2.5 text-base text-fg placeholder:text-fg-subtle focus:outline-none focus:ring-0 focus:border-accent disabled:opacity-60'
 </script>
 
 <template>

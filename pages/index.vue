@@ -90,7 +90,7 @@ function ratingFor(path: string) {
           >
             <div class="flex items-start justify-between gap-4">
               <span class="grid place-items-center w-12 h-12 bg-panel-raised text-accent-ink border border-line">
-                <Icon :name="tool.icon" class="w-6 h-6" aria-hidden="true" />
+                <Icon :name="tool.icon" class="w-7 h-7" aria-hidden="true" />
               </span>
               <UiTag v-if="tool.tag" tone="accent">
                 {{ tool.tag }}

@@ -519,6 +519,10 @@ export default defineNuxtConfig({
   },
 
   icon: {
+    // Icon CSS goes into Tailwind's `base` layer. Unlayered, its `width: 1em;
+    // height: 1em` beat every `w-* h-*` utility (layered CSS always loses to
+    // unlayered), so a size class on <Icon> was silently ignored.
+    cssLayer: 'base',
     // Left on `auto`, the server bundle inlines every installed @iconify-json
     // collection whole — about 9 MB of string literals (simple-icons alone is
     // 4.7 MB) for ~30 icons. Rollup parsing that is what ran the Nitro build out
@@ -622,7 +626,9 @@ export default defineNuxtConfig({
     build: {
       markdown: {
         highlight: {
-          theme: 'dracula',
+          // ayu-dark: warm keywords on near-black, close to the site's ink and
+          // yellow accent. The code panel stays dark in both site themes.
+          theme: 'ayu-dark',
           // Replaces @nuxtjs/mdc's default list, so its entries are repeated
           // here. A fence in a language missing from this list still renders,
           // just unhighlighted — add it here, each one is a lazy chunk.

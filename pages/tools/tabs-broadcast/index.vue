@@ -119,7 +119,7 @@ function copyInstall() {
   <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
-      <div class="min-w-0 flex-1 max-w-3xl">
+      <div class="min-w-0 flex-1">
         <span class="eyebrow">JavaScript · open-source library</span>
         <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           tabs-broadcast

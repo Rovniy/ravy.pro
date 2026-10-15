@@ -36,7 +36,7 @@ const { trackCta } = useAnalytics()
 
           <h1 class="hero-step delay-1 mb-7 font-display italic font-extrabold uppercase text-display text-fg">
             {{ nameLines[0] }}
-            <span v-if="nameLines[1]" class="block text-accent-ink">{{ nameLines[1] }}</span>
+            <span v-if="nameLines[1]" class="hero-surname">{{ nameLines[1] }}</span>
           </h1>
 
           <ul class="hero-step delay-2 mb-7 flex flex-wrap gap-2" aria-label="Roles">
@@ -148,5 +148,19 @@ const { trackCta } = useAnalytics()
 
 @media (prefers-reduced-motion: reduce) {
   .is-mounted .hero-step { animation: none; }
+}
+
+/* The surname in the accent. Yellow text works on the dark ground; on the
+   light one it would have to darken to brown to stay legible, so there the
+   surname is ink with a yellow marker stroke behind its lower half. */
+.hero-surname {
+  display: block;
+  width: fit-content;
+  color: var(--ui-accent-ink);
+}
+html:not(.dark) .hero-surname {
+  color: var(--ui-fg);
+  padding-inline: 0.06em;
+  background-image: linear-gradient(transparent 52%, var(--ui-accent) 52%, var(--ui-accent) 92%, transparent 92%);
 }
 </style>

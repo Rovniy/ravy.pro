@@ -391,7 +391,7 @@ watch(
   <div class="px-6 lg:px-10 py-8 sm:py-12 mx-auto w-full max-w-6xl">
     <!-- Hero -->
     <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
-      <div class="min-w-0 max-w-3xl">
+      <div class="min-w-0">
         <span class="eyebrow">Contracts · creator & brand deals</span>
         <h1 class="mt-2 text-4xl sm:text-5xl font-display font-extrabold uppercase text-fg leading-none">
           Spot the red flags before you sign
@@ -610,7 +610,7 @@ watch(
     </section>
 
     <!-- Reference / SEO content -->
-    <section class="mt-14 border-t border-line pt-8 max-w-3xl">
+    <section class="mt-14 border-t border-line pt-8">
       <span class="eyebrow">Reference</span>
       <h2 class="mt-2 text-2xl font-bold tracking-tight text-fg">
         Why creator contracts need a red-flag check

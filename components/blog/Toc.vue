@@ -59,46 +59,52 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div v-if="links.length" class="lg:col-span-3 sticky top-28 max-h-[70vh] hidden lg:flex flex-col justify-self-end pointer-events-none">
-    <div class="border dark:border-slate-800 p-4 min-w-[200px] dark:bg-slate-900 overflow-y-auto pointer-events-auto">
-      <p class="font-spacemono text-xs font-bold uppercase tracking-widest text-fg-subtle mb-3 pb-2 border-b dark:border-slate-800">
+  <!-- A sticky rail in the post's own grid row (pages/blogs/[blog].vue), so it
+       stops at the end of the article instead of sliding over Related posts. -->
+  <aside v-if="links.length" class="hidden lg:block lg:col-span-3 self-start sticky top-[calc(var(--header-h)+2rem)]">
+    <div class="flex items-center gap-2.5 mb-4">
+      <span class="w-1 h-4 bg-accent" aria-hidden="true" />
+      <p class="font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle">
         On this page
       </p>
-
-      <!--
-        Not wrapped in <client-only> any more. The link list is derived from
-        `body.toc`, which is available during SSR — hiding it behind ClientOnly
-        meant the prerendered HTML contained an empty <span> where the table of
-        contents should be, so crawlers saw no section links at all. Only the
-        active-heading highlight needs the client, and that is a class binding.
-      -->
-      <nav class="space-y-0.5" aria-label="On this page">
-        <template v-for="link in links" :key="link.id">
-          <NuxtLink
-            :to="`#${link.id}`"
-            class="flex items-center text-xs py-1 pl-2 border-l-2 transition-all duration-200"
-            :class="activeId === link.id
-              ? 'border-accent-500 text-accent-500 dark:text-accent-400 font-semibold'
-              : 'border-transparent text-fg-muted hover:text-slate-900 dark:hover:text-slate-200 hover:border-line-strong'"
-          >
-            {{ link.text }}
-          </NuxtLink>
-
-          <template v-if="link.children?.length">
-            <NuxtLink
-              v-for="child in link.children"
-              :key="child.id"
-              :to="`#${child.id}`"
-              class="flex items-center text-xs py-1 pl-5 border-l-2 transition-all duration-200"
-              :class="activeId === child.id
-                ? 'border-accent-500 text-accent-500 dark:text-accent-400 font-semibold'
-                : 'border-transparent text-fg-muted hover:text-slate-900 dark:hover:text-slate-200 hover:border-line-strong'"
-            >
-              {{ child.text }}
-            </NuxtLink>
-          </template>
-        </template>
-      </nav>
     </div>
-  </div>
+
+    <!--
+      Not wrapped in <client-only>. The link list is derived from `body.toc`,
+      which is available during SSR, so crawlers see the section links. Only the
+      active-heading highlight needs the client, and that is a class binding.
+    -->
+    <nav class="max-h-[calc(100vh-var(--header-h)-8rem)] overflow-y-auto overscroll-contain border-l border-line [scrollbar-width:thin] [scrollbar-color:var(--ui-line-strong)_transparent]" aria-label="On this page">
+      <template v-for="link in links" :key="link.id">
+        <NuxtLink
+          :to="`#${link.id}`"
+          class="-ml-px block py-1.5 pl-4 pr-2 border-l-2 text-sm leading-snug transition-colors duration-150"
+          :class="activeId === link.id
+            ? 'border-accent text-fg font-semibold bg-panel'
+            : 'border-transparent text-fg-muted hover:text-fg hover:border-line-strong'"
+        >
+          {{ link.text }}
+        </NuxtLink>
+
+        <template v-if="link.children?.length">
+          <NuxtLink
+            v-for="child in link.children"
+            :key="child.id"
+            :to="`#${child.id}`"
+            class="-ml-px block py-1 pl-7 pr-2 border-l-2 text-xs leading-snug transition-colors duration-150"
+            :class="activeId === child.id
+              ? 'border-accent text-fg font-semibold bg-panel'
+              : 'border-transparent text-fg-subtle hover:text-fg hover:border-line-strong'"
+          >
+            {{ child.text }}
+          </NuxtLink>
+        </template>
+      </template>
+    </nav>
+
+    <a href="#" class="mt-4 inline-flex items-center gap-1.5 font-spacemono text-micro uppercase tracking-[0.12em] text-fg-subtle hover:text-accent-ink transition-colors">
+      <Icon name="mdi:arrow-up" size="14" aria-hidden="true" />
+      Back to top
+    </a>
+  </aside>
 </template>

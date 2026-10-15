@@ -59,7 +59,7 @@ const { trackCta } = useAnalytics()
     <!-- Episodes -->
     <section class="mt-14">
       <span class="eyebrow">{{ s.season.name }}</span>
-      <p class="mt-3 max-w-3xl text-fg-muted leading-relaxed">
+      <p class="mt-3 text-fg-muted leading-relaxed">
         {{ s.season.text }}
       </p>
       <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
