@@ -197,7 +197,7 @@ export const homePage = {
     // Kept short on purpose: five items wrapped to four mono lines at 375px,
     // which reads as a paragraph rather than a row of facts. The full history
     // is on /about, which the secondary CTA points at.
-    proof: ['15+ years in production', 'Gaijin', 'Wargaming', 'VKontakte'],
+    proof: ['15+ years in production', 'Gaijin', 'Wargaming', 'Elo.pub'],
     // Primary points at the commercial offer: it's what the page leads with.
     // Secondary keeps /about — it's the recruiter's next click and the only
     // route to the experience and shipped work. The blog has the nav and its
