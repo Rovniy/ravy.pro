@@ -473,7 +473,7 @@ const STATUS_META: Record<ItemStatus, { icon: string, classes: string, label: st
 
 <template>
   <div class="px-6 py-12 mx-auto w-full max-w-5xl">
-    <header class="mb-8 flex items-start justify-between gap-x-6">
+    <header class="mb-8 flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1">
         <h1 class="text-3xl md:text-4xl font-bold tracking-tight">
           Image Converter

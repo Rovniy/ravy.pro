@@ -86,10 +86,10 @@ const BUTTON_IDLE = 'border-slate-200 dark:border-slate-800 text-slate-500 dark:
 </script>
 
 <template>
-  <div class="flex flex-col items-end gap-1.5 text-sm shrink-0">
+  <div class="flex flex-col items-start sm:items-end gap-1.5 text-sm shrink-0">
     <!-- Loaded -->
     <template v-if="summary">
-      <div class="flex flex-wrap items-center justify-end gap-x-2 gap-y-0.5">
+      <div class="flex flex-wrap items-center sm:justify-end gap-x-2 gap-y-0.5">
         <span class="relative inline-flex" role="img" :aria-label="ratingLabel">
           <span class="flex text-slate-300 dark:text-slate-600">
             <Icon v-for="i in 5" :key="`bg-${i}`" name="mdi:star" class="w-4 h-4" aria-hidden="true" />
@@ -148,7 +148,7 @@ const BUTTON_IDLE = 'border-slate-200 dark:border-slate-800 text-slate-500 dark:
 
     <!-- Loading skeleton (same footprint as the loaded state → no CLS);
          after a failed fetch nothing renders — the feature degrades silently. -->
-    <div v-else-if="pending" class="flex flex-col items-end gap-1.5 animate-pulse" aria-hidden="true">
+    <div v-else-if="pending" class="flex flex-col items-start sm:items-end gap-1.5 animate-pulse" aria-hidden="true">
       <div class="h-5 w-40 rounded bg-slate-200 dark:bg-slate-800" />
       <div class="h-6 w-32 rounded bg-slate-200 dark:bg-slate-800" />
     </div>

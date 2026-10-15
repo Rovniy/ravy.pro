@@ -118,7 +118,7 @@ function copyInstall() {
 <template>
   <div class="px-4 sm:px-6 py-8 sm:py-12 mx-auto w-full max-w-5xl">
     <!-- Hero -->
-    <header class="flex items-start justify-between gap-x-6">
+    <header class="flex flex-col gap-y-4 sm:flex-row sm:items-start sm:justify-between gap-x-6">
       <div class="min-w-0 flex-1 max-w-3xl">
         <span class="eyebrow">JavaScript · open-source library</span>
         <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
