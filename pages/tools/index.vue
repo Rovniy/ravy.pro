@@ -163,7 +163,7 @@ const suggestToolUrl = `https://t.me/xploitravy?text=${suggestToolText}`
         :href="suggestToolUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="group mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border border-dashed border-line-strong px-5 py-4 transition-all duration-200 hover:border-accent hover:bg-white/70"
+        class="group mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border border-dashed border-line-strong px-5 py-4 transition-all duration-200 hover:border-accent hover:bg-panel"
       >
         <span class="flex items-center gap-3.5 min-w-0">
           <span class="shrink-0 grid place-items-center w-9 h-9 border border-dashed border-line-strong text-fg-subtle transition-all duration-300 ease-expo group-hover:border-accent group-hover:text-accent-500">

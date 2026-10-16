@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
             <span>{{ a.label }}</span>
             <span
               class="shrink-0 px-2 py-0.5 font-spacemono text-xs"
-              :class="i === 0 ? 'bg-white/20' : 'bg-panel-raised text-accent-500'"
+              :class="i === 0 ? 'bg-accent-fg/15' : 'bg-panel-raised text-accent-500'"
             >{{ a.chip }}</span>
           </button>
         </div>

@@ -102,8 +102,8 @@ onMounted(() => {
         aria-hidden="true"
       />
       <span class="absolute inset-0 grid place-items-center">
-        <span class="grid place-items-center w-16 h-16 bg-white/90 text-fg transition-transform duration-200">
-          <Icon name="mdi:play" class="w-32 h-32 text-4xl translate-x-0.5" aria-hidden="true" />
+        <span class="grid place-items-center w-16 h-16 bg-accent text-accent-fg transition-transform duration-200">
+          <Icon name="mdi:play" class="w-9 h-9 translate-x-0.5" aria-hidden="true" />
         </span>
       </span>
       <span class="scrim-b absolute left-0 right-0 bottom-0 px-4 pt-8 pb-3 text-left text-sm font-semibold text-white">
