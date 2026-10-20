@@ -95,9 +95,9 @@ export const HUB_COPY = {
     description: 'Games, music and an animated series by Andrei Rovnyi: what each one is, where to play, listen or watch it, and what I built for it.',
   },
   games: {
-    title: 'Games: mobile, Steam and Telegram',
+    title: 'Games: mobile, Steam, Telegram and the browser',
     heading: 'Games',
-    description: 'Games I have made at my studio XPLOIT: a cozy mobile adventure, a space puzzle, an idle RPG on Telegram, a card-collecting sim and a co-op gladiator game. Store links, trailers, and what I built in each one.',
+    description: 'Games I have made at my studio XPLOIT: a cozy mobile adventure, a living-island sim in the browser, a space puzzle, an idle RPG on Telegram, a card-collecting sim and a co-op gladiator game. Where to play, and what I built in each one.',
   },
   music: {
     title: 'Music: Zynthar and Diva Rogue',
