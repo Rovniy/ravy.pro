@@ -60,6 +60,7 @@ export const TAG_PROJECT_LINKS: Record<string, { path: string, label: string }> 
   'games': { path: GAMES_PATH, label: 'All my games' },
   'tiny-boo': { path: gamePath({ slug: 'tiny-boo-homecoming' }), label: 'Tiny Boo: Homecoming' },
   'idled': { path: gamePath({ slug: 'idled-survival' }), label: 'IDLED Survival' },
+  'glimtide': { path: gamePath({ slug: 'glimtide' }), label: 'Glimtide' },
   'music': { path: MUSIC_PATH, label: 'Listen to my music' },
   'zynthar': { path: musicPath({ slug: 'zynthar' }), label: 'Listen to Zynthar' },
   'diva-rogue': { path: musicPath({ slug: 'diva-rogue' }), label: 'Listen to Diva Rogue' },

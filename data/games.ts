@@ -175,6 +175,7 @@ export const GAMES: Game[] = [
       { label: 'Studio', value: 'XPLOIT' },
     ],
     platforms: ['Web'],
+    blogTag: 'glimtide',
     blogPath: '/blogs/glimtide-a-living-island-in-the-browser',
     icon: { src: '/games/glimtide/icon.png', alt: 'Glimtide icon: a blue glim rising from the tide' },
     press: {

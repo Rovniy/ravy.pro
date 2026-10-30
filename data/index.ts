@@ -25,6 +25,7 @@ export const BlogPostTag = [
   'zynthar',
   'animation',
   'events',
+  'glimtide',
 ]
 
 /**
@@ -50,6 +51,7 @@ export const categoryNames: Record<string, string> = {
   'zynthar': 'Zynthar',
   'animation': 'Animation',
   'events': 'Events',
+  'glimtide': 'Glimtide',
 }
 
 // Unique per-tag copy for /categories/<tag> pages — a templated
@@ -68,6 +70,7 @@ export const categoryDescriptions: Record<string, string> = {
   'zynthar': 'Zynthar — an AI-assisted metal music project: releases and behind-the-scenes.',
   'animation': 'Making an animated series with AI tools — pipeline, episodes, and lessons learned.',
   'events': 'Offline events, exhibitions, conferences and meetings',
+  'glimtide': 'Glimtide — a living-island life sim of jelly creatures: devlogs, the ECS simulation behind it, and the road to Steam.',
 }
 
 export const navbarData = {
