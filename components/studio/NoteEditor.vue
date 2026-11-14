@@ -114,11 +114,25 @@ function toggleTopic(id: string) {
   else form.topics.push(id)
 }
 
-async function onSave() {
+// Which button is running, so each one can say what it is doing.
+const busy = ref<'save' | 'publish' | null>(null)
+
+/**
+ * Save keeps the Published checkbox as it is. Publish ticks it and saves every
+ * pending change in the same PUT, so the server sees one first-publish save and
+ * fires its hooks (IndexNow, the Shorts bot) exactly once. A failed publish
+ * puts the checkbox back.
+ */
+async function onSave(publish = false) {
   if (saving.value)
     return
   saving.value = true
+  busy.value = publish ? 'publish' : 'save'
   errorMsg.value = ''
+  const wasPublished = form.published
+  const wasDirty = dirty.value
+  if (publish)
+    form.published = true
   try {
     const saved = await saveNote({ ...form }, isNew.value ? 'create' : 'update')
     dirty.value = false
@@ -128,10 +142,17 @@ async function onSave() {
       await router.replace(`/studio/notes/${saved.slug}`)
   }
   catch (e: unknown) {
-    errorMsg.value = e instanceof Error ? e.message : 'Save failed'
+    errorMsg.value = e instanceof Error ? e.message : (publish ? 'Publish failed' : 'Save failed')
+    if (publish) {
+      form.published = wasPublished
+      // Undoing the tick is not an edit: let the form watcher run, then restore.
+      await nextTick()
+      dirty.value = wasDirty
+    }
   }
   finally {
     saving.value = false
+    busy.value = null
   }
 }
 
@@ -306,14 +327,24 @@ onMounted(load)
         <button v-if="!isNew" type="button" :disabled="deleting" class="text-xs underline text-danger disabled:opacity-40 hover:cursor-pointer" @click="onDelete">
           {{ deleting ? 'Deleting…' : 'Delete' }}
         </button>
-        <button
-          type="button"
+        <UiButton
+          :variant="livePublished ? 'primary' : 'secondary'"
+          size="sm"
+          class="shrink-0"
           :disabled="saving"
-          class="skew-box btn btn-primary btn-sm shrink-0"
-          @click="onSave"
+          @click="onSave(false)"
         >
-          {{ saving ? 'Saving…' : 'Save' }}
-        </button>
+          {{ busy === 'save' ? 'Saving…' : 'Save' }}
+        </UiButton>
+        <UiButton
+          v-if="!livePublished"
+          size="sm"
+          class="shrink-0"
+          :disabled="saving"
+          @click="onSave(true)"
+        >
+          {{ busy === 'publish' ? 'Publishing…' : 'Publish' }}
+        </UiButton>
       </div>
     </div>
   </div>
