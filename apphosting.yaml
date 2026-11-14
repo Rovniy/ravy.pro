@@ -41,5 +41,12 @@ env:
     secret: SHORTS_TELEGRAM_CHAT_ID
     availability:
       - RUNTIME
+  # Shared secret of the Telegram webhook (/api/telegram/webhook, the
+  # "Опубликовать" button under a draft notice). Registered with setWebhook by
+  # `npm run telegram -- set-webhook` in shorts-bot.
+  - variable: NUXT_TELEGRAM_WEBHOOK_SECRET
+    secret: RAVY_TELEGRAM_WEBHOOK_SECRET
+    availability:
+      - RUNTIME
 
 runtime: nodejs

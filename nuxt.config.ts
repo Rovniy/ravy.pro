@@ -268,6 +268,9 @@ export default defineNuxtConfig({
     // Both empty = no notification.
     telegramBotToken: '',
     telegramChatId: '',
+    // Secret Telegram sends with every webhook call (setWebhook's
+    // secret_token); /api/telegram/webhook rejects requests without it.
+    telegramWebhookSecret: '',
     public: {
       adminEmail: '',
       steamAudit: {
