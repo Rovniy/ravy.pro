@@ -28,8 +28,24 @@ export interface TilNoteMeta {
   lastUpdated: string
 }
 
+/**
+ * The YouTube Short the shorts bot (repo shorts-bot, a Cloud Run Job) made from
+ * a note. Only the bot writes it: it uploads the video as `private`, Ravy
+ * publishes it in YouTube Studio, and the bot's hourly check flips it to
+ * `public` (or `gone` if the video was deleted). The note page embeds it only
+ * when public.
+ */
+export interface NoteYoutube {
+  id: string
+  status: 'private' | 'public' | 'gone'
+  uploadedAt: string
+  publishedAt?: string
+}
+
 export interface TilNoteRecord extends TilNoteMeta {
   markdown: string
+  /** Set by the shorts bot only; never taken from studio or MCP input. Not in the index. */
+  youtube?: NoteYoutube
 }
 
 /** Longer than this is a blog post, not a note. */
@@ -145,7 +161,35 @@ export function normalizeNote(input: unknown, opts: NormalizeNoteOptions): TilNo
     createdAt,
     lastUpdated: opts.now,
     markdown,
+    // The store writes the whole document, so an edit must carry the bot's field over.
+    ...(existing?.youtube ? { youtube: existing.youtube } : {}),
   }
+}
+
+const YOUTUBE_STATUSES = new Set<NoteYoutube['status']>(['private', 'public', 'gone'])
+
+/** `youtube` as stored → the typed field, or undefined when missing or malformed. */
+export function noteYoutubeFromDoc(value: unknown): NoteYoutube | undefined {
+  const v = (value ?? {}) as Record<string, unknown>
+  const id = str(v.id)
+  const status = str(v.status) as NoteYoutube['status']
+  if (!/^[\w-]{6,20}$/.test(id) || !YOUTUBE_STATUSES.has(status))
+    return undefined
+  const publishedAt = str(v.publishedAt)
+  return { id, status, uploadedAt: str(v.uploadedAt), ...(publishedAt ? { publishedAt } : {}) }
+}
+
+/** The note's Short when it may be shown: published on YouTube. `uploadDate` feeds the VideoObject. */
+export function publicVideo(note: Pick<TilNoteRecord, 'youtube'>): { id: string, uploadDate: string } | null {
+  const yt = note.youtube
+  if (!yt || yt.status !== 'public')
+    return null
+  return { id: yt.id, uploadDate: yt.publishedAt || yt.uploadedAt }
+}
+
+/** True for the save that takes a note live for the first time: the moment to make its Short. */
+export function isFirstPublish(note: TilNoteRecord, existing: TilNoteRecord | null): boolean {
+  return note.published && !existing?.published && !existing?.youtube && !note.youtube
 }
 
 /** Firestore document → note. Never throws; a malformed doc is skipped. */
@@ -166,11 +210,13 @@ export function noteFromDoc(data: Record<string, unknown> | undefined, slug: str
     createdAt: str(data.createdAt),
     lastUpdated: str(data.lastUpdated) || str(data.createdAt),
     markdown,
+    ...(noteYoutubeFromDoc(data.youtube) ? { youtube: noteYoutubeFromDoc(data.youtube) } : {}),
   }
 }
 
+/** Index and API metadata. The video stays out: a private video id is nobody's business. */
 export function toNoteMeta(note: TilNoteRecord): TilNoteMeta {
-  const { markdown: _markdown, ...meta } = note
+  const { markdown: _markdown, youtube: _youtube, ...meta } = note
   return meta
 }
 

@@ -113,6 +113,10 @@ Short "Today I Learned" notes, written in **English** (the goal is international
   - Feeds: the sitemap, `/til/rss.xml` (50 newest), and `llms.txt` / `llms-full.txt`. Each fails soft, so a notes outage leaves the blog's output intact.
   - In the ⌘K palette, notes are the `note` type in the Posts scope, loaded from `/api/til/notes`.
   - Header nav: "TIL".
+- **YouTube Shorts.** A note's first publish (`isFirstPublish`) makes `persistNote` call `enqueueShort(slug)` (`server/utils/shorts.ts`): best-effort, production only, it runs the Cloud Run Job `shorts-bot` in us-east4 (repo shorts-bot, constants in `utils/shorts-job.ts`) with `run-short <slug>`, as the backend's service account, which holds `roles/run.jobsExecutorWithOverrides` on that job.
+  - The bot uploads a private Short and writes `youtube: { id, status, uploadedAt, publishedAt? }` onto `til_notes/{slug}`. Only the bot writes it: `normalizeNote` never takes it from input and carries the existing value over on every save (the store writes whole documents, so dropping it would erase the video). `toNoteMeta` strips it, so it is never in the index or the list API.
+  - Ravy publishes the video in YouTube Studio; the bot's hourly check flips `status` to `public`. Only then does `GET /api/til/note/[slug]` return `video` (`publicVideo`), the page embed it with `<UiEmbedFacade variant="short">` and the `TechArticle` carry a `VideoObject`.
+  - Telegram draft notices use the bot's secrets: `NUXT_TELEGRAM_BOT_TOKEN` / `NUXT_TELEGRAM_CHAT_ID` come from `SHORTS_TELEGRAM_*` in `apphosting.yaml`.
 - **Schema and OG.**
   - A note page emits `TechArticle`, whose author is the `#person` node (`useTilNoteSchema`).
   - `/til` and the hubs emit `CollectionPage` + `ItemList` (`useTilCollectionSchema`).

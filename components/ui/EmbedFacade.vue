@@ -20,8 +20,8 @@ const props = withDefaults(defineProps<{
   title: string
   poster?: string
   posterAlt?: string
-  /** `video` is 16:9; `spotify` is Spotify's fixed-height list player. */
-  variant?: 'video' | 'spotify'
+  /** `video` is 16:9; `short` is a 9:16 YouTube Short; `spotify` is Spotify's fixed-height list player. */
+  variant?: 'video' | 'short' | 'spotify'
   event: AnalyticsEvent
   eventParams?: Record<string, string>
   /** Load straight away on mount — for a player the visitor just picked. */
@@ -66,7 +66,7 @@ onMounted(() => {
   <div
     class="relative w-full overflow-hidden"
     :class="[
-      variant === 'video' ? 'aspect-video border border-line' : 'h-[352px]',
+      variant === 'video' ? 'aspect-video border border-line' : variant === 'short' ? 'aspect-[9/16] border border-line' : 'h-[352px]',
       active && variant === 'spotify' ? 'bg-transparent' : 'bg-black',
     ]"
   >

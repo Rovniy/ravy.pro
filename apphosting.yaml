@@ -30,5 +30,16 @@ env:
     value: xploit-games.firebasestorage.app
     availability:
       - RUNTIME
+  # Telegram bot that tells the owner a TIL draft is waiting
+  # (server/utils/telegram.ts). The same bot and chat as the Shorts bot, so the
+  # site reads the Shorts bot's secrets in Secret Manager.
+  - variable: NUXT_TELEGRAM_BOT_TOKEN
+    secret: SHORTS_TELEGRAM_BOT_TOKEN
+    availability:
+      - RUNTIME
+  - variable: NUXT_TELEGRAM_CHAT_ID
+    secret: SHORTS_TELEGRAM_CHAT_ID
+    availability:
+      - RUNTIME
 
 runtime: nodejs

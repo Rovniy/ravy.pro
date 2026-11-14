@@ -4,6 +4,7 @@ import type { ToolDefinition, ToolResult } from './protocol'
 import { TIL_TOPIC_IDS, TIL_TOPICS, tilTopicPath } from '~~/data/til'
 import { isValidSlug, slugify } from '~~/utils/blog-post'
 import { linkedInPost, normalizeNote, noteWarnings, TilNoteValidationError, xPost } from '~~/utils/til'
+import { notifyNoteDraft } from '../telegram'
 import { persistNote } from '../til-save'
 import { getNote, listNotes } from '../til-store'
 import { jsonResult, ToolInputError } from './protocol'
@@ -161,6 +162,9 @@ export const tilTools: ToolDefinition<BlogToolContext>[] = [
       if (await getNote(slug))
         throw new ToolInputError(`A note with slug "${slug}" already exists. Use update_note, or pick another slug.`)
       const note = await save({ ...pick(args), slug, published: args.published === true }, null)
+      // A draft written by a model waits for the author's review: ping them on Telegram.
+      if (!note.published)
+        await notifyNoteDraft(note, ctx.origin)
       return saved(note, ctx.origin, note.published ? LIVE : DRAFT)
     },
   },

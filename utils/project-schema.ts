@@ -22,7 +22,7 @@ function abs(site: string, path: string): string {
 }
 
 // `uploadDate` is required: Google marks a VideoObject without it invalid.
-function youtubeVideoNode(id: string, name: string, description: string, uploadDate: string) {
+export function youtubeVideoNode(id: string, name: string, description: string, uploadDate: string) {
   return {
     '@type': 'VideoObject',
     name,

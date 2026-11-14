@@ -1,9 +1,12 @@
 import { renderMarkdown } from '~~/server/utils/blog-render'
 import { getNote, listNotes } from '~~/server/utils/til-store'
 import { isValidSlug } from '~~/utils/blog-post'
-import { relatedNotes, toNoteMeta } from '~~/utils/til'
+import { publicVideo, relatedNotes, toNoteMeta } from '~~/utils/til'
 
-/** One published note with its rendered body and up to five related notes. Drafts 404. */
+/**
+ * One published note with its rendered body, up to five related notes, and its
+ * YouTube Short once that is public (`video`, null otherwise). Drafts 404.
+ */
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, 'slug') ?? ''
   if (!isValidSlug(slug))
@@ -19,5 +22,6 @@ export default defineEventHandler(async (event) => {
     ...toNoteMeta(note),
     body: await renderMarkdown(note.markdown),
     related: relatedNotes(note, all, 5),
+    video: publicVideo(note),
   }
 })

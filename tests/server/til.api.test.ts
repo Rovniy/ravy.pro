@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   notes: [] as TilNoteRecord[],
   saved: [] as TilNoteRecord[],
   pings: [] as string[][],
+  drafts: [] as string[],
   slugParam: '',
   query: {} as Record<string, string>,
   body: undefined as unknown,
@@ -34,6 +35,11 @@ vi.mock('~~/server/utils/til-store', () => ({
 vi.mock('~~/server/utils/indexnow', () => ({
   pingIndexNow: vi.fn(async (paths: string[]) => {
     mocks.pings.push(paths)
+  }),
+}))
+vi.mock('~~/server/utils/telegram', () => ({
+  notifyNoteDraft: vi.fn(async (note: { slug: string }) => {
+    mocks.drafts.push(note.slug)
   }),
 }))
 vi.mock('~~/server/utils/blog-render', () => ({
@@ -101,6 +107,7 @@ beforeEach(() => {
   ]
   mocks.saved = []
   mocks.pings = []
+  mocks.drafts = []
   mocks.slugParam = ''
   mocks.query = {}
   mocks.body = undefined
@@ -212,11 +219,19 @@ describe('mcp note tools', () => {
     expect(created.isError).toBeUndefined()
     expect(created.structuredContent).toMatchObject({ slug: 'how-to-pin-a-nuxt-route-rule', published: false })
     expect(created.structuredContent.share).toBeUndefined()
+    expect(mocks.drafts).toEqual(['how-to-pin-a-nuxt-route-rule'])
 
     const published = await callTool('publish_note', { slug: 'how-to-pin-a-nuxt-route-rule' })
     expect(published.structuredContent.url).toBe('https://ravy.pro/til/how-to-pin-a-nuxt-route-rule')
     expect(published.structuredContent.share.linkedin).toContain('https://ravy.pro/til/how-to-pin-a-nuxt-route-rule')
     expect(published.structuredContent.share.x).toContain('#WebDev')
+    expect(mocks.drafts).toHaveLength(1)
+  })
+
+  it('does not send a draft notice for a note created as published', async () => {
+    const res = await callTool('create_note', { title: 'How to skip a draft?', topics: ['web'], markdown: 'Pass published.\n\n```ts\nx\n```', published: true })
+    expect(res.structuredContent.published).toBe(true)
+    expect(mocks.drafts).toEqual([])
   })
 
   it('update_note never changes published, and bad topics are a fixable error', async () => {

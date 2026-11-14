@@ -6,7 +6,7 @@ import { toValue } from 'vue'
 import { useAnalytics } from '~/composables/useAnalytics'
 import { baseData, footerData, seoData, socialNetworks } from '~/data'
 import { EVENTS, toolIdFromPath } from '~/data/analytics'
-import { gameNode, musicGroupNode, seriesNode } from '~/utils/project-schema'
+import { gameNode, musicGroupNode, seriesNode, youtubeVideoNode } from '~/utils/project-schema'
 
 const SITE = seoData.mySite
 
@@ -1172,6 +1172,8 @@ export function useTilNoteSchema(note: {
   topics: Array<{ id: string, name: string, url: string }>
   createdAt: string
   lastUpdated?: string
+  /** The note's YouTube Short, once public. */
+  video?: { id: string, uploadDate: string } | null
 }) {
   const crumb = breadcrumbNode([
     { name: 'Home', url: `${SITE}/` },
@@ -1209,6 +1211,7 @@ export function useTilNoteSchema(note: {
       'articleSection': note.topics.map(t => t.name),
       'keywords': note.topics.map(t => t.name).join(', '),
       'about': note.topics.map(t => ({ '@type': 'Thing', 'name': t.name, 'url': t.url })),
+      ...(note.video && note.video.uploadDate ? { video: youtubeVideoNode(note.video.id, note.title, note.excerpt, note.video.uploadDate) } : {}),
     },
     crumb,
   ])

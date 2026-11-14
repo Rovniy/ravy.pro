@@ -264,6 +264,10 @@ export default defineNuxtConfig({
     // Cloud Storage bucket holding blog post images uploaded from /studio.
     // Empty falls back to `<project>.firebasestorage.app`.
     firebaseStorageBucket: '',
+    // Telegram bot that pings the owner when a TIL draft arrives through MCP.
+    // Both empty = no notification.
+    telegramBotToken: '',
+    telegramChatId: '',
     public: {
       adminEmail: '',
       steamAudit: {

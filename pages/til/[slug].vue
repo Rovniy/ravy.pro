@@ -8,6 +8,8 @@ import { formatBlogDate } from '~/utils/helper'
 interface NoteResponse extends TilNoteMeta {
   body: Record<string, unknown>
   related: TilNoteMeta[]
+  /** The note's YouTube Short, only once it is public. */
+  video: { id: string, uploadDate: string } | null
 }
 
 const route = useRoute()
@@ -31,6 +33,7 @@ const topics = n.topics.map(id => ({ id, name: tilTopic(id)?.name ?? id, url: `$
 const primary = n.topics[0] ? tilTopic(n.topics[0]) : undefined
 const title = `${n.title} | TIL`
 const updated = n.lastUpdated && n.lastUpdated.slice(0, 10) !== n.createdAt.slice(0, 10)
+const video = n.video
 
 useHead({
   title,
@@ -58,7 +61,7 @@ useHead({
   ],
 })
 
-useTilNoteSchema({ url, title: n.title, excerpt: n.excerpt, topics, createdAt: n.createdAt, lastUpdated: n.lastUpdated })
+useTilNoteSchema({ url, title: n.title, excerpt: n.excerpt, topics, createdAt: n.createdAt, lastUpdated: n.lastUpdated, video: n.video })
 
 defineOgImage('Note', { title: n.title, topic: primary?.name ?? '', excerpt: n.excerpt })
 
@@ -116,6 +119,23 @@ onMounted(() => {
       <div class="prose prose-slate dark:prose-invert sm:prose-lg max-w-none prose-pre:max-w-full">
         <ContentRenderer :value="{ body: note.body }" />
       </div>
+
+      <section v-if="video" class="mt-10" aria-labelledby="til-short">
+        <h2 id="til-short" class="eyebrow mb-3">
+          The 30-second version
+        </h2>
+        <div class="w-full max-w-xs">
+          <UiEmbedFacade
+            :src="`https://www.youtube-nocookie.com/embed/${video?.id}`"
+            :title="`${note.title} (YouTube Short)`"
+            :poster="`https://i.ytimg.com/vi/${video?.id}/hqdefault.jpg`"
+            poster-alt=""
+            variant="short"
+            :event="EVENTS.VIDEO_PLAY"
+            :event-params="{ project: note.slug, item: 'til_short' }"
+          />
+        </div>
+      </section>
     </article>
 
     <div class="mt-10 pt-6 border-t border-line">
