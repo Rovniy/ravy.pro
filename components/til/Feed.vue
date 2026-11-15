@@ -63,7 +63,7 @@ defineProps<{
       <ul class="divide-y divide-line border-y border-line">
         <li v-for="note in feed.archive" :key="note.slug">
           <NuxtLink :to="note.path" class="group flex items-baseline justify-between gap-4 py-3">
-            <span class="font-medium text-fg group-hover:text-accent-ink transition-colors">{{ note.title }}</span>
+            <span class="min-w-0 break-words font-medium text-fg group-hover:text-accent-ink transition-colors">{{ note.title }}</span>
             <time :datetime="note.createdAt" class="shrink-0 font-spacemono text-xs text-fg-muted">{{ formatBlogDate(note.createdAt) }}</time>
           </NuxtLink>
         </li>

@@ -25,7 +25,7 @@ defineProps<{
           </NuxtLink>
         </template>
       </div>
-      <component :is="as ?? 'h2'" class="text-lg sm:text-xl font-bold leading-snug text-fg">
+      <component :is="as ?? 'h2'" class="text-lg sm:text-xl font-bold leading-snug text-fg break-words">
         <NuxtLink :to="note.path" class="hover:text-accent-ink transition-colors">
           {{ note.title }}
         </NuxtLink>

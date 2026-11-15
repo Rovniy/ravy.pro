@@ -379,6 +379,11 @@ export const socialNetworks = [
     name: 'Github',
   },
   {
+    href: 'https://www.youtube.com/@andreirovnyi',
+    icon: 'fa:youtube-play',
+    name: 'YouTube',
+  },
+  {
     href: `mailto:${baseData.me.email}`,
     icon: 'mdi:mail-outline',
     name: 'Email',
@@ -478,8 +483,8 @@ export const contactLinks: ContactLink[] = [
   {
     name: 'YouTube',
     icon: 'fa:youtube-play',
-    handle: 'TODO',
-    href: 'https://www.youtube.com/@xploit-games',
+    handle: '@andreirovnyi',
+    href: 'https://www.youtube.com/@andreirovnyi',
     method: 'youtube',
     brand: '#FF0000',
   },

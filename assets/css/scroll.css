@@ -1,5 +1,9 @@
 body {
 	overflow-y: scroll;
+	/* Guard rail: the page never scrolls sideways, whatever a post contains.
+	   Set on body (not html) so it propagates to the viewport and the window
+	   stays the scroller, which keeps the sticky header working. */
+	overflow-x: clip;
 }
 
 /*

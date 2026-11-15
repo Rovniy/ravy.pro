@@ -303,6 +303,19 @@
  * selectors outrank the plugin's `:where()`-wrapped defaults.
  */
 @layer utilities {
+  /* Long unbroken strings never widen the page. A bare URL or a long
+     identifier in inline code is one "word" to the browser, so on a phone it
+     ran past the column and gave the whole site a horizontal scrollbar.
+     `anywhere` (unlike `break-word`) also lowers the min-content width, so it
+     works inside flex and grid items too. Code blocks keep their own
+     horizontal scroll. */
+  .prose {
+    overflow-wrap: break-word;
+  }
+  .prose a, .prose :not(pre) > code {
+    overflow-wrap: anywhere;
+  }
+
   /* Links: accent ink, underlined with breathing room. Every rule here skips
      `.not-prose` blocks, where markdown pages place buttons and cards. */
   .prose a:not(.not-prose *) {

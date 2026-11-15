@@ -97,7 +97,7 @@ onMounted(() => {
         <p class="eyebrow mb-3">
           Today I learned
         </p>
-        <h1 class="text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-fg">
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-fg break-words">
           {{ note.title }}
         </h1>
         <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 font-spacemono text-xs text-fg-muted">
@@ -124,7 +124,9 @@ onMounted(() => {
         <h2 id="til-short" class="eyebrow mb-3">
           The 30-second version
         </h2>
-        <div class="w-full max-w-xs">
+        <!-- Full bleed on phones: the negative margin cancels the page's
+             px-6, so the Short spans the screen edge to edge. -->
+        <div class="-mx-6 sm:mx-0 sm:max-w-xs">
           <UiEmbedFacade
             :src="`https://www.youtube-nocookie.com/embed/${video?.id}`"
             :title="`${note.title} (YouTube Short)`"
@@ -153,7 +155,7 @@ onMounted(() => {
       <ul class="divide-y divide-line border-y border-line">
         <li v-for="r in note.related" :key="r.slug">
           <NuxtLink :to="r.path" class="group flex items-baseline justify-between gap-4 py-3">
-            <span class="font-medium text-fg group-hover:text-accent-ink transition-colors">{{ r.title }}</span>
+            <span class="min-w-0 break-words font-medium text-fg group-hover:text-accent-ink transition-colors">{{ r.title }}</span>
             <time :datetime="r.createdAt" class="shrink-0 font-spacemono text-xs text-fg-muted">{{ formatBlogDate(r.createdAt) }}</time>
           </NuxtLink>
         </li>

@@ -48,7 +48,6 @@ function lang(): string {
  * from /contacts and /about that never made it into the graph.
  */
 const EXTRA_SAME_AS = [
-  'https://www.youtube.com/@xploit-games',
   'https://steamcommunity.com/id/xploit-gaming/',
   'https://www.npmjs.com/~ravy',
   'https://xploit.games',
